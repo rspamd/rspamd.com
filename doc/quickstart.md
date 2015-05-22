@@ -11,11 +11,11 @@ This guide describes the main procedures to get and start working with rspamd.
 
 ### Arch, CentOS, Debian, Fedora, openSUSE, SLE, Ubuntu
 
-The recommended way to install Rspamd is using binary packages from [our project on the openSUSE build service](https://software.opensuse.org/download.html?project=home%3Acebka&package=rspamd) which is expected to always offer the best available version.
+The recommended way to install Rspamd is using packages from [our project on the openSUSE build service](https://software.opensuse.org/download.html?project=home%3Acebka&package=rspamd), which is expected to always offer the best available version - installation instructions appropriate to your platform can be found there.
 
-Rspamd is also available in Debian's [testing](https://packages.debian.org/source/testing/rspamd) and [unstable](https://packages.debian.org/source/unstable/rspamd) distributions and the universe repository in [some versions](http://packages.ubuntu.com/search?keywords=rspamd&searchon=names&suite=all&section=all) of Ubuntu.
+Rspamd is also available in [Debian](https://packages.debian.org/search?keywords=rspamd&searchon=names&suite=all&section=all) and [Ubuntu](http://packages.ubuntu.com/search?keywords=rspamd&searchon=names&suite=all&section=all).
 
-For CentOS 6 on x86_64 platform you might also use the optimized version of rspamd with pcre-jit, luajit and hiredis bundled. This also contain gmime 2.6 build compatible with the major centos environment. To use this reporitory you can do the following steps:
+For CentOS 6 on x86_64 you could use our optimized version of rspamd with pcre-jit, luajit and hiredis bundled. The repository also contains a gmime 2.6 build compatible with the major centos environment- to use it run the following:
 
 	# wget -O /etc/yum.repos.d/rspamd.repo http://rspamd.com/CentOS/6/os/x86_64/rspamd.repo
 	# rpm --import http://rspamd.com/vsevolod.pubkey
