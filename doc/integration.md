@@ -30,6 +30,9 @@ For other systems and exim < 4.86 there is a patch which placed in rspamd source
 It should be applied in exim's source directory:
 
 {% highlight sh %}
+# If using Exim 4.85, patch the patch first
+patch -p1 patch-exim-src_spam.c.diff < patch-exim-src_spam.c.diff.exim-4.85.diff
+# For Exim 4.70 to 4.84, or after patching for 4.85
 patch -p1 < patch-exim-src_spam.c.diff
 {% endhighlight %}
 
@@ -42,22 +45,29 @@ acl_smtp_data = acl_check_spam
 
 
 acl_check_spam:
-  # do not scan messages submitted from our own hosts
-  accept hosts = +relay_from_hosts
-  # do not scan messages from submission port
-  accept condition = ${if eq {$interface_port}{587} {yes}{no}}
-  # skip scanning for authenticated users
-  accept authenticated = *
-  warn  spam = nobody:true
-  # add spam-score header
-  warn  condition = ${if eq{$spam_action}{add header}}
-        message = X-Spam-Score: $spam_score ($spam_bar)
-  # add report header
-  warn  condition = ${if eq{$spam_action}{add header}}
-        message = X-Spam-Report: $spam_report
-  # discard high-scoring mail
-  deny  condition = ${if eq{$spam_action}{reject}}
-        message = Message discarded as high-probability spam
+  ## do not scan messages submitted from our own hosts
+  # accept hosts = +relay_from_hosts
+  ## do not scan messages submitted by authenticated users
+  # accept authenticated = *
+  ## send messages to rspamd for processing
+  warn    spam = nobody
+  ## retry failed scans
+  # warn  condition = ${if eq{$spam_action}{}}
+  #       spam = nobody
+  #       log_message = Retrying failed scan
+  ## add spam-score header
+  warn    condition = ${if eq{$spam_action}{add header}}
+          message = X-Spam-Score: $spam_score ($spam_bar)
+  ## add report header
+  warn    condition = ${if eq{$spam_action}{add header}}
+          message = X-Spam-Report: $spam_report
+  ## handle outbound spam differently (check for $acl_m_userspam in routers)
+  accept  authenticated = *
+          condition = ${if match{$spam_action}{^reject\$|^add header\$}}
+          set acl_m_userspam = 1
+  ## discard high-scoring mail
+  deny    condition = ${if eq{$spam_action}{reject}}
+          message = Message discarded as high-probability spam
 {% endhighlight %}
 
 The other ways for integration with exim are local scan patch and dlfunc.
