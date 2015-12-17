@@ -46,13 +46,15 @@ To learn your codename, you could try command `lsb_release -s -c` from the packa
 
 For other distributions you could also check [our project on the openSUSE build service](https://software.opensuse.org/download.html?project=home%3Acebka&package=rspamd).
 
-Rspamd is also available in Debian's [testing](https://packages.debian.org/source/testing/rspamd) and [unstable](https://packages.debian.org/source/unstable/rspamd) distributions and the universe repository in [some versions](http://packages.ubuntu.com/search?keywords=rspamd&searchon=names&suite=all&section=all) of Ubuntu. However, we are looking for an active maintainer for rspamd in these 'official' repos, as now rspamd is terribly outdated there.
+Rspamd is also available [some](https://packages.debian.org/source/stable/rspamd) [versions](https://packages.debian.org/source/unstable/rspamd) of Debian and [Ubuntu](http://packages.ubuntu.com/search?keywords=rspamd&searchon=names&suite=all&section=all). However, we are looking for an active maintainer for rspamd in these 'official' repos, as now rspamd is terribly outdated there.
 
 ### Other operating systems
 
 FreeBSD users can install Rspamd from [ports](http://www.freshports.org/mail/rspamd/).
 
 Users of NetBSD (and other systems with pkgsrc) can use [pkgsrc](http://pkgsrc.se/mail/rspamd).
+
+OpenBSD users can use [ports](http://openports.se/mail/rspamd).
 
 OSX users can install from [MacPorts](https://trac.macports.org/browser/trunk/dports/mail/rspamd/Portfile).
 
