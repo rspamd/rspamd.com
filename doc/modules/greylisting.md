@@ -23,7 +23,7 @@ The hashes lifetime is depicted in the following scheme:
 
 <img class="img-responsive" width="75%" src="/img/greylisting.png">
 
-This module produces `soft reject` action on greylisting which **SHOULD** be treated as temporary rejection by MTA. Rmilter can recognize this action. Some other integrations cannot do it (for example, Exim integration), so this module won't work as expected.
+This module produces `soft reject` action on greylisting which **SHOULD** be treated as temporary rejection by MTA. Rmilter can recognize this action. Some other integrations cannot do it, so this module won't work as expected.
 
 ## Module configuration
 
