@@ -697,6 +697,16 @@ RewriteRule ^/rspamd/(.*) http://localhost:11334/$1 [P,L]
 
 When a connection comes from an IP listed in `secure_ip` or from a unix socket then Rspamd checks for two headers: `X-Forwarded-For` and, if that is not found- `X-Real-IP`. If one of those headers is found then Rspamd treats a connection as if it comes from the IP specified in that header. For example, `X-Real-IP: 8.8.8.8` will trigger checks against `secure_ip` for `8.8.8.8`.
 
+### Modifying configuration files using the WebUI
+
+To be able to write to rspamd configuration files, make sure, you have set proper permissions on your server running rspamd. Assuming your rspamd unix user is called "rspamd", you might set permissions like this:
+
+```
+cd /etc/rspamd
+chgrp rspamd 2tld.inc dmarc_whitelist.inc mid.inc mime_types.inc redirectors.inc spf_dkim_whitelist.inc surbl-whitelist.inc
+chmod 664 2tld.inc dmarc_whitelist.inc mid.inc mime_types.inc redirectors.inc spf_dkim_whitelist.inc surbl-whitelist.inc
+```
+
 ### Where does the WebUI store settings
 
 The WebUI sends `AJAX` requests for Rspamd and Rspamd can store data in a `dynamic_conf` file. By default, it is defined in `options.inc` as following:
