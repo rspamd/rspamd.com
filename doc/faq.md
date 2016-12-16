@@ -659,12 +659,28 @@ Then you can use the resulting string (in the format `$<algorithm_id>$<salt>$<en
 Here is an example for nginx:
 
 ```nginx
-location /rspamd/ {
-  proxy_pass       http://localhost:11334/;
+rewrite ^(/save.+)$ /rspamd$1 last;
 
+location /rspamd/ {
+  #add_header      Strict-Transport-Security "max-age=15768000; includeSubdomains";
+  add_header       X-Content-Type-Options nosniff;
+  add_header       X-Frame-Options SAMEORIGIN;
+  add_header       X-XSS-Protection "1; mode=block";
+  
+  proxy_pass       http://localhost:11334/;
+  proxy_redirect   http://localhost:11334/ default;
+  proxy_read_timeout 60s;
+  
   proxy_set_header Host      $host;
   proxy_set_header X-Real-IP $remote_addr;
-  proxy_set_header X-Forwarded-For "";
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  
+  # Limit access to rspamd
+  # IPv4:
+  #allow xxx.xxx.xxx.xxx/xx;
+  # IPv6:
+  #allow xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx;
+  #deny all
 }
 ```
 
