@@ -29,6 +29,8 @@ antivirus {
     type = "clamav";
     # For "savapi" you must also specify the following variable
     #product_id = 12345;
+    # For "savapi" you can enable logging for clean messages
+    #log_clean = true;
     # servers to query (if port is unspecified, scanner-specific default is used)
     # can be specified multiple times to pool servers
     # can be set to a path to a unix socket
@@ -50,3 +52,5 @@ antivirus {
 The default SAVAPI configuration has a listening unix socket. You must change this to a TCP socket. The option "ListenAddress" in savapi.conf shows some examples. Per default this module expects the socket at 127.0.0.1:4444. You can change this by setting it in the "servers" variable as seen above.
 
 You must also set the "product_id" which must match with the id for your HBEDV.key file. If you leave this, the default value is "0" and checking will fail with a log message that the given id was invalid.
+
+If you want to see logs for clean messages, you can set "log_clean" to true.
