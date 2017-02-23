@@ -69,24 +69,49 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentation
                            <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/doc/index.html">Documentation index</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/doc/quickstart.html">Quick start</a></li>
-                            <li><a href="/doc/integration.html">MTA integration</a></li>
-                            <li><a href="/doc/migration.html">Upgrading</a></li>
-                            <li><a href="/doc/faq.html">FAQ</a></li>
-                            <li><a href="/doc/tutorials/migrate_sa.html">Migrating from SA</a></li>
-                            <li role="separator" class="divider"></li>
-                            <!--li><a href="/doc/architecture/">Architecture</a></li-->
-                            <li><a href="/doc/configuration/">Configuration structure</a></li>
-                            <li><a href="/doc/modules/">Modules documentation</a></li>
-                            <li><a href="/doc/workers/">Workers documentation</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/doc/tutorials/writing_rules.html">Writing Rspamd rules</a></li>
-                            <li><a href="/doc/lua/">Lua API reference</a></li>
-                            <li><a href="/doc/fuzzy_storage.html">Creating your fuzzy storage</a></li>
-                            <li><a href="/doc/architecture/index.html">Architecture information</a></li>
-                            <li><a href="/doc/architecture/protocol.html">Protocol documentation</a></li>
+                            <li class="tb-row"><a href="/doc/index.html">Documentation index <small><i class="fa fa-chevron-right"></i></small></a></li>
+                            <li>Installation and Administration
+                              <ul>
+                                <li><a href="/doc/quickstart.html">Quick start</a></li>
+                                <li><a href="/doc/integration.html">MTA integration</a></li>
+                                <li><a href="/doc/migration.html">Upgrading</a></li>
+                                <li><a href="/doc/faq.html">FAQ</a></li>
+                                <li><a href="/doc/tutorials/migrate_sa.html">Migrating from SA</a></li>
+                              </ul>
+                            </li>
+                            <li>Reference guide
+                              <ul>
+                                <li><a href="/doc/configuration/">Configuration structure <small><i class="fa fa-chevron-right"></i></small></a>
+                                  <ul style="padding-left: 30px; list-style-type: circle;">
+                                    <li><a href="/doc/configuration/settings.html">Users settings description</a></li>
+                                    <li><a href="/doc/configuration/options.html">Top-level options</a></li>
+                                    <li><a href="/doc/configuration/logging.html">Logging setup</a></li>
+                                    <li><a href="/doc/configuration/metrics.html">Metrics, actions and symbols</a></li>
+                                    <li><a href="/doc/configuration/composites.html">Composite symbols</a></li>
+                                    <li><a href="/doc/configuration/statistic.html">Statistical module</a></li>
+                                  </ul>
+                                </li>
+                                <li><a href="/doc/modules/">Modules documentation</a></li>
+                                <li><a href="/doc/workers/">Workers documentation</a></li>
+                                <li><a href="/docconfiguration/redis.html">Redis configuration page</a></li>
+                                <li><a href="/doc/configuration/upstream.html">Upstreams article</a></li>
+                              </ul>
+                            </li>
+                            <li>Developers documentation
+                              <ul>
+                                <li><a href="/doc/tutorials/writing_rules.html">Writing Rspamd rules</a></li>
+                                <li><a href="/doc/lua/">Lua API reference</a></li>
+                                <li><a href="/doc/fuzzy_storage.html">Creating your fuzzy storage</a></li>
+                                <li><a href="/doc/architecture/index.html">Architecture information</a></li>
+                                <li><a href="/doc/architecture/protocol.html">Protocol documentation</a></li>
+                              </ul>
+                            </li>
+                            <li>External resources
+                              <ul>
+                                <li><a href="https://kaworu.ch/blog/2014/03/25/dovecot-antispam-with-rspamd/" target="_blank">Training Rspamd with Dovecot, part&nbsp;1</a></li>
+                                <li><a href="https://kaworu.ch/blog/2015/10/12/dovecot-antispam-with-rspamd-part2/" target="_blank">Training Rspamd with Dovecot, part&nbsp;2</a></li>
+                              </ul>
+                            </li>
                         </ul>
                     </li>
                     <li>
@@ -104,4 +129,38 @@
                 </ul>
             </div>
         </div>
+        <!-- <div class="container add_menu">
+          <div class="col-xs-12 col-sm-3">
+            <h3>Installation and Administration</h3>
+              <a href="/doc/quickstart.html">Quick start</a>
+              <a href="/doc/integration.html">MTA integration</a>
+              <a href="/doc/migration.html">Upgrading</a>
+              <a href="/doc/faq.html">FAQ</a>
+              <a href="/doc/tutorials/migrate_sa.html">Migrating from SA</a>
+          </div>
+          <div class="col-xs-12 col-sm-3">
+            <h3>Reference guide</h3>
+              <a href="/doc/quickstart.html">Quick start</a>
+              <a href="/doc/integration.html">MTA integration</a>
+              <a href="/doc/migration.html">Upgrading</a>
+              <a href="/doc/faq.html">FAQ</a>
+              <a href="/doc/tutorials/migrate_sa.html">Migrating from SA</a>
+          </div>
+          <div class="col-xs-12 col-sm-3">
+            <h3>Developers documentation</h3>
+              <a href="/doc/quickstart.html">Quick start</a>
+              <a href="/doc/integration.html">MTA integration</a>
+              <a href="/doc/migration.html">Upgrading</a>
+              <a href="/doc/faq.html">FAQ</a>
+              <a href="/doc/tutorials/migrate_sa.html">Migrating from SA</a>
+          </div>
+          <div class="col-xs-12 col-sm-3">
+            <h3>External resources</h3>
+              <a href="/doc/quickstart.html">Quick start</a>
+              <a href="/doc/integration.html">MTA integration</a>
+              <a href="/doc/migration.html">Upgrading</a>
+              <a href="/doc/faq.html">FAQ</a>
+              <a href="/doc/tutorials/migrate_sa.html">Migrating from SA</a>
+          </div>
+        </div> -->
     </nav>
