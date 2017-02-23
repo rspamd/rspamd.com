@@ -501,6 +501,8 @@ You can add more complex conditions but this one is the easiest in terms of rule
 
 Additionally you can dynamically selectively enable/disable symbols with [settings module]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html).
 
+To disable an entire module you can set `enabled = false` in its configuration.
+
 ### Can I scan outgoing mail with Rspamd
 
 Yes, Rspamd should be safe for outbound scanning by default, [see here for detail]({{ site.url }}{{ site.baseurl }}/doc/tutorials/scanning_outbound.html).

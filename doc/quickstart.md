@@ -512,7 +512,7 @@ Though Rspamd is free to use for any purpose many of the RBLs used in the defaul
 
 [UCEProtect](http://www.uceprotect.net/en/index.php?m=6&s=11) - If you're sending 100k queries or more per day you should use the (free) Rsync service.
 
-These are configured in `modules.conf` in the `rbl{}` and `surbl{}` sections. Detailed documentation for the RBL module is available [here]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html).
+Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) and [SURBL]({{ site.url }}{{ site.baseurl }}/doc/modules/surbl.html) module documentation for information about disabling RBLs/SURBLs.
 
 ## Using Rspamd
 
