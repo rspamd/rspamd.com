@@ -300,3 +300,63 @@ blockquote {
     right: 10px;
   }
 }
+
+.nav > li.dropdown.open {
+  position: static;
+}
+
+.nav > li.dropdown.open .dropdown-menu {
+  display: table;
+  border-radius: 0px;
+  width: 100%;
+  left: 0;
+  right: 0;
+  table-layout: fixed;
+}
+
+.dropdown-menu > li {
+  display: table-cell;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  padding-left: 0;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 767px) {
+  .dropdown-menu > li {
+    display: block;
+  }
+}
+
+ul.dropdown-menu > li {
+  padding: 0 10px;
+  line-height: 150%;
+}
+
+ul.dropdown-menu {
+  padding: 20px 20px 50px 20px;
+  background-color: #E8E8E8;
+}
+
+li.tb-row {
+  display: table-row !important;
+  font-size: 18px;
+  height: 40px;
+}
+
+li.tb-row a {
+  padding-left: 10px !important;
+  font-weight: bold;
+  color: #dd4814;
+}
+
+li.tb-row a:hover,  li.tb-row a:focus{
+  background-color: transparent !important;
+  text-decoration: underline;
+  color: #993300;
+}
