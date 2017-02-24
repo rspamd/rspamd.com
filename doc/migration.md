@@ -6,6 +6,14 @@ title: Upgrading
 
 This document describes incompatible changes introduced in recent Rspamd versions and details how to update your rules and configuration accordingly.
 
+## Migrating to Rmilter 1.10.0 and Rspamd 1.4.0
+
+The default passwords, namely `q1` and `q2` are no longer allowed to be used for remote authentication. This is done due to many misusages of these **example** passwords and dangerous security flaws introduced by some Rspamd users.
+
+## Migrating to Rmilter 1.9.1 and Rspamd 1.3.1
+
+Systemd socket activation has been removed in these releases. Rmilter may not restart correctly on upgrade on Debian platforms. Please run `systemctl restart rmilter` after installing the package if necessary. Rspamd is expected to restart correctly on upgrade. Both Rspamd & Rmilter should be automatically configured to run on reboot post-upgrade.
+
 ## Migrating from Rmilter 1.8 to Rmilter 1.9
 
 There are couple of things that are no longer supported:
@@ -16,6 +24,55 @@ There are couple of things that are no longer supported:
 If you have used beanstalk for some purposes then you could move to Redis [pub/sub](http://redis.io/topics/pubsub). There are settings for sending spam (`spam_servers` and `spam_channel`) and for sending messages copies (`copy_servers`, `copy_prob` and `copy_channel`) in the `redis` section that allow you to reproduce beanstalk functions using Redis.
 
 Rmilter now supports configuration override from `rmilter.conf.local` and from `rmilter.conf.d/*.conf` files. You should consider using these methods for your local configuration options.
+
+Rmilter no longer adds several SpamAssassin-compatible headers: namely `X-Spam-Status`, `X-Spam-Level` and `X-Spamd-Bar`. Support has been added for adding/removing custom headers under instruction of Rspamd (Requires Rspamd 1.3.0+). Example script which restores the removed headers is shown below (to be added to `/etc/rspamd/rspamd.local.lua`):
+
+~~~lua
+rspamd_config:register_symbol({
+  name = 'RMILTER_HEADERS',
+  type = 'postfilter',
+  priority = 10,
+  callback = function(task)
+    local metric_score = task:get_metric_score('default')
+    local score = metric_score[1]
+    local required_score = metric_score[2]
+    -- X-Spamd-Bar & X-Spam-Level
+    local spambar
+    local spamlevel = ''
+    if score <= -1 then
+      spambar = string.rep('-', score*-1)
+    elseif score >= 1 then
+      spambar = string.rep('+', score)
+      spamlevel = string.rep('*', score)
+    else
+      spambar = '/'
+    end
+    -- X-Spam-Status
+    local is_spam
+    local spamstatus
+    local action = task:get_metric_action('default')
+    if action ~= 'no action' and action ~= 'greylist' then
+      is_spam = 'Yes'
+    else
+      is_spam = 'No'
+    end
+    spamstatus = is_spam .. ', score=' .. string.format('%.2f', score)
+    -- Add headers
+    task:set_rmilter_reply({
+      add_headers = {
+        ['X-Spamd-Bar'] = spambar,
+        ['X-Spam-Level'] = spamlevel,
+        ['X-Spam-Status'] = spamstatus
+      },
+      remove_headers = {
+        ['X-Spamd-Bar'] = 1,
+        ['X-Spam-Level'] = 1,
+        ['X-Spam-Status'] = 1
+      }
+    })
+  end
+})
+~~~
 
 ## Migrating from Rspamd 1.2 to Rspamd 1.3
 
@@ -139,7 +196,7 @@ worker {
 
 ### Settings changes
 
-The settings system has been completely reworked. It is now a lua plugin that registers pre-filters and assigns settings according to dynamic maps or a static configuration. Should you want to use the new settings system then please check the recent [documentation](https://rspamd.com/doc/configuration/settings.html). The old settings have been completely removed from Rspamd.
+The settings system has been completely reworked. It is now a lua plugin that registers pre-filters and assigns settings according to dynamic maps or a static configuration. Should you want to use the new settings system then please check the recent [documentation]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html). The old settings have been completely removed from Rspamd.
 
 ### Lua changes
 
@@ -188,7 +245,7 @@ local dm = task:get_date{format = 'message'} -- MIME message date
 local dt = task:get_date{format = 'connect'} -- check date
 ~~~
 
-* `get_header` - this function is totally reworked. Now `get_header` version returns just a decoded string, `get_header_raw` returns an undecoded string and `get_header_full` returns the full list of tables. Please consult the corresponding [documentation](https://rspamd.com/doc/lua/task.html) for details. You also might want to update the old invocation of task:get_header to the new one.
+* `get_header` - this function is totally reworked. Now `get_header` version returns just a decoded string, `get_header_raw` returns an undecoded string and `get_header_full` returns the full list of tables. Please consult the corresponding [documentation]({{ site.url }}{{ site.baseurl }}/doc/lua/task.html) for details. You also might want to update the old invocation of task:get_header to the new one.
 Old version:
 
 ~~~lua

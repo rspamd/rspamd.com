@@ -35,7 +35,7 @@ title: Использование fuzzy хешей
 
 Первый метод довольно прост: давайте назначим каждой жалобе некоторый вес и при каждом обучении будем прибавлять его к сохраненному значению соответствующего хеша. При проверке мы не будем учитывать хеши, вес которых меньше заданного порога. Например, если вес жалобы `w=1`, а порог срабатывания `t=20`, то для начала срабатывания хеша необходимо как минимум 20 жалоб пользователей. Кроме этого, при проверке для хеша, превышающего пороговое значение, rspamd назначает не максимальные очки, а их величина плавно растет от нуля до максимума (до значения метрики) при изменении веса хеша от порогового до удвоенного порогового значения (t .. 2*t).
 
-<center><img class="img-responsive" src="/img/rspamd-fuzzy-1.png" width="50%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-1.png" width="50%"></center>
 
 Второй метод - фильтры обучения - позволяет написать некоторые условия на языке Lua, которые запрещают обучение, скажем, для писем с определенного домена (например, facebook.com). Возможности фильтров достаточно обширны, но требуют ручной работы по их настройке.
 
@@ -53,7 +53,7 @@ title: Использование fuzzy хешей
 
 **Важное замечание:** хранилище работает не с письмами, а с готовыми хешами. То есть, чтобы преобразовать письмо в его хеш нужен отдельный процесс сканера или контроллера:
 
-<center><img class="img-responsive" src="/img/rspamd-fuzzy-2.png" width="75%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-2.png" width="75%"></center>
 
 Функции хранилища:
 
@@ -90,7 +90,10 @@ worker "fuzzy" {
   # Number of processes to serve this storage (useful for read scaling)
   count = 4;
 
-  # Where data file is stored (must be owned by rspamd user)
+  # Backend ("sqlite" or "redis" - default "sqlite")
+  backend = "sqlite";
+
+  # sqlite: Where data file is stored (must be owned by rspamd user)
   database = "${DBDIR}/fuzzy.db";
 
   # Hashes storage time (3 months)
@@ -160,7 +163,7 @@ worker "fuzzy" {
 
 Эта возможность полезна для создания закрытых хранилищ, где доступ разрешен только тем клиентам, которым известен один из открытых ключей:
 
-<center><img class="img-responsive" src="/img/rspamd-fuzzy-3.png" width="75%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-3.png" width="75%"></center>
 
 Для включения режима обязательного шифрования используется опция `encrypted_only`:
 
@@ -253,7 +256,7 @@ $ rspamc -f 1 -w 10 fuzzy_add <message|directory|stdin>
 
 Флаги позволяют хранить хеши различного происхождения в хранилище. Например, хеши спам-ловушек, хеши жалоб пользователей и хеши писем из "белого" списка. Каждый флаг может быть ассоциирован с собственным символом и, соответственно, иметь свой вес при проверке письма:
 
-<center><img class="img-responsive" src="/img/rspamd-fuzzy-4.png" width="75%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-4.png" width="75%"></center>
 
 Флаг можно указывать как по номеру:
 
@@ -268,57 +271,67 @@ $ rspamc -S FUZZY_DENIED -w 10 fuzzy_add <message|directory|stdin>
 ```
 
 Соответсвие символов флагам нужно настроить в секции `rule`.
-Пример настройки:
+
+Пример local.d/fuzzy_check.conf:
 
 ~~~ucl
-fuzzy_check {
-  # Global options
-
-  # Rule definition
-  rule "rspamd.com" {
-    # Fuzzy storage servers list
-    servers = "rspamd.com:11335";
-
-    # Public key for transport encryption
-    encryption_key = "icy63itbhhni8bq15ntp5n5symuixf73s1kpjh6skaq4e7nx5fiy";
-
-    # Symbol for unknown flags
-    symbol = "FUZZY_UNKNOWN";
-
-    # Additional mime types to store within fuzzy storage
+rule "local" {
+    # Fuzzy storage server list
+    servers = "localhost:11335";
+    # Default symbol for unknown flags
+    symbol = "LOCAL_FUZZY_UNKNOWN";
+    # Additional mime types to store/check
     mime_types = ["application/*"];
-
-    # Hash weight threshold
+    # Hash weight threshold for all maps
     max_score = 20.0;
-
-    # Whether we can learn this fuzzy
-    read_only = yes;
-
+    # Whether we can learn this storage
+    read_only = no;
     # Ignore unknown flags
     skip_unknown = yes;
-
-    # Hashes generation algorithm
+    # Hash generation algorithm
     algorithm = "siphash";
 
     # Map flags to symbols
     fuzzy_map = {
-        # Key is symbol name
-        FUZZY_DENIED {
+        LOCAL_FUZZY_DENIED {
             # Local threshold
             max_score = 20.0;
             # Flag to match
-            flag = 1;
+            flag = 11;
         }
-        FUZZY_PROB {
+        LOCAL_FUZZY_PROB {
             max_score = 10.0;
-            flag = 2;
+            flag = 12;
         }
-        FUZZY_WHITE {
+        LOCAL_FUZZY_WHITE {
             max_score = 2.0;
-            flag = 3;
+            flag = 13;
         }
     }
-  }
+}
+~~~
+
+Пример local.d/metrics.conf:
+
+~~~ucl
+group "fuzzy" {
+    max_score = 12.0;
+    symbol "LOCAL_FUZZY_UNKNOWN" {
+        weight = 5.0;
+        description = "Generic fuzzy hash match";
+    }
+    symbol "LOCAL_FUZZY_DENIED" {
+        weight = 12.0;
+        description = "Denied fuzzy hash";
+    }
+    symbol "LOCAL_FUZZY_PROB" {
+        weight = 5.0;
+        description = "Probable fuzzy hash";
+    }
+    symbol "LOCAL_FUZZY_WHITE" {
+        weight = -2.1;
+        description = "Whitelisted fuzzy hash";
+    }
 }
 ~~~
 
@@ -326,7 +339,7 @@ fuzzy_check {
 
 Во-первых, `max_score` полезен для задания веса порога срабатывания данного хеша:
 
-<center><img class="img-responsive" src="/img/rspamd-fuzzy-1.png" width="50%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-1.png" width="50%"></center>
 
 Вторым полезным параметром является `mime_types`, который определяет, какие типы вложений проверять (и обучать!) в данном хранилище. Этот параметр представляет собой список допустимых типов в формате `["type/subtype", "*/subtype", "type/*", "*"]`, где `*` заменяет любой допустимый тип. Как правило, достаточно сохранять хеши всех вложений типа `application/*`. Текстовые части и вложенные изображения автоматически проверяются плагином `fuzzy_check` (то есть, нет нужды добавлять `image/*` в список проверяемых вложений). Стоит иметь в виду, что вложения и изображения проверяются на точное соответствие, в отличие от текстов, которые могут немного отличаться.
 
@@ -361,7 +374,7 @@ test/rspamd-test -p /rspamd/shingles
 
 ### Написание скриптов-условий для обучения
 
-Так как плагин `fuzzy_check` отвечает в том числе и за обучение, то именно в его конфигурации задается скрипт, определяющий, какие сообщения будут поступать на обучение, а какие нет. Этот скрипт представляет собой функцию Lua с одним аргументом типа [`rspamd_task`](/doc/lua/task.html) и возвращает либо булево значение: `true` - обучать или `false` - не обучать, либо пару - булево значение и новый флаг, если в ходе выполнения скрипта выяснилось, что необходимо изменить исходный флаг обучения. Для задания условного скрипта служит параметр `learn_condition`, а  для записи скрипта удобнее всего использовать многострочный синтаксис `heredoc`, который поддерживается `UCL`:
+Так как плагин `fuzzy_check` отвечает в том числе и за обучение, то именно в его конфигурации задается скрипт, определяющий, какие сообщения будут поступать на обучение, а какие нет. Этот скрипт представляет собой функцию Lua с одним аргументом типа [`rspamd_task`]({{ site.baseurl }}/doc/lua/task.html) и возвращает либо булево значение: `true` - обучать или `false` - не обучать, либо пару - булево значение и новый флаг, если в ходе выполнения скрипта выяснилось, что необходимо изменить исходный флаг обучения. Для задания условного скрипта служит параметр `learn_condition`, а  для записи скрипта удобнее всего использовать многострочный синтаксис `heredoc`, который поддерживается `UCL`:
 
 ~~~ucl
 # Fuzzy check plugin configuration snippet
@@ -436,7 +449,7 @@ end
 
 Зачастую бывает нужно собирать хеши из различных источников или иметь локальную копию удаленного хранилища. Начиная с версии 1.3 в rspamd для решения этой задачи реализована поддержка репликации на уровне хранилища хешей:
 
-<center><img class="img-responsive" src="/img/rspamd-fuzzy-5.png" width="75%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-5.png" width="75%"></center>
 
 Передача хешей инициируется **мастером** репликации, который отправляет команды обновления хешей (добавление, модификацию или удаление) всем заданным слейвам. Таким образом, слейвы должны иметь возможность принимать соединение от мастера, что нужно учитывать при настройке межсетевых экранов.
 

@@ -24,15 +24,14 @@ filters = "chartable,dkim,spf,surbl,regexp,fuzzy_check";
 
 Here is the list of C modules available:
 
-- [regexp](regexp.html): the core module that allow to define regexp rules,
-rspamd internal functions and lua rules.
+- [chartable](chartable.html): checks character sets of text parts in messages.
+- [dkim](dkim.html): performs DKIM signatures checks.
+- [fuzzy_check](fuzzy_check.html): checks messages fuzzy hashes against public blacklists.
+- [spf](spf.html): checks SPF records for messages processed.
 - [surbl](surbl.html): this module extracts URLs from messages and check them against
 public DNS black lists to filter messages with malicious URLs.
-- [spf](spf.html): checks SPF records for messages processed.
-- [dkim](dkim.html): performs DKIM signatures checks.
-- [dmarc](dmarc.html): performs DKIM signatures checks.
-- [fuzzy_check](fuzzy_check.html): checks messages fuzzy hashes against public blacklists.
-- [chartable](chartable.html): checks character sets of text parts in messages.
+- [regexp](regexp.html): the core module that allow to define regexp rules,
+rspamd internal functions and lua rules.
 
 ## Lua modules
 
@@ -52,27 +51,40 @@ modules {
 If a path is a directory then rspamd scans it for `*.lua" pattern and load all
 files matched.
 
-Here is the list of Lua modules shipped with rspamd:
+The following Lua modules are enabled in the default configuration:
 
+- [dmarc](dmarc.html) - performs DMARC policy checks
+- [maillist](maillist.html) - determines the common mailing list signatures in a message.
+- [mid](mid.html) - selectively suppresses invalid/missing message-id rules
+- [mime_types](mime_types.html) - applies some rules about mime types met in messages
 - [multimap](multimap.html) - a complex module that operates with different types
 of maps.
-- [rbl](rbl.html) - a plugin that checks messages against DNS blacklist based on
-either SMTP FROM addresses or on information from `Received` headers.
-- [emails](emails.html) - extract emails from a message and checks it against DNS
-blacklists.
-- [maillist](maillist.html) - determines the common mailing list signatures in a message.
+- [neural networks](fann.html) - allows to post-process messages using neural network classification. requires redis configuration and log_helper worker setup for activation.
 - [once_received](once_received.html) - detects messages with a single `Received` headers
 and performs some additional checks for such messages.
 - [phishing](phishing.html) - detects messages with phished URLs.
 - [ratelimit](ratelimit.html) - implements leaked bucket algorithm for ratelimiting and
-uses `redis` to store data.
-- [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages.
-- [mime_types](mime_types.html) - applies some rules about mime types met in messages
+requires `redis` to store data - if this is unconfigured the module is inactive.
+- [rbl](rbl.html) - a plugin that checks messages against DNS blacklist based on
+either SMTP FROM addresses or on information from `Received` headers.
 - [rspamd_update](rspamd_update.html) - load dynamic rules and other rspamd updates
-- [spamassassin](spamassassin.html) - load spamassassin rules
-- [dmarc](dmarc.html) - performs DMARC policy checks
-- [dcc](dcc.html) - performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine message bulkiness
-- [replies](replies.html) - checks if an incoming message is a reply for our own message
-- [greylisting](greylisting.html) - allows to delay suspicious messages
 - [whitelist](whitelist.html) - provides a flexible way to whitelist (or blacklist) messages based on SPF/DKIM/DMARC combinations
-- [neural networks](fann.html) - allows to post-process messages using neural network classification
+
+Additionally, the following Lua modules are shipped with rspamd:
+
+- [antivirus](antivirus.html) - integrates virus scanners
+- [clickhouse](clickhouse.html) - pushes scan-related information to clickhouse DBMS
+- [dcc](dcc.html) - performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine message bulkiness
+- [dkim_signing](dkim_signing.html) - adds DKIM signatures to messages
+- [emails](emails.html) - extract emails from a message and checks it against DNS
+blacklists.
+- [force_actions](force_actions.html) - forces actions if selected symbols are detected
+- [greylisting](greylisting.html) - allows to delay suspicious messages
+- [ip_score](ip_score.html) - dynamically scores sender reputation
+- [metadata_exporter](metadata_exporter.html) - pushes message metadata to external systems
+- [metric_exporter](metric_exporter.html) - pushes statistics to external monitoring systems
+- [mx_check](mx_check.html) - checks if sending domain has a connectable MX
+- [replies](replies.html) - checks if an incoming message is a reply for our own message
+- [rmilter_headers](rmilter_headers.html) - adds/removes headers from messages
+- [spamassassin](spamassassin.html) - load spamassassin rules
+- [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages.

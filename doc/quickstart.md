@@ -15,11 +15,11 @@ This guide describes the main steps to get and start working with Rspamd. In par
 - Redis cache
 - Dovecot with Sieve plugin to sort mail and learn by moving messages to `Junk` folder
 
-For those who are planning migration from SpamAssassin, it might be useful to check the [SA migration guide](/doc/tutorials/migrate_sa.html)
+For those who are planning migration from SpamAssassin, it might be useful to check the [SA migration guide]({{ site.baseurl }}/doc/tutorials/migrate_sa.html)
 
 ## Preparation steps
 
-First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. In this guide, we describe the setup of the [Postfix MTA](http://www.postfix.org/). However, Rspamd can work with other MTA software - you can find details in the [integration document](/doc/integration.html).
+First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. In this guide, we describe the setup of the [Postfix MTA](http://www.postfix.org/). However, Rspamd can work with other MTA software - you can find details in the [integration document]({{ site.baseurl }}/doc/integration.html).
 
 ### TLS Setup
 
@@ -153,17 +153,19 @@ ssl_key = </var/lib/acme/live/mail.example.com/privkey
 
 ## Caching setup
 
-Both Rspamd and Rmilter can use [Redis](https://redis.io) for caching. Rmilter uses Redis for the following features:
+Both Rspamd and Rmilter use [Redis](https://redis.io) for caching.
+
+Rmilter uses Redis for the following optional features:
 
 - greylisting (delaying of suspicious emails)
-- rate limits
-- storing reply message IDs to avoid certain checks for replies to our own messages
+- rate limiting
+- whitelisting of reply messages (storing reply message IDs to avoid certain checks for replies to our own sent messages)
 
-Rspamd uses Redis as well:
+Rspamd uses Redis as:
 
-- for statistic tokens (BAYES classifier)
-- for storing learned messages IDs
-- for storing DMARC stats (optionally)
+- a backend for tokens storage and cache of learned messages by [statistical module](configuration/statistic.html) (BAYES classifier)
+- a fuzzy storage backend (optional)
+- a key-value storage by [many Rspamd modules](configuration/redis.html#introduction)
 
 Installation of Redis is quite straightforward: install it using packages, start it with the default settings (it should listen on local interface using port 6379) and you are done. You might also want to limit memory used by Redis at some sane value:
 
@@ -177,36 +179,27 @@ Note that for the moment by default stable releases of Redis listen for connecti
 
 When you are done with Postfix/Dovecot/Redis initial setup, it might be a good idea to setup Rmilter. Rmilter is used to connect Postfix (or Sendmail) with Rspamd. It can alter messages, change subject, reject spam, perform greylisting, check rate limits and even sign messages for authorized users/networks with DKIM signatures.
 
-To install Rmilter, please follow the instructions on the [downloads page](/downloads.html) but install `rmilter` package instead of `rspamd`. With the default configuration, Rmilter will use Redis and Rspamd on the local machine. You might want to change the bind settings as the default settings the use of unix sockets which might not work in some circumstances. To use TCP sockets for Rmilter, you can set the `bind_socket` option according to your Postfix setup:
+To install Rmilter, please follow the instructions on the [downloads page]({{ site.baseurl }}/downloads.html) but install `rmilter` package instead of `rspamd`. With the default configuration, Rmilter will use Redis and Rspamd on the local machine. You might want to change the bind settings as the default settings the use of unix sockets which might not work in some circumstances. To use TCP sockets for Rmilter, you can set the `bind_socket` option according to your Postfix setup:
 
 	bind_socket = inet:9900@127.0.0.1;
 
-For advanced setup, please check the [Rmilter documentation](/rmilter/). Rmilter starts as daemon (e.g. by typing `service rmilter start`) and writes output to the system log. If you have a systemd-less system, then you can check Rmilter logs in the `/var/log/mail.log` file. For systemd, please check your OS documentation about reading logs as the exact command might differ from system to system.
+For advanced setup, please check the [Rmilter documentation]({{ site.baseurl }}/rmilter/). Rmilter starts as daemon (e.g. by typing `service rmilter start`) and writes output to the system log. If you have a systemd-less system, then you can check Rmilter logs in the `/var/log/mail.log` file. For systemd, please check your OS documentation about reading logs as the exact command might differ from system to system.
 
 ## Rspamd installation
 
-The download process is described in the [downloads page](/downloads.html) where you can find how to get Rspamd, how to install it in your system, and, alternatively, how to build Rspamd from the sources.
+The download process is described in the [downloads page]({{ site.baseurl }}/downloads.html) where you can find how to get Rspamd, how to install it in your system, and, alternatively, how to build Rspamd from the sources.
 
 ## Running Rspamd
 
-### Platforms with systemd (Arch, CentOS 7, Debian Jessie, Fedora, openSUSE, SLE)
+### Platforms with systemd (Arch, CentOS 7, Debian Jessie, Fedora, Ubuntu Xenial)
 
-To enable run on startup:
+Packaging should start rspamd and configure it to run on startup on installation.
+
+You can verify it's running as follows:
 
 ```
-systemctl enable rspamd.socket
-systemctl start rspamd.socket
+systemctl status rspamd
 ```
-
-For Rmilter, you might also want to do the same:
-```
-systemctl enable rmilter.socket
-systemctl start rmilter.socket
-```
-
-Rspamd will be started on-demand, so to simulate this you could run:
-
-	rspamc stat
 
 ### Ubuntu, Debian Wheezy
 
@@ -234,9 +227,9 @@ Though Rspamd's default config aims to be useful for most purposes you may wish 
 
 There are some different approaches you can take to this:
 
-1. Modify the stock config files in `/etc/rspamd` directly. Your package manager will not replace the modified config files on upgrade - and may prompt you to merge changes or install these files with an added extension depending on your platform.
+1. **Not recommended**: Modify the stock config files in `/etc/rspamd` directly. Your package manager will not replace the modified config files on upgrade - and may prompt you to merge changes or install these files with an added extension depending on your platform.
 
-2. Create, instead, an `rspamd.conf.local` and/or `rspamd.conf.local.override` in the `/etc/rspamd` directory. What distinguishes these files is the way in which they alter the configuration - `rspamd.conf.local` adds or _merges_ config elements (and is useful, for example, for setting custom metrics) while `rspamd.conf.local.override` adds or _replaces_ config elements (and is useful, for example, for configuring workers or RBLs).
+2. Create, instead, an `rspamd.conf.local` and/or `rspamd.conf.override` in the `/etc/rspamd` directory. What distinguishes these files is the way in which they alter the configuration - `rspamd.conf.local` adds or _merges_ config elements (and is useful, for example, for setting custom metrics) while `rspamd.conf.override` adds or _replaces_ config elements (and is useful for redefining configuration completely)
 
 3. For each individual configuration file shipped with Rspamd, there are two special includes (available from **Rspamd version 1.2 onwards**):
 
@@ -245,7 +238,7 @@ There are some different approaches you can take to this:
 .include(try=true,priority=10) "$CONFDIR/override.d/config.conf"
 ~~~
 
-Therefore, you can either extend (using local.d) or ultimately override (using override.d) any settings in the configuration.
+Therefore, you can either extend (using local.d) or ultimately override (using override.d) any settings in the configuration. Unlike `rspamd.conf.local` and `rspamd.conf.override`, `local.d` and `override.d` operate inside a given block of configuration (`{}`).
 
 For example, let's change some default symbols shipped with Rspamd. To do that we can create and edit `etc/rspamd/local.d/metrics.conf`:
 
@@ -317,11 +310,21 @@ enable_password = "q2";
 
 Moreover, you can store an encrypted password for better security. To generate such a password just type
 
-	$ rspamd --encrypt-password
+	$ rspamadm pw
 	Enter passphrase:
 	$1$4mqeynj3st9pb7cgbj6uoyhnyu3cp8d3$59y6xa4mrihaqdw3tf5mtpzg4k7u69ypebc3yba8jdssoh39x16y
 
-Then you can copy this string and store it in the configuration file. Rspamd uses the [PBKDF2](http://en.wikipedia.org/wiki/PBKDF2) algorithm that makes it very hard to brute-force this password even if it has been compromised. From the version 1.3, Rspamd also support `
+Then you can copy this string and store it in the configuration file. Rspamd uses the [PBKDF2](http://en.wikipedia.org/wiki/PBKDF2) algorithm that makes it very hard to brute-force this password even if it has been compromised. From the version 1.3, Rspamd also support [Catena](https://eprint.iacr.org/2013/525.pdf) password hashing scheme which makes brute-force attacks even more memory- and computationally expensive. It is available via `--type` option:
+
+        $ rspamadm pw --type catena
+        Enter passphrase:
+        $2$g95ywihfinjqx4r69u6mgfs9cqbfq1ay$1h4bm5uod9njfu3hdbwd3w5xf5d9u8gb7i9xnimm5u8ddq3c5byy
+
+For the list of all available hashing schemes, use `--list` option:
+
+        $ ./rspamadm pw --list
+        pbkdf2: PBKDF2-blake2b - standard CPU intensive "slow" KDF using blake2b hash function
+        catena: Catena-Butterfly - modern CPU and memory intensive KDF
 
 ### Setting up the WebUI
 
@@ -365,7 +368,7 @@ http {
         server_name example.com;
 
         location / {
-                proxy_pass  https://127.0.0.1:11334;
+                proxy_pass  http://127.0.0.1:11334;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header Host $http_host;
         }
@@ -434,7 +437,7 @@ classifier {
 }
 {% endhighlight %}
 
-For other possibilities please read the full [documentation](/doc/statistic.html). The more specific Redis related documentation can be found [here](/doc/configuration/redis.html).
+For other possibilities please read the full [documentation]({{ site.baseurl }}/doc/configuration/statistic.html). The more specific Redis related documentation can be found [here]({{ site.baseurl }}/doc/configuration/redis.html).
 
 ## Adjusting scores and actions
 
@@ -487,7 +490,7 @@ Within maps you can use whitespace or comments. For example, here is an example 
     10.0.0.0/8
     fe80::/64
 
-There is a special module called `multimap` that allows you to define your own maps without writing lua rules. You can check the module's [documentation](/modules/multimap.html) and create your configuration in `rspamd.conf.override`.
+There is a special module called `multimap` that allows you to define your own maps without writing lua rules. You can check the module's [documentation]({{ site.baseurl }}/doc/modules/multimap.html) and create your configuration in `rspamd.conf.override`.
 
 ## Configuring RBLs
 
@@ -509,7 +512,7 @@ Though Rspamd is free to use for any purpose many of the RBLs used in the defaul
 
 [UCEProtect](http://www.uceprotect.net/en/index.php?m=6&s=11) - If you're sending 100k queries or more per day you should use the (free) Rsync service.
 
-These are configured in `modules.conf` in the `rbl{}` and `surbl{}` sections. Detailed documentation for the RBL module is available [here](https://rspamd.com/doc/modules/rbl.html).
+Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) and [SURBL]({{ site.url }}{{ site.baseurl }}/doc/modules/surbl.html) module documentation for information about disabling RBLs/SURBLs.
 
 ## Using Rspamd
 
@@ -536,7 +539,7 @@ Common use-cases for `rspamc` include:
     rspamc -f 1 -w 1 fuzzy_add file.eml
     rspamc -f 2 fuzzy_del file2.eml
 
-* Acting as a local delivery agent (read the [integration document](/doc/integration.html))
+* Acting as a local delivery agent (read the [integration document]({{ site.baseurl }}/doc/integration.html))
 
 ### The rspamadm command
 
@@ -578,7 +581,9 @@ You can also setup rspamc to learn via passing messages to a certain email addre
 
 You'd need some less predictable aliases to avoid sending messages to such addresses by some adversary or just by a mistake to prevent statistics pollution.
 
-There is also an addon for Thunderbird MUA written by Alexander Moisseev to visualise Rspamd stats. You can download it from its [homepage](https://addons.mozilla.org/en-GB/thunderbird/addon/rspamd-spamness/). You'd need to add extended spam headers with Rmilter to make the whole setup work. This could be done by adding the following line to `rmilter.conf`:
+There is also an add-on for Thunderbird MUA written by Alexander Moisseev to visualise Rspamd stats. You can download it from its [homepage](https://addons.mozilla.org/en-GB/thunderbird/addon/rspamd-spamness/). You'd need to add extended spam headers (`X-Spamd-Result`) with Rmilter and/or (from add-on's version 0.8.0) `X-Spam-Score` and `X-Spam-Report` headers with Exim to make the whole setup work.
+
+To enable extended spam headers in Rmilter add the following line to `rmilter.conf`:
 
 {% highlight ucl %}
 spamd {
@@ -587,10 +592,12 @@ spamd {
 }
 {% endhighlight %}
 
+To enable headers in Exim refer to the "Integration with Exim MTA" section of the [MTA integration]({{ site.baseurl }}/doc/integration.html) document.
+
 Here is a screenshot of this addon in use:
 
-<img class="img-responsive" src="/img/thunderbird_rspamd.png">
+<img class="img-responsive" src="{{ site.baseurl }}/img/thunderbird_rspamd.png">
 
 ### Using the WebUI
 
-Rspamd has a built-in WebUI which supports setting metric actions and scores; Bayes training and scanning messages - for more information see the [WebUI documentation](https://rspamd.com/webui).
+Rspamd has a built-in WebUI which supports setting metric actions and scores; Bayes training and scanning messages - for more information see the [WebUI documentation]({{ site.url }}{{ site.baseurl }}/webui).

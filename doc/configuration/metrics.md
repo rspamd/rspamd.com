@@ -44,7 +44,7 @@ $$
 
 By default this value is `1.0` meaning that no weight growing is defined. By increasing this value you increase the effective score of messages with multiple `spam` rules matched. This value is not affected by negative score values.
 
-* `subject` - string value that is prepended to the message's subject if the `rewrite subject` action is applied
+* `subject` - string value that replaces the message's subject if the `rewrite subject` action is applied. Original subject can be included with `%s`.
 * `unknown_weight` - weight for unknown rules. If this parameter is specified, all rules can add symbols to this metric. If such a rule is not specified by this metric then its weight is equal to this option's value. Please note, that adding this option means that all rules will be checked by Rspamd, on the contrary, if no `unknown_weight` metric is specified then rules that are not registered anywhere are silently ignored by Rspamd.
 
 The content of this section is in two parts: symbols and actions. Actions is an object of all actions defined by this metric. If some actions are skipped, they won't be ever suggested by Rspamd. The Actions section looks as follows:
@@ -66,7 +66,6 @@ You can use an underscore (`_`) instead of white space in action names to simpli
 Symbols are defined by an object with the following properties:
 
 * `weight` - the symbol weight as floating point number (negative or positive); by default the weight is `1.0`
-* `name` - symbolic name for a symbol (mandatory attribute)
 * `group` - a group of symbols, for example `DNSBL symbols` (as shown in WebUI)
 * `description` - optional symbolic description for WebUI
 * `one_shot` - normally, Rspamd inserts a symbol as many times as the corresponding rule matches for the specific message; however, if `one_shot` is `true` then only the **maximum** weight is added to the metric. `grow_factor` is correspondingly not modified by a repeated triggering of `one_shot` rules.
@@ -74,8 +73,7 @@ Symbols are defined by an object with the following properties:
 A symbol definition can look like this:
 
 ~~~ucl
-symbol {
-    name = "RWL_SPAMHAUS_WL_IND";
+symbol "RWL_SPAMHAUS_WL_IND" {
     weight = -0.7;
     description = "Sender listed at Spamhaus whitelist";
 }
@@ -92,20 +90,16 @@ Symbols can be grouped to specify their common functionality. For example, one c
 metric {
 	name = default; # This is mandatory option
 	
-	group {
-		name = "RBL group";
+	group "RBL group" {
 		max_score = 6.0;
 		
-		symbol {
-			name = "RBL1";
+		symbol "RBL1" {
 			weight = 1;
 		}
-		symbol {
-			name = "RBL2";
+		symbol "RBL2" {
 			weight = 4;
 		}
-		symbol {
-			name = "RBL3";
+		symbol "RBL3" {
 			weight = 5;
 		}
 	}

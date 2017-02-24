@@ -25,10 +25,11 @@ surbl {
     # Additional exceptions for TLD rules
     exceptions = "file://$CONFDIR/2tld.inc";
 
-    rule {
+  rules {
+
+    "SURBL_MULTI" {
         # DNS suffix for this rule
         suffix = "multi.surbl.org";
-        symbol = "SURBL_MULTI";
         bits {
             # List of bits ORed when reply is given
             JP_SURBL_MULTI = 64;
@@ -39,43 +40,39 @@ surbl {
             SC_SURBL_MULTI = 2;
         }
     }
-    rule {
+    "URIBL_MULTI" {
         suffix = "multi.uribl.com";
-        symbol = "URIBL_MULTI";
         bits {
             URIBL_BLACK = 2;
             URIBL_GREY = 4;
             URIBL_RED = 8;
         }
     }
-    rule {
+    "RAMBLER_URIBL" {
         suffix = "uribl.rambler.ru";
         # Also check images
         images = true;
-        symbol = "RAMBLER_URIBL";
     }
-    rule {
+    "DBL" {
         suffix = "dbl.spamhaus.org";
-        symbol = "DBL";
         # Do not check numeric URL's
         noip = true;
     }
-    rule {
+    "SEM_URIBL_UNKNOWN" {
         suffix = "uribl.spameatingmonkey.net";
-        symbol = "SEM_URIBL_UNKNOWN";
         bits {
             SEM_URIBL = 2;
         }
         noip = true;
     }
-    rule {
+    "SEM_URIBL_FRESH15_UNKNOWN" {
         suffix = "fresh15.spameatingmonkey.net";
-        symbol = "SEM_URIBL_FRESH15_UNKNOWN";
         bits {
             SEM_URIBL_FRESH15 = 2;
         }
         noip = true;
     }
+  }
 }
 ~~~
 
@@ -185,4 +182,16 @@ For example, [SBL list](https://www.spamhaus.org/sbl/) of `spamhaus` project pro
             URIBL_SBL = "127.0.0.2";
         }
     }
+~~~
+
+## Disabling SURBLs
+
+Rules can be disabled by setting the `enabled` setting to `false`. This allows for easily disabling SURBLs without overriding the full default configuration. The example below could be added to `/etc/rspamd/local.d/surbl.conf` to disable the `RAMBLER_URIBL` URIBL.
+
+~~~ucl
+rules {
+  "RAMBLER_URIBL" {
+    enabled = false;
+  }
+}
 ~~~

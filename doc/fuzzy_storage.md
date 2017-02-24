@@ -39,7 +39,7 @@ For instance, if the weight of a complaint is `w=1` and the threshold is `t=20`,
 
 In addition, rspamd does not assign the maximum score finding a threshold value - scores gradually increases from zero to a maximum (up to metric value) when the weight of hash grows up to the threshold value multiplied by two (t .. 2 * t).
 
-<center><img class="img-responsive" src="/img/rspamd-fuzzy-1.png" width="50%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-1.png" width="50%"></center>
 
 The second method, namely learning filters, allows you to write certain conditions that can skip learning or change a value of hash for instance, for emails from a specific domain (for example, facebook.com). Such filters are written in Lua language. The possibilities of the filters are quite extensive, however, they require manual writing and configuring.
 
@@ -57,7 +57,7 @@ In this chapter, we describe the basic fuzzy storage settings and how to optimiz
 
 **Important note:** fuzzy storage works with hashes and not with email messages. Hence, in order to convert a email into the corresponging set of hashes you need to use a scanner (for checking) or a controller process:
 
-<center><img class="img-responsive" src="/img/rspamd-fuzzy-2.png" width="75%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-2.png" width="75%"></center>
 
 Fuzzy storage functions:
 
@@ -93,7 +93,10 @@ worker "fuzzy" {
   # Number of processes to serve this storage (useful for read scaling)
   count = 4;
 
-  # Where data file is stored (must be owned by rspamd user)
+  # Backend ("sqlite" or "redis" - default "sqlite")
+  backend = "sqlite";
+
+  # sqlite: Where data file is stored (must be owned by rspamd user)
   database = "${DBDIR}/fuzzy.db";
 
   # Hashes storage time (3 months)
@@ -161,7 +164,7 @@ worker "fuzzy" {
 
 This feature is useful for creating restricted storages where access is allowed merely to those customers who knows about one of the public keys of storage:
 
-<center><img class="img-responsive" src="/img/rspamd-fuzzy-3.png" width="75%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-3.png" width="75%"></center>
 
 To enable such a mandatory encryption mode you should use `encrypted_only` option:
 
@@ -260,7 +263,7 @@ Where `-w` parameter is for setting the hash weight discussed above whilst `-f` 
 
 Flags allow to store hashes of different origin in storage. For example, the hash of spam traps, hashes of user complaints and hashes of emails that come from a "white" list. Each flag may be associated with its own symbol and have a weight while checking emails:
 
-<center><img class="img-responsive" src="/img/rspamd-fuzzy-4.png" width="75%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-4.png" width="75%"></center>
 
 Symbol name could also be used instead of a numeric flag during learning, e.g.:
 
@@ -270,57 +273,66 @@ $ rspamc -S FUZZY_DENIED -w 10 fuzzy_add <message|directory|stdin>
 
 To match symbols with the corresponding flags you can use the `rule` section.
 
-Example:
+local.d/fuzzy_check.conf example:
 
 ~~~ucl
-fuzzy_check {
-  # Global options
-
-  # Rule definition
-  rule "rspamd.com" {
-    # Fuzzy storage servers list
-    servers = "rspamd.com:11335";
-
-    # Public key for transport encryption
-    encryption_key = "icy63itbhhni8bq15ntp5n5symuixf73s1kpjh6skaq4e7nx5fiy";
-
-    # Symbol for unknown flags
-    symbol = "FUZZY_UNKNOWN";
-
-    # Additional mime types to store within fuzzy storage
+rule "local" {
+    # Fuzzy storage server list
+    servers = "localhost:11335";
+    # Default symbol for unknown flags
+    symbol = "LOCAL_FUZZY_UNKNOWN";
+    # Additional mime types to store/check
     mime_types = ["application/*"];
-
-    # Hash weight threshold
+    # Hash weight threshold for all maps
     max_score = 20.0;
-
-    # Whether we can learn this fuzzy
-    read_only = yes;
-
+    # Whether we can learn this storage
+    read_only = no;
     # Ignore unknown flags
     skip_unknown = yes;
-
-    # Hashes generation algorithm
+    # Hash generation algorithm
     algorithm = "siphash";
 
     # Map flags to symbols
     fuzzy_map = {
-        # Key is symbol name
-        FUZZY_DENIED {
+        LOCAL_FUZZY_DENIED {
             # Local threshold
             max_score = 20.0;
             # Flag to match
-            flag = 1;
+            flag = 11;
         }
-        FUZZY_PROB {
+        LOCAL_FUZZY_PROB {
             max_score = 10.0;
-            flag = 2;
+            flag = 12;
         }
-        FUZZY_WHITE {
+        LOCAL_FUZZY_WHITE {
             max_score = 2.0;
-            flag = 3;
+            flag = 13;
         }
     }
-  }
+}
+~~~
+
+local.d/metrics.conf example:
+
+~~~ucl
+group "fuzzy" {
+    max_score = 12.0;
+    symbol "LOCAL_FUZZY_UNKNOWN" {
+        weight = 5.0;
+        description = "Generic fuzzy hash match";
+    }
+    symbol "LOCAL_FUZZY_DENIED" {
+        weight = 12.0;
+        description = "Denied fuzzy hash";
+    }
+    symbol "LOCAL_FUZZY_PROB" {
+        weight = 5.0;
+        description = "Probable fuzzy hash";
+    }
+    symbol "LOCAL_FUZZY_WHITE" {
+        weight = -2.1;
+        description = "Whitelisted fuzzy hash";
+    }
 }
 ~~~
 
@@ -328,7 +340,7 @@ Let’s discuss some useful options that could be set in the module.
 
 Firstly, `max_score` specifies the threshold for a hash weight:
 
-<center><img class="img-responsive" src="/img/rspamd-fuzzy-1.png" width="50%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-1.png" width="50%"></center>
 
 Another useful option is `mime_types` that specifies what attachments types are checked (or learned) using this fuzzy rule. This parameter contains a list of valid types in format: `["type/subtype", "*/subtype", "type/*", "*"]`, where `*` matches any valid type. In practice, it is quite useful to save the hashes for all `application/*` attachments. Texts and embedded images are implicitly checked by `fuzzy_check` plugin, so there is no need to add `image/*` in the list of scanned attachments. Please note that attachments and images are searched for the exact match whilst texts are matched using the aproximate algorithm (shingles).
 
@@ -365,7 +377,7 @@ test/rspamd-test -p /rspamd/shingles
 
 ### Condition scripts for the learning
 
-As the `fuzzy_check` plugin is responsible for learning, we create the script within its configuration. This script checks if a email is suitable for learning. Script should return a Lua function with exactly one argument of [`rspamd_task`](/doc/lua/task.html) type. This function should return either a boolean value: `true` - learn, `false` - skip learning, or a pair of a boolean value and numeric value - new flag value in case it is required to modify the hash flag. Parameter `learn_condition` is used to setup learn script. The most convenient way to set the script is to write it as a multiline string supported by `UCL`:
+As the `fuzzy_check` plugin is responsible for learning, we create the script within its configuration. This script checks if a email is suitable for learning. Script should return a Lua function with exactly one argument of [`rspamd_task`]({{ site.baseurl }}/doc/lua/task.html) type. This function should return either a boolean value: `true` - learn, `false` - skip learning, or a pair of a boolean value and numeric value - new flag value in case it is required to modify the hash flag. Parameter `learn_condition` is used to setup learn script. The most convenient way to set the script is to write it as a multiline string supported by `UCL`:
 
 ~~~ucl
 # Fuzzy check plugin configuration snippet
@@ -440,7 +452,7 @@ end
 
 It is often desired to have a local copy of the remote storage. Rspamd supports replication for this purposes that is implemented in the hashes storage since version 1.3:
 
-<center><img class="img-responsive" src="/img/rspamd-fuzzy-5.png" width="75%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-5.png" width="75%"></center>
 
 The hashes transfer is initiated by the replication **master**. It sends hash update commands, such as adding, modifying or deleting, to all specified slaves. Hence, the slaves should be able to accept such a connection from the master - it should be considered while configuring a firewall.
 
