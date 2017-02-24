@@ -1,3 +1,7 @@
+---
+# Front matter added to ensure Jekyll processes file.
+---
+
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
   padding-left: 15px;
@@ -34,8 +38,8 @@ body {
 }
 pre{
   /* code aria */
-  background-color: #333333;
-  color: #eeeeee;
+  background-color: #ffffff;
+  color: #000000;
 }
 a.undecor {
   text-decoration: none;
@@ -108,19 +112,19 @@ h2{
   height:25px;
 }
 #jumbo-features{
-  background: url(/img/rspamd_jumbotron_features.png);
+  background: url({{ site.baseurl }}/img/rspamd_jumbotron_features.png);
   background-size: cover;
 }
 #jumbo-performance{
-  background: url(/img/rspamd_jumbotron_performance.png);
+  background: url({{ site.baseurl }}/img/rspamd_jumbotron_performance.png);
   background-size: cover;
 }
 #jumbo-head{
-  background: url(/img/rspamd_jumbotron.png);
+  background: url({{ site.baseurl }}/img/rspamd_jumbotron.png);
   background-size: cover;
 }
 #jumbo-rmilter{
-  background: url(/img/rmilter_jumbotron.png);
+  background: url({{ site.baseurl }}/img/rmilter_jumbotron.png);
   background-size: cover;
 }
 .support-block {
@@ -159,6 +163,42 @@ ul.nav-stacked li a{
 .compare-table span.icon-green {
     color: #00E025;
 }
+
+table {
+  border-radius: 4px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  box-shadow: 2px 2px 8px #ddd;
+  margin: 0 0 10px;
+}
+tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+th, td {
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 6px 13px;
+}
+td:last-child {
+  border-right: none;
+}
+table tr:last-child td {
+  border-bottom: none;
+}
+thead th:first-child {
+  border-radius: 4px 0 0 0;
+}
+thead th:last-child {
+  border-radius: 0 4px 0 0;
+  border-right: medium none;
+}
+tr:last-child td:first-child {
+  border-radius: 0 0 0 4px;
+}
+tr:last-child td:last-child {
+  border-radius: 0 0 4px 0;
+}
+
 .table-responsive{
   border-radius: 5px;
   border: 1px solid #ddd;
@@ -169,12 +209,21 @@ tr.info th{
   padding-left: 30px !important;
   background-color: #E8E8E8 !important;
 }
-thead tr th{
+.table-responsive thead tr th{
   border-bottom: 0 !important;
 }
 table.table{
   margin-bottom: 0 !important;
 }
+
+/* Offsetting anchors to adjust for fixed navbar */
+*[id]:before {
+  content: "";
+  display: block;
+  height: 60px;
+  margin-top: -60px;
+}
+
 /* Anchors for headings */
 .header-link {
   position: relative;

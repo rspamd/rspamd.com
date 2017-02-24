@@ -66,6 +66,46 @@ end
 EOD;
 ~~~
 
+Multiple domains signing example:
+
+~~~ucl
+sign_condition =<<EOD
+return function(task)
+  local rspamd_logger = require "rspamd_logger"
+
+  local domains = {
+    'example.com',
+    'example1.com',
+    'example2.com'
+  }
+
+  local from = task:get_from('smtp')
+  if from and from[1]['addr'] then
+    for _,d in ipairs(domains) do
+      if string.match(from[1]['addr'], '@(.+)$') == d then
+
+        local ip = task:get_ip()
+        if not task:get_user() and not (ip and ip:is_local()) then
+          rspamd_logger.infox(task, "skip DKIM signing for unauthorized user from non-local network")
+          return false
+        end
+        -- Keys are searched in `/usr/local/etc/dkim/domain.dkim.key`
+        -- You can generate them using the following command:
+        -- rspamadm dkim_keygen -s 'dkim' -d 'example.com' -s /usr/local/etc/dkim/example.com.dkim.key
+        return {
+          key = "/usr/local/etc/dkim/" .. d .. ".dkim.key",
+          domain = d,
+          selector = "dkim"
+        }
+      end
+    end
+  end
+
+  return false
+end
+EOD;
+~~~
+
 Alternatively, you can use maps in this code, for example, to limit signing policy to some network:
 
 ~~~ucl
@@ -92,7 +132,21 @@ end
 EOD;
 ~~~
 
-Rspamd always use `relaxed/relaxed` encoding with `rsa-sha256` signature algorithm. This selection seems to be the most appropriate for all cases. Rspamd adds a special element called `DKIM-Signature` to the output when signing has been done. [Rmilter](/rmilter/) can use this header out of the box. Other integration methods cannot recognize this header so far.
+You need to ensure that Rspamd can **open** signing keys, so they should be accessible for the user `_rspamd` in the most of the cases.
+
+### Rmilter support
+
+There is also convenience setting since Rmilter 1.10.0 to enable DKIM signing via Rspamd. Your `dkim` section should look like the following one in this case:
+
+~~~ucl
+dkim {
+  rspamd_sign = yes;
+}
+~~~
+
+### DKIM keys management
+
+Rspamd always use `relaxed/relaxed` encoding with `rsa-sha256` signature algorithm. This selection seems to be the most appropriate for all cases. Rspamd adds a special element called `DKIM-Signature` to the output when signing has been done. [Rmilter]({{ site.baseurl }}/rmilter/) can use this header out of the box. Other integration methods cannot recognize this header so far.
 
 You can also generate DKIM keys for your domain using `rspamadm dkim_keygen` utility:
 

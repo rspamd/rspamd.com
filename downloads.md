@@ -6,9 +6,9 @@ title: Downloads
 <!--# Downloading rspamd->
 
 <!-- download button with tooltip
-<p><a class="btn btn-primary btn-lg" href="/downloads/rspamd-1.2.8.tar.xz" data-toggle="tooltip" data-placement="right" title="Download the most recent stable version as source tarball">Download rspamd-1.2.8</a></p>
+<p><a class="btn btn-primary btn-lg" href="{{ site.baseurl }}/downloads/rspamd-1.3.1.tar.xz" data-toggle="tooltip" data-placement="right" title="Download the most recent stable version as source tarball">Download rspamd-1.3.1</a></p>
 <!-- github button >
-<p><iframe src="//rspamd.com/github-btn.html?user=vstakhov&repo=rspamd&type=watch&count=true&size=large"
+<p><iframe src="{{ site.baseurl }}/github-btn.html?user=vstakhov&repo=rspamd&type=watch&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe></p-->
 
 ## Rspamd packages
@@ -49,7 +49,7 @@ Please note that `CentOS` rpm packages **requires** [EPEL](https://fedoraproject
 
 To install rspamd repo, please download the corresponding repository file and the signing key (both repo and all packages are signed with my GPG key). You could use the following commands to install rspamd <a class="undecor" href="#stableSys1">stable<sup>1</sup></a> RPM repository:
 
-    wget -O /etc/yum.repos.d/rspamd.repo http://rspamd.com/rpm-stable/${YOUR_DISTRO}/rspamd.repo
+    curl http://rspamd.com/rpm-stable/${YOUR_DISTRO}/rspamd.repo > /etc/yum.repos.d/rspamd.repo
     rpm --import http://rspamd.com/rpm-stable/gpg.key
     yum update
     yum install rspamd
@@ -58,7 +58,7 @@ Where `${YOUR_DISTRO}` is the short name of your os (e.g. `centos-7` or `fedora-
 
 For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> branch packages, download `rpm-experimental` repofile as following:
 
-    wget -O /etc/yum.repos.d/rspamd-experimental.repo http://rspamd.com/rpm/${YOUR_DISTRO}/rspamd-experimental.repo
+    curl http://rspamd.com/rpm-stable/${YOUR_DISTRO}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd-experimental.repo
     rpm --import http://rspamd.com/rpm/gpg.key
     yum update
     yum install rspamd    
@@ -84,7 +84,7 @@ Rspamd supports the following .deb based distributives:
 
 To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
 
-    apt-get install -y lsb-release # optional
+    apt-get install -y lsb-release wget # optional
     CODENAME=`lsb_release -c -s`
     wget -O- https://rspamd.com/apt-stable/gpg.key | apt-key add -
     echo "deb http://rspamd.com/apt-stable/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
@@ -96,7 +96,7 @@ To obtain your distributive's codename, you could use the command `lsb_release -
 
 For <a class="undecor" href="#experimentalSys2">experimental<sup>2</sup></a> branch replace `apt-stable` with just `apt`:
 
-    apt-get install -y lsb-release # optional
+    apt-get install -y lsb-release wget # optional
     CODENAME=`lsb_release -c -s`
     wget -O- https://rspamd.com/apt/gpg.key | apt-key add -
     echo "deb http://rspamd.com/apt/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
@@ -104,7 +104,7 @@ For <a class="undecor" href="#experimentalSys2">experimental<sup>2</sup></a> bra
     apt-get update
     apt-get --no-install-recommends install rspamd
 
-Check [quick start](/doc/quickstart.html#rspamd-installation) for further steps.
+Check [quick start]({{ site.baseurl }}/doc/quickstart.html#rspamd-installation) for further steps.
 
 ### Debian `official` repos
 
@@ -122,18 +122,22 @@ Please **DO NOT** use those packages, as they are no longer supported.
 <div markdown="1">
 Rspamd is also supported on the following Linux distributions:
 
-- **Gentoo Linux**
+- **Alpine Linux**
 - **Arch Linux**
-- **Scientific Linux**
-- **SUSE Linux Enterprise**
-- **OpenSUSE Linux**
+- **Gentoo Linux**
+- **Void Linux**
+
+### Alpine Linux
+Rspamd is available in the [testing repository](https://pkgs.alpinelinux.org/package/edge/testing/x86_64/rspamd)
+
+### Arch Linux
+Rspamd is available in the [AUR](https://aur.archlinux.org/packages/rspamd)
 
 ### Gentoo Linux
-Ebuilds for Gentoo Linux users are available in the main Gentoo Portage repository.
+Ebuilds for Gentoo Linux users are available in the main [Gentoo Portage repository](https://packages.gentoo.org/packages/mail-filter/rspamd).
 
-### Other Linux distributions
-
-For other distributions you could also check [our project on the openSUSE build service](https://software.opensuse.org/download.html?project=home%3Acebka&package=rspamd).
+### Void Linux
+Packages for Void Linux are available in the main [package repository](https://github.com/voidlinux/void-packages/tree/master/srcpkgs/rspamd).
 
 </div>
         </div>
@@ -175,12 +179,13 @@ Rspamd requires several 3-rd party software to build and run:
 * [openssl](https://www.openssl.org/) - cryptography and SSL/TLS Toolkit
 * [libevent](http://libevent.org/) - asynchronous event library
 * [glib2](http://library.gnome.org/devel/glib/) - common purposes library
-* [gmime2](http://spruce.sourceforge.net/gmime/) - mime parser
-* [Luajit](http://www.luajit.org/) - jit compiler for [lua](http://lua.org) programming language
+* [gmime2](http://spruce.sourceforge.net/gmime/) - mime parser (untill `Rspamd 1.5`)
+* [ragel](http://www.colm.net/open-source/ragel/) - state machine compiler
+* [Luajit](http://www.luajit.org/) - jit compiler for [lua](http://lua.org) programming language. Plain lua will work as well.
 * [cmake](http://www.cmake.org/) - build system used to configure rspamd
 * [sqlite3](http://sqlite.org) - embedded database used to store some data by rspamd
-* [hiredis](https://github.com/redis/hiredis) - client library for [redis](http://redis.io) key-value storage
 * [libmagic](http://www.darwinsys.com/file/) - common library for detecting file types
+* [libfann](https://github.com/libfann/fann) - neural nets library (or pass `-DENABLE_FANN=OFF` to cmake)
 
 You can either install them from sources or (recommended) install using package manager of your system.
 
@@ -211,7 +216,7 @@ Alternatively, you can create a distribution package and use it for build your o
 
 ## Further reading
 
-Please check the [quickstart guide](/doc/quickstart.html) that describes the subsequent steps to keep rspamd up and running. The most frequently asked questions are listed in the [FAQ](/doc/faq.html).
+Please check the [quickstart guide]({{ site.baseurl }}/doc/quickstart.html) that describes the subsequent steps to keep rspamd up and running. The most frequently asked questions are listed in the [FAQ]({{ site.baseurl }}/doc/faq.html).
 
 ## Reporting bugs and other issues
 

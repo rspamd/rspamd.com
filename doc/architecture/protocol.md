@@ -26,9 +26,7 @@ You can also use chunked encoding that allows streamlined data transfer which is
 
 ### HTTP request
 
-Normally, you should just use '/check' here. However, if you want to communicate with the controller then you might want to use controllers commands.
-
-(TODO: write this part)
+Normally, you should just use '/check' here. However, if you want to communicate with the controller then you might want to use [controller commands](#controller-http-endpoints).
 
 ### HTTP headers
 
@@ -48,9 +46,7 @@ To avoid unnecessary work, Rspamd allows an MTA to pass pre-processed data about
 | **User:**       | Defines SMTP user. |
 | **Message-Length:** | Defines the length of message excluding the control block. |
 
-Controller also defines certain headers:
-
-(TODO: write this part)
+Controller also defines certain headers, see [here](#controller-http-endpoints) for detail.
 
 Standard HTTP headers, such as `Content-Length`, are also supported.
 
@@ -135,7 +131,8 @@ Additional keys which may be in the reply include:
 * `urls` - a list of URLs found in a message (only hostnames)
 * `emails` - a list of emails found in a message
 * `message-id` - ID of message (useful for logging)
-* `messages` - array of optional messages added by Rspamd filters (such as `SPF`)
+* `messages` - object containing optional messages added by Rspamd filters (such as `SPF`)
+        - The value of the `smtp_message` key is intended to be returned as SMTP response text by the MTA
 
 ## Rspamd JSON control block
 
@@ -156,3 +153,41 @@ Here is an example of a JSON control block:
 ~~~
 
 Moreover, [UCL](https://github.com/vstakhov/libucl) JSON extensions and syntax conventions are also supported inside the control block.
+
+## Curl example
+
+To check a message without rspamc:
+`curl --data-binary @- http://localhost:11333/symbols < file.eml`
+
+## Normal worker HTTP endpoints
+
+The following endpoints are valid on the normal worker and accept `POST`:
+
+* `/check` - Check message and return action
+* `/symbols` - Same as `check` but also returns score & list of symbols yielded
+
+## Controller HTTP endpoints
+
+The following endpoints are valid merely on the controller. All of these may require `Password` header to be sent depending on configuration (passing this as query string works too).
+
+* `/fuzzy_add` - Add message to fuzzy storage
+* `/fuzzy_del` - Remove message from fuzzy storage
+
+These accept `POST`. Headers which may be set are:
+
+- `Flag`: flag identifying fuzzy storage
+- `Weight`: weight to add to hashes
+
+* `/learnspam` - Train bayes classifier on spam message
+* `/learnham` - Train bayes classifier on ham message
+
+These also accept `POST`. The below endpoints all use `GET`:
+
+* `/errors` - Return error messages from ring buffer
+* `/stat` - Return statistics
+* `/graph?type=<hourly|daily|weekly|monthly>` - Plots throughput graph
+* `/history` - Returns rolling history
+* `/actions` - Return thresholds for actions
+* `/symbols` - Returns symbols in metric & their scores
+* `/maps` - Returns list of maps
+* `/getmap` - Fetches contents of map according to ID passed in `Map:` header

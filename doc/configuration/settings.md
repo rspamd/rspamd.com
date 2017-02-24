@@ -99,18 +99,27 @@ settings {
 		rcpt = "postmaster@example.com";
 		want_spam = yes;
 	}
+	# Disable some checks for authenticated users
+	authenticated {
+		priority = high;
+		authenticated = yes;
+		apply "default" {
+			groups_disabled = ["rbl", "spf"];
+		}
+	}
 }
 ~~~
 
 So each setting has the following attributes:
 
 - `name` - section name that identifies this specific setting (e.g. `some_users`)
-- `priority` - high or low; high priority rules are matched first (default priority is low)
+- `priority` - `high` (3), `medium` (2), `low` (1) or any non-zero integer value (default priority is `low`). Rules with greater priorities are matched first. From version 1.4 Rspamd checks rules with equal priorities in **alphabetical** order. Once a rule matches only that rule is applied and the rest are ignored.
 - `match list` - list of rules which this rule matches:
 	+ `from` - match SMTP from
 	+ `rcpt` - match RCPT
 	+ `ip` - match source IP address
 	+ `user` - matches authenticated user ID of message sender if any
+	+ `authenticated` - matches any authenticated user
 - `apply` - list of applied rules, identified by metric name (e.g. `default`)
 	+ `symbol` - modify weight of a symbol
 	+ `actions` - defines actions
@@ -132,8 +141,10 @@ Currently, you cannot mix several settings for a single message.
 
 The match section performs `AND` operation on different matches: for example, if you have `from` and `rcpt` in the same rule, then the rule matches only when `from` `AND` `rcpt` match. For similar matches, the `OR` rule applies: if you have multiple `rcpt` matches, then *any* of these will trigger the rule. If a rule is triggered then no more rules are matched.
 
+By default, regular expressions are case-sensitive. This can be changed with the `i` flag. String comparisons are case-insensitive.
+
 Regexp rules can be slow and should not be used extensively.
 
 The picture below describes the architecture of settings matching.
 
-<img class="img-responsive" width="50%" src="/img/settings.png">
+<img class="img-responsive" width="50%" src="{{ site.baseurl }}/img/settings.png">

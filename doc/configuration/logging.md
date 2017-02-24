@@ -31,13 +31,14 @@ So the tag is `ed2abb` in this case. All subsequent processing related to this t
 Here is summary of logging parameters:
 
 - `type` - Defines logging type (file, console or syslog). For some types mandatory attributes may be required:
-    + `filename` - path to log file for file logging
-    + `facility` - logging facility for syslog
+- `filename` - path to log file for file logging
+- `facility` - logging facility for syslog
 - `level` - Defines logging level (error, warning, info or debug).
 - `log_buffer` - For file and console logging defines buffer size that will be used for logging output.
 - `log_urls` - Flag that defines whether all URLs in message should be logged. Useful for testing.
 - `debug_ip` - List that contains IP addresses for which debugging should be turned on.
 - `log_color` - Turn on coloring for log messages. Default: `no`.
+- `systemd` - If `true` timestamps aren't prepended to log messages. Default: `false`.
 - `debug_modules` - A list of modules that are enabled for debugging. The following modules are available here:
     + `task` - task messages
     + `cfg` - configuration messages
@@ -81,9 +82,13 @@ Rspamd supports the following variables:
 - `is_spam` - a one-letter rating of spammyness: `T` for spam, `F` for ham and `S` for skipped messages
 - `action` - default metric action
 - `symbols` - list of all symbols
+- `symbols_scores` - list of all symbols and their scores
+- `symbols_params` - list of all symbols and their options
+- `symbols_scores_params` - list of all symbols, their scores and options
 - `time_real` - real time of task processing
 - `time_virtual` - CPU time of task processing
 - `dns_req` - number of DNS requests
+- `digest` - cryptographic digest of a message's content (stripped to 16 bytes or 32 hex symbols)
 - `lua` - custom Lua script, e.g:
 
 ~~~lua
