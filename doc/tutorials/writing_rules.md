@@ -15,8 +15,6 @@ Rules are the essential part of a spam filtering system and Rspamd ships with so
 Since Rspamd ships with its own rules it is a good idea to store your custom rules and configuration in separate files to avoid clashing with the default rules which might change from version to version. There are some possibilities to achieve this:
 
 - Local rules in Lua should be stored in the file named `${CONFDIR}/rspamd.local.lua` where `${CONFDIR}` is the directory where your configuration files are placed (e.g. `/etc/rspamd`, or `/usr/local/etc/rspamd` for some systems)
-- Local configuration that **adds** options to Rspamd should be placed in `${CONFDIR}/rspamd.conf.local`
-- Local configuration that **overrides** the default settings should be placed in `${CONFDIR}/rspamd.conf.override`
 
 Lua local configuration can be used to both override and extend:
 
@@ -360,26 +358,67 @@ The most common type of rules are generic filters. Each filter is basically a ca
 * register just a plain callback
 * register symbol with no callback (*virtual* symbol)
 
-The last option is useful when you have a single callback but with different possible results; for example `SYMBOL_ALLOW` or `SYMBOL_DENY`. Filters are registered with three methods:
+The last option is useful when you have a single callback but with different possible results; for example `SYMBOL_ALLOW` or `SYMBOL_DENY`. Filters are registered using the following method:
 
-* `rspamd_config:register_symbol('SYMBOL', nominal_weight, callback)` - registers normal symbol
-* `rspamd_config:register_callback_symbol(nominal_weight, callback)` - registers callback only symbol
-* `rspamd_config:register_virtual_symbol('SYMBOL', nominal_weight, id)` - registers normal symbol
+~~~lua
+rspamd_config:register_symbol{
+  type = 'normal', -- or virtual, callback, prefilter or postfilter
+  name = 'MY_SYMBOL',
+  callback = function(task) -- Main logic
+  end,
+  score = 1.0, -- Metric score
+  group = 'some group', -- Metric group
+  description = 'My super symbol',
+  flags = 'fine', -- fine: symbol is always checked, skip: symbol is always skipped, empty: symbol work for checks with no message
+  --priority = 2, -- useful for postfilters and prefilters to define order of execution
+}
+~~~
 
 `nominal_weight` is used to define priority and the initial score multiplier. It should usually be `1.0` for normal symbols and `-1.0` for symbols with negative scores that should be executed before other symbols. Here is an example of registering one callback and a couple of virtual symbols used in the [DMARC](../modules/dmarc.html) module:
 
 ~~~lua
-local id = Rspamd_config:register_callback_symbol('DMARC_CALLBACK', 1.0,
-  dmarc_callback)
-rspamd_config:register_virtual_symbol('DMARC_POLICY_ALLOW', -1, id)
-rspamd_config:register_virtual_symbol('DMARC_POLICY_REJECT', 1, id)
-rspamd_config:register_virtual_symbol('DMARC_POLICY_QUARANTINE', 1, id)
-rspamd_config:register_virtual_symbol('DMARC_POLICY_SOFTFAIL', 1, id)
+local id = rspamd_config:register_symbol({
+  name = 'DMARC_CALLBACK',
+  type = 'callback',
+  callback = dmarc_callback
+})
+rspamd_config:register_symbol({
+  name = dmarc_symbols['allow'],
+  flags = 'nice',
+  parent = id,
+  type = 'virtual'
+})
+rspamd_config:register_symbol({
+  name = dmarc_symbols['reject'],
+  parent = id,
+  type = 'virtual'
+})
+rspamd_config:register_symbol({
+  name = dmarc_symbols['quarantine'],
+  parent = id,
+  type = 'virtual'
+})
+rspamd_config:register_symbol({
+  name = dmarc_symbols['softfail'],
+  parent = id,
+  type = 'virtual'
+})
+rspamd_config:register_symbol({
+  name = dmarc_symbols['dnsfail'],
+  parent = id,
+  type = 'virtual'
+})
+rspamd_config:register_symbol({
+  name = dmarc_symbols['na'],
+  parent = id,
+  type = 'virtual'
+})
+
 rspamd_config:register_dependency(id, symbols['spf_allow_symbol'])
 rspamd_config:register_dependency(id, symbols['dkim_allow_symbol'])
 ~~~
 
-Numeric `id` is returned by a registration function with callbacks (`register_symbol` or `register_callback_symbol`) and can be used to link symbols:
+Numeric `id` is returned by a registration function with callback and can be used to link symbols:
 
 * add virtual symbols associated with this callback
 * correctly display average time for symbols without callbacks
@@ -423,6 +462,38 @@ if rule['score'] then
   end
   rule['name'] = symbol
   rspamd_config:set_metric_symbol(rule)
+end
+~~~
+
+## Redis requests
+
+Rspamd uses Redis heavily for different purposes. There are couple of useful functions that are defined in the file `global_functions.lua` and are included by `rspamd.lua`. These functions should be available globally in all Lua modules. Here is an example of parsing Redis config for a module and making requests subsequently:
+
+~~~lua
+local redis_params
+
+local function symbol_cb(task)
+  local function redis_set_cb(err)
+    if err ~=nil then
+      rspamd_logger.errx(task, 'redis_set_cb received error: %1', err)
+    end
+  end
+  -- Create hash of message-id and store to redis
+  local key = make_key(task)
+  local ret = rspamd_redis_make_request(task,
+    redis_params, -- connect params
+    key, -- hash key
+    true, -- is write
+    redis_set_cb, --callback
+    'SETEX', -- command
+    {key, tostring(settings['expire']), "1"} -- arguments
+  )
+end
+
+-- Load redis server for module named 'module'
+redis_params = rspamd_parse_redis_server('module')
+if redis_params then
+  -- Register symbol
 end
 ~~~
 
@@ -472,8 +543,7 @@ Such syntax is discouraged, however, and is preserved mostly for compatibility r
 
 There is a strict order of configuration application:
 
-1. `rspamd.conf` and `rspamd.conf.local` are processed
-2. `rspamd.conf.override` is processed and it **overrides** anything parsed on the previous step
+1. Configuration files are loaded
 3. **Lua** rules are loaded and they can override everything from the previous steps, with the important exception of rules scores, which are **NOT** overridden if the relevant symbol is also defined in a `metric` section
 4. **Dynamic** configuration options defined in the WebUI (normally) are loaded and can override rule scores or action scores from the previous steps
 
