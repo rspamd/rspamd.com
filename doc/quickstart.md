@@ -546,20 +546,27 @@ Common use-cases for `rspamc` include:
 
 * Scanning messages stored on disk:
 
-    rspamc < file.eml
-    rspamc file.eml
-    rspamc directory1/ directory2/*.eml
+~~~
+rspamc < file.eml
+rspamc file.eml
+rspamc directory1/ directory2/*.eml
+~~~
 
 * Training the Bayesian classifier
 
-    rspamc learn_spam < file.eml
-    rspamc learn_ham file.eml
-    rspamc -c "bayes2" learn_spam directory1/ directory2/*.eml
+~~~
+rspamc learn_spam < file.eml
+rspamc learn_ham file.eml
+# In case of multiple classifiers
+rspamc -c "bayes2" learn_spam directory1/ directory2/*.eml
+~~~
 
 * Administering fuzzy storage
 
-    rspamc -f 1 -w 1 fuzzy_add file.eml
-    rspamc -f 2 fuzzy_del file2.eml
+~~~
+rspamc -f 1 -w 1 fuzzy_add file.eml
+rspamc -f 2 fuzzy_del file2.eml
+~~~
 
 * Acting as a local delivery agent (read the [integration document]({{ site.baseurl }}/doc/integration.html))
 
@@ -567,18 +574,26 @@ Common use-cases for `rspamc` include:
 
 Rspamadm is a new utility that is intended to manage rspamd directly. It comes with embedded help that can be displayed by typing:
 
-    % rspamadm help
-    Rspamadm 1.1.0
-    Usage: rspamadm [global_options] command [command_options]
+~~~
+% rspamadm help
+Rspamadm 1.5.0
+Usage: rspamadm [global_options] command [command_options]
 
-    Available commands:
-       pw                 Manage rspamd passwords
-       keypair            Create encryption key pairs
-       configtest         Perform configuration file test
-       fuzzy_merge        Merge fuzzy databases
-       configdump         Perform configuration file dump
-       control            Manage rspamd main control interface
-       confighelp         Shows help for configuration options
+Available commands:
+pw                 Manage rspamd passwords
+keypair            Create encryption key pairs
+configtest         Perform configuration file test
+fuzzy_merge        Merge fuzzy databases
+configdump         Perform configuration file dump
+control            Manage rspamd main control interface
+confighelp         Shows help for configuration options
+statconvert        Convert statistics from sqlite3 to redis
+fuzzyconvert       Convert statistics from sqlite3 to redis
+grep               Search for patterns in rspamd logs
+signtool           Sign and verify files tool
+lua                Run LUA interpreter
+dkim_keygen        Create dkim key pairs
+~~~
 
 For example, it is possible to get help for a specific configuration option by typing something like
 
@@ -598,8 +613,8 @@ if header :is "X-Spam" "Yes" {
 
 You can also setup rspamc to learn via passing messages to a certain email address. I recommend using `/etc/aliases` for these purposes and `mail-redirect` command (e.g. provided by [Mail Redirect addon](https://addons.mozilla.org/en-GB/thunderbird/addon/mailredirect/) for `Thunderbird` MUA). The desired aliases could be the following:
 
-	learn-spam123: "| rspamc learn_spam"
-	learn-ham123: "| rspamc learn_ham"
+    learn-spam123: "| rspamc learn_spam"
+    learn-ham123: "| rspamc learn_ham"
 
 You'd need some less predictable aliases to avoid sending messages to such addresses by some adversary or just by a mistake to prevent statistics pollution.
 
