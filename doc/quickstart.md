@@ -170,10 +170,15 @@ Rspamd uses Redis as:
 Installation of Redis is quite straightforward: install it using packages, start it with the default settings (it should listen on local interface using port 6379) and you are done. You might also want to limit memory used by Redis at some sane value:
 
     maxmemory 500mb
+    maxmemory-policy volatile-lru
 
 Note that for the moment by default stable releases of Redis listen for connections from all network interfaces. This is potentially dangerous and in most cases should be limited to the loopback interfaces, with the following configuration directive:
 
-	bind 127.0.0.1 ::1
+    bind 127.0.0.1 ::1
+
+For saving data to disk, it is also useful to setup overcommit memory behaviuor which might be useful for loaded systems. It could be done in Linux by using the following command:
+
+    echo 1 > /proc/sys/vm/overcommit_memory
 
 ## Rmilter setup
 
@@ -181,9 +186,26 @@ When you are done with Postfix/Dovecot/Redis initial setup, it might be a good i
 
 To install Rmilter, please follow the instructions on the [downloads page]({{ site.baseurl }}/downloads.html) but install `rmilter` package instead of `rspamd`. With the default configuration, Rmilter will use Redis and Rspamd on the local machine. You might want to change the bind settings as the default settings the use of unix sockets which might not work in some circumstances. To use TCP sockets for Rmilter, you can set the `bind_socket` option according to your Postfix setup:
 
-	bind_socket = inet:9900@127.0.0.1;
+    bind_socket = inet:9900@127.0.0.1;
 
 For advanced setup, please check the [Rmilter documentation]({{ site.baseurl }}/rmilter/). Rmilter starts as daemon (e.g. by typing `service rmilter start`) and writes output to the system log. If you have a systemd-less system, then you can check Rmilter logs in the `/var/log/mail.log` file. For systemd, please check your OS documentation about reading logs as the exact command might differ from system to system.
+
+If you use the recent Rspamd version (>= 1.4) then you should also disable Rmilter internal greylisting, ratelimit and dkim signing:
+
+~~~ucl
+# /etc/rmilter.conf.local
+limits {
+    enable = false;
+}
+greylisting {
+    enable = false;
+}
+dkim {
+    enable = false;
+}
+~~~
+
+Unfortunately, these options are not in the default configuration to preserve backward compatibility with the previous versions.
 
 ## Rspamd installation
 
@@ -279,7 +301,7 @@ as this will set the other actions to be undefined. Also, you should notice that
 
     section { .include "..."; }
 
-Hence, you don't need to repeat `section { ... }` inside the file included.
+Hence, you don't need to repeat `section { ... }` inside the file included. This notice is not applied to `local.d` configuration files: they are normally **merged** with the default values.
 
 ### Setting listening interface
 
