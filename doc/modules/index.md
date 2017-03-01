@@ -88,3 +88,6 @@ blacklists.
 - [rmilter_headers](rmilter_headers.html) - adds/removes headers from messages
 - [spamassassin](spamassassin.html) - load spamassassin rules
 - [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages.
+- [url_redirector](url_redirector.html) - dereferences redirects
+- [url_reputation](url_reputation.html) - assigns reputation to domains in URLs
+- [url_tags](url_tags.html) - persists URL tags in Redis
