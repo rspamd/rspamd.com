@@ -6,6 +6,40 @@ title: Upgrading
 
 This document describes incompatible changes introduced in recent Rspamd versions and details how to update your rules and configuration accordingly.
 
+## Migrating to Rspamd 1.5
+
+New configuration files have been added for the following modules which previously missed them: `greylist`, `metadata_exporter` and `metric_exporter.` If you have previously configured one of these modules in `rspamd.conf.local` please move your configuration to `rspamd.conf.override` to ensure that it is preserved verbatim or rework your configuration to use `local.d/[module_name].conf` instead.
+
+You are also suggested to disable outdated and no longer supported features of Rmilter and switch them to Rspamd:
+
+The list of features includes the following ones:
+
+- Greylisting - provided by [greylisting module](https://rspamd.com/doc/modules/greylisting.html)
+- Ratelimit - is done by [ratelimit module](https://rspamd.com/doc/modules/ratelimit.html)
+- Replies whitelisting - is implemented in [replies module](https://rspamd.com/doc/modules/replies.html)
+- Antivirus filtering - provided now by [antivirus module](https://rspamd.com/doc/modules/antivirus.html)
+- DCC checks - are now done in [dcc module](https://rspamd.com/doc/modules/dcc.html)
+- Dkim signing - can be done now by using of [dkim module](https://rspamd.com/doc/modules/dkim.html#dkim-signatures) and also by a more simple [dkim signing module](https://rspamd.com/doc/modules/dkim_signing.html)
+
+All duplicating features are still kept in Rmilter for compatibility reasons. However, no further development or bug fixes will likely be done for them.
+
+From version `1.9.1` it is possible to specify `enable` option in `greylisting` and `ratelimit` sections. It is also possible for `dkim` section since `1.9.2`. These options are `true` by default. Here is an example of configuration where greylisting and ratelimit are disabled:
+
+~~~ucl
+# /etc/rmilter.conf.local
+limits {
+    enable = false;
+}
+greylisting {
+    enable = false;
+}
+dkim {
+    enable = false;
+}
+~~~
+
+These options are in their default enabled states merely for compatibility purposes. In future Rmilter releases, they will be **DISABLED** by default.
+
 ## Migrating to Rmilter 1.10.0 and Rspamd 1.4.0
 
 The default passwords, namely `q1` and `q2` are no longer allowed to be used for remote authentication. This is done due to many misusages of these **example** passwords and dangerous security flaws introduced by some Rspamd users.
