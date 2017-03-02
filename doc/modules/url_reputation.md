@@ -42,4 +42,4 @@ update_limit = 1;
 query_limit = 100;
 # If true, try to find most 'relevant' URL (default true)
 relevance = true;
-~~~ucl
+~~~
