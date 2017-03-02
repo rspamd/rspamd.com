@@ -32,6 +32,12 @@ classify_headers = [
 ];
 
 control_socket = "$DBDIR/rspamd.sock mode=0600";
+
+# For webui cluster
+neighbours {
+    host.example.com { host = "host.example.com:11334"; }
+    localhost { host = "localhost:11334"; }
+}
 ~~~
 
 ## Global options
@@ -55,6 +61,7 @@ control_socket = "$DBDIR/rspamd.sock mode=0600";
 * `max_cores_size`: maximum total size of core files that are placed in `cores_dir`
 * `max_cores_count`: maximum number of files in `cores_dir`
 * `local_addrs` or `local_networks`: map or list of IP networks used as local, so certain checks are skipped for them (e.g. SPF checks)
+* `neighbours`: list of servers in Rspamd cluster
 
 ## DNS options
 
@@ -89,4 +96,4 @@ In this case, `8.8.8.8` public resolver will be used as a backup when local reso
 
 ## Upstream options
 
-**TODO**
+See [this document](../upstream.html) for details.

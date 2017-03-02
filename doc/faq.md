@@ -735,6 +735,24 @@ Rspamd loads symbols and actions settings from this file with priority 5 which a
 
 The map file might have insufficient permissions, or not exist. The WebUI also ignores all `HTTP` maps. Editing of signed maps is not yet supported.
 
+### How to setup cluster in WebUI
+
+Add to local.d/options.inc neighbors list like:
+
+~~~ucl
+neighbours {
+    host.example.com { host = "host.example.com:11334"; }
+    localhost { host = "localhost:11334"; }
+}
+~~~
+
+1. Controller sends the list to web browser on request
+2. Controller uses it to allow cross domains HTTP requests for listed neighbours
+
+For [2] you should have such a list in every neighbor configuration.
+
+(By Alexander Moisseev)
+
 ## Lua questions
 
 ### What is the difference between plugins and rules
