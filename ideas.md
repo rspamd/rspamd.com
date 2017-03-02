@@ -44,6 +44,7 @@ Here is the list of projects that are desired for rspamd. However, students are 
   - [Tarantool support](#tarantool-support)
   - [Libmilter fast alternative](#libmilter-fast-alternative)
   - [Bayes signatures](#bayes-signatures)
+	- [Corpus testing and automatic symbol score generation](#corpus-testing-and-automatic-symbol-score-generation)
 
 ### XMPP filtering support
 
@@ -215,3 +216,31 @@ Evaluation details:
 	- the ability to learn Bayes classifier using signatures
 	- support of adding signatures to messages
 	- WebUI support of Bayes signatures
+
+### Corpus testing and automatic symbol score generation
+
+We want to have an automatic system that will:
+
+1. Run rspamd across a corpus of Spam and Not Spam messages, collecting all of the symbols and scores
+2. Compute the probabilities for each symbol (e.g. hit rate, false-positives, false-negatives)
+3. Compute the 'ideal' scores for each symbol to minimise the overall false-positive and false-negative rate using some type of neural network like a Perceptron.
+4. Publish the list of symbols with the new scores
+
+The stages should be independent from each other so that the output of 1) can be collated from multiple sources e.g. lots of different people running rspamd across their corpuses, and generating logs which can then be used for 2) etc.
+
+There should also be some ability for symbols to be excluded if they do not hit enough messages or hit the wrong 'type' of message, e.g. a non-spam rule (with a negative score) hitting a lot of messages in the spam corpus.  There also needs to be a way to cap the maximum score that can be assigned to a symbol.
+
+* Difficulty: medium
+* Required skills: C, Shell (bash)
+* Possible mentors: smf
+
+Benefits for a student:
+
+Upon completing of this project, a student will have basic understanding of the Neural Network principles, shell-scripting and C language development.
+
+Evaluation details:
+
+* We suppose that at the midterm evaluation, we could estimate the following:
+	- Steps 1 and 2 complete and the 3rd underway.
+* At the final evaluation we suppose to have the following features implemented:
+	- A complete nightly automatic corpus check and rule rescoring.
