@@ -114,9 +114,9 @@ Application Options:
   -p, --password     Password to connect to redis
 ~~~
 
-## Rspamadm fuzzymerge
+## Rspamadm fuzzy_merge
 
-Merges fuzzy databases in SQLite format. Typical invocation would be `rspamadm fuzzymerge -s [source.db.file] -d [destination.db.file]`.
+Merges fuzzy databases in SQLite format. Typical invocation would be `rspamadm fuzzy_merge -s [source.db.file] -d [destination.db.file]`.
 
 ~~~
 Application Options:
