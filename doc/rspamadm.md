@@ -176,6 +176,20 @@ This is a command for signing maps which would most likely be used with the rspa
 
 Typical use would involve first creating keypair using `rspamadm keypair -s -u > keypair.file` and then editting and saving the file to sign using `rspamadm signtool -e --editor=vim -k keypair.file [file.to.sign]`.
 
+~~~
+Application Options:
+  -o, --openssl     Generate openssl nistp256 keypair not curve25519 one
+  -v, --verify      Verify signatures and not sign
+  -S, --suffix      Save signatures in file<suffix> files
+  -p, --pubkey      Base32 encoded pubkey to verify
+  --pubout          Output public key to the specified file
+  -P, --pubfile     Load base32 encoded pubkey to verify from the file
+  -k, --keypair     UCL with keypair to load for signing
+  -q, --quiet       Be quiet
+  -e, --edit        Run editor and sign the edited file
+  --editor          Use the specified editor instead of $EDITOR environment var
+~~~
+
 ## Rspamadm statconvert
 
 This is a command for converting statistics from SQLite to Redis. Typical invocation to convert spam/ham databases and learn cache is shown below:
