@@ -27,4 +27,61 @@ Additionally, it is possible to disable/enable checks selectively and/or rescore
 
 ### Rmilter
 
+To enable scanning of outbound mail you should set `strict_auth = false`, see [here]({{ site.baseurl }}/rmilter/configuration.html) for more information.
+
 ### Exim
+
+Here is an example configuration suitable for filtering outbound email.
+
+~~~
+# Global options
+spamd_address = 127.0.0.1 11333 variant=rspamd
+acl_smtp_data = acl_check_data
+
+begin acl
+
+acl_check_data:
+  # Set default value for a variable
+  warn
+    set acl_m_outspam = 0
+  # Always scan mail
+  warn
+    spam = nobody:true
+  # Honor "reject" action for inbound mail...
+  deny
+    ! authenticated = *
+    condition = ${if eq{$spam_action}{reject}}
+    message = Discarded high-probability spam
+  # If it's our user set acl_m_outspam = 1 instead
+  warn
+    authenticated = *
+    condition = ${if eq{$spam_action}{reject}}
+    set acl_m_outspam = 1
+  accept
+
+begin routers
+
+# Apply special handling to messages with $acl_m_outspam==1
+redirect_outbound_spam:
+  driver = redirect
+  condition = ${if eq{$acl_m_outspam}{1}}
+  data = admin@example.com
+# <rest of configuration>
+~~~
+
+See the [Exim specification](http://www.exim.org/exim-html-current/doc/html/spec_html/) for more information.
+
+### Haraka
+
+To enable scanning of outbound mail set the following in `config/rspamd.ini`:
+
+~~~
+[check]
+authenticated=true
+~~~
+
+If you wish to honor `reject` action for authenticated users set the following:
+~~~
+[reject]
+authenticated=true
+~~~
