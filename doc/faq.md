@@ -753,6 +753,10 @@ For [2] you should have such a list in every neighbor configuration.
 
 (By Alexander Moisseev)
 
+### Why does the User column show 'undefined'?
+
+The User column shows the authenticated username of the message sender- you would have to be scanning authenticated outbound mail to see something here.
+
 ## Lua questions
 
 ### What is the difference between plugins and rules
