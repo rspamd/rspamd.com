@@ -185,3 +185,5 @@ EOD;
   }
 }
 ~~~
+
+Redis servers are configured as per usual - see [here]({{ site.baseurl }}/doc/configuration/redis.html) for details.
