@@ -148,3 +148,40 @@ Regexp rules can be slow and should not be used extensively.
 The picture below describes the architecture of settings matching.
 
 <img class="img-responsive" width="50%" src="{{ site.baseurl }}/img/settings.png">
+
+### Redis settings
+
+Storing settings in Redis provides a very flexible way to apply settings & avoids the need to reload a map.
+
+To use settings in redis we write one or more handlers in Lua, each of which might return a key. If a key is returned, and it exists in Redis, the value of the key is used as settings. This value should be formatted as in the contents of the `apply` block or settings posted in headers.
+
+Let's presume that we want to base our settings on the domain of the first SMTP recipient.
+
+We could set our keys as follows
+~~~
+127.0.0.1:6379> SET "setting:example.com" "{symbol1 = 5000;}"
+OK
+~~~
+
+Where "setting:" is a prefix we have chosen for our settings and "example.com" is the recipient domain we want to apply settings to and the value of the key contains our desired settings.
+
+We would then define configuration as follows in `/etc/rspamd/rspamd.conf.override`:
+
+~~~ucl
+# Redis settings are configured in a "settings_redis" block
+settings_redis {
+  # Here we will define our Lua functions
+  handlers = {
+    # Everything in here is a Lua function with an arbitrary name
+my_check_rcpt_domain = <<EOD
+return function(task)
+  local rcpt = task:get_recipients('smtp')
+  -- Return nothing if we can't find domain of first SMTP recipient
+  if not (rcpt and rcpt[1] and rcpt[1]['domain']) then return end
+  -- Return "setting:" concatenated with the domain
+  return 'setting:' .. rcpt[1]['domain']
+end
+EOD;
+  }
+}
+~~~
