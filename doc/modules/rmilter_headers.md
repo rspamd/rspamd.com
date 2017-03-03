@@ -5,7 +5,7 @@ title: Rmilter headers module
 
 # Rmilter headers module
 
-The Rmilter headers module has been added in Rspamd 1.5 to provide a relatively simple way to configure adding/removing of headers via Rmilter (the alternative being to use the [API]({{ site.baseurl }}/doc/lua/task.html#me7351)). Despite its namesake it also works with [Haraka](https://haraka.github.io).
+The Rmilter headers module has been added in Rspamd 1.5 to provide a relatively simple way to configure adding/removing of headers via Rmilter (the alternative being to use the [API]({{ site.baseurl }}/doc/lua/task.html#me7351)). Despite its namesake it also works with [Haraka](https://haraka.github.io) and Communigate.
 
 # Principles of operation
 
