@@ -67,7 +67,7 @@ Evaluation details:
 
 ### Dmarc reporting
 
-Rspamd currently supports storing DMARC reports in the Redis server. However, there are no convenient tools to use that data and send cumulative reports to the appropriate domains. This project is intended to fix this issue.
+Rspamd currently supports storing DMARC reporting information in the Redis server. However, there are no convenient tools to use that data and send [aggregate reports](https://tools.ietf.org/html/rfc7489#section-7.2) to the appropriate domains. This project is intended to fix this issue.
 
 * Difficulty: medium
 * Required skills: lua skills, email standards understanding
@@ -79,11 +79,11 @@ A successful candidate will learn about email protocols, Lua programming languag
 
 Evaluation details:
 
-* We suppose that at the midterm evaluation, we could estimate the following:
-	- basic implementation of the reports collector that is able to grab data from Redis and send a report
-	- a tool to test reports collection written in any language
-* At the final evaluation we suppose to have the following features implemented:
-	- full implementation of the collector that can interact with the real collection points
+* We suppose that at the initial evaluation, backend changes to better support DMARC reporting are complete
+* We suppose that at the second evaluation, we could generate a mostly complete aggregate report
+* At the final evaluation we expect the finished tool which could periodically generate & send reports. The idea is to add this to `rspamadm`.
+
+Preference will be given to proposals that show a good plan for improving the backend to best support reporting and/or already-done work towards that.
 
 ### Fast neural network implementation
 
