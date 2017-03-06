@@ -114,9 +114,9 @@ Application Options:
   -p, --password     Password to connect to redis
 ~~~
 
-## Rspamadm fuzzymerge
+## Rspamadm fuzzy_merge
 
-Merges fuzzy databases in SQLite format. Typical invocation would be `rspamadm fuzzymerge -s [source.db.file] -d [destination.db.file]`.
+Merges fuzzy databases in SQLite format. Typical invocation would be `rspamadm fuzzy_merge -s [source.db.file] -d [destination.db.file]`.
 
 ~~~
 Application Options:
@@ -175,6 +175,20 @@ Application Options:
 This is a command for signing maps which would most likely be used with the rspamd_update module.
 
 Typical use would involve first creating keypair using `rspamadm keypair -s -u > keypair.file` and then editting and saving the file to sign using `rspamadm signtool -e --editor=vim -k keypair.file [file.to.sign]`.
+
+~~~
+Application Options:
+  -o, --openssl     Generate openssl nistp256 keypair not curve25519 one
+  -v, --verify      Verify signatures and not sign
+  -S, --suffix      Save signatures in file<suffix> files
+  -p, --pubkey      Base32 encoded pubkey to verify
+  --pubout          Output public key to the specified file
+  -P, --pubfile     Load base32 encoded pubkey to verify from the file
+  -k, --keypair     UCL with keypair to load for signing
+  -q, --quiet       Be quiet
+  -e, --edit        Run editor and sign the edited file
+  --editor          Use the specified editor instead of $EDITOR environment var
+~~~
 
 ## Rspamadm statconvert
 
