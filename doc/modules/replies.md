@@ -37,18 +37,16 @@ Symbol yielded on messages identified as replies.
 
 ## Example
 
-Configuration should be defined in `rspamd.conf.local`:
+Configuration should be added to `/etc/rspamd/local.d/replies.conf`:
 
 ~~~ucl
-replies {
-    # This setting is non-default & is required to be set
-    servers = "localhost";
-    # This setting is non-default & may be desirable
-    action = "no action";
-    # These are default settings you may want to change
-    expire = 86400;
-    key_prefix = "rr";
-    message = "Message is reply to one we originated";
-    symbol = "REPLY";
-}
+# This setting is non-default & may be desirable
+#action = "no action";
+# These are default settings you may want to change
+expire = 86400;
+key_prefix = "rr";
+message = "Message is reply to one we originated";
+symbol = "REPLY";
+# Module specific redis configuration
+#servers = "localhost";
 ~~~
