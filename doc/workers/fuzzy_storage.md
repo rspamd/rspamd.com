@@ -108,6 +108,7 @@ generally `match_count / shingles_count`.
 Fuzzy storage accepts the following extra options:
 
 - `hashfile` - path to the sqlite storage (where are also few outdated aliases for this command exist: hash_file, file, database)
+- `backend` - set it to `redis` if you want to use a redis server
 - `sync` - time to perform database sync in seconds, default value: 60
 - `expire` - time value for hashes expiration in seconds, default value: 2 days
 - `keypair` - encryption keypair (can be repeated for different keys), can be obtained via *rspamadm keypair -u* command
