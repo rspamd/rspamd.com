@@ -28,7 +28,7 @@ worker "log_helper" {
 
 Make sure at least one Redis server is [specified]({{ site.baseurl }}/doc/configuration/redis.html) in common `redis` section. Alternatively, you can define Redis server in the module configuration:
 
-`local.d/fann_redis.conf`:
+`/etc/rspamd/local.d/fann_redis.conf`:
 
 ~~~ucl
 servers = "localhost";
