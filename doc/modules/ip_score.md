@@ -26,12 +26,12 @@ ip_score = action_multiplier * tanh (e * (metric_score/score_divisor))
 Default multipliers are shown below:
 
 ~~~ucl
-	actions {
-		reject = 1.0;
-		"add header" = 0.25;
-		"rewrite subject" = 0.25;
-		"no action" = 1.0;
-	}
+actions {
+  reject = 1.0;
+  "add header" = 0.25;
+  "rewrite subject" = 0.25;
+  "no action" = 1.0;
+}
 ~~~
 
 So with these settings:
@@ -56,65 +56,63 @@ subscore = floor(subscore * 10)
 Score multiplier is dependent on the component the subscore is being generated for; default multipliers are shown below:
 
 ~~~ucl
-	scores {
-		asn = 0.5;
-		country = 0.1;
-		ipnet = 0.8;
-		ip = 1.0;
-	}
+scores {
+  asn = 0.5;
+  country = 0.1;
+  ipnet = 0.8;
+  ip = 1.0;
+}
 ~~~
 
 Subscores are added to each other to determine a total. If `min_score` or `max_score` are defined in configuration these set a lower/upper bound for the total score.
 
 ### Configuration
 
-Refer to example configuration below for available settings. To use default settings, [configure Redis]({{ site.baseurl }}/doc/configuration/redis.html) globally and add `ip_score { }` to `/etc/rspamd/rspamd.conf.local`.
+Refer to example configuration below for available settings. To use default settings, just [configure Redis]({{ site.baseurl }}/doc/configuration/redis.html) either globally or just for `ip_score` and assign a weight to the `IP_SCORE` symbol. Module configuration should be added to `/etc/rspamd/local.d/ip_score.conf`.
 
 ~~~ucl
-ip_score {
-	# how each action is treated in scoring
-	actions {
-		reject = 1.0;
-		"add header" = 0.25;
-		"rewrite subject" = 0.25;
-		"no action" = 1.0;
-	}
-	# how each component is evaluated
-	scores {
-		asn = 0.5;
-		country = 0.1;
-		ipnet = 0.8;
-		ip = 1.0;
-	}
-	# prefix for asn hashes
-	asn_prefix = "a:";
-	# prefix for country hashes
-	country_prefix = "c:";
-	# hash table in redis used for storing scores
-	hash = "ip_score";
-	# prefix for subnet hashes
-	ipnet_prefix = "n:";
-	# minimum number of messages to be scored
-	lower_bound = 10;
-	# the metric to score (usually "default")
-	metric = "default";
-	# upper and lower bounds at which to cap total score
-	#max_score = 10;
-	#min_score = -5;
-	# Amount to divide subscores by before applying tanh
-	score_divisor = 10;
-	# list of servers (or configure redis globally)
-	#servers = "localhost";
-	# symbol to be inserted
-	symbol = "IP_SCORE";
+# how each action is treated in scoring
+actions {
+  reject = 1.0;
+  "add header" = 0.25;
+  "rewrite subject" = 0.25;
+  "no action" = 1.0;
 }
+# how each component is evaluated
+scores {
+  asn = 0.5;
+  country = 0.1;
+  ipnet = 0.8;
+  ip = 1.0;
+}
+# prefix for asn hashes
+asn_prefix = "a:";
+# prefix for country hashes
+country_prefix = "c:";
+# hash table in redis used for storing scores
+hash = "ip_score";
+# prefix for subnet hashes
+ipnet_prefix = "n:";
+# minimum number of messages to be scored
+lower_bound = 10;
+# the metric to score (usually "default")
+metric = "default";
+# upper and lower bounds at which to cap total score
+#max_score = 10;
+#min_score = -5;
+# Amount to divide subscores by before applying tanh
+score_divisor = 10;
+# list of servers (or configure redis globally)
+#servers = "localhost";
+# symbol to be inserted
+symbol = "IP_SCORE";
 ~~~
 
-You will also have to register some weight for the symbol in metric. For example you could add the following to `local.d/metrics.conf`:
+You will also have to register some weight for the symbol in metric. For example you could add the following to `/etc/rspamd/local.d/metrics.conf`:
 
 ~~~ucl
 symbol "IP_SCORE" {
-	weight = 2.0;
-	description = "IP reputation";
+  weight = 2.0;
+  description = "IP reputation";
 }
 ~~~

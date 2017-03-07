@@ -11,18 +11,16 @@ The module exports `asn`, `country` and `ipnet` as mempool variables.
 
 ### Configuration
 
-To use default settings you could add `asn { }` to `rspamd.conf.local`.
+ASN module is enabled in the default configuration. Settings could be added to `/etc/rspamd/local.d/asn.conf`.
 
 ~~~ucl
-asn {
-	# Provider: just "rspamd" for now
-	provider_type = "rspamd";
-	# Provider-specific configuration
-	provider_info {
-		ip4 = "asn.rspamd.com";
-		ip6 = "asn6.rspamd.com";
-	}
-	# If defined, insert symbol with lookup results
-	symbol = "ASN";
+# Provider: just "rspamd" for now
+provider_type = "rspamd";
+# Provider-specific configuration
+provider_info {
+  ip4 = "asn.rspamd.com";
+  ip6 = "asn6.rspamd.com";
 }
+# If defined, insert symbol with lookup results
+symbol = "ASN";
 ~~~

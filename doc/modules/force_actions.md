@@ -9,7 +9,7 @@ The purpose of this module is to force an action to be applied if particular sym
 
 # Configuration
 
-Configuration should be added to [/etc/rspamd/rspamd.conf.local]({{ site.baseurl }}/doc/quickstart.html#configuring-rspamd).
+Configuration should be added to `/etc/rspamd/local.d/force_actions.conf`
 
 The following elements are valid in the rules of this module:
 
@@ -23,43 +23,41 @@ The following elements are valid in the rules of this module:
 Only one of `honor_action` or `require_action` should be set on a given rule.
 
 ~~~ucl
-force_actions {
+# Rules are defined in the rules {} block
+rules {
 
   # For each condition we want to force an action on we define a rule
-  rules {
 
-    # Rule is given a descriptive name
-    MY_WHITELIST {
-      # This is the action we want to force
-      action = "no action";
-      # If the following combination of symbols is present:
-      expression = "IS_IN_WHITELIST & !CLAM_VIRUS & !FPROT_VIRUS";
-    }
+  # Rule is given a descriptive name
+  MY_WHITELIST {
+    # This is the action we want to force
+    action = "no action";
+    # If the following combination of symbols is present:
+    expression = "IS_IN_WHITELIST & !CLAM_VIRUS & !FPROT_VIRUS";
+  }
 
-    WHITELIST_EXCEPTION {
-      action = "reject";
-      expression = "IS_IN_WHITELIST & (CLAM_VIRUS | FPROT_VIRUS)";
-      # message setting sets SMTP message returned by mailer
-      message = "Rejected due to suspicion of virus";
-    }
+  WHITELIST_EXCEPTION {
+    action = "reject";
+    expression = "IS_IN_WHITELIST & (CLAM_VIRUS | FPROT_VIRUS)";
+    # message setting sets SMTP message returned by mailer
+    message = "Rejected due to suspicion of virus";
+  }
 
-    DCC_BULK {
-      action = "rewrite subject";
-      # Here expression is just one symbol
-      expression = "DCC_BULK";
-      # subject setting sets metric subject for rewrite subject action
-      subject = "[BULK] %s";
-      # honor_action setting define actions we don't want to override
-      honor_action = ["reject", "soft reject", "add header"];
-    }
+  DCC_BULK {
+    action = "rewrite subject";
+    # Here expression is just one symbol
+    expression = "DCC_BULK";
+    # subject setting sets metric subject for rewrite subject action
+    subject = "[BULK] %s";
+    # honor_action setting define actions we don't want to override
+    honor_action = ["reject", "soft reject", "add header"];
+  }
 
-    BAYES_SPAM_UPGRADE {
-      action = "add header";
-      expression = "BAYES_SPAM";
-      # require_action setting defines actions that will be overridden
-      require_action = ["no action", "greylist"];
-    }
-
+  BAYES_SPAM_UPGRADE {
+    action = "add header";
+    expression = "BAYES_SPAM";
+    # require_action setting defines actions that will be overridden
+    require_action = ["no action", "greylist"];
   }
 
 }
