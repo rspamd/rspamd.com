@@ -6,6 +6,17 @@ title: Upgrading
 
 This document describes incompatible changes introduced in recent Rspamd versions and details how to update your rules and configuration accordingly.
 
+## Migrating to Rspamd 1.5.2
+
+New configuration files have been added for the following modules which previously missed them; if you have previously configured one of these modules in `rspamd.conf.local` please move your configuration to `rspamd.conf.override` to ensure that it is preserved verbatim or rework your configuration to use `local.d/[module_name].conf` instead.
+
+- antivirus
+- dkim_signing
+- mx_check (set `enabled = true` if you use `local.d`)
+- replies
+- spamassassin
+- trie
+
 ## Migrating to Rspamd 1.5
 
 New configuration files have been added for the following modules which previously missed them: `greylist`, `metadata_exporter` and `metric_exporter.` If you have previously configured one of these modules in `rspamd.conf.local` please move your configuration to `rspamd.conf.override` to ensure that it is preserved verbatim or rework your configuration to use `local.d/[module_name].conf` instead.
