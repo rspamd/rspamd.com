@@ -31,9 +31,7 @@ Make sure at least one Redis server is [specified]({{ site.baseurl }}/doc/config
 `local.d/fann_redis.conf`:
 
 ~~~ucl
-fann_redis {
-  servers = "localhost";
-}
+servers = "localhost";
 ~~~
 
 ## Settings usage
