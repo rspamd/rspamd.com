@@ -256,7 +256,7 @@ There are some different approaches you can take to this:
 3. For each individual configuration file shipped with Rspamd, there are two special includes (available from **Rspamd version 1.2 onwards**):
 
 ~~~ucl
-.include(try=true,priority=1) "$CONFDIR/local.d/config.conf"
+.include(try=true,priority=1,duplicate=merge) "$CONFDIR/local.d/config.conf"
 .include(try=true,priority=10) "$CONFDIR/override.d/config.conf"
 ~~~
 
