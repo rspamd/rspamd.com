@@ -48,13 +48,13 @@ From version `1.9.1` it is possible to specify `enable` option in `greylisting` 
 ~~~ucl
 # /etc/rmilter.conf.local
 limits {
-    enable = false;
+    enable = no;
 }
 greylisting {
-    enable = false;
+    enable = no;
 }
 dkim {
-    enable = false;
+    enable = no;
 }
 ~~~
 
