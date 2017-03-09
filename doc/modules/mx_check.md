@@ -22,6 +22,10 @@ symbol_no_mx = "MX_MISSING";
 symbol_good_mx = "MX_GOOD";
 # lifetime of redis cache - 1 day by default
 expire = 86400;
+# lifetime of redis cache for no valid mxes - 2 hours by default
+expire_novalid = 7200;
+# greylist first message with invalid MX (require greylist plugin)
+greylist_invalid = false;
 # prefix used for redis key
 key_prefix = "rmx";
 # module-specific redis-server configuration
