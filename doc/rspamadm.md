@@ -141,6 +141,8 @@ Application Options:
   -P, --partial       Print partial logs
 ~~~
 
+**IMPORTANT**: `log_re_cache` option **should** be set `true` (it's *true* by default) in `/path/to/logging.inc` to `rspamadm grep` works correctly.
+
 ## Rspamadm lua
 
 The `rspamadm lua` command provides a Lua REPL and interpreter with access to the majority of Rspamd's Lua API which provides a convenient way to test these functions. Typical invocation would be `rspamadm lua` to start using the REPL.
