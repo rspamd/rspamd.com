@@ -80,6 +80,9 @@ settings {
 		rcpt = "/user.*/";
 		ip = "172.16.0.0/16";
 		user = "@example.net";
+		request_header = {
+			"MTA-Tag" = "\.example\.net$";
+		}
 		apply "default" {
 			symbol1 = 10.0;
 			symbol2 = 0.0;
@@ -120,6 +123,7 @@ So each setting has the following attributes:
 	+ `ip` - match source IP address
 	+ `user` - matches authenticated user ID of message sender if any
 	+ `authenticated` - matches any authenticated user
+	+ `request_header` - collection of header names and regexes to match them against (condition is satisfied if any match)
 - `apply` - list of applied rules, identified by metric name (e.g. `default`)
 	+ `symbol` - modify weight of a symbol
 	+ `actions` - defines actions
