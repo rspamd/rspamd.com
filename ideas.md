@@ -44,7 +44,7 @@ Here is the list of projects that are desired for rspamd. However, students are 
   - [Tarantool support](#tarantool-support)
   - [Libmilter fast alternative](#libmilter-fast-alternative)
   - [Bayes signatures](#bayes-signatures)
-	- [Corpus testing and automatic symbol score generation](#corpus-testing-and-automatic-symbol-score-generation)
+  - [Corpus testing and automatic symbol score generation](#corpus-testing-and-automatic-symbol-score-generation)
 
 ### XMPP filtering support
 
