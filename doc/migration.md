@@ -21,6 +21,8 @@ New configuration files have been added for the following modules which previous
 
 New configuration files have been added for the following modules which previously missed them: `greylist`, `metadata_exporter` and `metric_exporter.` If you have previously configured one of these modules in `rspamd.conf.local` please move your configuration to `rspamd.conf.override` to ensure that it is preserved verbatim or rework your configuration to use `local.d/[module_name].conf` instead.
 
+If you have composites defined in `local.d/composites.conf` or `override.d/composites.conf` these will need to be moved to `rspamd.conf.local` or reworked to the new format, see `/etc/rspamd/composites.conf` for an example.
+
 You are also suggested to disable outdated and no longer supported features of Rmilter and switch them to Rspamd:
 
 The list of features includes the following ones:
