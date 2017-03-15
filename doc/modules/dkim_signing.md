@@ -50,6 +50,10 @@ dkim_signing {
   use_redis = false;
   # Hash for DKIM keys in Redis
   hash_key = "DKIM_KEYS";
+  # map of domains -> names of selectors (since rspamd 1.5.3)
+  #selector_map = "/etc/rspamd/dkim_selectors.map";
+  # map of domains -> paths to keys (since rspamd 1.5.3)
+  #path_map = "/etc/rspamd/dkim_paths.map";
 
   # Domain specific settings
   domain {
@@ -98,3 +102,37 @@ redis.call('HMSET', 'DKIM_KEYS', 'myselector.example.com', key)
 ~~~
 
 The selector will be chosen as per usual (a domain-specific selector will be used if configured, otherwise the global setting is used).
+
+## Using maps
+
+Since Rspamd 1.5.3 one or both of `selector_map` or `path_map` can be used to look up selectors and paths to private keys respectively (using the DKIM signing domain as the key). If entries are found, these will override default settings.
+
+In the following configuration we define a templatised path for the DKIM signing key, a default selector, and a map which could be used for overriding the default selector (and hence effective path to the signing key as well). Any eligible mail will be signed given there is a suitably-named key on disk.
+
+~~~ucl
+dkim_signing {
+  try_fallback = true;
+  path = "/var/lib/rspamd/dkim/$domain.$selector.key";
+  selector_map = "/etc/rspamd/dkim_selectors.map";
+  selector = "dkim";
+}
+~~~
+
+In the following configuration, we attempt to sign only domains which are present in both `selector_map` and `path_map`:
+
+~~~ucl
+dkim_signing {
+  try_fallback = false;
+  selector_map = "/etc/rspamd/dkim_selectors.map";
+  path_map = "/etc/rspamd/dkim_paths.map";
+}
+~~~
+
+Format of the maps should be as shown:
+
+~~~
+$ head -1 /etc/rspamd/dkim_selectors.map
+example.net dkim
+$ head -1 /etc/rspamd/dkim_paths.map
+example.net /var/lib/rspamd/dkim/example.net.$selector.key
+~~~
