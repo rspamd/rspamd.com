@@ -14,19 +14,19 @@ Rspamadm 1.5.1
 Usage: rspamadm [global_options] command [command_options]
 
 Available commands:
-  pw                 Manage rspamd passwords                                     
-  keypair            Create encryption key pairs                                 
-  configtest         Perform configuration file test                             
-  fuzzy_merge        Merge fuzzy databases                                       
-  configdump         Perform configuration file dump                             
-  control            Manage rspamd main control interface                        
-  confighelp         Shows help for configuration options                        
-  statconvert        Convert statistics from sqlite3 to redis                    
-  fuzzyconvert       Convert statistics from sqlite3 to redis                    
-  grep               Search for patterns in rspamd logs                          
-  signtool           Sign and verify files tool                                  
-  lua                Run LUA interpreter                                         
-  dkim_keygen        Create dkim key pairs       
+  pw                 Manage rspamd passwords
+  keypair            Create encryption key pairs
+  configtest         Perform configuration file test
+  fuzzy_merge        Merge fuzzy databases
+  configdump         Perform configuration file dump
+  control            Manage rspamd main control interface
+  confighelp         Shows help for configuration options
+  statconvert        Convert statistics from sqlite3 to redis
+  fuzzyconvert       Convert fuzzy hashes from sqlite3 to redis
+  grep               Search for patterns in rspamd logs
+  signtool           Sign and verify files tool
+  lua                Run LUA interpreter
+  dkim_keygen        Create dkim key pairs
 ~~~
 
 To see the help text for a command we can run `rspamadm [command-name] --help`.
