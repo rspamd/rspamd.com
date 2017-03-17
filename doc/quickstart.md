@@ -305,10 +305,10 @@ Hence, you don't need to repeat `section { ... }` inside the file included. This
 
 ### Setting listening interface
 
-Rspamd's normal worker will, by default, listen on all interfaces on port 11333. If you're running Rspamd on the same machine as your mailer (or whatever will be querying it) you might want to set this to 'localhost' instead. This option should be overrided in `/etc/rspamd/override.d/worker-normal.inc` file:
+Rspamd's normal worker will, by default, listen on all interfaces on port 11333. If you're running Rspamd on the same machine as your mailer (or whatever will be querying it) you might want to set this to 'localhost' instead. This option should be overridden in `/etc/rspamd/local.d/worker-normal.inc`:
 
 ~~~ucl
-# /etc/rspamd/override.d/worker-normal.inc
+# /etc/rspamd/local.d/worker-normal.inc
 bind_socket = "*:11333";
 ~~~
 
@@ -598,6 +598,8 @@ dkim_keygen        Create dkim key pairs
 For example, it is possible to get help for a specific configuration option by typing something like
 
     rspamadm confighelp -k fuzzy
+
+See [here]({{ site.url }}{{ site.baseurl }}/doc/rspamadm.html) for more information about rspamadm utilities.
 
 ### Using mail system utilities
 
