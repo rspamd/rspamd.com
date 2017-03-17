@@ -92,3 +92,7 @@ The following modules are explicitly disabled in the default configuration, set 
 - [mx_check](mx_check.html) - checks if sending domain has a connectable MX
 - [url_reputation](url_reputation.html) - assigns reputation to domains in URLs
 - [url_tags](url_tags.html) - persists URL tags in Redis
+
+## Disabling module
+
+To disable an entire module you can set `enabled = false;` in `/etc/rspamd/local.d/${MODULE_NAME}.conf`
