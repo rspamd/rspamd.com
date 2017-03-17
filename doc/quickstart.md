@@ -312,7 +312,7 @@ Rspamd's normal worker will, by default, listen on all interfaces on port 11333.
 bind_socket = "*:11333";
 ~~~
 
-If you plan to leave this as is you may wish to use a firewall to restrict access to your machine.
+If you plan to leave this as is you may wish to use a firewall to restrict access to your machine. Please review the [worker documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/) for more information about `bind_socket` and related settings.
 
 ### Setting the controller password
 
@@ -440,26 +440,12 @@ Alternatively, you could setup HTTP authentication in nginx itself.
 From version 1.1, it is also possible to specify Redis as a backend for statistics and caching of learned messages. Redis is recommended for clustered configurations as it allows simultaneous learning and checking and, besides, is very fast. To setup Redis, you could specify `redis` backend for a classifier (cache is set to the same servers accordingly).
 
 {% highlight ucl %}
-classifier {
-    tokenizer {
-        name = "osb";
-    }
-    name = "bayes";
-    min_tokens = 11;
-    backend = "redis";
-    servers = "127.0.0.1";
-
-    statfile {
-        symbol = "BAYES_SPAM";
-    }
-    statfile {
-        symbol = "BAYES_HAM";
-    }
-    autolearn = true;
-}
+# /etc/rspamd/local.d/classifier-bayes.conf
+servers = "127.0.0.1";
+backend = "redis";
 {% endhighlight %}
 
-For other possibilities please read the full [documentation]({{ site.baseurl }}/doc/configuration/statistic.html). The more specific Redis related documentation can be found [here]({{ site.baseurl }}/doc/configuration/redis.html).
+Please review the full [statistics documentation]({{ site.baseurl }}/doc/configuration/statistic.html) for further information as well as the [Redis configuration documentation]({{ site.baseurl }}/doc/configuration/redis.html) if you plan to use Redis.
 
 ## Adjusting scores and actions
 
