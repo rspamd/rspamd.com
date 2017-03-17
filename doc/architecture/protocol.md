@@ -170,8 +170,8 @@ The following endpoints are valid on the normal worker and accept `POST`:
 
 The following endpoints are valid merely on the controller. All of these may require `Password` header to be sent depending on configuration (passing this as query string works too).
 
-* `/fuzzy_add` - Add message to fuzzy storage
-* `/fuzzy_del` - Remove message from fuzzy storage
+* `/fuzzyadd` - Add message to fuzzy storage
+* `/fuzzydel` - Remove message from fuzzy storage
 
 These accept `POST`. Headers which may be set are:
 
