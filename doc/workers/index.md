@@ -80,7 +80,7 @@ bind_socket = "/tmp/rspamd.sock mode=0666 owner=user";
 ~~~
 
 Without owner and mode, rspamd uses the active user as owner (e.g. if started by root,
-then `root` is used) and `0644` as access mask. Please mention that you need to specify
+then `root` is used) and `0644` as access mask. Please note that you need to specify
 **octal** number for mode, namely prefixed by a zero. Otherwise, modes like `666` will produce
 a weird result.
 
