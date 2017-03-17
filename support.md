@@ -9,7 +9,7 @@ title: Rspamd Support
             <a class="btn btn-social btn-primary btn-block" href="https://groups.google.com/forum/#!forum/rspamd"><i class="fa fa-envelope-o"></i> Mailing list</a>
         </div>
         <div class="col-sm-9 col-xs-12">
-            <p>You can use the following mailing list hosted at Google Groups to ask technical and general questions related to Rspamd. Please mention that you need to join the mailing list before posting your questions.</p>
+            <p>You can use the following mailing list hosted at Google Groups to ask technical and general questions related to Rspamd. Please note that you need to join the mailing list before posting your questions.</p>
         </div>
     </div>
     <div class="row support-block">

@@ -105,7 +105,7 @@ whitelist {
             valid_dkim = true;
             blacklist = true;
             domains = "/some/file/blacklist_dkim.map";
-            score = 3.0; # Mention positive score here
+            score = 3.0; # Note positive score here
         }
 
         WHITELIST_DMARC_DKIM = {

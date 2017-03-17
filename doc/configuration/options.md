@@ -88,7 +88,7 @@ options {
 }
 ~~~
 
-In this case, `8.8.8.8` public resolver will be used as a backup when local resolver is down. Please mention, that by default, Rspamd uses `round-robin` strategy which is also used when resolvers are read from `/etc/resolv.conf`.
+In this case, `8.8.8.8` public resolver will be used as a backup when local resolver is down. Please note, that by default, Rspamd uses `round-robin` strategy which is also used when resolvers are read from `/etc/resolv.conf`.
 
 * `timeout`: timeout for each DNS request
 * `retransmits`: how many times each request is retransmitted before it is treated as failed (the overall timeout for each request is thus `timeout * retransmits`)
