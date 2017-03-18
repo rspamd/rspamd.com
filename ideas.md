@@ -20,6 +20,10 @@ We encourage picking projects which you feel you can **realistically** do within
 
 All code contributed must be licensed under Apache 2 license.
 
+## Important information about proposals selection
+
+Based on our previous experiences, we have decided to create a list of `small tasks` that could be taken by a prospective students to demonstrate their skills and desire to work with Rspamd this summer. We are publishing this list in our [wiki](https://github.com/vstakhov/rspamd/wiki/GSOC-2017-introductionary-tasks). If you plan to take any of these tasks, then please drop a quick notice in IRC or mailing list where you can find further help and support. All these tasks are intended to be simple enough to be realistically completed in not more than a couple of hours.
+
 
 #### List of mentors available for the project via IRC and Google groups mailing list:
 
