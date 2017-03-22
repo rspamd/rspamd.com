@@ -90,7 +90,7 @@ After this, you will need to run `systemctl daemon-reload` to reread the configu
 The more information about core dumps and systemd could be found here: <https://wiki.archlinux.org/index.php/Core_dump>
 
 ### How to limit number of core files
-Rspamd can stop dumping cores upon reaching a specific limit. To enable this functionality you can add the following lines to the `etc/rspamd/local.d/options.inc`:
+Rspamd can stop dumping cores upon reaching a specific limit. To enable this functionality you can add the following lines to `/etc/rspamd/local.d/options.inc`:
 
 ```ucl
 cores_dir = "/coreland/";
@@ -217,7 +217,7 @@ Historically, Rspamd provided user-editable configuration files. However, as the
 1. Override configurations
 2. Local configurations
 
-An override configuration (`etc/rspamd.conf.override`) is used to ultimately redefine the default values in Rspamd. In this file, you can redefine **whole sections** of the default configuration. For example, if you have a module `example` defined in the default configuration as follows:
+An override configuration (`/etc/rspamd/rspamd.conf.override`) is used to ultimately redefine the default values in Rspamd. In this file, you can redefine **whole sections** of the default configuration. For example, if you have a module `example` defined in the default configuration as follows:
 
 ```ucl
 example {
@@ -226,7 +226,7 @@ example {
 }
 ```
 
-and you wanted to override `option2` by adding the following to `etc/rspamd.conf.override`:
+and you wanted to override `option2` by adding the following to `/etc/rspamd/rspamd.conf.override`:
 
 ```ucl
 example {
@@ -250,10 +250,12 @@ and add this to the `rspamd.conf.local` (but not override).
 ### What are the local.d and override.d directories
 From Rspamd version 1.2 onwards, the default configuration provides two more ways to extend or redefine each configuration file shipped with Rspamd. Each section definition includes two files with different priorities:
 
-- `etc/rspamd/local.d/<conf_file>` - included with priority `1` that allows you to redefine and extend the default rules; but `dynamic updates` or items redefined via the WebUI will have higher priority and can redefine the values included
-- `etc/rspamd/override.d/<conf_file>` - included with priority `10` that allows you to redefine all other things that could change configuration in Rspamd
+- `/etc/rspamd/local.d/<conf_file>` - included with priority `1` that allows you to redefine and extend the default rules; but `dynamic updates` or items redefined via the WebUI will have higher priority and can redefine the values included
+- `/etc/rspamd/override.d/<conf_file>` - included with priority `10` that allows you to redefine all other things that could change configuration in Rspamd
 
-Another important difference from the global override and local rules is that these files are included within each section. Here is an example of utilizing local.d for the `modules.d/example.conf` configuration file:
+Types of settings which can be merged are collections (`{}`) and lists (`[]`); other settings would be effectively overridden by either file.
+
+An important difference from the global override and local rules is that these files are included within each section. Here is an example of utilizing local.d for the `modules.d/example.conf` configuration file:
 
 ```ucl
 example {
@@ -491,7 +493,7 @@ You can use the same approach when writing rules in `rspamd.local.lua`.
 
 ### How can I disable some Rspamd rules safely
 
-The best way is to add a condition for the specific symbol. This could be done, for example, in `rspamd.local.lua`:
+The best way is to add a condition for the specific symbol. This could be done, for example, in `/etc/rspamd/rspamd.local.lua`:
 
 ~~~lua
 rspamd_config:add_condition('SOME_SYMBOL', function(task) return false end)
