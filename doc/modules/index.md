@@ -63,6 +63,7 @@ The following Lua modules are enabled in the default configuration (but may requ
 blacklists.
 - [force_actions](force_actions.html) - forces actions if selected symbols are detected
 - [greylisting](greylisting.html) - allows to delay suspicious messages
+- [history redis](history_redis.html) - stores history in Redis
 - [ip_score](ip_score.html) - dynamically scores sender reputation
 - [maillist](maillist.html) - determines the common mailing list signatures in a message.
 - [metadata_exporter](metadata_exporter.html) - pushes message metadata to external systems
