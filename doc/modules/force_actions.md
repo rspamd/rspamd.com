@@ -22,6 +22,8 @@ The following elements are valid in the rules of this module:
 
 Only one of `honor_action` or `require_action` should be set on a given rule.
 
+[Composite expressions](https://rspamd.com/doc/configuration/composites.html#composite-expressions) can be used for `expression`.
+
 ~~~ucl
 # Rules are defined in the rules {} block
 rules {
