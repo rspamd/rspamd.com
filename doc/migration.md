@@ -31,12 +31,12 @@ You are also suggested to disable outdated and no longer supported features of R
 
 The list of features includes the following ones:
 
-- Greylisting - provided by [greylisting module](https://rspamd.com/doc/modules/greylisting.html)
-- Ratelimit - is done by [ratelimit module](https://rspamd.com/doc/modules/ratelimit.html)
-- Replies whitelisting - is implemented in [replies module](https://rspamd.com/doc/modules/replies.html)
-- Antivirus filtering - provided now by [antivirus module](https://rspamd.com/doc/modules/antivirus.html)
-- DCC checks - are now done in [dcc module](https://rspamd.com/doc/modules/dcc.html)
-- Dkim signing - can be done now by using of [dkim module](https://rspamd.com/doc/modules/dkim.html#dkim-signatures) and also by a more simple [dkim signing module](https://rspamd.com/doc/modules/dkim_signing.html)
+- Greylisting - provided by [greylisting module]({{ site.url }}{{ site.baseurl }}/doc/modules/greylisting.html)
+- Ratelimit - is done by [ratelimit module]({{ site.url }}{{ site.baseurl }}/doc/modules/ratelimit.html)
+- Replies whitelisting - is implemented in [replies module]({{ site.url }}{{ site.baseurl }}/doc/modules/replies.html)
+- Antivirus filtering - provided now by [antivirus module]({{ site.url }}{{ site.baseurl }}/doc/modules/antivirus.html)
+- DCC checks - are now done in [dcc module]({{ site.url }}{{ site.baseurl }}/doc/modules/dcc.html)
+- Dkim signing - can be done now by using of [dkim module]({{ site.url }}{{ site.baseurl }}/doc/modules/dkim.html#dkim-signatures) and also by a more simple [dkim signing module]({{ site.url }}{{ site.baseurl }}/doc/modules/dkim_signing.html)
 
 All duplicating features are still kept in Rmilter for compatibility reasons. However, no further development or bug fixes will likely be done for them.
 
