@@ -54,7 +54,7 @@ There are many resources that define policies for different objects in email tra
 
 * [**URL lists**]({{ site.baseurl }}/doc/modules/surbl.html) are rather similar to DNS black lists but uses URLs in a message to fight spam and phishing. Rspamd has full embedded support of the most popular SURBL lists, such as [URIBL](http://uribl.com) and [SURBL](http://surbl.org) from SpamHaus.
 
-* [**Phishing checks**]({{ site.baseurl }}/doc/modules/phishing.html) are extremely useful to filter phishing messages and protect users from cyber attacks. Rspamd uses sophisticated algorithms to find phished URLs and supports the popular URL redirectors (for example, <http://t.co>) to avoid false positive hits. Popular phishing databases, such as [OpenPhish](https://openphsih.com) and [PhishTank](https://phishtank.com) are also supported.
+* [**Phishing checks**]({{ site.baseurl }}/doc/modules/phishing.html) are extremely useful to filter phishing messages and protect users from cyber attacks. Rspamd uses sophisticated algorithms to find phished URLs and supports the popular URL redirectors (for example, <http://t.co>) to avoid false positive hits. Popular phishing databases, such as [OpenPhish](https://openphish.com) and [PhishTank](https://phishtank.com) are also supported.
 
 * [**Rate limits**]({{ site.baseurl }}/doc/modules/ratelimit.html) allow to prevent mass mails to be sent from your own hacked users. This is an extremely useful feature to protect both inbound and outbound mail flows.
 
