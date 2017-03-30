@@ -84,7 +84,7 @@ include /usr/local/etc/redis.conf
 
 ## Master instances configuration
 
-/usr/local/etc/redis-bayes.conf :
+`/usr/local/etc/redis-bayes.conf`:
 
 ```sh
 include /usr/local/etc/redis.conf
