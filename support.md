@@ -22,6 +22,14 @@ title: Rspamd Support
     </div>
     <div class="row support-block">
         <div class="col-sm-3 col-xs-12">
+            <a class="btn btn-social btn-primary btn-block" href="http://t.me/rspamd_ru"><i class="fa fa-telegram"></i> Telegram channel in Russian</a>
+        </div>
+        <div class="col-sm-9 col-xs-12">
+            <p>General Rspamd discussion in Telegram in Russian language.</p>
+        </div>
+    </div>
+    <div class="row support-block">
+        <div class="col-sm-3 col-xs-12">
             <a class="btn btn-social btn-reddit btn-block" href="https://freenode.net" data-toggle="tooltip" data-placement="top" title="channel #rspamd"><i class="fa fa-comments-o"></i>IRC channel</a>
         </div>
         <div class="col-sm-9 col-xs-12">
