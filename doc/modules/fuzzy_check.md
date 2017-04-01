@@ -14,14 +14,8 @@ Rspamd uses `shingles` algorithm to perform fuzzy match of messages. This algori
 is probabilistic and uses words chains to detect some common patterns and filter
 thus spam or ham messages. Shingles algorithm is described in the following 
 [research paper](http://dl.acm.org/citation.cfm?id=283370). We use 3-gramms for this
-algorithm and [siphash](https://131002.net/siphash/) for hash function. Currently,
-rspamd uses 32 hashes for shingles. Using of siphash allows private storages to be
-used, since nobody can generate the same sequence of hashes without some shared
-secret called `shingles key`. By default, rspamd uses the string `rspamd` as siphash
-key, however, it is possible change this value from the configuration.
-
-Each shingles set is accompanied by a collision resistant hash, namely [blake2](https://blake2.net/) hash.
-This digest is used as unique ID of the hash.
+algorithm and a set of hash functions: siphash, mumhash and others. Currently,
+rspamd uses 32 hashes for shingles.
 
 Attachements and images are not currently matched against fuzzy hashes, however they
 are checked by means blake2 digests using strict match.
@@ -42,35 +36,24 @@ list to check or learn and a set of flags and optional parameters. Here is an ex
 rule's settings:
 
 ~~~ucl
-fuzzy_check {
-	rule {
-		# List of servers, can be an array or multi-value item
-		servers = "localhost:11335";
-		servers = "highsecure.ru:11335";
+# local.d/fuzzy_check.conf
+rule "FUZZY_CUSTOM" {
+  # List of servers, can be an array or multi-value item
+  servers = "127.0.0.1:11335";
 
-		# Default symbol
-		symbol = "FUZZY_UNKNOWN";
+  # List of additional mime types to be checked in this fuzzy ("*" for any)
+  mime_types = ["application/*", "*/octet-stream"];
 
-		# List of additional mime types to be checked in this fuzzy ("*" for any)
-		mime_types = ["application/*", "*/octet-stream"];
+  # Maximum global score for all maps
+  max_score = 20.0;
 
-		# Maximum global score for all maps
-		max_score = 20.0;
+  # Ignore flags that are not listed in maps for this rule
+  skip_unknown = yes;
 
-		# Ignore flags that are not listed in maps for this rule
-		skip_unknown = yes;
-
-		# If this value is false, then allow learning for this fuzzy rule
-		read_only = no;
-
-		# Key for strict digests (default: "rspamd")
-		fuzzy_key = "somebigrandomstring";
-
-		# Key for fuzzy siphash (default: "rspamd")
-		fuzzy_shingles_key = "anotherbigrandomstring";
-
-		# maps
-	}
+  # If this value is false, then allow learning for this fuzzy rule
+  read_only = no;
+  # Fast hash type
+  algorithm = "mumhash";
 }
 ~~~
 
@@ -79,25 +62,24 @@ fuzzy storage can contain both good and bad hashes that should have different sy
 and thus different weights. Maps are defined inside fuzzy rules as following:
 
 ~~~ucl
-fuzzy_check {
-	rule {
-	...
-	fuzzy_map = {
-		FUZZY_DENIED {
-			# Maximum weight for this list
-			max_score = 20.0;
-			# Flag value
-			flag = 1
-        }
-        FUZZY_PROB {
-			max_score = 10.0;
-			flag = 2
-        }
-        FUZZY_WHITE {
-			max_score = 2.0;
-			flag = 3
-        }
-	}
+# local.d/fuzzy_check.conf
+rule "FUZZY_LOCAL" {
+...
+fuzzy_map = {
+  FUZZY_DENIED {
+    # Maximum weight for this list
+    max_score = 20.0;
+    # Flag value
+    flag = 1
+  }
+  FUZZY_PROB {
+    max_score = 10.0;
+    flag = 2
+  }
+  FUZZY_WHITE {
+    max_score = 2.0;
+    flag = 3
+  }
 }
 ~~~
 
@@ -164,3 +146,5 @@ or delete hashes:
 
 On learning, rspamd sends commands to **all** servers inside specific rule. On check,
 rspamd selects a server in round-robin matter.
+
+TODO: add delhash description
