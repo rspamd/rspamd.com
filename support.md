@@ -14,7 +14,7 @@ title: Rspamd Support
     </div>
     <div class="row support-block">
         <div class="col-sm-3 col-xs-12">
-            <a class="btn btn-social btn-telegram btn-block" href="http://t.me/rspamd"><i class="fa fa-telegram"></i> Telegram channel</a>
+            <a class="btn btn-social-icon btn-telegram" href="http://t.me/rspamd"><i class="fa fa-paper-plane"></i> Telegram channel</a>
         </div>
         <div class="col-sm-9 col-xs-12">
             <p>General Rspamd discussion in Telegram.</p>
@@ -22,7 +22,7 @@ title: Rspamd Support
     </div>
     <div class="row support-block">
         <div class="col-sm-3 col-xs-12">
-            <a class="btn btn-social btn-telegram btn-block" href="http://t.me/rspamd_ru"><i class="fa fa-telegram"></i> Telegram channel in Russian</a>
+            <a class="btn btn-social-icon btn-telegram" href="http://t.me/rspamd_ru"><i class="fa fa-paper-plane"></i> Telegram channel in Russian</a>
         </div>
         <div class="col-sm-9 col-xs-12">
             <p>General Rspamd discussion in Telegram in Russian language.</p>
