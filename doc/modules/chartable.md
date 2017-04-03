@@ -12,7 +12,7 @@ After normalization procedure, Rspamd compares the `badness` value with the thre
 
 ~~~ucl
 chartable {
-  symbol = "R_CHARSET_MIXED";
+  symbol = "R_MIXED_CHARSET";
   threshold = 0.1;
 }
 ~~~
