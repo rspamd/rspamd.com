@@ -121,7 +121,7 @@ when making a request to Rspamd (which is equal to `-p` flag for `rspamc` client
 Another possible reason for different results is too low a DNS, or task, timeout setting so asynchronous rules can't get results before being killed by a timeout. To get help about the relevant options you can type the following commands:
 
 ```
-rspamadm confighelp options.DNS
+rspamadm confighelp options.dns
 rspamadm confighelp options.dns_max_requests
 rspamadm confighelp workers.normal.task_timeout
 ```
