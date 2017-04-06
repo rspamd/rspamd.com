@@ -33,3 +33,16 @@ The second rule defines a static list of emails. Since `domain_only` is not spec
 in that list. It is also possible to use regular expressions in this list:
 
     /^[^@]+@example.com$/i
+
+It is also possible to hash emails queried in DNS lists or maps (for privacy reasons). This is done by specifying `hash` parameter to rules:
+
+
+~~~ucl
+# /etc/rspamd/local.d/emails.conf
+
+rule "EMAILS_DNSBL_HASHED" {
+  dnsbl = "emailbl.example.com";
+  domain_only = true;
+  hash = "sha1"; # md5, sha256, sha384 and blake2 are supported
+}
+~~~
