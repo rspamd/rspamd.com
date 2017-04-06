@@ -191,3 +191,4 @@ These also accept `POST`. The below endpoints all use `GET`:
 * `/symbols` - Returns symbols in metric & their scores
 * `/maps` - Returns list of maps
 * `/getmap` - Fetches contents of map according to ID passed in `Map:` header
+* `/fuzzydelhash` - Delete entries from fuzzy according to content of `Hash:` header(s)
