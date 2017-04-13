@@ -877,7 +877,7 @@ Rspamd can be integrated with an MTA using different methods described in the [i
 
 ### How to set up DKIM signing in Rmilter
 
-Please use [dkim module]({{ site.baseurl }}/doc/modules/dkim_signing.html) in Rspamd.
+Please use Rspamd's [DKIM Signing module]({{ site.baseurl }}/doc/modules/dkim_signing.html) or [sign_condition]({{ site.baseurl }}/doc/modules/dkim.html) in the DKIM module if you have complex requirements.
 
 ### Setup whitelisting of reply messages
 
