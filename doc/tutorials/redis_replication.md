@@ -166,9 +166,9 @@ As `slaves` do not connect to `masters` directly, `stunnel's` sockets are specif
 
 Check slave instances logs. If resynchronization with the masters was successful, you are done.
 
-## Rspamd configuration
+## Rspamd configuration on the master
 
-On both `master` and `slave` sides configure Rspamd to use distinct Redis instances respectively:
+On the `master` side configure Rspamd to use distinct Redis instances respectively:
 
 `local.d/redis.conf`:
 
@@ -188,4 +188,32 @@ servers = "localhost:6378";
 ```ucl
 backend = "redis";
 servers = "localhost:6377";
+```
+
+## Rspamd configuration on the slave
+
+On the `slave` side Rspamd should use local `redis` instance for both reading and writing as it is not replicated.
+
+`local.d/redis.conf`:
+
+```ucl
+servers = "localhost";
+```
+
+Since local `bayes` and `fuzzy` Redis instances are slaves, Rspamd should use them for reading, but write to the replication `master`.
+
+`local.d/classifier-bayes.conf`:
+
+```ucl
+backend = "redis";
+read_servers = "localhost:6378";
+write_servers = "localhost:6478";
+```
+
+`override.d/worker-fuzzy.inc`:
+
+```ucl
+backend = "redis";
+read_servers = "localhost:6377";
+write_servers = "localhost:6477";
 ```
