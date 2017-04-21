@@ -217,12 +217,17 @@ Negative values can be specified to match positions relative to the end of Recei
 
 URL maps allows another set of filters (by default, `url` maps are matched using hostname part):
 
-* `tld` - matches TLD (top level domain) part of the URL
 * `full` - matches the complete URL (not the hostname)
-* `is_phished` - matches hostname but if and only if the URL is phished (e.g. pretended to be from another domain)
-* `regexp:/re/` - extracts generic information using the specified regular expression from the hostname
-* `tld:regexp:/re/` - extracts generic information using the specified regular expression from the TLD part
 * `full:regexp:/re/` - extracts generic information using the specified regular expression from the full URL text
+* `is_obscured` - matches obscured URLs
+* `is_phished` - matches hostname but if and only if the URL is phished (e.g. pretended to be from another domain)
+* `is_redirected` - matches redirected URLs
+* `path` - match path
+* `query` - match query string
+* `regexp:/re/` - extracts generic information using the specified regular expression from the hostname
+* `tag:name` - matches full hostnames that have URL tag with `name`
+* `tld` - matches TLD (top level domain) part of the URL
+* `tld:regexp:/re/` - extracts generic information using the specified regular expression from the TLD part
 
 ## Pre-filter maps
 
