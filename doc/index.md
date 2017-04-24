@@ -31,6 +31,7 @@ This section contains documents about various configuration details.
 * **[Rspamadm]({{ site.baseurl }}/doc/rspamadm.html)** - describes utilities contained in the `rspamadm` command
 * **[Stunnel setup](./tutorials/stunnel_setup.html)** is a step-by-step guide to secure communications between Redis instances with [stunnel](https://www.stunnel.org)
 * **[Upstreams article]({{ site.baseurl }}/doc/configuration/upstream.html)** depicts how Rspamd connects to external servers (e.g. Redis or DNS)
+* **[Getting feedback from users with IMAPSieve](./tutorials/feedback_from_users_with_IMAPSieve.html)** - how to get a copy of the message moved by user from or into the `Junk` folder
 
 ## Developers documentation
 
@@ -45,5 +46,7 @@ This section contains details about Rspamd internals, documents about writing ne
 
 ## External resources
 
-* [Training Rspamd with Dovecot antispam plugin, part 1](https://kaworu.ch/blog/2014/03/25/dovecot-antispam-with-rspamd/) - this tutorial describes how to train Rspamd automatically using the `antispam` plugin of the `Dovecot` IMAP server
-* [Training Rspamd with Dovecot antispam plugin, part 2](https://kaworu.ch/blog/2015/10/12/dovecot-antispam-with-rspamd-part2/) - continuation of the previous tutorial
+* [Training Rspamd with Dovecot antispam plugin, part 1](https://kaworu.ch/blog/2014/03/25/dovecot-antispam-with-rspamd/)<sup>[1](#fn1)</sup> - this tutorial describes how to train Rspamd automatically using the `antispam` plugin of the `Dovecot` IMAP server
+* [Training Rspamd with Dovecot antispam plugin, part 2](https://kaworu.ch/blog/2015/10/12/dovecot-antispam-with-rspamd-part2/)<sup>[1](#fn1)</sup> - continuation of the previous tutorial
+
+<a name="fn1">1.</a> antispam plugin is deprecated, use [IMAPSieve](https://wiki.dovecot.org/HowTo/AntispamWithSieve) instead
