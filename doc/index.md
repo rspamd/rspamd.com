@@ -31,6 +31,7 @@ This section contains documents about various configuration details.
 * **[Rspamadm]({{ site.baseurl }}/doc/rspamadm.html)** - describes utilities contained in the `rspamadm` command
 * **[Stunnel setup](./tutorials/stunnel_setup.html)** is a step-by-step guide to secure communications between Redis instances with [stunnel](https://www.stunnel.org)
 * **[Upstreams article]({{ site.baseurl }}/doc/configuration/upstream.html)** depicts how Rspamd connects to external servers (e.g. Redis or DNS)
+* **[Getting feedback from users with IMAPSieve](./tutorials/feedback_from_users_with_IMAPSieve.html)** - how to get a copy of the message moved by user from or into the `Junk` folder
 
 ## Developers documentation
 
