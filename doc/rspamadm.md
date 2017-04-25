@@ -134,6 +134,7 @@ Typical invocation would be `rspamadm grep -s DMARC_POLICY_ACCEPT -i /var/log/rs
 ~~~
 Application Options:
   -s, --string        Plain string to search (case-insensitive)
+  -l, --lua           Use Lua patterns in string search
   -p, --pattern       Pattern to search for (regex)
   -i, --input         Process specified inputs (stdin if unspecified)
   -S, --sensitive     Enable case-sensitivity in string search
