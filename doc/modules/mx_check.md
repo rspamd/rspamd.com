@@ -30,6 +30,9 @@ greylist_invalid = false;
 key_prefix = "rmx";
 # module-specific redis-server configuration
 #servers = "localhost";
+# a map of specific domains that should be excluded from MX check
+#exclude_domains = "/path/to/map/";
+
 ~~~
 
 Symbols indicated by configuration should be added to metric to provide non-zero scoring. For example you could add the following configuration to `/etc/rspamd/local.d/metrics.conf`:
