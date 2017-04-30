@@ -91,7 +91,7 @@ return function(task)
         end
         -- Keys are searched in `/usr/local/etc/dkim/domain.dkim.key`
         -- You can generate them using the following command:
-        -- rspamadm dkim_keygen -s 'dkim' -d 'example.com' -s /usr/local/etc/dkim/example.com.dkim.key
+        -- rspamadm dkim_keygen -s 'dkim' -d 'example.com' -k /usr/local/etc/dkim/example.com.dkim.key
         return {
           key = "/usr/local/etc/dkim/" .. d .. ".dkim.key",
           domain = d,
