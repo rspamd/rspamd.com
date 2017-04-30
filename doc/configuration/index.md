@@ -10,12 +10,15 @@ UCL functionality.
 ## Rspamd variables
 
 - *CONFDIR*: configuration directory for Rspamd, found in `$PREFIX/etc/rspamd/`
+- *LOCAL_CONFDIR*: site-local configuration directory for Rspamd, usually $CONFDIR
 - *RUNDIR*: runtime directory to store pidfiles or UNIX sockets
 - *DBDIR*: persistent databases directory (used for statistics or symbols cache).
 - *LOGDIR*: a directory to store log files
 - *PLUGINSDIR*: plugins directory for Lua plugins
+- *RULESDIR*: directory in which rules are kept
 - *PREFIX*: basic installation prefix
 - *VERSION*: Rspamd version string (e.g. "0.6.6")
+- *WWWDIR*: root directory for web interface
 
 ## Rspamd specific macros
 
