@@ -12,14 +12,20 @@ force_actions or metadata_exporter. Examples will be given below.
 
 ## Spamtrap setup
 
-Spamtrap currently requires redis being configured and used. The idea is to add all your
-spamtrap emails or domains to redis including several settings that you can combine with the
-settings redis module.
+The spamtrap plugin may either use a map containing regular expressions that represent
+email addresses or domains, or Redis, where addresses are stored as keys and values can
+be anything. You can use one or the other method. By setting a map parameter, Redis is
+automatically turned off.
+
+To use Redis - [see here]({{ site.baseurl }}/doc/configuration/redis.html) for information about configuring Redis.
+
+An example of a map is hown below.
 
 ### Module settings
 
 Parameters for the spamtrap modules are listed here.
 
+- `action`: You can optionally set an action
 - `symbol`: The name of a symbol that will be inserted, if a match between
   recipient and a spam trapped email/domain was found. Defaults to 'SPAMTRAP'
 - `score`: The score for this symbol. It defaults to neutral 0.0
@@ -30,13 +36,36 @@ Parameters for the spamtrap modules are listed here.
 - `fuzzy_flag`: Fuzzy flag, which must match with a defined flag in fuzzy_check
   for a 'denied' rule
 - `fuzzy_weight`: A weight factor for the fuzzy rule. It defaults to 10.0
-- `key_prefix`: The redis prefix which is used to find spamtrap records. It
-  defaults to 'sptr_'
+- `key_prefix`: The Redis prefix which is used to find spamtrap records. It
+  defaults to 'sptr\_'
+- `map`: You can define a regexp map, which automatically disables Redis for
+  this module
 
-### settings_redis example
+Configuration example /etc/rspamd/local.d/spamtrap.conf:
+
+~~~ucl
+action = "no action";
+score = 1.0;
+learn_fuzzy = true;
+learn_spam = true;
+map = file://$LOCAL_CONFDIR/maps.d/spamtrap.map;
+
+enabled = true;
+~~~
+
+An example of a map file is:
+
+~~~text
+/^test@example\.test$/
+/^.*@catchalldomain.test$/
+~~~
+
+The first is a full email address, while the second is a catch-all domain.
+
+### Advanced: settings_redis example
 
 The following is an example that you can use for the spamtrap module. It will look
-in redis and collect settings for dealing with spam trapped emails or domains. You
+in Redis and collect settings for dealing with spam trapped emails or domains. You
 can place this in /etc/rspamd/rspamd.conf.local:
 
 ~~~ucl
@@ -52,14 +81,23 @@ return function(task)
         return 'sptr_' .. rcpt[1]['addr']:lower()
 end
 EOD;
+                SPAMTRAP_DOMAIN = <<EOD
+return function(task)
+        local rcpt = task:get_recipients('smtp')
+        if not (rcpt and #rcpt == 1) then
+                return
+        end
+        return 'sptr_' .. '@' .. rcpt[1]['domain']:lower()
+end
+EOD;
         }
 }
 ~~~
 
-### Adding emails and domains to redis
+### Advanced: Adding emails and domains to Redis
 
-There are several way to add emails or domains to the redis store. One would be to add
-it directly with the redis-cli. But if you have more than one entry to add, a simple
+There are several way to add emails or domains to the Redis store. One would be to add
+it directly with the 'redis-cli'. But if you have more than one entry to add, a simple
 shell script will help you:
 
 ~~~bash
@@ -85,23 +123,3 @@ We disable certain groups here, as we can speed up tests. We do not ask for RBLs
 for viruses or doing some kind of SPF, DKIM and DMARC tests, as most of the spam trapped
 emails would already be catched by these rules. Our goal is primarly on learning fuzzy and
 bays spam, so we skip these tests. Feel free to add whatever you want.
-
-### Optional using force_actions
-
-How do you deal with spam trapped emails, after you have identified them? One way was to
-discard them in your MTA setup. Or you could send them using the metadata_exporter module.
-Another way is to accept these emails and deleiver it to a spamtrap mailbox, where you can
-review the original mail.
-
-In all these cases, you want to accept the email in Rspamd by forcing a 'no action'. The following
-example demonstrates a rule that will do the job. You can create it in 
-/etc/rspamd/local.d/force_actions.conf:
-
-~~~ucl
-rules {
-    SPAMTRAP_ALLOW {
-        action = "no action";
-        expression = "SPAMTRAP";
-    }
-}
-~~~
