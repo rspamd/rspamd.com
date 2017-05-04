@@ -5,7 +5,7 @@ title: Metadata exporter
 
 # Metadata exporter
 
-Metadata exporter processes a set of rules which identify interesting messages & and push information based on these to an external service (Currently supported are Redis Pubsub, HTTP POST & SMTP; user-defined backends can also be used).
+Metadata exporter processes a set of rules which identify interesting messages and push information based on these to an external service (currently supported are Redis Pub/Sub, HTTP POST & SMTP; user-defined backends can also be used).
 
 Possible applications include quarantines, logging, alerting & feedback loops.
 
@@ -38,11 +38,11 @@ metadata_exporter {
       formatter = "json";
     }
 
-    # This rule posts all messages to a Redis pubsub channel
+    # This rule posts all messages to a Redis Pub/Sub channel
     MY_REDIS_PUBSUB_1 {
       backend = "redis_pubsub";
       channel = "foo";
-      # Defalt formatter and selector is used
+      # Default formatter and selector is used
     }
 
     # This rule sends an e-Mail alert over SMTP containing message metadata
@@ -63,7 +63,7 @@ metadata_exporter {
 ### Stock pushers (backends)
 
  - `http`: sends content over HTTP POST
- - `redis_pubsub`: sends content over Redis Pubsub
+ - `redis_pubsub`: sends content over Redis Pub/Sub
  - `send_mail`: sends content over SMTP
 
 ### Stock selectors
@@ -78,7 +78,7 @@ metadata_exporter {
 
  - `default`: returns full message content
  - `email_alert`: generates an e-Mail report about the message
- - `json`: returns json-formatted metadata about a message
+ - `json`: returns JSON-formatted metadata about a message
 
 ### Settings: general
 
@@ -98,7 +98,7 @@ The following settings can be defined on any rule:
 
 ### Settings: `redis_pubsub` backend
 
- - `channel` (required): defines pubsub channel to post content to
+ - `channel` (required): defines Pub/Sub channel to post content to
 
 See [here]({{ site.baseurl }}/doc/configuration/redis.html) for information on configuring Redis servers.
 
