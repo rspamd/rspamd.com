@@ -49,7 +49,7 @@ dkim_signing {
   # Whether to get keys from Redis
   use_redis = false;
   # Hash for DKIM keys in Redis
-  hash_key = "DKIM_KEYS";
+  key_prefix = "DKIM_KEYS";
   # map of domains -> names of selectors (since rspamd 1.5.3)
   #selector_map = "/etc/rspamd/dkim_selectors.map";
   # map of domains -> paths to keys (since rspamd 1.5.3)
@@ -74,7 +74,7 @@ To use DKIM keys stored in Redis you should add the following to configuration:
 ~~~ucl
 dkim_signing {
   use_redis = true;
-  hash_key = "DKIM_KEYS";
+  key_prefix = "DKIM_KEYS";
   selector = "myselector";
 }
 ~~~
