@@ -81,8 +81,6 @@ disabled_modules = ["ratelimit"];
 
 This configuration snippet denies `ratelimit` to use the common Redis configuration and this module will be disabled if Redis is not explicitly configured for this module (either in `redis -> ratelimit` section or in `ratelimit` section).
 
-**NOTE**: statistics module will not use this common Redis options and you need to configure it separately as described in its [documentation]({{ site.baseurl }}/doc/configuration/statistic.html).
-
 ## Available Redis options
 
 Rspamd supports the following Redis options (common for all modules):

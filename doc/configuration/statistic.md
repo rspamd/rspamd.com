@@ -186,7 +186,7 @@ From version 1.1, it is also possible to specify Redis as a backend for statisti
 
 The following configuration is a full featured example of how you can set up redis for the statistics. Please edit `/etc/rspamd/local.d/statistic.conf` and paste the code.
 
-For a redis classifier, you need to set the backend to `redis`. It is important to define the `servers` parameter, as it is not taken from a global configuration (You might have defined redis for LUA modules). If you want to have bayes auto learning, you need to tell it to the configuration file. See below for further explanations on this parameter.
+For a redis classifier, you need to set the backend to `redis`. If you want to have bayes auto learning, you need to tell it to the configuration file. See below for further explanations on this parameter.
 
 Bayes tokens can be stored per user when you define a LUA function.
 
