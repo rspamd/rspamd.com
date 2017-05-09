@@ -196,9 +196,9 @@ Filename maps support this filters set:
 If no filter is specified `real_ip` is used by default.
 
 * `from_hostname` - string that represents hostname provided by a peer
-* `from_ip` - string representation of IP address as provided by a peer
+* `from_ip` - IP address as provided by a peer
 * `real_hostname` - hostname as resolved by MTA
-* `real_ip` - string representation of IP as resolved by PTR request of MTA
+* `real_ip` - IP as resolved by PTR request of MTA
 * `by_hostname` - MTA hostname
 * `proto` - protocol, e.g. ESMTP or ESMTPS
 * `timestamp` - received timetamp
