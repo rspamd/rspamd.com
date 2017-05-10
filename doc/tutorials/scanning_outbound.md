@@ -17,6 +17,7 @@ Rspamd tries to be suitable for outbound scanning with no or little configuratio
  - [Greylist]({{ site.url }}{{ site.baseurl }}/doc/modules/greylisting.html): is disabled
  - Hfilter: only URL-checks are applied
  - [IP Score]({{ site.url }}{{ site.baseurl }}/doc/modules/ip_score.html): is disabled
+ - [MX Check]({{ site.url }}{{ site.baseurl }}/doc/modules/mx_check.html): is disabled
  - [One Received header policy]({{ site.url }}{{ site.baseurl }}/doc/modules/once_received.html): is disabled
  - [Ratelimit]({{ site.url }}{{ site.baseurl }}/doc/modules/ratelimit.html): only `user` ratelimit is applied (to authenticated users- does not deal with `local_addrs`)
  - [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html): RBLs are disabled according to `exclude_users` and `exclude_local` settings (all save for `RAMBLER_EMAILBL`)
