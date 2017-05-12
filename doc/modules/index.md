@@ -85,7 +85,7 @@ either SMTP FROM addresses or on information from `Received` headers.
 - [spamassassin](spamassassin.html) - load spamassassin rules
 - [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages.
 - [whitelist](whitelist.html) - provides a flexible way to whitelist (or blacklist) messages based on SPF/DKIM/DMARC combinations
-- [url_redirector](url_redirector.html) - dereferences redirects (requires Redis)
+- [url_redirector](url_redirector.html) - dereferences redirects (requires Redis and SURBL module configuration)
 
 The following modules are explicitly disabled in the default configuration, set `enabled = true` in `/etc/rspamd/local.d/${MODULE_NAME}.conf` to enable them:
 
