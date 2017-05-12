@@ -51,20 +51,20 @@ modules {
 If a path is a directory then rspamd scans it for `*.lua" pattern and load all
 files matched.
 
-The following Lua modules are enabled in the default configuration (but may require additional configuration to work):
+The following Lua modules are enabled in the default configuration:
 
 - [antivirus](antivirus.html) - integrates virus scanners
 - [asn](asn.html) - looks up ASN-related information
 - [clickhouse](clickhouse.html) - pushes scan-related information to clickhouse DBMS
 - [dcc](dcc.html) - performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine message bulkiness
 - [dkim_signing](dkim_signing.html) - adds DKIM signatures to messages
-- [dmarc](dmarc.html) - performs DMARC policy checks
+- [dmarc](dmarc.html) - performs DMARC policy checks (requires Redis for reporting)
 - [emails](emails.html) - extract emails from a message and checks it against DNS
 blacklists.
 - [force_actions](force_actions.html) - forces actions if selected symbols are detected
-- [greylisting](greylisting.html) - allows to delay suspicious messages
-- [history redis](history_redis.html) - stores history in Redis
-- [ip_score](ip_score.html) - dynamically scores sender reputation
+- [greylisting](greylisting.html) - allows to delay suspicious messages (requires Redis)
+- [history redis](history_redis.html) - stores history in Redis (requires Redis)
+- [ip_score](ip_score.html) - dynamically scores sender reputation (requires Redis)
 - [maillist](maillist.html) - determines the common mailing list signatures in a message.
 - [metadata_exporter](metadata_exporter.html) - pushes message metadata to external systems
 - [metric_exporter](metric_exporter.html) - pushes statistics to external monitoring systems
@@ -72,13 +72,12 @@ blacklists.
 - [mime_types](mime_types.html) - applies some rules about mime types met in messages
 - [multimap](multimap.html) - a complex module that operates with different types
 of maps.
-- [neural networks](fann.html) - allows to post-process messages using neural network classification. requires redis configuration and log_helper worker setup for activation.
+- [neural networks](fann.html) - allows to post-process messages using neural network classification. (requires Redis configuration and log_helper worker setup for activation).
 - [once_received](once_received.html) - detects messages with a single `Received` headers
 and performs some additional checks for such messages.
 - [phishing](phishing.html) - detects messages with phished URLs.
-- [ratelimit](ratelimit.html) - implements leaked bucket algorithm for ratelimiting and
-requires `redis` to store data - if this is unconfigured the module is inactive.
-- [replies](replies.html) - checks if an incoming message is a reply for our own message
+- [ratelimit](ratelimit.html) - implements leaked bucket algorithm for ratelimiting (requires Redis)
+- [replies](replies.html) - checks if an incoming message is a reply for our own message (requires Redis)
 - [rbl](rbl.html) - a plugin that checks messages against DNS blacklist based on
 either SMTP FROM addresses or on information from `Received` headers.
 - [rmilter_headers](rmilter_headers.html) - adds/removes headers from messages
@@ -86,13 +85,13 @@ either SMTP FROM addresses or on information from `Received` headers.
 - [spamassassin](spamassassin.html) - load spamassassin rules
 - [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages.
 - [whitelist](whitelist.html) - provides a flexible way to whitelist (or blacklist) messages based on SPF/DKIM/DMARC combinations
-- [url_redirector](url_redirector.html) - dereferences redirects
+- [url_redirector](url_redirector.html) - dereferences redirects (requires Redis)
 
 The following modules are explicitly disabled in the default configuration, set `enabled = true` in `/etc/rspamd/local.d/${MODULE_NAME}.conf` to enable them:
 
-- [mx_check](mx_check.html) - checks if sending domain has a connectable MX
-- [url_reputation](url_reputation.html) - assigns reputation to domains in URLs
-- [url_tags](url_tags.html) - persists URL tags in Redis
+- [mx_check](mx_check.html) - checks if sending domain has a connectable MX (requires Redis)
+- [url_reputation](url_reputation.html) - assigns reputation to domains in URLs (requires Redis)
+- [url_tags](url_tags.html) - persists URL tags in Redis (requires Redis)
 
 ## Disabling module
 
