@@ -7,7 +7,7 @@ title: Getting feedback from users with IMAPSieve
 The solution is very similar to [Replacing antispam plugin with IMAPSieve](https://wiki.dovecot.org/HowTo/AntispamWithSieve),
 but instead of automatic learning it is supposed to store a copy of the message moved by user for further manual reviewing.
 
-In the example below when any user moves a message into or from `Junk` folder, a copy  of the message is placed into `report_ham` or `report_spam` folder of `spam@example.com` mailbox respectively.
+In the example below when any user moves a message into or from `Junk` folder, a copy  of the message is placed into `report_ham` or `report_spam` folder of `spam@example.com` mailbox respectively. When a message located in `Junk` folder replied to or forwarded, a copy of the message is placed into `report_spam_reply` folder.
 
 ## Requirements
 
@@ -33,9 +33,9 @@ protocol imap {
 plugin {
   sieve_plugins = sieve_imapsieve sieve_extprograms
 
-  # From elsewhere to Spam folder
+  # From elsewhere to Spam folder or flag changed in Spam folder
   imapsieve_mailbox1_name = Junk
-  imapsieve_mailbox1_causes = COPY
+  imapsieve_mailbox1_causes = COPY FLAG
   imapsieve_mailbox1_before = file:/usr/local/etc/dovecot/sieve/report-spam.sieve
 
   # From Spam folder to elsewhere
@@ -55,9 +55,19 @@ plugin {
 /usr/local/etc/dovecot/sieve/report-spam.sieve:
 
 ```sh
-require ["vnd.dovecot.pipe", "copy", "imapsieve", "environment"];
+require ["vnd.dovecot.pipe", "copy", "imapsieve", "environment", "imap4flags"];
 
-pipe :copy "dovecot-lda" [ "-d", "spam@example.com", "-m", "report_spam" ];
+if environment :is "imap.cause" "COPY" {
+    pipe :copy "dovecot-lda" [ "-d", "spam@example.com", "-m", "report_spam" ];
+}
+
+# Catch replied or forwarded spam
+elsif anyof (allof (hasflag "\\Answered",
+                    environment :contains "imap.changedflags" "\\Answered"),
+             allof (hasflag "$Forwarded",
+                    environment :contains "imap.changedflags" "$Forwarded")) {
+    pipe :copy "dovecot-lda" [ "-d", "spam@example.com", "-m", "report_spam_reply" ];
+}
 ```
 
 /usr/local/etc/dovecot/sieve/report-ham.sieve:
