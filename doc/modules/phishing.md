@@ -68,7 +68,7 @@ or whole domain parts of the URLs (FQDN) as well.
 ## Openphish support
 
 Since version 1.3, there is [openphish](https://openphish.com) support in rspamd.
-Now rspamd loads this public feed as a map (using HTTPS) and checks URLs in messages using
+Now rspamd can load this public feed as a map (using HTTPS) and check URLs in messages using
 openphish list. If any match is found, then rspamd adds symbol `PHISHED_OPENPHISH`.
 
 If you use research or commercial data feed, rspamd can also use its data and gives
@@ -79,6 +79,8 @@ There are couple of options available to configure openphish module:
 
 ~~~ucl
 phishing {
+	# Enable openphish support (default disabled)
+	openphish_enabled = true;
 	# URL of feed, default is public url:
 	openphish_map = "https://www.openphish.com/feed.txt";
 	# For premium feed, change that to your personal URL, e.g.
@@ -91,9 +93,7 @@ phishing {
 
 ## Phishtank support
 
-There is also [phishtank](https://phishtank.com) support in rspamd since 1.3. Unlike
-openphish feed, phishtank's one is not enabled by default since it has quite a big size (about 50Mb) so
-you might want to setup some reverse proxy (e.g. nginx) to cache that data among rspamd instances:
+There is also [phishtank](https://phishtank.com) support in rspamd since 1.3. This feed is quite large (about 50Mb) so you might want to setup some reverse proxy (e.g. nginx) to cache that data among rspamd instances:
 
 ~~~nginx
 proxy_cache_path /data/nginx/cache levels=1:2 keys_zone=phish:10m;
@@ -113,6 +113,7 @@ server {
 To enable phishtank feed, you can edit `local.d/phishing.conf` file and add the following lines there:
 
 ~~~ucl
+# Enable phishtank (default disabled)
 phishtank_enabled = true;
 # Where nginx is installed
 phishtank_map = "http://localhost:8080/data/online-valid.json";
