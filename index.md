@@ -5,22 +5,22 @@ title: Rspamd spam filtering system
 
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;"><a href="{{ site.baseurl }}/announce/2017/03/17/rspamd-1.5.3.html">News: Rspamd 1.5.3 has been released</a></h3>
-				<span class="date"><small>2017-03-17</small></span>
-				<p style="margin-bottom: 0px; margin-top: 5px">The new stable release with redis history, important fixes and couple of new features.</p>
+				<h3 style="margin: 0px;"><a href="https://github.com/vstakhov/rspamd/releases/tag/1.5.7">News: Rspamd 1.5.7 has been released</a></h3>
+				<span class="date"><small>2017-05-02</small></span>
+				<p style="margin-bottom: 0px; margin-top: 5px">The new stable release with couple of important bugfixes.</p>
    </div>
 	 <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="{{ site.baseurl }}/announce/2017/03/17/rspamd-1.5.3.html" style="margin-top: 10px;">Learn more <small><i class="fa fa-chevron-right"></i></small></a>
+				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.5.7" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
 	 </div>
 </div>
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;"><a href="{{ site.baseurl }}/announce/2017/03/01/rspamd-1.5.0.html">News: Rspamd 1.5.0 has been released</a></h3>
-				<span class="date"><small>2017-03-01</small></span>
-				<p style="margin-bottom: 0px; margin-top: 5px">The new stable release with new modules, features, mime parser as well as with many stability and usability improvements.</p>
+				<h3 style="margin: 0px;"><a href="{{ site.baseurl }}/announce/2017/05/15/rspamd-ip-change.html">Update: rspamd.com IP address has been changed</a></h3>
+				<span class="date"><small>2017-05-15</small></span>
+				<p style="margin-bottom: 0px; margin-top: 5px">You might need to restart Rspamd to get an updated IP for the fuzzy storage.</p>
    </div>
 	 <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="{{ site.baseurl }}/announce/2017/03/01/rspamd-1.5.0.html" style="margin-top: 10px;">Learn more <small><i class="fa fa-chevron-right"></i></small></a>
+				<a class="btn btn-primary pull-right" href="{{ site.baseurl }}/announce/2017/05/15/rspamd-ip-change.html" style="margin-top: 10px;">Learn more <small><i class="fa fa-chevron-right"></i></small></a>
 	 </div>
 </div>
 
