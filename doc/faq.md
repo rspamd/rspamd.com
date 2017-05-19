@@ -12,6 +12,34 @@ This document includes some questions and practical examples that are frequently
 ### Where to get help about Rspamd
 The most convenient place for asking questions about Rspamd is the IRC channel _#rspamd_ on [http://freenode.net](http://freenode.net). For more information you can also check the [support page]({{ site.url }}{{ site.baseurl }}/support.html)
 
+### What versions of Rspamd are supported
+
+There are usually two supported branches in Rspamd git repo: the stable (`rspamd-<version>`) and the development (namely, `master`) ones. Stable releases are usually cut from the stable branch. Unstable or `mainline` releases are cut from the `master` branch. Once the new major release is ready for switching to the stable stage, the support for old stable branch is finished and all users are advised to switch to the new stable branch. Old releases and old stable branches are **NOT** supported by the project.
+
+### Using of the experimental packages
+
+Experimental packages are usually cut from the `master` branch and there are no exact change logs or release notes. However, all experimental packages include git hash, so you can easily get all changes by using the following command:
+
+```
+git log <old_hash>..<new_hash>
+```
+
+Experimental packages are considered less stable but they are normally built when all internal tests are passed. These packages also include new major and minor features that might be useful for your setup.
+
+### How Rspamd packages are built
+
+Rspamd packages are provided for many [platforms]({{ site.url }}{{ site.baseurl }}/downloads.html). The packages are built using the following principles:
+
+1. Enable `link time optimizations` where possible to improve the overall performance
+2. Bundle [LuaJIT](https://luajit.org) using 2.1 beta versions from the vendor. This provides about 30% improvement over the vanilla LuaJIT available in your distributive.
+3. Enable jemalloc
+4. Enable neural networks support (libfann)
+5. Support [Hyperscan](https://01.org/hyperscan)
+
+Some of these options are not available on some older platforms (Debian wheezy, Ubuntu Precise or CentOS 6) due to limitations of software provided.
+
+All packages are signed and should also be downloaded using `https`.
+
 ### How to figure out why Rspamd process crashed
 Like other programs written in `C` language, the best way to debug these problems is to obtain `core` dump. Unfortunately, there is no universal solution suitable for all platforms, however, for FreeBSD and Linux you could do the following:
 
