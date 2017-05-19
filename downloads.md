@@ -39,10 +39,9 @@ title: Downloads
 Supported distributions:
 
 - **CentOS 6** (amd64), need EPEL
-- **CentOS 7** (amd64), need EPEL
-- **Fedora 21** (amd64)
-- **Fedora 22** (amd64)
-- **Fedora 23** (amd64)
+- **CentOS 7** (amd64), need EPEL. Hyperscan and LuaJIT are enabled.
+- **Fedora 24** (amd64) Hyperscan and LuaJIT are enabled.
+- **Fedora 25** (amd64) Hyperscan and LuaJIT are enabled.
 
 Please note that `CentOS` rpm packages **requires** [EPEL](https://fedoraproject.org/wiki/EPEL) to be installed in your system as many dependencies are missing from the base CentOS repositories. You can learn how to install EPEL from their site: <https://fedoraproject.org/wiki/EPEL>.
 `Fedora` packages do not require EPEL or any other third-party repository.
@@ -75,12 +74,11 @@ For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> bra
 Rspamd supports the following .deb based distributives:
 
 - **Debian wheezy** (amd64, i386)
-- **Debian jessie** (amd64, i386)
-- **Debian sid** (amd64, i386)
+- **Debian jessie** (amd64, i386) Hyperscan and LuaJIT are enabled.
+- **Debian sid** (amd64, i386) Hyperscan and LuaJIT are enabled.
 - **Ubuntu precise** (amd64, i386)
-- **Ubuntu trusty** (amd64, i386)
-- **Ubuntu wily** (amd64, i386)
-- **Ubuntu xenial** (amd64, i386)
+- **Ubuntu trusty** (amd64, i386) Hyperscan and LuaJIT are enabled.
+- **Ubuntu xenial** (amd64, i386) Hyperscan and LuaJIT are enabled.
 
 To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
 
@@ -93,6 +91,8 @@ To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></
     apt-get --no-install-recommends install rspamd
 
 To obtain your distributive's codename, you could use the command `lsb_release -s -c` from the package called `lsb-release`.
+
+For [Hyperscan](https://01.org/hyperscan/) and [LuaJIT](https://luajit.org) information see the [FAQ]({{ site.url }}{{ site.baseurl }}/doc/faq.html).
 
 For <a class="undecor" href="#experimentalSys2">experimental<sup>2</sup></a> branch replace `apt-stable` with just `apt`:
 
