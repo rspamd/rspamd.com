@@ -110,7 +110,8 @@ Rspamd supports a set of internal functions to do some common spam filtering tas
 * `has_fake_html()` - check if there is an HTML part in message with no HTML tags
 * `has_html_tag(tagname)` - return `true` if html part contains specified tag
 * `has_only_html_part()` - return `true` if there is merely a single HTML part
-* `header_exists(header)` - return if a specified header exists in the message
+* `header_exists(header)` - return `true` if a specified header exists in the message
+* `is_empty_body()` - return `true` if the message has no payload body
 * `is_html_balanced()` - check whether HTML part has balanced tags
 * `is_recipients_sorted()` - return `true` if there are more than 5 recipients in a message and they are sorted
 * `raw_header_exists()` - does the same as `header_exists`
