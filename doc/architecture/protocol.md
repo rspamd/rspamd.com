@@ -6,7 +6,7 @@ title: Rspamd Architecture
 
 ## Protocol basics
 
-Rspamd uses the HTTP protocol, either version 1.0 or 1.1. (There is also a compatibility layer described further in this document.) Rspamd defines some headers which allow the passing of extra information about a scanned message, such as envelope data, IP address or SMTP SASL authentication data, etc. Rspamd supports normal and chunked encoded HTTP requests.
+Rspamd uses the HTTP protocol, either version 1.0 or 1.1. Rspamd defines some headers which allow the passing of extra information about a scanned message, such as envelope data, IP address or SMTP SASL authentication data, etc. Rspamd supports normal and chunked encoded HTTP requests.
 
 ## Rspamd HTTP request
 
