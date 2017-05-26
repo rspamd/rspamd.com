@@ -179,6 +179,7 @@ Filename maps support this filters set:
 * `email` or `email:addr` - parse header value and extract email address from it (`Somebody <user@example.com>` -> `user@example.com`)
 * `email:user` - parse header value as email address and extract user name from it (`Somebody <user@example.com>` -> `user`)
 *  `email:domain` - parse header value as email address and extract domain part from it (`Somebody <user@example.com>` -> `example.com`)
+*  `email:domain:tld` - parse header value as email address and extract effective second level domain from it (`Somebody <user@foo.example.com>` -> `example.com`)
 *  `email:name` - parse header value as email address and extract displayed name from it (`Somebody <user@example.com>` -> `Somebody`)
 * `regexp:/re/` - extracts generic information using the specified regular expression
 
