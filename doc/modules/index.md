@@ -51,39 +51,35 @@ modules {
 If a path is a directory then rspamd scans it for `*.lua" pattern and load all
 files matched.
 
-The following Lua modules are enabled in the default configuration:
+The following Lua modules are enabled in the default configuration (but may require additional configuration to work, see notes below):
 
-- [antivirus](antivirus.html) - integrates virus scanners
+- [antivirus](antivirus.html) - integrates virus scanners (requires configuration)
 - [asn](asn.html) - looks up ASN-related information
-- [clickhouse](clickhouse.html) - pushes scan-related information to clickhouse DBMS
-- [dcc](dcc.html) - performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine message bulkiness
-- [dkim_signing](dkim_signing.html) - adds DKIM signatures to messages
-- [dmarc](dmarc.html) - performs DMARC policy checks (requires Redis for reporting)
-- [emails](emails.html) - extract emails from a message and checks it against DNS
-blacklists.
-- [force_actions](force_actions.html) - forces actions if selected symbols are detected
+- [clickhouse](clickhouse.html) - pushes scan-related information to clickhouse DBMS (requires configuration)
+- [dcc](dcc.html) - performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine message bulkiness (requires configuration)
+- [dkim_signing](dkim_signing.html) - adds DKIM signatures to messages (requires configuration)
+- [dmarc](dmarc.html) - performs DMARC policy checks (requires Redis & configuration for reporting)
+- [emails](emails.html) - extract emails from a message and checks it against DNS blacklists. (requires configuration)
+- [force_actions](force_actions.html) - forces actions if selected symbols are detected (requires configuration)
 - [greylisting](greylisting.html) - allows to delay suspicious messages (requires Redis)
 - [history redis](history_redis.html) - stores history in Redis (requires Redis)
 - [ip_score](ip_score.html) - dynamically scores sender reputation (requires Redis)
 - [maillist](maillist.html) - determines the common mailing list signatures in a message.
-- [metadata_exporter](metadata_exporter.html) - pushes message metadata to external systems
-- [metric_exporter](metric_exporter.html) - pushes statistics to external monitoring systems
+- [metadata_exporter](metadata_exporter.html) - pushes message metadata to external systems (requires configuration)
+- [metric_exporter](metric_exporter.html) - pushes statistics to external monitoring systems (requires configuration)
 - [mid](mid.html) - selectively suppresses invalid/missing message-id rules
 - [mime_types](mime_types.html) - applies some rules about mime types met in messages
-- [multimap](multimap.html) - a complex module that operates with different types
-of maps.
+- [multimap](multimap.html) - a complex module that operates with different types of maps.
 - [neural networks](fann.html) - allows to post-process messages using neural network classification. (requires Redis configuration and log_helper worker setup for activation).
-- [once_received](once_received.html) - detects messages with a single `Received` headers
-and performs some additional checks for such messages.
+- [once_received](once_received.html) - detects messages with a single `Received` headers and performs some additional checks for such messages.
 - [phishing](phishing.html) - detects messages with phished URLs.
-- [ratelimit](ratelimit.html) - implements leaked bucket algorithm for ratelimiting (requires Redis)
+- [ratelimit](ratelimit.html) - implements leaked bucket algorithm for ratelimiting (requires Redis & configuration)
 - [replies](replies.html) - checks if an incoming message is a reply for our own message (requires Redis)
-- [rbl](rbl.html) - a plugin that checks messages against DNS blacklist based on
-either SMTP FROM addresses or on information from `Received` headers.
-- [rmilter_headers](rmilter_headers.html) - adds/removes headers from messages
-- [rspamd_update](rspamd_update.html) - load dynamic rules and other rspamd updates
-- [spamassassin](spamassassin.html) - load spamassassin rules
-- [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages.
+- [rbl](rbl.html) - a plugin that checks sending IP addresses or information from `Received` headers against DNS blacklists.
+- [rmilter_headers](rmilter_headers.html) - adds/removes headers from messages (requires configuration)
+- [rspamd_update](rspamd_update.html) - load dynamic rules and other rspamd updates (requires configuration)
+- [spamassassin](spamassassin.html) - load spamassassin rules (requires configuration)
+- [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages. (requires configuration)
 - [whitelist](whitelist.html) - provides a flexible way to whitelist (or blacklist) messages based on SPF/DKIM/DMARC combinations
 - [url_redirector](url_redirector.html) - dereferences redirects (requires Redis and SURBL module configuration)
 
