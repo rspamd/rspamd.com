@@ -139,12 +139,9 @@ acl_check_spam:
   # skip scanning for authenticated users (if desired?)
   accept authenticated = *
 
-  # add spam-score and spam-report header when told by rspamd
-  warn  spam       = nobody:true
-        condition  = ${if eq{$spam_action}{add header}}
-        add_header = X-Spam-Score: $spam_score ($spam_bar)
-        add_header = X-Spam-Report: $spam_report
-
+  # scan the message with rspamd
+  warn spam = nobody:true
+  # This will set variables as follows:
   # $spam_action is the action recommended by rspamd
   # $spam_score is the message score (we unlikely need it)
   # $spam_score_int is spam score multiplied by 10
@@ -157,6 +154,23 @@ acl_check_spam:
 
   deny  message    = Message discarded as high-probability spam
         condition  = ${if eq{$spam_action}{reject}}
+
+  # Remove foreign headers
+  warn remove_header = x-spam-bar : x-spam-score : x-spam-report : x-spam-status
+
+  # add spam-score and spam-report header when "add header" action is recommended by rspamd
+  warn
+    condition  = ${if eq{$spam_action}{add header}}
+    add_header = X-Spam-Score: $spam_score ($spam_bar)
+    add_header = X-Spam-Report: $spam_report
+
+  # add x-spam-status header if message is not ham
+  warn
+    ! condition  = ${if eq{$spam_action}{no action}}
+    add_header = X-Spam-Status: Yes
+
+  # add x-spam-bar header
+  warn add_header = X-Spam-Bar: ${sg{$spam_bar}{\\+}{*}}
 
   accept
 {% endhighlight %}
