@@ -169,8 +169,10 @@ acl_check_spam:
     ! condition  = ${if eq{$spam_action}{no action}}
     add_header = X-Spam-Status: Yes
 
-  # add x-spam-bar header
-  warn add_header = X-Spam-Bar: ${sg{$spam_bar}{\\+}{*}}
+  # add x-spam-bar header if score is positive
+  warn
+    condition = ${if >{$spam_score}{0}}
+    add_header = X-Spam-Bar: $spam_bar
 
   accept
 {% endhighlight %}
