@@ -39,15 +39,18 @@ Symbols indicated by configuration should be added to metric to provide non-zero
 
 ~~~ucl
 symbol "MX_INVALID" {
-  weight = 1.0;
+  score = 1.0;
   description = "No connectable MX";
+  one_shot = "true";
 }
 symbol "MX_MISSING" {
-  weight = 2.0;
+  score = 2.0;
   description = "No MX record";
+  one_shot = "true";
 }
 symbol "MX_GOOD" {
-  weight = -0.5;
+  score = -0.5;
   description = "MX was ok";
+  one_shot = "true";
 }
 ~~~
