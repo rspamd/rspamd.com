@@ -42,7 +42,7 @@ Add an [authentication-results](https://tools.ietf.org/html/rfc7001) header.
 
 ~~~ucl
   # Name of header
-  header = 'Authentication-Results';
+  header = "Authentication-Results";
   # Remove existing headers
   remove = 1;
   # SPF/DKIM/DMARC symbols in case these are redefined
