@@ -6,7 +6,6 @@ title: Downloads
 <!--# Downloading rspamd->
 
 <!-- download button with tooltip
-<p><a class="btn btn-primary btn-lg" href="{{ site.baseurl }}/downloads/rspamd-1.3.1.tar.xz" data-toggle="tooltip" data-placement="right" title="Download the most recent stable version as source tarball">Download rspamd-1.3.1</a></p>
 <!-- github button >
 <p><iframe src="{{ site.baseurl }}/github-btn.html?user=vstakhov&repo=rspamd&type=watch&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe></p-->
@@ -172,9 +171,7 @@ If there are no packages for your system or you want custom build options you ca
 
 	git clone --recursive https://github.com/vstakhov/rspamd.git
 
-There is also a mirror of rspamd repository: <https://git.rspamd.org/vstakhov/rspamd>
-
-Please note that `--recursive` option is essential for building rspamd, since the repository contains some submodules that must be initialized prior to the build process.
+There is also a mirror of rspamd repository: <https://git.rspamd.com/vstakhov/rspamd>
 
 ### Build requirements
 
@@ -183,7 +180,6 @@ Rspamd requires several 3-rd party software to build and run:
 * [openssl](https://www.openssl.org/) - cryptography and SSL/TLS Toolkit
 * [libevent](http://libevent.org/) - asynchronous event library
 * [glib2](http://library.gnome.org/devel/glib/) - common purposes library
-* [gmime2](http://spruce.sourceforge.net/gmime/) - mime parser (untill `Rspamd 1.5`)
 * [ragel](http://www.colm.net/open-source/ragel/) - state machine compiler
 * [Luajit](http://www.luajit.org/) - jit compiler for [lua](http://lua.org) programming language. Plain lua will work as well.
 * [cmake](http://www.cmake.org/) - build system used to configure rspamd
