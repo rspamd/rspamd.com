@@ -6,6 +6,16 @@ title: Upgrading
 
 This document describes incompatible changes introduced in recent Rspamd versions and details how to update your rules and configuration accordingly.
 
+## Migrating to Rspamd 1.6.0
+
+Due to implementation of the new milter interface, there is an important incompatible change that you might need to handle if you use `rmilter_headers` module. This module has been renamed to `milter_headers` and the according protocol section is now named `milter` instead of `rmilter`. If you configured this module inside `local.d/rmilter_headers.conf` or in `overrid.d/rmilter_headers.conf` then you don't need to undertake any actions: these files are still loaded by the renamed module. Otherwise, you need to change section name from `rmilter_headers` to `milter_headers`.
+
+A major rework of lua libraries has taken place in Rspamd 1.6. Some of the custom scripts might be broken if they are loaded **before** `rspamd.lua` or if you have edited `rspamd.lua` manually. To ensure that everything is fine you need to load vendor `rspamd.lua` before all of your custom scripts. It is a default behaviour, however, in some highly custiomised setups it might cause issues. In general, you need to ensure that the following line is somewhere in your code (it is at the very beginning of `rspamd.lua`):
+
+~~~lua
+require "global_functions" ()
+~~~
+
 ## Migrating to Rspamd 1.5.3
 
 The rspamd_update module has been disabled by default; if you need it please set `enabled = true` in `local.d/rspamd_update.conf`.
