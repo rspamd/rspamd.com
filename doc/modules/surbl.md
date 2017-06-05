@@ -19,14 +19,13 @@ Nonetheless, they can be used by personal services or low volume requests free
 of charge.
 
 ~~~ucl
-surbl {
-    # List of domains that are not checked by surbl
-    whitelist = "file://$CONFDIR/surbl-whitelist.inc";
-    # Additional exceptions for TLD rules
-    exceptions = "file://$CONFDIR/2tld.inc";
+# local.d/surbl.conf
+# List of domains that are not checked by surbl
+whitelist = "file://$CONFDIR/surbl-whitelist.inc";
+# Additional exceptions for TLD rules
+exceptions = "file://$CONFDIR/2tld.inc";
 
-  rules {
-
+rules {
     "SURBL_MULTI" {
         # DNS suffix for this rule
         suffix = "multi.surbl.org";
@@ -72,7 +71,6 @@ surbl {
         }
         noip = true;
     }
-  }
 }
 ~~~
 
@@ -83,23 +81,42 @@ it is possible to specify either `bit` or `ips` sections.
 Since some URL lists do not accept `IP` addresses, it is also possible to disable sending of URLs with IP address in the host to such lists. That could be done by specifying `noip = true` option:
 
 ~~~ucl
-    rule {
-        suffix = "dbl.spamhaus.org";
-        symbol = "DBL";
-        # Do not check numeric URL's
-        noip = true;
-    }
+"DBL" {
+    suffix = "dbl.spamhaus.org";
+    # Do not check numeric URL's
+    noip = true;
+}
 ~~~
 
 It is also possible to check HTML images URLs using URL blacklists. Just specify `images = true` for such list and you are done:
 
 ~~~ucl
-    rule {
-        suffix = "uribl.rambler.ru";
-        # Also check images
-        images = true;
-        symbol = "RAMBLER_URIBL";
+"RAMBLER_URIBL" {
+    suffix = "uribl.rambler.ru";
+    # Also check images
+    images = true;
+}
+~~~
+
+By default, Rspamd checks each SURBL `sanity` by queriyng of `facebook.com` domain. URL black list must NOT reply by some positive result (other than NXDOMAIN) to such a query. However, sometimes you might need to change that to another domain (e.g. to `INVALID`), so you can use `monitored_domain` option from Rspamd 1.6:
+
+~~~ucl
+"HOSTKAMA_URIBL" {
+    suffix = "hostkarma.junkemailfilter.com";
+    noip = true;
+    enabled = false;
+    ips = {
+        URIBL_HOSTKAMA_WHITE = "127.0.0.1";
+        URIBL_HOSTKAMA_BLACK = "127.0.0.2";
+        URIBL_HOSTKAMA_YELLOW = "127.0.0.3";
+        URIBL_HOSTKAMA_BROWN = "127.0.0.4";
+        URIBL_HOSTKAMA_NOBLACK = "127.0.0.5";
+        URIBL_HOSTKAMA_24_48H = "127.0.2.1";
+        URIBL_HOSTKAMA_LAST_10D = "127.0.2.2";
+        URIBL_HOSTKAMA_OLDER_10D = "127.0.2.3";
     }
+    monitored_domain = "INVALID";
+}
 ~~~
 
 ## Principles of operation
@@ -195,3 +212,7 @@ rules {
   }
 }
 ~~~
+
+## Use of URL redirectors
+
+SURBL module is designed to work with [url_redirector module](./url_redirector.html) which can help to resolve some known redirectors and extract the real URL to check with this module. Please refer to the module's documentation about how to work with it. SURBL module will automatically use that results.
