@@ -54,6 +54,7 @@ files matched.
 The following Lua modules are enabled in the default configuration (but may require additional configuration to work, see notes below):
 
 - [antivirus](antivirus.html) - integrates virus scanners (requires configuration)
+- [arc](arc.html) - checks and signs ARC signatures
 - [asn](asn.html) - looks up ASN-related information
 - [clickhouse](clickhouse.html) - pushes scan-related information to clickhouse DBMS (requires configuration)
 - [dcc](dcc.html) - performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine message bulkiness (requires configuration)

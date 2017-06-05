@@ -1,17 +1,23 @@
 ---
 layout: doc_modules
-title: DKIM signing module
+title: ARC module
 ---
+# ARC module
 
-# DKIM signing module
+This module checks [ARC](http://http://arc-spec.org/) signatures and seals for emails scanned.
+ARC signatures can establish that this specific message has been signed and then forwarded by a number of  a trusted relays. There is a good overview of the `ARC` standard here: <https://dmarc.org/presentations/ARC-Overview-2016Q2-v03.pdf>.
 
-The DKIM signing module has been added in Rspamd 1.5 to provide a relatively simple way to configure DKIM signing, the more flexible alternative being [sign_condition]({{ site.baseurl }}/doc/modules/dkim.html#dkim-signatures) in the DKIM module.
+Rspamd (from 1.6) supports both checking and signing for ARC signatures and seals. Internally, it uses [dkim](./dkim.html) module for dealing with signatures.
 
-DKIM signing currently works with Rmilter, Haraka & Communigate. For DKIM signing to work, you must [scan outbound mail with rspamd]({{ site.baseurl }}/doc/tutorials/scanning_outbound.html).
+The configuration of this module is very similar to both  [dkim](./dkim.html) and  [dkim_signing](./dkim_signing.html) modules.
+
+## Configuration
+
+- `whitelist` - a map of domains that should not be checked with ARC (e.g. if that domains have totally broken ARC signer)
 
 # Principles of operation
 
-The DKIM signing module chooses signing domains and selectors according to a predefined policy which can be modified with various settings. Description of this policy follows:
+The ARC signing module chooses signing domains and selectors according to a predefined policy which can be modified with various settings. Description of this policy follows:
 
  * To be eligible for signing, a mail must be received from an authenticated user OR a reserved IP address OR an address in the `sign_networks` map (if defined)
  * If envelope from address is not empty, the effective second level domain must match the MIME header From
@@ -21,7 +27,7 @@ The DKIM signing module chooses signing domains and selectors according to a pre
 # Configuration
 
 ~~~ucl
-# local.d/dkim_signing.conf
+# local.d/arc.conf
 
 # If false, messages with empty envelope from are not signed
 allow_envfrom_empty = true;
@@ -34,51 +40,51 @@ allow_username_mismatch = false;
 # If false, messages from authenticated users are not selected for signing
 auth_only = true;
 # Default path to key, can include '$domain' and '$selector' variables
-path = "/var/lib/rspamd/dkim/$domain.$selector.key";
+path = "/var/lib/rspamd/arc/$domain.$selector.key";
 # Default selector to use
-selector = "dkim";
+selector = "arc";
 # If false, messages from local networks are not selected for signing
 sign_local = true;
 # Symbol to add when message is signed
-symbol = "DKIM_SIGNED";
+symbol_signed = "ARC_SIGNED";
 # Whether to fallback to global config
 try_fallback = true;
-# Domain to use for DKIM signing: can be "header" or "envelope"
+# Domain to use for ARC signing: can be "header" or "envelope"
 use_domain = "header";
 # Whether to normalise domains to eSLD
 use_esld = true;
 # Whether to get keys from Redis
 use_redis = false;
-# Hash for DKIM keys in Redis
-key_prefix = "DKIM_KEYS";
+# Hash for ARC keys in Redis
+key_prefix = "ARC_KEYS";
 # map of domains -> names of selectors (since rspamd 1.5.3)
-#selector_map = "/etc/rspamd/dkim_selectors.map";
+#selector_map = "/etc/rspamd/arc_selectors.map";
 # map of domains -> paths to keys (since rspamd 1.5.3)
-#path_map = "/etc/rspamd/dkim_paths.map";
+#path_map = "/etc/rspamd/arc_paths.map";
 
 # Domain specific settings
 domain {
   example.com {
     # Private key path
-    path = "/var/lib/rspamd/dkim/example.key";
+    path = "/var/lib/rspamd/arc/example.key";
     # Selector
     selector = "ds";
   }
 }
 ~~~
 
-## DKIM keys in Redis
+## ARC keys in Redis
 
-To use DKIM keys stored in Redis you should add the following to configuration:
+To use ARC keys stored in Redis you should add the following to configuration:
 
 ~~~ucl
-# local.d/dkim_signing.conf
+# local.d/arc.conf
 use_redis = true;
 key_prefix = "DKIM_KEYS";
 selector = "myselector";
 ~~~
 
-... and populate the named hash with DKIM keys; for example the following Lua script could be run with `redis-cli --eval`:
+... and populate the named hash with ARC keys; for example the following Lua script could be run with `redis-cli --eval`:
 
 ~~~lua
 local key = [[-----BEGIN PRIVATE KEY-----
@@ -97,32 +103,32 @@ LuwlMCy6ErQOxBZFEiiovfTrS2qFZToMnkc4uLbwdY36LQJTq7unGTECQCCok8Lz
 BeZtAw+TJofpOM3F2Rlm2qXiBVBeubhRedsiljG0hpvvLJBMppnQ6r27p5Jk39Sm
 aTRkxEKrxPWWLNM=
 -----END PRIVATE KEY-----]]
-redis.call('HMSET', 'DKIM_KEYS', 'myselector.example.com', key)
+redis.call('HMSET', 'ARC_KEYS', 'myselector.example.com', key)
 ~~~
 
 The selector will be chosen as per usual (a domain-specific selector will be used if configured, otherwise the global setting is used).
 
 ## Using maps
 
-Since Rspamd 1.5.3 one or both of `selector_map` or `path_map` can be used to look up selectors and paths to private keys respectively (using the DKIM signing domain as the key). If entries are found, these will override default settings.
+One or both of `selector_map` or `path_map` can be used to look up selectors and paths to private keys respectively (using the ARC signing domain as the key). If entries are found, these will override default settings.
 
-In the following configuration we define a templatised path for the DKIM signing key, a default selector, and a map which could be used for overriding the default selector (and hence effective path to the signing key as well). Any eligible mail will be signed given there is a suitably-named key on disk.
+In the following configuration we define a templatised path for the ARC signing key, a default selector, and a map which could be used for overriding the default selector (and hence effective path to the signing key as well). Any eligible mail will be signed given there is a suitably-named key on disk.
 
 ~~~ucl
-# local.d/dkim_signing.conf
+# local.d/arc.conf
 try_fallback = true;
-path = "/var/lib/rspamd/dkim/$domain.$selector.key";
-selector_map = "/etc/rspamd/dkim_selectors.map";
-selector = "dkim";
+path = "/var/lib/rspamd/arc/$domain.$selector.key";
+selector_map = "/etc/rspamd/arc_selectors.map";
+selector = "arc";
 ~~~
 
 In the following configuration, we attempt to sign only domains which are present in both `selector_map` and `path_map`:
 
 ~~~ucl
-# local.d/dkim_signing.conf
+# local.d/arc.conf
 try_fallback = false;
-selector_map = "/etc/rspamd/dkim_selectors.map";
-path_map = "/etc/rspamd/dkim_paths.map";
+selector_map = "/etc/rspamd/arc_selectors.map";
+path_map = "/etc/rspamd/arc_paths.map";
 ~~~
 
 Format of the maps should be as shown:
@@ -133,3 +139,4 @@ example.net dkim
 $ head -1 /etc/rspamd/dkim_paths.map
 example.net /var/lib/rspamd/dkim/example.net.$selector.key
 ~~~
+

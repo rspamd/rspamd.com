@@ -26,14 +26,6 @@ DKIM module has several useful configuration options:
 - `domains` - a map of domains that should have more strict scores for DKIM violation
 - `strict_multiplier` - multiply the value of symbols by this value if received from `domains` map
 - `trusted_only` - do not check DKIM signatures for all domains but those which are from the `domains` map
-- `skip_multi` - skip DKIM check for messages with multiple signatures
-
-The last option can help for some circumstances when rspamd lacks the proper support of
-multiple DKIM signatures. Unfortunately, with some mailing lists, or other software
-this option could be useful to reduce false positives rate as rspamd deals with
-multiple signatures poorly: it just uses the first one to check. On the other hand,
-the proper support of multiple DKIM signatures is planned to be implemented in rspamd 
-in the next releases, which will make this option meaningless.
 
 ## DKIM signatures
 
@@ -143,6 +135,8 @@ dkim {
   rspamd_sign = yes;
 }
 ~~~
+
+From Rspamd 1.6, this is not applied, use Milter support in Rspamd.
 
 ### DKIM keys management
 
