@@ -17,6 +17,7 @@ Currently Rspamd defines the following worker types:
 - [controller](controller.html): this worker performs configuration actions, such as
 learning, adding fuzzy hashes and serving web interface requests
 - [fuzzy_storage](fuzzy_storage.html): stores fuzzy hashes
+- [rspamd_proxy](rspamd_proxy.html): handles requests forwarding and milter protocol
 - [lua](lua_worker.html): runs custom Lua scripts
 
 ## Workers connections
