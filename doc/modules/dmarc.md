@@ -39,7 +39,7 @@ These records are added to a list named $prefix$domain where $domain is the doma
 
 Keys are inserted to redis servers when a server is selected by hash value from sender's domain.
 
-To enable storing of report information, `reporting` must be set to `true`.
+To enable storing of report information, `reporting` must be set to `true`. Please see the section on reporting in this document for more information.
 
 Actions can be forced for messages based on DMARC disposition as demonstrated in example config below.
 
@@ -57,5 +57,55 @@ dmarc {
 		quarantine = "add_header";
 		reject = "reject";
 	}
+        # Ignore "pct" setting for some domains
+        # no_sampling_domains = "/etc/rspamd/dmarc_no_sampling.domains";
 }
 ~~~
+
+## Reporting
+
+From Rspamd 1.6 experimental support for generation of DMARC reports is provided.
+
+DMARC reporting information is stored in Redis- see [here]({{ site.baseurl }}/doc/configuration/redis.html) for information about configuring Redis.
+
+For Rspamd to store information to be used for reports, you must set `reporting = true` in the DMARC module configuration
+
+~~~ucl
+# /etc/rspamd/local.d/dmarc.conf
+reporting = true;
+~~~
+
+This should be enabled on every machine you want to collect reporting information from.
+
+Sending of reports should only be enabled on single machine. This is done by adding the below settings to the configuration:
+
+~~~ucl
+# /etc/rspamd/local.d/dmarc.conf
+# report_settings MUST be present
+report_settings {
+  # The following elements MUST be present
+  # organisation name to use for reports
+  org_name = "Example";
+  # organisation domain
+  domain = "example.net";
+  # sender address to use for reports
+  email = "postmaster@example.net";
+  # The following elements MAY be present
+  # SMTP host to send reports to ("127.0.0.1" if unset)
+  # smtp = "127.0.0.1";
+  # TCP port to use for SMTP (25 if unset)
+  # smtp_port = 25;
+  # HELO to use for SMTP ("rspamd" if unset)
+  # helo = "rspamd";
+  # Number of retries on temporary errors (2 if unset)
+  # retries = 2;
+  # Send DMARC reports here instead of domain owners
+  # override_address = "postmaster@example.net";
+  # Send DMARC reports here in addition to domain owners
+  # additional_address = "postmaster@example.net";
+  # Number of records to request with HSCAN
+  # hscan_count = 200
+}
+~~~
+
+Reports are sent every 24 hours.
