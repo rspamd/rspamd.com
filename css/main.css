@@ -360,3 +360,74 @@ li.tb-row a:hover,  li.tb-row a:focus{
   text-decoration: underline;
   color: #993300;
 }
+
+.fix {
+  text-align: right;
+  width: 10ch;
+  background: #428dc9;
+  display: block;
+  font-weight: bold;
+}
+
+.critfix {
+  text-align: right;
+  width: 10ch;
+  background: #ff3300;
+  font-weight: bold;
+  display: block;
+}
+
+.feature {
+  text-align: right;
+  width: 10ch;
+  background: #6cc644;
+  font-weight: bold;
+  display: block;
+}
+
+.rework {
+  text-align: right;
+  width: 10ch;
+  background: #9361cc;
+  display: block;
+  font-weight: bold;
+}
+
+.conf {
+  text-align: right;
+  width: 10ch;
+  background: #99ccff;
+  display: block;
+  font-weight: bold;
+}
+
+.rules {
+  text-align: right;
+  width: 10ch;
+  background: #ffff66;
+  display: block;
+  font-weight: bold;
+}
+
+.dl-horizontal dt {
+  overflow: inherit;
+  width: 100px;
+}
+
+.dl-horizontal dd {
+  margin-left: 125px;
+}
+
+@media (max-width: 768px) {
+  .dl-horizontal dt {
+    float: left;
+    width: 90px;
+    clear: left;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dl-horizontal dd {
+    margin-left: 105px;
+  }
+}
