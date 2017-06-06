@@ -180,7 +180,11 @@ For saving data to disk, it is also useful to setup overcommit memory behaviuor 
 
     echo 1 > /proc/sys/vm/overcommit_memory
 
-## Rmilter setup
+## Rmilter setup (for Rspamd < 1.6)
+
+**USE RMILTER IS DEPRECATED SINCE 1.6**
+
+For Rspamd 1.6, please skip to the [following section]({{ site.baseurl }}/doc/quickstart.html#using-of-milter-protocol-for-rspamd--16)
 
 When you are done with Postfix/Dovecot/Redis initial setup, it might be a good idea to setup Rmilter. Rmilter is used to connect Postfix (or Sendmail) with Rspamd. It can alter messages, change subject, reject spam, perform greylisting, check rate limits and even sign messages for authorized users/networks with DKIM signatures.
 
@@ -314,6 +318,8 @@ In addition to equivalents to files in `/etc/rspamd/modules.d` the following inc
  - `options.inc`: included inside `options { }`
  - `worker-normal.inc`: included inside normal `worker {}` block
  - `worker-controller.inc`: included inside controller `worker {}` block
+  - `worker-proxy.inc`: included inside rspamd_proxy `worker {}` block
+
 
 ### Setting listening interface
 
@@ -325,6 +331,33 @@ bind_socket = "*:11333";
 ~~~
 
 If you plan to leave this as is you may wish to use a firewall to restrict access to your machine. Please review the [worker documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/) for more information about `bind_socket` and related settings.
+
+Rspamd controller worker listens on the port `11334` by default, and the proxy worker uses port `11332` accordingly.
+
+## Using of Milter protocol (for Rspamd >= 1.6)
+
+From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introducing of this feature also finally obsoletes the [Rmilter](https://rspamd.com/rmilter/) project in honor of the new integration method. Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
+
+* Proxy mode (for large instances) with a dedicated scan layer
+* Self-scan mode (for smal instances)
+
+Here, we describe the simpliest `self-scan` option:
+
+<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
+
+In this mode, `rspamd_proxy` scans messages itself and talk to MTA directly using Milter protocol. The advantage of this mode is its simplicity. Here is a samle configuration for this mode:
+
+~~~ucl
+# local.d/worker-proxy.inc
+milter = yes; # Enable milter mode
+timeout = 120s; # Needed for Milter usually
+upstream "local" {
+  default = yes; # Self-scan upstreams are always default
+  self_scan = yes; # Enable self-scan
+}
+~~~
+
+For more advanced proxy usage, please see the corresponding [documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html).
 
 ### Setting the controller password
 

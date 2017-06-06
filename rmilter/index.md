@@ -3,32 +3,13 @@ layout: rmilter_main
 title: About rmilter
 ---
 
-## Introduction
+# Project state
 
-Rmilter is used to integrate Rspamd and `milter` compatible MTA, for example Postfix or Sendmail. 
+## RMILTER IS OBSOLETED SINCE RSPAMD 1.6
 
-<div>
-    <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
-        <div class="col-sm-3 col-xs-12">
-            <a class="btn btn-social btn-github btn-block" href="http://github.com/vstakhov/rmilter"><i class="fa fa-github"></i> Rmilter project</a>
-        </div>
-        <div class="col-sm-9 col-xs-12">
-            <p>Rmilter project page can be found on GitHub.</p>
-        </div>
-    </div>
-    <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
-        <div class="col-sm-3 col-xs-12">
-            <a class="btn btn-social btn-primary btn-block" href="{{ site.baseurl }}/rmilter/configuration.html"><i class="fa fa-file-text-o"></i> Rmilter configuration</a>
-        </div>
-        <div class="col-sm-9 col-xs-12">
-            <p>Rmilter configuration format is described in here.</p>
-        </div>
-    </div>
-</div>
+**OBSOLETION WARNING!**
 
-## Project state
-
-This project is now not under active development, however, bug fixes and Rspamd integration features are still considered.
+From Rspamd 1.6, this project is obsoleted by milter protocol implementation in [rspamd proxy]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html). You should **NOT** use it in any new projects, there will be completely no updates (including bugfixes) and the compatibility with Rmilter is guaranteed merely unless Rspamd 1.7 release! Please switch to Rspamd proxy.
 
 Historically, Rmilter supported many other features besides Rspamd integration. So far, all these features are implemented in Rspamd which allows to simplify integration with different MTA (e.g. Exim, Haraka or other non-milter compatible servers). Therefore, if you use this functionality you should consider switching it to Rspamd where all equal features are usually better implemented and have active and actual support.
 
