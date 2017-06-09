@@ -194,7 +194,9 @@ Bucket size and leak rate can be specified dynamically by creating a keyword tha
 ratelimit {
    dynamic_rates = {
      customuser = "customuser";
-     # customuser.get_value is called for bucket name, customuser.get_limit is called for bucket size & leak rate
+     # in this example customuser.get_value is called for bucket name & customuser.get_limit is called for bucket size & leak rate
+     # we can include other keywords to compose a new ratelimit key, eg. ip_customuser = "customuser"
+     # customuser.get_limit is called for bucket size & leak rate & key name is composed using customuser.get_value and the internal "ip" keyword
    }
    # other settings ...
 }
