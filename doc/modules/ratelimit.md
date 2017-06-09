@@ -172,7 +172,8 @@ function custom_keywords.customuser.get_value(task)
   return -- user is not in map, return nil
 end
 function custom_keywords.customuser.get_limit(task)
-  return {10, 0.1} -- bucket size, leak rate
+  -- return {10, 0.1} -- bucket size, leak rate
+  return "10 / 1m" -- in rspamd 1.6+ we can return simplified form
 end
 return custom_keywords
 ~~~
