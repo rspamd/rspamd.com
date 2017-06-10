@@ -375,6 +375,8 @@ Optionally you may set `enable_password` - if set, data-changing operations (suc
 enable_password = "q2";
 ~~~
 
+**Important information**: the default passwords (namely, `q1` and `q2`) are **BANNED**, so you cannot use them in your installation. Please set the appropriate passwords before using of the controller.
+
 Moreover, you can store an encrypted password for better security. To generate such a password just type
 
 	$ rspamadm pw
