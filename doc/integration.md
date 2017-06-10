@@ -16,86 +16,19 @@ This document also describes the rspamd LDA proxy mode that can be used for any 
 
 ## Using Rspamd with Postfix MTA
 
-To link rspamd with Postfix it is recommended to use a tool called `rmilter`:
-
-<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-schemes.007.png">
-
-Rmilter can be downloaded from github: <http://github.com/vstakhov/rmilter>.
-
-### Configuring Rmilter to work with Rspamd
-
-First of all build and install rmilter from source (or use a binary package if applicable):
-
-	% ./configure
-	% make
-	# make install
-
-Rmilter configuration is described in its [documentation]({{ site.url }}{{ site.baseurl }}/rmilter/)
-Here is a relevant example of rspamd setup within rmilter configuration file:
-
-~~~ucl
-spamd {
-        # use rspamd action for greylisting
-        spamd_greylist = yes;
-
-        # use rspamd action for messages
-        spamd_soft_fail = yes;
-
-        # add extended headers for messages
-        extended_spam_headers = yes;
-
-        # servers - spamd socket definitions in format:
-        # /path/to/file
-        # host[:port]
-        # sockets are separated by ','
-        # Default: empty
-        servers = spam1.example.com:11333, spam2.example.com;
-
-        # connect_timeout - timeout in miliseconds for connecting to rspamd
-        # Default: 1s
-        connect_timeout = 1s;
-
-        # results_timeout - timeout in miliseconds for waiting for rspamd response
-        # Default: 20s
-        results_timeout = 60s;
-
-        # error_time - time in seconds during which we are counting errors
-        # Default: 10
-        error_time = 10;
-
-        # dead_time - time in seconds during which we are thinking that server is down
-        # Default: 300
-        dead_time = 300;
-
-        # maxerrors - maximum number of errors that can occur during error_time to make us thinking that
-        # this upstream is dead
-        # Default: 10
-        maxerrors = 10;
-
-        # reject_message - reject message for spam
-        reject_message = "Spam message rejected; If this is not spam contact abuse at example.com";
-
-        # whitelist - list of ips or nets that should be not checked with spamd
-        # Default: empty
-        whitelist =
-                10.0.0.0/8;
-
-}
-~~~
-
-This configuration allows rmilter to utilize all rspamd actions including greylisting.
+From version 1.6, you should use [rspamd proxy worker](./workers/rspamd_proxy.html) in Milter mode to integrate Rspamd in Postfix. 
 
 ### Configuring Postfix
 
-Postfix configuration to scan messages on rspamd daemon via rmilter is very simple:
+Postfix configuration to scan messages on Rspamd daemon via milter protocol is very simple:
 
 {% highlight make %}
-smtpd_milters = unix:/var/run/rmilter/rmilter.sock
+#smtpd_milters = unix:/var/lib/rspamd/milter.sock
 # or for TCP socket
-# smtpd_milters = inet:localhost:9900
+smtpd_milters = inet:localhost:11332
 milter_protocol = 6
 milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
-# skip mail without checks if milter will die
+# skip mail without checks if something goes wrong
 milter_default_action = accept
 {% endhighlight %}
 
@@ -181,10 +114,10 @@ For further information please refer to the [Exim specification](http://www.exim
 
 ## Using Rspamd with Sendmail MTA
 
-Sendmail can use rspamd via rmilter and configuration is just like for postfix. sendmail configuration could be like:
+Sendmail can use rspamd via milter and configuration is just like for postfix. sendmail configuration could be like:
 
-	MAIL_FILTER(`rmilter', `S=unix:/run/rmilter/rmilter.sock, F=T')
-	define(`confINPUT_MAIL_FILTERS', `rmilter')
+	MAIL_FILTER(`rspamd', `S=inet:localhost:11332, F=T')
+	define(`confINPUT_MAIL_FILTERS', `rspamd')
 
 Then compile m4 to cf in the usual way.
 
