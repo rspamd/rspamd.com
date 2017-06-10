@@ -27,6 +27,8 @@ A major rework of lua libraries has taken place in Rspamd 1.6. Some of the custo
 require "global_functions" ()
 ~~~
 
+Rmilter tool is now **deprecated** in honor of milter protocol support in [rspamd proxy]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html). There are examples of some particular features that were previously implemented in Rmilter in [milter headers module]({{ site.url }}{{ site.baseurl }}/doc/modules/milter_headers.html). You should consider migrating from Rmilter as soon as possible since Rspamd 1.6 will be the last version that supports Rmilter tool. In future major releases (starting from 1.7), there are absolutely **no guarantees** of compatibility with Rmilter.
+
 ## Migrating to Rspamd 1.5.3
 
 The rspamd_update module has been disabled by default; if you need it please set `enabled = true` in `local.d/rspamd_update.conf`.
