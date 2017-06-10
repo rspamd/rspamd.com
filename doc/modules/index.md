@@ -77,7 +77,7 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [ratelimit](ratelimit.html) - implements leaked bucket algorithm for ratelimiting (requires Redis & configuration)
 - [replies](replies.html) - checks if an incoming message is a reply for our own message (requires Redis)
 - [rbl](rbl.html) - a plugin that checks sending IP addresses or information from `Received` headers against DNS blacklists.
-- [rmilter_headers](rmilter_headers.html) - adds/removes headers from messages (requires configuration)
+- [milter_headers](milter_headers.html) - adds/removes headers from messages (requires configuration)
 - [rspamd_update](rspamd_update.html) - load dynamic rules and other rspamd updates (requires configuration)
 - [spamassassin](spamassassin.html) - load spamassassin rules (requires configuration)
 - [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages. (requires configuration)
