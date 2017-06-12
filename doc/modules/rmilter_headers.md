@@ -15,6 +15,8 @@ The Rmilter headers module provides a number of routines to add common headers w
 
 ~~~ucl
 rmilter_headers {
+  # Rmilter compatibility option (default false) (enables x-spamd-result, x-rspamd-server & x-rspamd-queue-id)
+  # extended_spam_headers = true;
   # List of headers to be enabled for authenticated users (default empty)
   # authenticated_headers = ["authentication-results"];
   # List of headers to be enabled for local IPs (default empty)
