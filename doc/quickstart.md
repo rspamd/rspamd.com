@@ -381,13 +381,9 @@ Moreover, you can store an encrypted password for better security. To generate s
 
 	$ rspamadm pw
 	Enter passphrase:
-	$1$4mqeynj3st9pb7cgbj6uoyhnyu3cp8d3$59y6xa4mrihaqdw3tf5mtpzg4k7u69ypebc3yba8jdssoh39x16y
+    $2$g95ywihfinjqx4r69u6mgfs9cqbfq1ay$1h4bm5uod9njfu3hdbwd3w5xf5d9u8gb7i9xnimm5u8ddq3c5byy 
 
-Then you can copy this string and store it in the configuration file. Rspamd uses the [PBKDF2](http://en.wikipedia.org/wiki/PBKDF2) algorithm that makes it very hard to brute-force this password even if it has been compromised. From the version 1.3, Rspamd also support [Catena](https://eprint.iacr.org/2013/525.pdf) password hashing scheme which makes brute-force attacks even more memory- and computationally expensive. It is available via `--type` option:
-
-        $ rspamadm pw --type catena
-        Enter passphrase:
-        $2$g95ywihfinjqx4r69u6mgfs9cqbfq1ay$1h4bm5uod9njfu3hdbwd3w5xf5d9u8gb7i9xnimm5u8ddq3c5byy
+Then you can copy this string and store it in the configuration file. Rspamd used the [PBKDF2](http://en.wikipedia.org/wiki/PBKDF2) algorithm that makes it very hard to brute-force this password even if it has been compromised. From the version 1.3, Rspamd also supports [Catena](https://eprint.iacr.org/2013/525.pdf) password hashing scheme which makes brute-force attacks even more memory- and computationally expensive.
 
 For the list of all available hashing schemes, use `--list` option:
 
