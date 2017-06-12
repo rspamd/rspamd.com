@@ -15,6 +15,14 @@ The Rmilter headers module provides a number of routines to add common headers w
 
 ~~~ucl
 rmilter_headers {
+  # List of headers to be enabled for authenticated users (default empty)
+  # authenticated_headers = ["authentication-results"];
+  # List of headers to be enabled for local IPs (default empty)
+  # local_headers = ["x-spamd-bar"];
+  # Set false to always add headers for local IPs (default true)
+  # skip_local = true;
+  # Set false to always add headers for authenticated users (default true)
+  # skip_authenticated = true;
   # routines to use- this is the only required setting
   use = ["x-spamd-bar", "authentication-results"];
   # this is where we may configure our selected routines
