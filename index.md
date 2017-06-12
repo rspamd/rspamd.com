@@ -5,12 +5,12 @@ title: Rspamd spam filtering system
 
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;"><a href="https://github.com/vstakhov/rspamd/releases/tag/1.5.9">News: Rspamd 1.5.9 has been released</a></h3>
-				<span class="date"><small>2017-05-02</small></span>
-				<p style="margin-bottom: 0px; margin-top: 5px">The new stable release with couple of important bugfixes.</p>
+				<h3 style="margin: 0px;"><a href="{{ site.baseurl }}/announce/2017/06/12/rspamd-1.6.0.html">News: Rspamd 1.6.0 has been released</a></h3>
+				<span class="date"><small>2017-06-12</small></span>
+				<p style="margin-bottom: 0px; margin-top: 5px">The new major release with Milter and ARC support has been released.</p>
    </div>
 	 <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.5.9" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
+				<a class="btn btn-primary pull-right" href="{{ site.baseurl }}/announce/2017/06/12/rspamd-1.6.0.html" style="margin-top: 10px;">More<small><i class="fa fa-chevron-right"></i></small></a>
 	 </div>
 </div>
 <div class="row news_row" style="position: relative;">
