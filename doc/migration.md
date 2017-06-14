@@ -29,7 +29,7 @@ require "global_functions" ()
 
 Rmilter tool is now **deprecated** in honor of milter protocol support in [rspamd proxy]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html). There are examples of some particular features that were previously implemented in Rmilter in [milter headers module]({{ site.url }}{{ site.baseurl }}/doc/modules/milter_headers.html). You should consider migrating from Rmilter as soon as possible since Rspamd 1.6 will be the last version that supports Rmilter tool. In future major releases (starting from 1.7), there are absolutely **no guarantees** of compatibility with Rmilter.
 
-For example, if you need the old behaviour for `extended_spam_headers` in Rmilter, then you cna use the following snippet added to the `local.d/milter_headers.conf`:
+For example, if you need the old behaviour for `extended_spam_headers` in Rmilter, then you can use the following snippet added to the `local.d/milter_headers.conf`:
 
 ~~~ucl
 # local.d/milter_headers.conf
