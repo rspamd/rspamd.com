@@ -12,7 +12,7 @@ Due to implementation of the new milter interface, there is an important incompa
 
 Milter_headers module now skips adding headers for local networks & authenticated users by default; this can be re-enabled by setting `skip_local = false` and/or `skip_authenticated = false` in the module configuration; or alternatively you could set `authenticated_headers` and/or `local_headers` to a list of headers that should not be skipped.
 
-[Proxy worker](({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html) has been added to the default configuration and listens on all interfaces on TCP port 11332. If you don't need it you can set `count = 0` in `local.d/worker-proxy.inc`.
+[Proxy worker]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html) has been added to the default configuration and listens on all interfaces on TCP port 11332. If you don't need it you can set `count = 0` in `local.d/worker-proxy.inc`.
 
 This release removes the config split for systemd/sysv platforms. If you have custom init scripts you should ensure that these use `rspamd.conf` rather than `rspamd.sysvinit.conf`. If you use systemd and prefer to log to the systemd journal, you should add the following to `local.d/logging.inc`:
 
