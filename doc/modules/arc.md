@@ -80,7 +80,7 @@ To use ARC keys stored in Redis you should add the following to configuration:
 ~~~ucl
 # local.d/arc.conf
 use_redis = true;
-key_prefix = "DKIM_KEYS";
+key_prefix = "ARC_KEYS";
 selector = "myselector";
 ~~~
 
