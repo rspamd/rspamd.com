@@ -204,6 +204,8 @@ If no filter is specified `real_ip` is used by default.
 * `proto` - protocol, e.g. ESMTP or ESMTPS
 * `timestamp` - received timetamp
 * `for` - for value (unparsed mailbox)
+* `tld:from_hostname` - extract eSLD part from peer-provided hostname
+* `tld:real_hostname` - extract eSLD part from MTA-verified hostname
 
 If `real_ip` or `from_ip` is specified radix maps are used rather than hash maps.
 

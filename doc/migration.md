@@ -12,7 +12,7 @@ Due to implementation of the new milter interface, there is an important incompa
 
 Milter_headers module now skips adding headers for local networks & authenticated users by default; this can be re-enabled by setting `skip_local = false` and/or `skip_authenticated = false` in the module configuration; or alternatively you could set `authenticated_headers` and/or `local_headers` to a list of headers that should not be skipped.
 
-[Proxy worker]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html) has been added to the default configuration and listens on all interfaces on TCP port 11332. If you don't need it you can set `count = 0` in `local.d/worker-proxy.inc`.
+[Proxy worker]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html) has been added to the default configuration and listens on all interfaces on TCP port 11332. If you don't need it you can set `enabled = false` in `local.d/worker-proxy.inc`.
 
 This release removes the config split for systemd/sysv platforms. If you have custom init scripts you should ensure that these use `rspamd.conf` rather than `rspamd.sysvinit.conf`. If you use systemd and prefer to log to the systemd journal, you should add the following to `local.d/logging.inc`:
 
@@ -29,7 +29,7 @@ require "global_functions" ()
 
 Rmilter tool is now **deprecated** in honor of milter protocol support in [rspamd proxy]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html). There are examples of some particular features that were previously implemented in Rmilter in [milter headers module]({{ site.url }}{{ site.baseurl }}/doc/modules/milter_headers.html). You should consider migrating from Rmilter as soon as possible since Rspamd 1.6 will be the last version that supports Rmilter tool. In future major releases (starting from 1.7), there are absolutely **no guarantees** of compatibility with Rmilter.
 
-For example, if you need the old behaviour for `extended_spam_headers` in Rmilter, then you cna use the following snippet added to the `local.d/milter_headers.conf`:
+For example, if you need the old behaviour for `extended_spam_headers` in Rmilter, then you can use the following snippet added to the `local.d/milter_headers.conf`:
 
 ~~~ucl
 # local.d/milter_headers.conf
