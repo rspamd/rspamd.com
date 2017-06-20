@@ -78,6 +78,10 @@ code {
   background-color: rgba(0,0,0,0.04) !important;
   color: inherit;
 }
+/* Override Bootstrap's CSS to not force specific fonts */
+code,kbd,pre,samp {
+  font-family: monospace;
+}
 div.short-news {height: 200px;	overflow-y: hidden;}
 short-news p {
   white-space: nowrap;
