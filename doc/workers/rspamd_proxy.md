@@ -26,7 +26,7 @@ From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is support
 
 <img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
 
-In this mode, `rspamd_proxy` scans messages itself and talk to MTA directly using Milter protocol. The advantage of this mode is its simplicity. Here is a samle configuration for this mode:
+In this mode, `rspamd_proxy` scans messages itself and talk to MTA directly using Milter protocol. The advantage of this mode is its simplicity. Here is a sample configuration for this mode:
 
 ~~~ucl
 # local.d/worker-proxy.inc
@@ -36,6 +36,19 @@ upstream "local" {
   default = yes; # Self-scan upstreams are always default
   self_scan = yes; # Enable self-scan
 }
+~~~
+
+Also you can disable [normal](normal.html) worker to free up system resources as it is not necessary in `self-scan` mode:
+
+~~~ucl
+# local.d/worker-normal.inc
+enabled = false;
+~~~
+
+But there is a drawback: since `rspamc` uses [normal](normal.html) worker by default you need to explicitly point it to [controller](controller.html) worker port (11334):
+
+~~~
+rspamc -h localhost:11334 input-file
 ~~~
 
 ### Proxy mode
