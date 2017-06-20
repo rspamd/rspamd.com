@@ -339,7 +339,7 @@ Rspamd controller worker listens on the port `11334` by default, and the proxy w
 From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introducing of this feature also finally obsoletes the [Rmilter](https://rspamd.com/rmilter/) project in honor of the new integration method. Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
 
 * Proxy mode (for large instances) with a dedicated scan layer
-* Self-scan mode (for smal instances)
+* Self-scan mode (for small instances)
 
 Here, we describe the simpliest `self-scan` option:
 
