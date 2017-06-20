@@ -4,7 +4,7 @@ title: ARC module
 ---
 # ARC module
 
-This module checks [ARC](http://http://arc-spec.org/) signatures and seals for emails scanned.
+This module checks [ARC](http://arc-spec.org/) signatures and seals for emails scanned.
 ARC signatures can establish that this specific message has been signed and then forwarded by a number of  a trusted relays. There is a good overview of the `ARC` standard here: <https://dmarc.org/presentations/ARC-Overview-2016Q2-v03.pdf>.
 
 Rspamd (from 1.6) supports both checking and signing for ARC signatures and seals. Internally, it uses [dkim](./dkim.html) module for dealing with signatures.
@@ -80,7 +80,7 @@ To use ARC keys stored in Redis you should add the following to configuration:
 ~~~ucl
 # local.d/arc.conf
 use_redis = true;
-key_prefix = "DKIM_KEYS";
+key_prefix = "ARC_KEYS";
 selector = "myselector";
 ~~~
 
