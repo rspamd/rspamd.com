@@ -1,45 +1,115 @@
 ---
 layout: doc_modules
-title: Rmilter headers module
+title: Milter headers module
 ---
 
-# Rmilter headers module
+# Milter headers module
 
-The Rmilter headers module has been added in Rspamd 1.5 to provide a relatively simple way to configure adding/removing of headers via Rmilter (the alternative being to use the [API]({{ site.baseurl }}/doc/lua/task.html#me7351)). Despite its namesake it also works with [Haraka](https://haraka.github.io) and Communigate.
+The `milter headers` module (formerly known as `rmilter headers`) has been added in Rspamd 1.5 to provide a relatively simple way to configure adding/removing of headers via Rmilter (the alternative being to use the [API]({{ site.baseurl }}/doc/lua/task.html#me7351)). Despite its namesake it also works with [Haraka](https://haraka.github.io) and Communigate.
 
 # Principles of operation
 
-The Rmilter headers module provides a number of routines to add common headers which can be selectively enabled and configured. User-defined routines can also be added to configuration.
+The `milter headers` module provides a number of routines to add common headers which can be selectively enabled and configured. User-defined routines can also be added to configuration.
 
 # Configuration
 
 ~~~ucl
-rmilter_headers {
-  # Rmilter compatibility option (default false) (enables x-spam-flag, x-spamd-result, x-rspamd-server & x-rspamd-queue-id)
-  # extended_spam_headers = true;
-  # List of headers to be enabled for authenticated users (default empty)
-  # authenticated_headers = ["authentication-results"];
-  # List of headers to be enabled for local IPs (default empty)
-  # local_headers = ["x-spamd-bar"];
-  # Set false to always add headers for local IPs (default true)
-  # skip_local = true;
-  # Set false to always add headers for authenticated users (default true)
-  # skip_authenticated = true;
-  # routines to use- this is the only required setting (may be omitted if using extended_spam_headers)
-  use = ["x-spamd-bar", "authentication-results"];
-  # this is where we may configure our selected routines
-  routines {
-    # settings for x-spamd-bar routine
-    x-spamd-bar {
-      # effectively disables negative spambar
-      negative = "";
-    }
-    # other routines...
+# local.d/milter_headers.conf:
+
+# Options
+
+# Rmilter compatibility option (default false) (enables x-spam-flag, x-spamd-result, x-rspamd-server & x-rspamd-queue-id)
+# extended_spam_headers = true;
+
+# List of headers to be enabled for authenticated users (default empty)
+# authenticated_headers = ["authentication-results"];
+
+# List of headers to be enabled for local IPs (default empty)
+# local_headers = ["x-spamd-bar"];
+
+# Set false to always add headers for local IPs (default true)
+# skip_local = true;
+
+# Set false to always add headers for authenticated users (default true)
+# skip_authenticated = true;
+
+# Routines to use- this is the only required setting (may be omitted if using extended_spam_headers)
+use = ["x-spamd-bar", "authentication-results"];
+
+# this is where we may configure our selected routines
+routines {
+  # settings for x-spamd-bar routine
+  x-spamd-bar {
+    # effectively disables negative spambar
+    negative = "";
   }
-  custom {
-    # user-defined routines: more on these later
-  }
+  # other routines...
 }
+custom {
+  # user-defined routines: more on these later
+}
+~~~
+
+# Options
+
+## extended_spam_headers
+
+Rmilter compatibility option (default `false`). Enables `x-spam-flag`, `x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`.
+
+~~~ucl
+extended_spam_headers = true;
+~~~
+
+## authenticated_headers
+
+List of headers to be enabled for authenticated users (default `empty`).
+
+~~~ucl
+authenticated_headers = ["authentication-results"];
+~~~
+
+## local_headers
+
+List of headers to be enabled for local IPs (default `empty`).
+
+~~~ucl
+local_headers = ["x-spamd-bar"];
+~~~
+
+## skip_local
+
+Set false to always add headers for local IPs (default `true`).
+
+~~~ucl
+skip_local = true;
+~~~
+
+## skip_authenticated
+    
+Set false to always add headers for authenticated users (default `true`)
+
+~~~ucl
+skip_authenticated = true;
+~~~
+
+## extended_headers_rcpt (1.6.2+)
+
+List of recipients (default `empty`).
+
+Add extended Rspamd headers to messages if **EVERY** envelope recipient match this list (e.g. a list of domains mail server responsible for).
+
+~~~ucl
+extended_headers_rcpt = ["user1", "@example1.com", "user2@example2.com"];
+~~~
+
+`extended_headers_rcpt` has higher precedence than `skip_local` and `skip_authenticated`. 
+
+## use
+
+Routines to use- this is the only required setting (may be omitted if using `extended_spam_headers`)
+
+~~~ucl
+use = ["x-spamd-bar", "authentication-results"];
 ~~~
 
 # Functions
@@ -109,7 +179,7 @@ Adds a visual indicator of spam/ham level.
 
 ## x-spam-flag
 
-Add X-Spam-Flag to rmilter-compatibility headers.
+Add X-Spam-Flag to Rmilter-compatibility headers.
 
 ~~~ucl
   header = "X-Spam-Flag";
