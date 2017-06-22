@@ -622,7 +622,7 @@ backend = "redis";
 The statistics module uses `<SYMBOL><username>` as keys. Statistical tokens are recorded within a hash table with the corresponding name. The `ratelimit` module uses a key for each value stored in Redis, see [ratelimit module documentation]({{ site.url }}{{ site.baseurl }}/doc/modules/ratelimit.html).
 The DMARC module also uses multiple keys to store cumulative reports: a separate key for each domain.
 
-It is recommended to set a limit for dynamic Rspamd data stored in Redis ratelimits, ip reputation, and DMARC reports. You could use a separate Redis instance for statistical tokens and set different limits or use separate databases (by specifying `dbname` when setting up the redis backend).
+It is recommended to set a limit for dynamic Rspamd data stored in Redis ratelimits, ip reputation, and DMARC reports. You could use a separate Redis instance for statistical tokens and set different limits or use separate databases (by specifying `db` when setting up the redis backend).
 
 ## Plugin questions
 
