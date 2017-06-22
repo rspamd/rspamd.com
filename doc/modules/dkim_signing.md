@@ -39,12 +39,18 @@ path = "/var/lib/rspamd/dkim/$domain.$selector.key";
 selector = "dkim";
 # If false, messages from local networks are not selected for signing
 sign_local = true;
+# Map file of IP addresses/subnets to consider for signing
+# sign_networks = "/some/file"; # or url
 # Symbol to add when message is signed
 symbol = "DKIM_SIGNED";
 # Whether to fallback to global config
 try_fallback = true;
-# Domain to use for DKIM signing: can be "header" or "envelope"
+# Domain to use for DKIM signing: can be "header" (MIME From), "envelope" (SMTP From) or "auth" (SMTP username)
 use_domain = "header";
+# Domain to use for DKIM signing when sender is in sign_networks ("header"/"envelope"/"auth")
+#use_domain_sign_networks = "header";
+# Domain to use for DKIM signing when sender is a local IP ("header"/"envelope"/"auth")
+#use_domain_sign_local = "header";
 # Whether to normalise domains to eSLD
 use_esld = true;
 # Whether to get keys from Redis
