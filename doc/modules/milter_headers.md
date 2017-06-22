@@ -107,6 +107,16 @@ Adds a visual indicator of spam/ham level.
   remove = 1;
 ~~~
 
+## x-spam-flag
+
+Add X-Spam-Flag to rmilter-compatibility headers.
+
+~~~ucl
+  header = "X-Spam-Flag";
+  remove = 1;
+  value = "Yes";
+~~~
+
 ## x-spam-level
 
 Another visual indicator of spam level- SpamAssassin style.
