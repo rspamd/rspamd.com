@@ -129,7 +129,7 @@ Application Options:
 
 This command provides a convenient way to produce logically collated logs based on search strings/regular expressions. If a match is found, `rspamadm grep` prints the entire log related to the scanned message followed by a newline as a visual indicator of where each task ends.
 
-Typical invocation would be `rspamadm grep -s DMARC_POLICY_ACCEPT -i /var/log/rspamd/rspamd.log` for a case-insensitive string search or `-p [regex]` in place of `-s` for a regex search. The `-i` (input) flag can be specified multiple times for multiple inputs or ommited to use standard input.
+Typical invocation would be `rspamadm grep -s DMARC_POLICY_ACCEPT -i /var/log/rspamd/rspamd.log` for a case-insensitive string search or `-p [regex]` in place of `-s` for a regex search. The `-i` (input) flag can be specified multiple times for multiple inputs or omitted to use standard input.
 
 ~~~
 Application Options:
