@@ -69,6 +69,7 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [metadata_exporter](metadata_exporter.html) - pushes message metadata to external systems (requires configuration)
 - [metric_exporter](metric_exporter.html) - pushes statistics to external monitoring systems (requires configuration)
 - [mid](mid.html) - selectively suppresses invalid/missing message-id rules
+- [milter_headers](milter_headers.html) - adds/removes headers from messages (requires configuration)
 - [mime_types](mime_types.html) - applies some rules about mime types met in messages
 - [multimap](multimap.html) - a complex module that operates with different types of maps.
 - [neural networks](fann.html) - allows to post-process messages using neural network classification. (requires Redis configuration and log_helper worker setup for activation).
@@ -77,7 +78,6 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [ratelimit](ratelimit.html) - implements leaked bucket algorithm for ratelimiting (requires Redis & configuration)
 - [replies](replies.html) - checks if an incoming message is a reply for our own message (requires Redis)
 - [rbl](rbl.html) - a plugin that checks sending IP addresses or information from `Received` headers against DNS blacklists.
-- [milter_headers](milter_headers.html) - adds/removes headers from messages (requires configuration)
 - [rspamd_update](rspamd_update.html) - load dynamic rules and other rspamd updates (requires configuration)
 - [spamassassin](spamassassin.html) - load spamassassin rules (requires configuration)
 - [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages. (requires configuration)
