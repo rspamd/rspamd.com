@@ -18,7 +18,7 @@ The `milter headers` module provides a number of routines to add common headers 
 
 # Options
 
-# Rmilter compatibility option (default false) (enables x-spam-flag, x-spamd-result, x-rspamd-server & x-rspamd-queue-id)
+# Rmilter compatibility option (default false) (enables x-spam, x-spamd-result, x-rspamd-server & x-rspamd-queue-id)
 # extended_spam_headers = true;
 
 # List of headers to be enabled for authenticated users (default empty)
@@ -54,7 +54,7 @@ custom {
 
 ## extended_spam_headers
 
-Rmilter compatibility option (default `false`). Enables `x-spam-flag`, `x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`.
+Rmilter compatibility option (default `false`). Enables `x-spam`, `x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`.
 
 ~~~ucl
 extended_spam_headers = true;
@@ -177,12 +177,12 @@ Adds a visual indicator of spam/ham level.
   remove = 1;
 ~~~
 
-## x-spam-flag
+## x-spam
 
-Add X-Spam-Flag to Rmilter-compatibility headers.
+Add X-Spam to suspected spam messages.
 
 ~~~ucl
-  header = "X-Spam-Flag";
+  header = "X-Spam";
   remove = 1;
   value = "Yes";
 ~~~
