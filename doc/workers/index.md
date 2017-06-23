@@ -50,7 +50,7 @@ Here are options available to all workers:
 - `type` - a **mandatory** string that defines type of worker.
 - `bind_socket` - a string that defines bind address of a worker.
 - `count` - number of worker instances to run (some workers ignore that option, e.g. `fuzzy_storage`)
-- `enabled` - a Boolean (`true` or `false`), enable or disable a worker (`true` by default)
+- `enabled` (1.6.2+) - a Boolean (`true` or `false`), enable or disable a worker (`true` by default)
 
 `bind_socket` is the mostly common used option. It defines the address where worker should accept
 connections. Rspamd allows both names and IP addresses for this option:
