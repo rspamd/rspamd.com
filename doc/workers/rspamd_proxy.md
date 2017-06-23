@@ -38,7 +38,7 @@ upstream "local" {
 }
 ~~~
 
-Also you can disable [normal](normal.html) worker to free up system resources as it is not necessary in `self-scan` mode:
+Also you can disable<sup>[1](#fn1)</sup> [normal](normal.html) worker to free up system resources as it is not necessary in `self-scan` mode:
 
 ~~~ucl
 # local.d/worker-normal.inc
@@ -50,6 +50,11 @@ But there is a drawback: since `rspamc` uses [normal](normal.html) worker by def
 ~~~
 rspamc -h localhost:11334 input-file
 ~~~
+
+&nbsp;
+
+---
+<a name="fn1">1.</a> The `enabled` option is available for workers since Rspamd 1.6.2, in  previous versions you can use `count = 0;` instead.
 
 ### Proxy mode
 
