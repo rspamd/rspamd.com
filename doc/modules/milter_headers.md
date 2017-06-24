@@ -18,7 +18,7 @@ The `milter headers` module provides a number of routines to add common headers 
 
 # Options
 
-# Rmilter compatibility option (default false) (enables x-spam, x-spamd-result, x-rspamd-server & x-rspamd-queue-id)
+# Rmilter compatibility option (default false) (enables x-spamd-result, x-rspamd-server & x-rspamd-queue-id)
 # extended_spam_headers = true;
 
 # List of headers to be enabled for authenticated users (default empty)
@@ -153,6 +153,15 @@ Add an [authentication-results](https://tools.ietf.org/html/rfc7001) header.
   }
 ~~~
 
+## remove-header
+
+Removes a header with the specified name (`header` MUST be specified):
+
+~~~ucl
+  header = "Remove-This";
+  remove = 1;
+~~~
+
 ## spam-header
 
 Adds a predefined header to mail identified as spam.
@@ -175,16 +184,6 @@ Adds a visual indicator of spam/ham level.
   negative = "-";
   neutral = "/";
   remove = 1;
-~~~
-
-## x-spam
-
-Add X-Spam to suspected spam messages.
-
-~~~ucl
-  header = "X-Spam";
-  remove = 1;
-  value = "Yes";
 ~~~
 
 ## x-spam-level
