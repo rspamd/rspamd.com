@@ -108,4 +108,4 @@ report_settings {
 }
 ~~~
 
-Reports are sent every 24 hours.
+When sending of reports is enabled Rspamd will try to immediately send reports covering the previous day in UTC time; further sends are scheduled to run every 24 hours from this time. The file `$DBDIR/dmarc_reports_last_sent` tracks the time of the last send between restarts.
