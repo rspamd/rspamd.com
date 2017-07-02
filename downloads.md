@@ -56,7 +56,7 @@ Where `${YOUR_DISTRO}` is the short name of your os (e.g. `centos-7` or `fedora-
 
 For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> branch packages, download `rpm-experimental` repofile as following:
 
-    curl http://rspamd.com/rpm-stable/${YOUR_DISTRO}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd-experimental.repo
+    curl http://rspamd.com/rpm/${YOUR_DISTRO}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd-experimental.repo
     rpm --import http://rspamd.com/rpm/gpg.key
     yum update
     yum install rspamd    
@@ -180,7 +180,7 @@ Rspamd requires several 3-rd party software to build and run:
 * [openssl](https://www.openssl.org/) - cryptography and SSL/TLS Toolkit
 * [libevent](http://libevent.org/) - asynchronous event library
 * [glib2](http://library.gnome.org/devel/glib/) - common purposes library
-* [ragel](http://www.colm.net/open-source/ragel/) - state machine compiler
+* [ragel](http://www.colm.net/open-source/ragel/) - state machine compiler. **Please be aware** that the experimental version of Ragel (namely, `7.0`) is **NOT compatible** with Rspamd. Since it is shipped with CentOS 7.0, there is no way to use Ragel from the packages and you need to build compatible Ragel (e.g. 6.8) manually from the source packages or from source code. Ragel is required to **build** Rspamd not to run it.
 * [Luajit](http://www.luajit.org/) - jit compiler for [lua](http://lua.org) programming language. Plain lua will work as well.
 * [cmake](http://www.cmake.org/) - build system used to configure rspamd
 * [sqlite3](http://sqlite.org) - embedded database used to store some data by rspamd
