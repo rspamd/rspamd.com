@@ -27,7 +27,7 @@ storages. Global options include:
 
 - `symbol`: default symbol to insert (if no flags matches)
 - `min_length`: minimum length of text parts in words to perform fuzzy check (default - check all text parts)
-- `min_bytes`: minimum lenght of attachements and images in bytes to check them in fuzzy storage
+- `min_bytes`: minimum length of attachements and images in bytes to check them in fuzzy storage
 - `whitelist`: IP list to skip all fuzzy checks
 - `timeout`: timeout for reply waiting
 
@@ -88,7 +88,7 @@ fuzzy storage have their own weights. For example, if we have a hash `A` and 100
 marked it as spam hash, then it will have weight of `100 * single_vote_weight`.
 Therefore, if a `single_vote_weight` is `1` then the final weight will be `100` indeed.
 `max_score` means the weight that is required for the rule to add symbol with the maximum
-score 1.0 (that will be of course multiplied by metric's weigth). In our example,
+score 1.0 (that will be of course multiplied by metric's weight). In our example,
 if the weight of hash is `100` and `max_score` will be `99`, then the rule will be
 added with the weight of `1`. If `max_score` is `200`, then the rule will be added with the
 weight likely `0.2` (the real function is hyperbolic tangent). In the following configuration:
