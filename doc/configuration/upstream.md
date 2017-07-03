@@ -39,7 +39,7 @@ There are several algorithms available in Rspamd so far:
 
 ### Master-slave algorithm
 
-This algorithm always select the upstream with highest weight unless it is not alive. For example, `master-slave:127.0.0.1:53:10,8.8.8.8:53:1`, line specifies that `127.0.0.1` will be always used if possible. You can skip priorities, then the first element is treated as master and the subsequent ones are used as slaves: `master-slave:127.0.0.1,8.8.8.8` is the equialent of the previous definition.
+This algorithm always select the upstream with highest weight unless it is not alive. For example, `master-slave:127.0.0.1:53:10,8.8.8.8:53:1`, line specifies that `127.0.0.1` will be always used if possible. You can skip priorities, then the first element is treated as master and the subsequent ones are used as slaves: `master-slave:127.0.0.1,8.8.8.8` is the equivalent of the previous definition.
 
 ### Round-robin algorithm
 

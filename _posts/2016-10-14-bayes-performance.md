@@ -19,14 +19,14 @@ First of all, I have collected some corpus of messages with about 1k of spam mes
 1. Split corpus **randomly** into two equal parts with about **500** messages of Ham and Spam correspondingly.
 2. Learn bayes classifier using the desired spam filtering engine (`-d` for Dspam, `-b` for Bogofilter).
 3. Use the rest of messages to test classifier after learning procedure.
-4. Use **95%** confidence factor for `Rspamd` and `Dspam` (e.g. when probability of spam is less than 95% then consider that a classifier is in undefined state, `Bogofilter`, in turn, automaticaly provides 3 results: `spam`, `ham`, `undefined`).
+4. Use **95%** confidence factor for `Rspamd` and `Dspam` (e.g. when probability of spam is less than 95% then consider that a classifier is in undefined state, `Bogofilter`, in turn, automatically provides 3 results: `spam`, `ham`, `undefined`).
 
 This script collects 6 main values for each classifier:
 
 1. Spam/Ham detection rate - number of messages that are **correctly** recognized as spam and ham
 2. Spam FP rate - number of false positives for Spam: **HAM** messages that are recognized as **SPAM**
 3. Ham FP rate - number of false positives for Ham: **SPAM** messages that are recognized as **HAM**
-4. Ham and Spam FN rate - number of messages that are not recognized as Ham or Spam (but not classified as the opposite class, meaning uncertainity for a classifier)
+4. Ham and Spam FN rate - number of messages that are not recognized as Ham or Spam (but not classified as the opposite class, meaning uncertainty for a classifier)
 
 The worse error for a classifier is Spam False Positive, since it detects an **innocent** message as **Spam**. Ham FP and false negatives are more permissive: they just mean that you receive *more* spam than you want.
 

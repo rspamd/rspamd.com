@@ -255,7 +255,7 @@ There are some different approaches you can take to this:
 
 1. **Not recommended: This will complicate upgrades:** Modifying the stock config files in `/etc/rspamd` directly. Your package manager will not replace the modified config files on upgrade - and may prompt you to merge changes or install these files with an added extension depending on your platform.
 
-2. You could create an `rspamd.conf.local` and/or `rspamd.conf.override` file in the `/etc/rspamd` directory. What distinguishes these is the way in which they alter the configuration - `rspamd.conf.local` adds or _merges_ config elements while `rspamd.conf.override` adds or _replaces_ config elements. Both affect the top-level of configuration. Objects on this level are conventionally collections (`{}`) - which can be merged - as can lists `[]`, other types of settings are effectively overidden by merge operations according to their priority (site-local configuration files being higher priority than stock).
+2. You could create an `rspamd.conf.local` and/or `rspamd.conf.override` file in the `/etc/rspamd` directory. What distinguishes these is the way in which they alter the configuration - `rspamd.conf.local` adds or _merges_ config elements while `rspamd.conf.override` adds or _replaces_ config elements. Both affect the top-level of configuration. Objects on this level are conventionally collections (`{}`) - which can be merged - as can lists `[]`, other types of settings are effectively overridden by merge operations according to their priority (site-local configuration files being higher priority than stock).
 
 3. **Recommended where-ever possible** is use of special include files that are referenced in the stock configuration. Conventionally every configuration file in `/etc/rspamd/modules.d` will include two such includes:
 
@@ -341,7 +341,7 @@ From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is support
 * Proxy mode (for large instances) with a dedicated scan layer
 * Self-scan mode (for small instances)
 
-Here, we describe the simpliest `self-scan` option:
+Here, we describe the simplest `self-scan` option:
 
 <img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
 
