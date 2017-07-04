@@ -21,7 +21,7 @@ ip_score = action_multiplier * tanh (e * (metric_score/score_divisor))
 `tanh` is the hyperbolic tangent function.
 `metric_score` is the score Rspamd assigned the message.
 `action_multiplier` is the multiplier configured for the metric action, or zero in case action is `no action` and score is positive.
-`score_divisor` is supplied from setting with the same name- if not supplied no divison is done (recommended value: 10-100).
+`score_divisor` is supplied from setting with the same name- if not supplied no division is done (recommended value: 10-100).
 
 Default multipliers are shown below:
 

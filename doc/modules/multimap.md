@@ -202,7 +202,7 @@ If no filter is specified `real_ip` is used by default.
 * `real_ip` - IP as resolved by PTR request of MTA
 * `by_hostname` - MTA hostname
 * `proto` - protocol, e.g. ESMTP or ESMTPS
-* `timestamp` - received timetamp
+* `timestamp` - received timestamp
 * `for` - for value (unparsed mailbox)
 * `tld:from_hostname` - extract eSLD part from peer-provided hostname
 * `tld:real_hostname` - extract eSLD part from MTA-verified hostname

@@ -106,7 +106,7 @@ Rspamd supports a set of internal functions to do some common spam filtering tas
 * `content_type_is_subtype(str or /re/` - return `true` if subtype of content-type matches string or regexp
 * `content_type_is_type(str or /re/)`- return `true` if type of content-type matches string or regexp
 * `has_content_part(type)` - return `true` if the part with the specified `type` exists
-* `has_content_part_len(type, len)` - return `true` if the part with the specified `type` exists and have at least `len` lenght
+* `has_content_part_len(type, len)` - return `true` if the part with the specified `type` exists and have at least `len` length
 * `has_fake_html()` - check if there is an HTML part in message with no HTML tags
 * `has_html_tag(tagname)` - return `true` if html part contains specified tag
 * `has_only_html_part()` - return `true` if there is merely a single HTML part
