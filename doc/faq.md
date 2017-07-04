@@ -318,7 +318,7 @@ and the target configuration (that you could see using `rspamadm configdump exam
 example {
   option1 = "value"; # From default settings
   option2 = false; # From local.d
-  option3 = 2.0; # Local is overrided by override
+  option3 = 2.0; # Local is overridden by override
   option4 = ["something"]; # From override.d
 }
 ```
@@ -868,7 +868,7 @@ rspamd_config.RULE = function(task)
 end
 ~~~
 
-The only situation when you might have a problem with this approach is when you need to create regular expressions dependant on some external data:
+The only situation when you might have a problem with this approach is when you need to create regular expressions dependent on some external data:
 
 ~~~lua
 local function blah(task)
