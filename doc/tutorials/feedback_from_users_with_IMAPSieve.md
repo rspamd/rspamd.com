@@ -46,7 +46,7 @@ plugin {
 
   sieve_pipe_bin_dir = /usr/local/libexec/dovecot
 
-  sieve_global_extensions = +vnd.dovecot.pipe +vnd.dovecot.execute
+  sieve_global_extensions = +vnd.dovecot.pipe
 }
 ```
 
