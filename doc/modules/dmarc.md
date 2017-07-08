@@ -33,7 +33,7 @@ Rspamd is able to store records in `redis` which could be used to generate DMARC
 
     unixtime,ip,spf_result,dkim_result,dmarc_disposition
 
-where spf and dkim results are `true` or `false` indicating wether an aligned spf/dkim identifier was found and dmarc_disposition is one of `none`/`quarantine`/`reject` indicating policy applied to the message.
+where spf and dkim results are `true` or `false` indicating whether an aligned spf/dkim identifier was found and dmarc_disposition is one of `none`/`quarantine`/`reject` indicating policy applied to the message.
 
 These records are added to a list named $prefix$domain where $domain is the domain which defined policy for the message being reported on and $prefix is the value of the `key_prefix` setting (or "dmarc_" if this isn't set).
 

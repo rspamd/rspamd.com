@@ -177,7 +177,7 @@ Application Options:
 
 This is a command for signing maps which would most likely be used with the rspamd_update module.
 
-Typical use would involve first creating keypair using `rspamadm keypair -s -u > keypair.file` and then editting and saving the file to sign using `rspamadm signtool -e --editor=vim -k keypair.file [file.to.sign]`.
+Typical use would involve first creating keypair using `rspamadm keypair -s -u > keypair.file` and then editing and saving the file to sign using `rspamadm signtool -e --editor=vim -k keypair.file [file.to.sign]`.
 
 ~~~
 Application Options:

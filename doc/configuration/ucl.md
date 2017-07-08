@@ -14,7 +14,7 @@ title: UCL language
 	- [Named keys hierarchy](#named-keys-hierarchy)
 	- [Convenient numbers and booleans](#convenient-numbers-and-booleans)
 - [General improvements](#general-improvements)
-	- [Commments](#commments)
+	- [Comments](#comments)
 	- [Macros support](#macros-support)
 	- [Variables support](#variables-support)
 	- [Multiline strings](#multiline-strings)
@@ -204,7 +204,7 @@ section {
 
 ## General improvements {#general-improvements}
 
-### Commments {#comments}
+### Comments {#comments}
 
 UCL supports different style of comments:
 
@@ -319,7 +319,7 @@ UCL can handle multiline strings as well as single line ones. It uses shell/perl
 
     key = <<EOD
     some text
-    splitted to
+    split to
     lines
     EOD
 

@@ -121,5 +121,5 @@ exit 0
 
 We disable certain groups here, as we can speed up tests. We do not ask for RBLs, checking
 for viruses or doing some kind of SPF, DKIM and DMARC tests, as most of the spam trapped
-emails would already be catched by these rules. Our goal is primarly on learning fuzzy and
+emails would already be caught by these rules. Our goal is primarily on learning fuzzy and
 bays spam, so we skip these tests. Feel free to add whatever you want.

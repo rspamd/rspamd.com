@@ -29,7 +29,7 @@ Message passed when action is forced.
 
 - servers (null)
 
-Comma seperated list of Redis hosts
+Comma separated list of Redis hosts
 
 - symbol (REPLY)
 

@@ -180,7 +180,7 @@ Evaluation details:
 
 ### Libmilter fast alternative
 
-Rspamd milter integration, namely `rmilter` has been created using `libmilter` library. This library is being developped as a part of the Sendmail project and has different design flaws that are unevitable when using `libmilter`. For example, it proposes using of threads but does not follow the normal `N:N` model migrating tasks between threads. This makes the development of `Rmilter` constrained to `libmilter` model. The idea of this project is to implement the Sendmail milter protocol from the scratch. Unlike the original libmilter, this library should not enforce specific IO model to the milters designers (namely, threading model).
+Rspamd milter integration, namely `rmilter` has been created using `libmilter` library. This library is being developed as a part of the Sendmail project and has different design flaws that are unevitable when using `libmilter`. For example, it proposes using of threads but does not follow the normal `N:N` model migrating tasks between threads. This makes the development of `Rmilter` constrained to `libmilter` model. The idea of this project is to implement the Sendmail milter protocol from the scratch. Unlike the original libmilter, this library should not enforce specific IO model to the milters designers (namely, threading model).
 
 The second part of the task is to add milter support to Rspamd. The current stale project lives [here](https://github.com/vstakhov/librmilter).
 

@@ -138,7 +138,7 @@ To enable LDA mode, `rspamc` has the following options implemented:
 
 - `--exec "/path/to/lda params"`: executes the binary specified to deliver modified message
 - `--mime`: modify message instead of printing scan results only
-- `--json`: optionally add the full ouptut as base64 encoded `JSON`
+- `--json`: optionally add the full output as base64 encoded `JSON`
 
 Here is an example of using `rspamc` + `dovecot` as LDA implemented using `fetchmail`:
 
