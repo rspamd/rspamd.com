@@ -9,7 +9,7 @@ This module is intended to do some mime types sanity checks. That includes the f
 
 1. Checks whether mime type is from the `good` list (e.g. `multipart/alternative` or `text/html`)
 2. Checks if a mime type is from the `bad` list (e.g. `multipart/form-data`)
-3. Checks if an attachement filename extension is different from the intended mime type
+3. Checks if an attachment filename extension is different from the intended mime type
 4. Checks for archives content (rar and zip are supported) and find certain bad files inside
 5. Checks for some other bad patterns commonly used by spammers, e.g. extensions hiding (e.g. `.pdf.exe`)
 
@@ -34,7 +34,7 @@ extension_map = {
 }
 ~~~
 
-When an attachement extension matches left part but the content type does not match the right part then symbol `MIME_BAD_ATTACHMENT` is inserted.
+When an attachment extension matches left part but the content type does not match the right part then symbol `MIME_BAD_ATTACHMENT` is inserted.
 
 ### Archives support
 

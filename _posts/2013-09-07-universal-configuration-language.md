@@ -69,7 +69,7 @@ There are various things that makes json parsing more convenient for editing:
 {% highlight json %}
 "key": "value"
 {% endhighlight %}
-is the equialent to:
+is the equivalent to:
 {% highlight json %}
 {"key": "value"}
 {% endhighlight %}
@@ -82,7 +82,7 @@ section {
 	key = value;
 }
 {% endhighlight %}
-is the equialent to:
+is the equivalent to:
 {% highlight json %}
 {
 	"key": "value",
