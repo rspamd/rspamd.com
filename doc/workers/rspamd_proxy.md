@@ -22,6 +22,8 @@ From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is support
 * Proxy mode (for large instances) with a dedicated scan layer
 * Self-scan mode (for small instances)
 
+If your setup does not allow your MTA to reject mails set `discard_on_reject` (>= 1.6.2) to true for discarding spam-mails.
+
 ### Self-scan mode
 
 <img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
