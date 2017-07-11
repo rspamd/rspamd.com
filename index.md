@@ -6,7 +6,7 @@ title: Rspamd spam filtering system
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
 				<h3 style="margin: 0px;"><a href="https://github.com/vstakhov/rspamd/releases/tag/1.6.2">News: Rspamd 1.6.2 has been released</a></h3>
-				<span class="date"><small>2017-06-14</small></span>
+				<span class="date"><small>2017-07-08</small></span>
 				<p style="margin-bottom: 0px; margin-top: 5px">The new main line release with many improvements and important bug fixes</p>
    </div>
 	 <div class="col-xs-12 col-sm-2 bottom-right">
