@@ -229,7 +229,8 @@ return function(task, common_meta)
   return nil, -- no error
     {['X-Foo'] = 'Bar'}, -- add header: X-Foo: Bar
     {['X-Foo'] = 1}, -- remove foreign X-Foo headers
-    {}, -- metadata to return to other functions
+    {} -- metadata to return to other functions
+  end
 EOD;
   }
 ~~~
