@@ -25,51 +25,75 @@ The DKIM signing module chooses signing domains and selectors according to a pre
 
 # If false, messages with empty envelope from are not signed
 allow_envfrom_empty = true;
+
 # If true, envelope/header domain mismatch is ignored
 allow_hdrfrom_mismatch = false;
+
 # If true, multiple from headers are allowed (but only first is used)
 allow_hdrfrom_multiple = false;
+
 # If true, username does not need to contain matching domain
 allow_username_mismatch = false;
+
 # If false, messages from authenticated users are not selected for signing
 auth_only = true;
+
 # Default path to key, can include '$domain' and '$selector' variables
 path = "/var/lib/rspamd/dkim/$domain.$selector.key";
+
 # Default selector to use
 selector = "dkim";
+
 # If false, messages from local networks are not selected for signing
 sign_local = true;
+
 # Map file of IP addresses/subnets to consider for signing
 # sign_networks = "/some/file"; # or url
+
 # Symbol to add when message is signed
 symbol = "DKIM_SIGNED";
+
 # Whether to fallback to global config
 try_fallback = true;
+
 # Domain to use for DKIM signing: can be "header" (MIME From), "envelope" (SMTP From) or "auth" (SMTP username)
 use_domain = "header";
+
 # Domain to use for DKIM signing when sender is in sign_networks ("header"/"envelope"/"auth")
 #use_domain_sign_networks = "header";
+
 # Domain to use for DKIM signing when sender is a local IP ("header"/"envelope"/"auth")
 #use_domain_sign_local = "header";
+
 # Whether to normalise domains to eSLD
 use_esld = true;
+
 # Whether to get keys from Redis
 use_redis = false;
+
 # Hash for DKIM keys in Redis
 key_prefix = "DKIM_KEYS";
+
 # map of domains -> names of selectors (since rspamd 1.5.3)
 #selector_map = "/etc/rspamd/dkim_selectors.map";
+
 # map of domains -> paths to keys (since rspamd 1.5.3)
 #path_map = "/etc/rspamd/dkim_paths.map";
 
 # Domain specific settings
 domain {
+
+  # Domain name is used as key
   example.com {
+
     # Private key path
     path = "/var/lib/rspamd/dkim/example.key";
+
     # Selector
     selector = "ds";
+
   }
+
 }
 ~~~
 
