@@ -29,6 +29,8 @@ dcc {
     host = "/var/dcc/dccifd";
     # Port is only required if `dccifd` listens on a TCP socket
     # port = 1234
+    # Timeout in seconds (default 2)
+    # timeout = 2
 }
 ~~~
 
