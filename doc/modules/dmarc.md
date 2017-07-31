@@ -81,6 +81,8 @@ Sending of reports should only be enabled on single machine. This is done by add
 
 ~~~ucl
 # /etc/rspamd/local.d/dmarc.conf
+# send_reports MUST be true
+send_reports = true;
 # report_settings MUST be present
 report_settings {
   # The following elements MUST be present
