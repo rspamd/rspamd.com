@@ -40,7 +40,7 @@ allow_username_mismatch = false;
 # If false, messages from authenticated users are not selected for signing
 auth_only = true;
 # Default path to key, can include '$domain' and '$selector' variables
-path = "/var/lib/rspamd/arc/$domain.$selector.key";
+path = "${DBDIR}/arc/$domain.$selector.key";
 # Default selector to use
 selector = "arc";
 # If false, messages from local networks are not selected for signing
@@ -66,7 +66,7 @@ key_prefix = "ARC_KEYS";
 domain {
   example.com {
     # Private key path
-    path = "/var/lib/rspamd/arc/example.key";
+    path = "${DBDIR}/arc/example.key";
     # Selector
     selector = "ds";
   }
@@ -117,7 +117,7 @@ In the following configuration we define a templatised path for the ARC signing 
 ~~~ucl
 # local.d/arc.conf
 try_fallback = true;
-path = "/var/lib/rspamd/arc/$domain.$selector.key";
+path = "${DBDIR}/arc/$domain.$selector.key";
 selector_map = "/etc/rspamd/arc_selectors.map";
 selector = "arc";
 ~~~
