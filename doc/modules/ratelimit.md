@@ -20,7 +20,9 @@ In the default configuration, there are no cache servers specified, hence, **the
 - `servers` - list of servers where ratelimit data is stored; [global settings]({{ site.baseurl }}/doc/configuration/redis.html) used if not set
 - `symbol` - if this option is specified, then `ratelimit` plugin just adds the corresponding symbol instead of setting pre-result, the value is scaled as $$ 2 * tanh(\frac{bucket}{threshold * 2}) $$, where `tanh` is the hyperbolic tanhent function
 - `whitelisted_rcpts` - comma separated list of whitelisted recipients. By default
-the value of this option is 'postmaster, mailer-daemon'
+the value of this option is 'postmaster, mailer-daemon'. Supported entries are:
+    * user part of the address
+    * full address part of the address (1.7.0+).
 - `whitelisted_ip` - a map of ip addresses or networks whitelisted
 - `whitelisted_user` - a map of usernames which are excluded from user ratelimits
 - `max_delay` - maximum lifetime for any limit bucket (1 day by default)
