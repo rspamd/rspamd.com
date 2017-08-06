@@ -544,6 +544,7 @@ Yes, Rspamd should be safe for outbound scanning by default, [see here for detai
 You can use `rspamadm confighelp` to get a description of options supported by Rspamd. You can either specify a specific option or path: `rspamadm confighelp options` or search some keyword: `rspamadm confighelp -k servers`. Please read `rspamadm help confighelp` for the list of command line options available for this command.
 
 ### How to read Rspamd logs
+
 Rspamd logs are augmented, meaning that each log line normally includes a `tag` which can help to figure out log lines that are related to, for example, a specific task:
 
 ```
@@ -554,10 +555,15 @@ Rspamd logs are augmented, meaning that each log line normally includes a `tag` 
 2016-03-18 15:15:01 #29588(normal) <b120f6>; task; rspamd_task_write_log: id: <201603181414.u2IEEfKL062480@repo.freebsd.org>, qid: <D4CFE300135>, ip: 2001:1900:2254:206a::19:2, from: <owner-ports-committers@freebsd.org>, (default: F (no action): [-2.11/15.00] [MIME_GOOD,R_SPF_ALLOW,RCVD_IN_DNSWL_HI,MAILLIST,BAYES_HAM,FANN_SCORE,FORGED_RECIPIENTS_MAILLIST,FORGED_SENDER_MAILLIST]), len: 6849, time: 538.803ms real, 26.851ms virtual, dns req: 22
 ```
 
+Normally, you might want to check the final log line, for example, `rspamd_task_write_log` and subsequently find the tag which is `b120f6` in this example. Thereafter, you can check all log messages that are associated with this message.
+
 ### Can I customize log output for logger
+
 Yes, there is `log_format` option in `logging.inc`. Here is a useful configuration snippet that allows you to add more information in comparison to the default Rspamd logger output:
 
 ```ucl
+# local.d/logging.inc
+
 log_format =<<EOD
 id: <$mid>, $if_qid{ qid: <$>,} ip: [$ip], $if_user{ user: $,} smtp_from: <$smtp_from>, mime_from: <$mime_from>, smtp_rcpts: <$smtp_rcpts>, mime_rcpts: <$mime_rcpts>,
 (default: $is_spam ($action): [$scores] [$symbols_scores]),
@@ -581,6 +587,14 @@ EOD
 ```
 
 As you can see, you can use both embedded log variables and Lua code to customize log output. More information is available in the [logger documentation]({{ site.url }}{{ site.baseurl }}/doc/configuration/logging.html)
+
+It is sometimes useful to get debug information about some particular module in Rspamd. In this case, you can use `debug_modules` option in the logging configuration:
+
+```ucl
+# local.d/logging.inc
+
+debug_modules = ["spf"];
+```
 
 ### Which backend should I use for statistics
 
@@ -627,6 +641,7 @@ It is recommended to set a limit for dynamic Rspamd data stored in Redis ratelim
 ## Plugin questions
 
 ### How to whitelist messages
+
 You have multiple options here. First of all, if you need to define a whitelist based on `SPF`, `DKIM` or `DMARC` policies, then you should look at the [whitelist module]({{ site.url }}{{ site.baseurl }}/doc/modules/whitelist.html). Otherwise, there is a [multimap module]({{ site.url }}{{ site.baseurl }}/doc/modules/multimap.html) that implements different types of checks to add symbols according to list matches or to set pre-actions which allow you to reject or permit certain messages. For example, to blacklist all files from the following list in attachments:
 
 ```
@@ -665,6 +680,9 @@ The overall execution order in Rspamd is the following:
 4. composite symbols
 5. post-filters
 6. autolearn rules
+7. composites second pass (from 1.7)
+
+Please bear in mind, that composites that include post-filters are not visible inside post-filters (e.g. neural network or redis history) which might lead to some unexpected results.
 
 ### What is the meaning of the `URIBL_BLOCKED` symbol
 
