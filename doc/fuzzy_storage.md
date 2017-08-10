@@ -290,7 +290,7 @@ rule "local" {
     # Ignore unknown flags
     skip_unknown = yes;
     # Hash generation algorithm
-    algorithm = "siphash";
+    algorithm = "mumhash";
 
     # Map flags to symbols
     fuzzy_map = {
