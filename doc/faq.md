@@ -671,6 +671,7 @@ Rspamd executes different types of filters depending on the time of execution.
 - `pre-filters` are executed before everything else and they can set a `pre-result` that ultimately classifies a message. Filters and post-filters are not executed in this case.
 - `filters` are generic Rspamd rules.
 - `post-filters` are guaranteed to be executed after all filters are finished and allow the execution of actions that depends on the results of scan
+- `idempotent post-filters` are executed after all and they **MUST NOT** change metric result anyhow, e.g. these filters could be used for history
 
 The overall execution order in Rspamd is the following:
 
@@ -681,8 +682,8 @@ The overall execution order in Rspamd is the following:
 5. post-filters
 6. autolearn rules
 7. composites second pass (from 1.7)
+8. idempotent rules (from 1.7)
 
-Please bear in mind, that composites that include post-filters are not visible inside post-filters (e.g. neural network or redis history) which might lead to some unexpected results.
 
 ### What is the meaning of the `URIBL_BLOCKED` symbol
 
@@ -915,23 +916,11 @@ end
 
 However, you should consider using regexp maps with [multimap module]({{ site.baseurl }}/doc/modules/multimap.html) when you need something like this.
 
-## Rmilter questions
-
-### Can Rspamd run without Rmilter
-
-Rspamd can be integrated with an MTA using different methods described in the [integration](integration.html) document. For Postfix and Sendmail MTA `Rmilter` is the most appropriate tool. Moreover, Rmilter adds some features to Rspamd, such as conditional greylisting and message alteration. That's why I would recommend using Rmilter with Rspamd if possible (e.g. Exim doesn't support milter interface and qmail doesn't support anything but LDA mode).
-
-### How to set up DKIM signing in Rmilter
-
-Please use Rspamd's [DKIM Signing module]({{ site.baseurl }}/doc/modules/dkim_signing.html) or [sign_condition]({{ site.baseurl }}/doc/modules/dkim.html) in the DKIM module if you have complex requirements.
-
-### Setup whitelisting of reply messages
-
-Please use [replies module]({{ site.baseurl }}/doc/modules/replies.html) in Rspamd.
+## Integration questions
 
 ### How to distinguish inbound and outbound traffic for Rspamd instance
 
-From version 1.8.0 onwards, Rmilter can pass a special header to Rspamd called `settings-id`. This header allows Rspamd to apply specific settings for a message. You can set custom scores for a message or disable some rules or even a group of rules when scanning. For example, if we want to disable some rules for outbound scanning we could create an entry in the [settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html) module:
+From version 1.7.0 onwards, proxy worker can pass a special header called `settings-id` when doing checks (both proxy and self-scan modes). This header allows Rspamd to apply specific settings for a message. You can set custom scores for a message or disable some rules or even a group of rules when scanning. For example, if we want to disable some rules for outbound scanning we could create an entry in the [settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html) module:
 
 ```ucl
 settings {
@@ -954,20 +943,26 @@ settings {
 }
 ```
 
-Then, we can apply this setting ID on the outbound MTA using the Rmilter configuration:
+Then, we can apply this setting ID on the outbound MTA using the proxy configuration:
 
 ```ucl
-spamd {
-  ...
-  spamd_settings_id = "outbound";
+upstream "local" {
+  default = yes;
+  self_scan = yes; # Enable self-scan
+  settings_id = "2"; # Note that it is a string
+}
+mirror {
+  name = "test";
+  hosts = "example.com:11333";
+  settings_id = "3";
 }
 ```
 
 Another possibility is to apply settings based merely on the sender being authenticated or having an IP address in a particular range, refer to the [documentation]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html) for detail.
 
-### How can I restore the old SPF behaviour
+### How can I restore the old Rmilter SPF behaviour
 
-Previously, Rmilter could reject mail which fail SPF verification for certain domains. However, this was removed. Nevertheless, this behaviour could be reproduced using Rspamd.
+Previously, Rmilter could reject mail which fail SPF verification for certain domains. So far, this behaviour could be implemented using Rspamd.
 
 One can create rules in rspamd to force rejection on whatever symbols (+ other conditions) they want (DMARC module, among others has built-in support for such; [multimap]({{ site.url }}{{ site.baseurl }}/doc/modules/multimap.html) being the most generally useful)
 
