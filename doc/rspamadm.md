@@ -72,10 +72,11 @@ This command sends controller commands to rspamd's control socket (and should ty
 
 Valid controller commands are:
 
- - `fuzzy_stat` : Show fuzzy statistics
- - `fuzzy_sync` : Immediately sync fuzzy database to storage
+ - `fuzzystat` : Show fuzzy statistics
+ - `fuzzysync` : Immediately sync fuzzy database to storage
  - `recompile` : Recompile hyperscan regexes
  - `reresolve` : Reresolve upstreams by DNS name
+ - `reload` : Reload workers dynamic data
  - `stat` : Returns worker statistics
 
 Typical invocation would be `rspamadm control [command]`, for example `rspamadm control fuzzy_sync`.

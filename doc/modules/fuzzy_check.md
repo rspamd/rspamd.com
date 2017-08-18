@@ -52,6 +52,7 @@ rule "FUZZY_CUSTOM" {
 
   # If this value is false, then allow learning for this fuzzy rule
   read_only = no;
+
   # Fast hash type
   algorithm = "mumhash";
 }
@@ -88,10 +89,11 @@ fuzzy storage have their own weights. For example, if we have a hash `A` and 100
 marked it as spam hash, then it will have weight of `100 * single_vote_weight`.
 Therefore, if a `single_vote_weight` is `1` then the final weight will be `100` indeed.
 `max_score` means the weight that is required for the rule to add symbol with the maximum
-score 1.0 (that will be of course multiplied by metric's weight). In our example,
-if the weight of hash is `100` and `max_score` will be `99`, then the rule will be
-added with the weight of `1`. If `max_score` is `200`, then the rule will be added with the
-weight likely `0.2` (the real function is hyperbolic tangent). In the following configuration:
+score 1.0 (that will be of course multiplied by metric's weight).
+For example, if the weight of the hash is `100` and the `max_score` is set to `20`,
+then the rule will be added with the weight of `1`. If `max_score` is set to `200`,
+then the rule will be added with the weight likely `0.2` (calculated via hyperbolic tangent).
+In the following configuration:
 
 ~~~ucl
 metric {
@@ -99,7 +101,7 @@ metric {
 	...
 	symbol {
 		name = "FUZZY_DENIED";
-		weght = "10.0";
+		weight = "10.0";
 	}
 	...
 }
@@ -132,7 +134,7 @@ the following settings:
 3. Controller should have `fuzzy_check` module configured to the servers specified
 4. You should know `fuzzy_key` and `fuzzy_shingles_key` to operate with this storage
 5. Your `fuzzy_check` module should have `fuzzy_map` configured to the flags used by server
-6. Your `fuzzy_check` rule must have `read_only` option being turned off - `read_only = false`
+6. Your `fuzzy_check` rule must have `read_only` option being turned off (`read_only = false`)
 7. Your `fuzzy_storage` worker should allow updates from the controller's host (`allow_update` option)
 8. Your controller should be able to communicate with fuzzy storage by means of `UDP` protocol
 
@@ -144,7 +146,9 @@ or delete hashes:
 
 	rspamc -f <flag> fuzzy_del ...
 
+you can also delete a hash you find in the log output:
+
+	rspamc -f <flag> fuzzy_delhash <hash-id>
+
 On learning, rspamd sends commands to **all** servers inside specific rule. On check,
 rspamd selects a server in round-robin matter.
-
-TODO: add delhash description
