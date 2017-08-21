@@ -113,6 +113,7 @@ Type attribute means what is matched with this map. The following types are supp
 * `mempool` - matches contents of a mempool variable (specified with `variable` parameter)
 * `received` - (new in 1.5) matches elements of `Received` headers
 * `rcpt` - matches any of envelope rcpt or header `To` if envelope info is missing
+* `symbol_options` - (new in 1.6.3) match 'options' yielded by whichever symbol of interest (requires `target_symbol` parameter)
 * `url` - matches URLs in messages against maps
 
 DNS maps are legacy and are not encouraged to use in new projects (use [rbl](rbl.html) for that).
@@ -215,6 +216,10 @@ Additionally to these filters, Received maps support the following configuration
 * `max_pos` - Maximum position of Received header to match
 
 Negative values can be specified to match positions relative to the end of Received headers.
+
+### Symbol options filters
+
+* `regexp:/re/` - extract data from symbol options according to some regular expression
 
 ### URL filters
 
@@ -373,5 +378,11 @@ LAST_RECEIVED_HEADER_IP {
   map = "${LOCAL_CONFDIR}/rcvd_ip.map";
   filter = "real_ip";
   min_pos = -1;
+}
+SYMBOL_OPTIONS_DBL {
+  type = "symbol_options";
+  target_symbol = "DBL_ABUSE_REDIR";
+  symbols = ["INTERESTING_DOMAIN"];
+  map = "${LOCAL_CONFDIR}/dbl_redir_symbols.map";
 }
 ~~~
