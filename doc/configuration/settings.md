@@ -183,7 +183,11 @@ return function(task)
   -- Return nothing if we can't find domain of first SMTP recipient
   if not (rcpt and rcpt[1] and rcpt[1]['domain']) then return end
   -- Return "setting:" concatenated with the domain
-  return 'setting:' .. rcpt[1]['domain']
+  local key = 'setting:' .. rcpt[1]['domain']
+  return key
+  -- From Rspamd 1.6.3 this function can return a list of keys to check.
+  -- Use this if you need to check for settings according to priority:
+  return {key, 'setting:global'}
 end
 EOD;
   }
