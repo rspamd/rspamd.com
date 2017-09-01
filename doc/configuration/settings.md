@@ -123,7 +123,8 @@ So each setting has the following attributes:
 	+ `ip` - match source IP address
 	+ `user` - matches authenticated user ID of message sender if any
 	+ `authenticated` - matches any authenticated user
-	+ `request_header` - collection of header names and regexes to match them against (condition is satisfied if any match)
+	+ `request_header` - collection of request header names and regexes to match them against (condition is satisfied if any match)
+	+ `header` - collection of MIME message header names and regexes to match them against (condition is satisfied if any match), available sind Rspamd 1.7
 - `apply` - list of applied rules, identified by metric name (e.g. `default`)
 	+ `symbol` - modify weight of a symbol
 	+ `actions` - defines actions
