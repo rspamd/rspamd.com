@@ -18,7 +18,6 @@ The following elements are valid in the rules of this module:
  - `honor_action`: actions in this list should not be overridden
  - `message`: SMTP message to be used by MTA
  - `require_action`: override action only if metric action in this list
- - `subject`: subject to set in metric for `rewrite subject` action
 
 Only one of `honor_action` or `require_action` should be set on a given rule.
 
@@ -36,6 +35,8 @@ rules {
     action = "no action";
     # If the following combination of symbols is present:
     expression = "IS_IN_WHITELIST & !CLAM_VIRUS & !FPROT_VIRUS";
+    # honor_action setting define actions we don't want to override
+    honor_action = ["soft reject"];
   }
 
   WHITELIST_EXCEPTION {
@@ -43,16 +44,6 @@ rules {
     expression = "IS_IN_WHITELIST & (CLAM_VIRUS | FPROT_VIRUS)";
     # message setting sets SMTP message returned by mailer
     message = "Rejected due to suspicion of virus";
-  }
-
-  DCC_BULK {
-    action = "rewrite subject";
-    # Here expression is just one symbol
-    expression = "DCC_BULK";
-    # subject setting sets metric subject for rewrite subject action
-    subject = "[BULK] %s";
-    # honor_action setting define actions we don't want to override
-    honor_action = ["reject", "soft reject", "add header"];
   }
 
   BAYES_SPAM_UPGRADE {
