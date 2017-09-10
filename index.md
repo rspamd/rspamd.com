@@ -5,22 +5,22 @@ title: Rspamd spam filtering system
 
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
+				<h3 style="margin: 0px;"><a href="https://github.com/vstakhov/rspamd/releases/tag/1.6.4">News: Rspamd 1.6.4 has been released</a></h3>
+				<span class="date"><small>2017-07-26</small></span>
+				<p style="margin-bottom: 0px; margin-top: 5px">The new main line release with some features and bug fixes</p>
+   </div>
+	 <div class="col-xs-12 col-sm-2 bottom-right">
+				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.6.4" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
+	 </div>
+</div>
+<div class="row news_row" style="position: relative;">
+		<div class="col-xs-12 col-sm-10">
 				<h3 style="margin: 0px;"><a href="https://github.com/vstakhov/rspamd/releases/tag/1.6.3">News: Rspamd 1.6.3 has been released</a></h3>
 				<span class="date"><small>2017-07-26</small></span>
 				<p style="margin-bottom: 0px; margin-top: 5px">The new main line release with some features and bug fixes</p>
    </div>
 	 <div class="col-xs-12 col-sm-2 bottom-right">
 				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.6.3" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
-	 </div>
-</div>
-<div class="row news_row" style="position: relative;">
-		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;"><a href="https://github.com/vstakhov/rspamd/releases/tag/1.6.2">News: Rspamd 1.6.2 has been released</a></h3>
-				<span class="date"><small>2017-07-08</small></span>
-				<p style="margin-bottom: 0px; margin-top: 5px">The new main line release with many improvements and important bug fixes</p>
-   </div>
-	 <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.6.2" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
 	 </div>
 </div>
 
