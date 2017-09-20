@@ -31,9 +31,9 @@ Experimental packages are considered less stable but they are normally built whe
 Rspamd packages are provided for many [platforms]({{ site.url }}{{ site.baseurl }}/downloads.html). The packages are built using the following principles:
 
 1. Enable `link time optimizations` where possible to improve the overall performance
-2. Bundle [LuaJIT](https://luajit.org) using 2.1 beta versions from the vendor. This provides about 30% improvement over the vanilla LuaJIT available in your distributive.
+2. Bundle [LuaJIT](https://luajit.org) using 2.1 beta versions from the vendor. This provides up to 30% improvement over the vanilla LuaJIT normally available in your distributive.
 3. Enable jemalloc
-4. Enable neural networks support (libfann)
+4. Enable neural networks support (libfann before 1. 7, torch after 1.7)
 5. Support [Hyperscan](https://01.org/hyperscan)
 
 Some of these options are not available on some older platforms (Debian wheezy, Ubuntu Precise or CentOS 6) due to limitations of software provided.
@@ -159,6 +159,29 @@ and more generally:
 ```
 rspamadm confighelp -k timeout
 ```
+
+### How to report bugs found in Rspamd
+
+If your issue is related to crashes, then you need to obtain core file prior to reporting. It is also useful to explain when a crash occurs and, if relevant, provide some minimal test message and/or problematic config.
+
+If you found some error in Lua logic, then it is usually useful to enable debugging for this module. To do that, write something like:
+
+```ucl
+# local.d/logging.inc
+debug_modules = ["module_name"];
+```
+
+For issues about the rules, we usually need a **message sample** that causes a problem. To protect your privacy, you can remove unrelevant headers and content. E.g. you can blind message sender/recipients, subject and/or other fields.
+
+For issues with SPF, we need SMTP From (or Helo) and sender's IP address.
+
+For issues with statistics, DKIM or ARC we unfotunately need a full message with all headers and content being preserved.
+
+Without message samples, your bug reports will not be considered unless you provide either patch or a bug is tirvial by its nature.
+
+Finally, we always prefer patches/pull requests to plain bug reports.
+
+To report bugs or suggest something about the documentation or the web site, please take a look at [this Github repo](https://github.com/vstakhov/rspamd.com).
 
 ### What is the difference between `rspamc` and `rspamadm`
 rspamadm is an administration tool that works with the **local** Rspamd daemon via a unix socket and performs management tasks. You can get help for this tool, and its options, by typing:
