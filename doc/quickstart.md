@@ -669,3 +669,36 @@ Here is a screenshot of this addon in use:
 ### Using the WebUI
 
 Rspamd has a built-in WebUI which supports setting metric actions and scores; Bayes training and scanning messages - for more information see the [WebUI documentation]({{ site.url }}{{ site.baseurl }}/webui).
+
+## General advices for large scale email systems
+
+Rspamd has been designed to be used in large scale email systems. It supports various of features to simplify processing emails for thousands or millions of users. However, the default settings are quite conservative to provide suitable experience for small grade systems.
+
+First of all, you are strongly adviced to get the official Rspamd packages from `rspamd.com` site if you use debian derived Linux. They are heavily optimized in terms of performance and features. For users of other platforms it is adviced to ask Rspamd support (mailto://support@rspamd.com) about your specific demands. Maybe there are optimized packages for your specific platform that is not automatically built yet.
+
+Secondly, you need to setup Redis. Normally, you need two types of Redis instances:
+
+* Master-slave replicated instances for `persistent` data: statistics, fuzzy hashes, neural networks. These instances are mostly read-only so you can split your load over read-only slaves.
+* Non-replicated but (probably) sharded instances for `volatile` data: greylisting, replies, ip reputation and other  temporary stuff. These instances are not required to be persistent and they could be scaled by sharding that is automatically performed by Rspamd if you specify multiple servers. These instances have mixed read-write payload.
+
+You might also want to enable the following modules:
+
+* [IP score](/doc/modules/ip_score.html): IP reputation module, requires volatile Redis instance (or shared volatile Redis instance). In some cases it can provide your results common to the expensive IP DNS black lists. However, it also depends on the quality of your rules and your scale.
+* [Neural networs](/doc/modules/fann_redis.html): this module provides significant improvement for your filtering quality but it requires CPU resources (SandyBridge or newer Intel CPUs are strongly adviced) and somehow good rules set. It also requires some setup and a persistent Redis instance. From the version 1.7 Rspamd uses `torch` for neural networks which demonstrates better performance and preciseness than the pre 1.7 implementation based on `libfann`. Here is a minimal setup for neural networks module:
+
+```ucl
+# local.d/fann_redis.conf
+ servers = "redis:6384";
+timeout = 25s; # Sometimes ANNs are very large
+train {
+        max_train = 2000; # How many training samples to store before learn
+        spam_score = 9; # When to learn spam
+        ham_score = -1; # When to learn ham
+        mse = 0.001; # Target error
+}
+```
+
+* [Ratelimit](/doc/modules/ratelimit.html): this module is very useful to limit spam waves as it allows to temporary delay senders that have either bad reputation or send email too agressively without somehow a good reputation. Requires a volatile Redis instance.
+* [Replies](/doc/modules/replies.html): whitelists replies to your user's mail. It is very useful to provide users instant communication with known recipients. Requires a volatile Redis instance.
+* [URL redirector](/doc/modules/url_redirector.html): resolves URL redirects on some common redirectors and URLs shorteners, e.g. `t.co` or `goo.gl`. Requires a volatile Redis instance.
+* [Clickhouse](/doc/modules/clickhouse.html): saves analytical data to the [Clickhouse](https://clickhouse.yandex) server. Clickhouse server can be used thereafter to create new filtering rules or maintaining blacklists. You can treat it as an advanced syslog with indexes and complex analytics queries. There are also graphical interfaces available for Clickhouse, e.g. for Grafana.
