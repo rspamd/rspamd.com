@@ -670,7 +670,7 @@ Here is a screenshot of this addon in use:
 
 Rspamd has a built-in WebUI which supports setting metric actions and scores; Bayes training and scanning messages - for more information see the [WebUI documentation]({{ site.url }}{{ site.baseurl }}/webui).
 
-## General advices for large scale email systems
+## Using Rspamd in large email systems
 
 Rspamd has been designed to be used in large scale email systems. It supports various of features to simplify processing emails for thousands or millions of users. However, the default settings are quite conservative to provide suitable experience for small grade systems.
 
