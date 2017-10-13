@@ -128,6 +128,7 @@ max_cores_size = 1G;
 That will limit the combined size of files in the `/coreland/` directory to 1 gigabyte. After reaching this limit, Rspamd will stop dumping core files. (Please note that Rspamd cannot distinguish its own core files from other core files in a system.)
 
 ### What can I do with core files
+
 In most cases, it is enough to open core file with `gdb`  or another debugger, such as `lldb`:
 
 ```
@@ -138,6 +139,7 @@ lldb `which rspamd` -c /coreland/rspamd.core
 If a core file has been opened without errors then you can type `bt full` in the debugger command line to get the full stack trace that caused this particular error.
 
 ### Why can I have different results for the same message
+
 If your message has gained a `reject` score, Rspamd will stop further checks to save resources. However, some checks, such as network checks, could still occur as they might be started before reaching this threshold for the message. Therefore, sometimes you might see different (but all greater than or equal to the `reject` threshold) results for the same message. To avoid this behaviour you can set the HTTP header
 
 ```
@@ -252,18 +254,40 @@ Rspamd as a spam-filtering system or as a project is spelled with a capital `R` 
 
 ### What are Rspamd actions
 
-Unlike SpamAssassin, Rspamd **suggests** the desired action for a specific message scanned:
+Unlike SpamAssassin, Rspamd **suggests** the desired action for a specific message scanned. This could be treated as a recommendation to MTA what it should do with this message. Here is a list of possible choices that are sent by Rspamd:
 
+- `discard`: drop an email but return success for sender (should be used merely in special cases)
 - `reject`: ultimately reject message
-- `rewrite subject`: set spam subject
-- `add header`: add spam header
-- `greylist`: delay message for a while
-- `no action`: pass message
+- `rewrite subject`: rewrite subject to indicate spam
+- `add header`: add specific header to indicate spam
+- `no action`: allow message
+- `soft reject`: temporary delay message (this is used, for instance, to greylist or ratelimit messages)
 
-Rspamd itself **does not** alter a message, that is a task for the MTA or any shim agent (e.g. [Rmilter]({{ site.url }}{{ site.baseurl }}/rmilter/)). All actions but `reject` and `no action` could be treated as `potential spam` and greylisted or moved to a `Junk` folder for the user.
+This might be a bit confusing but internally Rspamd operates with rules. Each rule can add positive or negative score to the result. Therefore it is required to have some thresholds for actions that are applied to a message. These thresholds are defined in `metric.actions` section:
+
+```ucl
+metric {
+    name = "default";
+    # If this param is set to non-zero
+    # then a metric would accept all symbols
+    # unknown_weight = 1.0
+
+    actions {
+      reject = 15;
+      add_header = 6;
+      greylist = 4;
+    }
+    ...
+```
+
+As you can see, it is slightly different from the real actions list. The name `actions` should actually be treated as `score thresholds` but it has this name historically. As you can see, there is no `discard` and `soft reject` actions but there is a very special `greylist` element that specifies score threshold for greylisting plugin.
+
+Thresholds usually defines when this or that action should be applied. However, some modules can directly set a specific action without regard of the score based thresholds. Hence, you should never ever rely on score when making a decision about what to do with a message scanned by Rspamd. In short, you should always use action and use scoring just to specify **generic** thresholds and for debugging purposes. There is completely **no guarantee** that score, action threshold and the real action will match for a message.
+
 
 ### What are local and override config files
-Historically, Rspamd provided user-editable configuration files. However, as the project developed, it became clear that this idea had drawbacks: Rspamd configuration influences the overall filtering quality, performance and other important metrics and it was difficult to maintain local configurations with new releases of Rspamd. Hence, I decided to add two possibilities:
+
+Historically, Rspamd provided user-editable configuration files. However, as the project developed, it became clear that this idea certain had drawbacks. Rspamd configuration defines the overall filtering quality, performance and other important characteristics. However, it is extremely difficult to maintain merging of local and updated configurations with new releases of Rspamd. Hence, we have decided to add two recommended ways to apply local changes:
 
 1. Override configurations
 2. Local configurations
