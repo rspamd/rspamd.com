@@ -261,7 +261,7 @@ Unlike SpamAssassin, Rspamd **suggests** the desired action for a specific messa
 - `rewrite subject`: rewrite subject to indicate spam
 - `add header`: add specific header to indicate spam
 - `no action`: allow message
-- `soft reject`: temporary delay message (this is used, for instance, to greylist or ratelimit messages)
+- `soft reject`: temporarily delay message (this is used, for instance, to greylist or ratelimit messages)
 
 This might be a bit confusing but internally Rspamd operates with rules. Each rule can add positive or negative score to the result. Therefore it is required to have some thresholds for actions that are applied to a message. These thresholds are defined in `metric.actions` section:
 
@@ -282,7 +282,7 @@ metric {
 
 As you can see, it is slightly different from the real actions list. The name `actions` should actually be treated as `score thresholds` but it has this name historically. As you can see, there is no `discard` and `soft reject` actions but there is a very special `greylist` element that specifies score threshold for greylisting plugin.
 
-Thresholds usually defines when this or that action should be applied. However, some modules can directly set a specific action without regard of the score based thresholds. Hence, you should never ever rely on score when making a decision about what to do with a message scanned by Rspamd. In short, you should always use action and use scoring just to specify **generic** thresholds and for debugging purposes. There is completely **no guarantee** that score, action threshold and the real action will match for a message.
+Thresholds usually define when this or that action should be applied. However, some modules can directly set a specific action without regard of the score-based thresholds. Hence, you should never ever rely on score when making a decision about what to do with a message scanned by Rspamd. In short, you should always use action and use scoring just to specify **generic** thresholds and for debugging purposes. There is completely **no guarantee** that score, action threshold and the real action will match for a message.
 
 
 ### What are local and override config files
