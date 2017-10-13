@@ -285,10 +285,10 @@ group "Some group" {
 }
 ~~~
 
-We can also use an override file. For example, let's redefine actions and set a more restrictive `reject` score. To do this, we create `etc/rspamd/override.d/metrics.conf` with the following content:
+We can also use an override file. For example, let's redefine actions thresholds and set a more restrictive `reject` score. To do this, we create `etc/rspamd/local.d/metrics.conf` with the following content:
 
 ~~~ucl
-# /etc/rspamd/override.d/metrics.conf
+# /etc/rspamd/local.d/metrics.conf
 actions {
     reject = 150;
     add_header = 6;
@@ -296,10 +296,12 @@ actions {
 }
 ~~~
 
+You can read more about actions, scores and these configuration parameters in this [explanation]({{ site.url }}{{ site.baseurl }}/doc/faq.html#what-are-rspamd-actions).
+
 You need to define complete objects to override existing ones. For example, you **cannot** write something like
 
 ~~~ucl
-# /etc/rspamd/override.d/metrics.conf
+# /etc/rspamd/local.d/metrics.conf
 actions {
     reject = 150;
 }
@@ -492,17 +494,11 @@ Please review the full [statistics documentation]({{ site.baseurl }}/doc/configu
 
 ## Adjusting scores and actions
 
-Unlike SA where there are only `spam` and `ham` results, Rspamd supports five levels of results called `actions`:
+Unlike SA where there are only `spam` and `ham` results, Rspamd supports different results called [`actions`]({{ site.url }}{{ site.baseurl }}/doc/faq.html#what-are-rspamd-actions).
 
-+ `no action` - ham message
-+ `greylist` - turn on adaptive greylisting (which is also used on higher levels)
-+ `add header` - adds Spam header (meaning soft-spam action)
-+ `rewrite subject` - rewrite subject to `*** SPAM *** original subject`
-+ `reject` - ultimately reject message
+Each action can have its own score limit which can be modified by user settings. Rspamd assumes the following order of action thresholds: `no action` <= `greylist` <= `add header` <= `rewrite subject` <= `reject`.
 
-Each action can have its own score limit which can be modified by user settings. Rspamd assumes the following order of action scores: `no action` <= `greylist` <= `add header` <= `rewrite subject` <= `reject`.
-
-Actions are **NOT** performed by Rspamd itself - they are just recommendations for the MTA (via Rmilter, for example) which performs the necessary actions, such as adding headers or rejecting mail.
+Actions are **NOT** performed by Rspamd itself - they are just recommendations for the MTA (via milter interface, for example) which performs the necessary actions, such as adding headers or rejecting mail.
 
 SA `spam` is almost equal to Rspamd `add header` action in the default setup. With this action, users will be able to check for messages in their `Junk` or `Spam` folder which is usually a desired behaviour.
 
