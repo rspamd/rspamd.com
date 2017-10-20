@@ -21,6 +21,8 @@ For those who are planning migration from SpamAssassin, it might be useful to ch
 
 First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. In this guide, we describe the setup of the [Postfix MTA](http://www.postfix.org/). However, Rspamd can work with other MTA software - you can find details in the [integration document]({{ site.baseurl }}/doc/integration.html).
 
+You should also consider to setup your own [local  DNS resolver]({{ site.baseurl }}/doc/faq.html#resolver-setup).
+
 ### TLS Setup
 
 It is strongly recommended to setup TLS for your mail system. We suggest to use certificates issued by [Let’s&nbsp; Encrypt](https://letsencrypt.org) as they are free to use and are convenient to manage. To get such a certificate for your domain you need to allow Let’s&nbsp;Encrypt to check your domain. There are many tools available for these purposes, including the official client and couple of alternative clients, for example [acmetool](https://github.com/hlandau/acme). The setup is fairly simple: just type

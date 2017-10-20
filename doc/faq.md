@@ -10,6 +10,7 @@ This document includes some questions and practical examples that are frequently
 ## General questions
 
 ### Where to get help about Rspamd
+
 The most convenient place for asking questions about Rspamd is the IRC channel _#rspamd_ on [http://freenode.net](http://freenode.net). For more information you can also check the [support page]({{ site.url }}{{ site.baseurl }}/support.html)
 
 ### What versions of Rspamd are supported
@@ -40,7 +41,23 @@ Some of these options are not available on some older platforms (Debian wheezy, 
 
 All packages are signed and should also be downloaded using `https`.
 
+### Resolver setup
+
+DNS resolving is a very important part of the spam filtering since a lot of information is obtained from DNS lists, e.g. IP and URL blacklists, whitelists, reputation data and so on and so forth. Hence, Rspamd will be **totally** broken in case: it might even refuse to start. Furthermore, if you are using your provider's resolver or some public resolver you might be affected by blocking from the vast majority of DNS lists providers or even corrupted results. It is known that Rspamd is broken when your provider's DNS returns some IP address to redirect your browser to instead of the real response.
+
+Hence, it is **strongly** recommended to have your own recursive resolver when using Rspamd (or any other email related technology in fact). Our own recommended choice is to set up Unbound. You can read about it [here](https://wiki.archlinux.org/index.php/unbound).
+
+Then you can either set your local resolver globally via `/etc/resolv.conf` or set it explicitly for Rspamd in `local.d/options.inc` file:
+
+~~~ucl
+ # local.d/options.inc
+dns {
+	 nameserver = ["127.0.0.1"];
+}
+~~~
+
 ### How to figure out why Rspamd process crashed
+
 Like other programs written in `C` language, the best way to debug these problems is to obtain `core` dump. Unfortunately, there is no universal solution suitable for all platforms, however, for FreeBSD and Linux you could do the following:
 
 First of all, you need to create a special directory for core files that will be writeable by all users on the system:
@@ -49,6 +66,29 @@ First of all, you need to create a special directory for core files that will be
 mkdir /coreland
 chmod 1777 /coreland
 ```
+
+It is also good idea is to add the following settings to `/etc/sysctl.conf` and then run `sysctl -p` to apply them:
+
+**Linux sepcific**
+
+```
+sysctl kernel.core_pattern=/coreland/%e.core
+```
+
+or (with PID)
+
+```
+sysctl kernel.core_pattern=/coreland/%e-%p.core
+```
+
+Also add the following:
+
+```
+sysctl kernel.core_uses_pid=1
+sysctl fs.suid_dumpable=2
+```
+
+**FreeBSD specific**
 
 For FreeBSD you can have either one core for all processes by setting:
 
@@ -62,34 +102,11 @@ or a separate core for each crash (that includes PID of process):
 sysctl kern.corefile=/coreland/%N-%P.core
 ```
 
-For Linux this setting is slightly different:
-
-```
-sysctl kernel.core_pattern=/coreland/%e.core
-```
-
-or (with PID)
-
-```
-sysctl kernel.core_pattern=/coreland/%e-%p.core
-```
-
 Additional settings:
-
-Linux:
-
-```
-sysctl kernel.core_uses_pid=1
-sysctl fs.suid_dumpable=2
-```
-
-FreeBSD:
 
 ```
 sysctl kern.sugid_coredump=1
 ```
-
-The first one adds the PID to core file name, and the second allows setuid processes to be dumped. A good idea is to add these settings to `/etc/sysctl.conf` and then run `sysctl -p` to apply them.
 
 #### Setting system limits
 
