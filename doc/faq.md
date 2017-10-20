@@ -269,6 +269,39 @@ Rspamd as a spam-filtering system or as a project is spelled with a capital `R` 
 
 ## Configuration questions
 
+### Rspamd does not work as expected
+
+Please check your configuration using `rspamdadm configdump`. You can narrow search by specifying the specific module:
+
+```
+rspamadm configdump fuzzy_check
+rspamadm configdump options
+rspamadm configdump options.dns
+rspamadm configdump worker
+```
+
+### Rspamd still does not work as expected
+
+Have you added an extra `section_name {}` to `local.d/section.conf` file? For example, this one will **NOT** work:
+
+```ucl
+# local.d/dkim_signing.conf
+dkim_signing { # !!!! DO NOT ADD THIS
+ domains {
+   ...
+ }
+}
+```
+
+The correct version is the following:
+
+```ucl
+# local.d/dkim_signing.conf
+domains {
+   ...
+}
+```
+
 ### What are Rspamd actions
 
 Unlike SpamAssassin, Rspamd **suggests** the desired action for a specific message scanned. This could be treated as a recommendation to MTA what it should do with this message. Here is a list of possible choices that are sent by Rspamd:
