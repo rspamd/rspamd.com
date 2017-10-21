@@ -104,7 +104,7 @@ acl_check_spam:
 
   # add x-spam-bar header if score is positive
   warn
-    condition = ${if >{$spam_score}{0}}
+    condition = ${if >{$spam_score_int}{0}}
     add_header = X-Spam-Bar: $spam_bar
 
   accept
