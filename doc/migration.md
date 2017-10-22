@@ -6,6 +6,10 @@ title: Upgrading
 
 This document describes incompatible changes introduced in recent Rspamd versions and details how to update your rules and configuration accordingly.
 
+## Migrating to Rspamd 1.6.5
+
+Due to a couple of serious fixes in tokenization algorithms, it is be possible that statistics and fuzzy modules will loose their preciseness. In this cases you might try to relearn your databases to improve accuracy of filtering.
+
 ## Migrating to Rspamd 1.6.0
 
 Due to implementation of the new milter interface, there is an important incompatible change that you might need to handle if you use `rmilter_headers` module. This module has been renamed to `milter_headers` and the according protocol section is now named `milter` instead of `rmilter`. If you configured this module inside `local.d/rmilter_headers.conf` or in `override.d/rmilter_headers.conf` then you don't need to undertake any actions: these files are still loaded by the renamed module. Otherwise, you need to change section name from `rmilter_headers` to `milter_headers`.
