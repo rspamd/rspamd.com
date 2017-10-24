@@ -129,7 +129,7 @@ Rspamd is also supported on the following Linux distributions:
 - **Void Linux**
 
 ### Alpine Linux
-Rspamd is available in the [testing repository](https://pkgs.alpinelinux.org/package/edge/testing/x86_64/rspamd)
+Rspamd is available in the [community repository](https://pkgs.alpinelinux.org/package/edge/community/x86_64/rspamd)
 
 ### Arch Linux
 Rspamd is available in the [AUR](https://aur.archlinux.org/packages/rspamd)
