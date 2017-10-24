@@ -162,6 +162,17 @@ Removes a header with the specified name (`header` MUST be specified):
   remove = 1;
 ~~~
 
+## remove-headers
+
+Removes multiple headers (`headers` MUST be specified):
+
+~~~ucl
+  headers {
+    "Remove-This" = 1;
+    "This-Too" = 1;
+  }
+~~~
+
 ## spam-header
 
 Adds a predefined header to mail identified as spam.
