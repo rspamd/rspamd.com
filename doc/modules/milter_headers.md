@@ -125,6 +125,8 @@ Add an [authentication-results](https://tools.ietf.org/html/rfc7001) header.
   header = "Authentication-Results";
   # Remove existing headers
   remove = 1;
+  # Set this false not to add SMTP usernames in authentication-results
+  add_smtp_user = true;
   # SPF/DKIM/DMARC symbols in case these are redefined
   spf_symbols {
     pass = "R_SPF_ALLOW";
