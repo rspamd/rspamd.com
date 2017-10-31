@@ -217,6 +217,11 @@ Additionally to these filters, Received maps support the following configuration
 
 Negative values can be specified to match positions relative to the end of Received headers.
 
+* `flags` - One of more flags which MUST be present to match
+* `nflags` - One or more flags which must NOT be present to match
+
+Currently available flags are `ssl` (hop used SSL) and `authenticated` (hop used SMTP authentication).
+
 ### Symbol options filters
 
 * `regexp:/re/` - extract data from symbol options according to some regular expression
@@ -373,11 +378,12 @@ ASN_BLACKLIST {
   type = "asn";
   map = "${LOCAL_CONFDIR}/asnlist.map";
 }
-LAST_RECEIVED_HEADER_IP {
+LAST_RECEIVED_HEADER_IP_IF_AUTHED {
   type = "received";
   map = "${LOCAL_CONFDIR}/rcvd_ip.map";
   filter = "real_ip";
   min_pos = -1;
+  flags = ["authenticated"];
 }
 SYMBOL_OPTIONS_DBL {
   type = "symbol_options";
