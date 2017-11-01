@@ -111,8 +111,8 @@ smtpd_end_of_data_restrictions =
         permit_mynetworks,
 smtpd_relay_restrictions = check_recipient_access hash:/etc/postfix/access, reject_non_fqdn_sender, reject_unknown_sender_domain, permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname,
 
-# Rmilter setup
-smtpd_milters = inet:localhost:9900
+# Milter setup
+smtpd_milters = inet:localhost:11332
 milter_default_action = accept
 milter_protocol = 6
 milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
