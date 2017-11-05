@@ -843,6 +843,7 @@ filename_blacklist {
 ```
 
 ### What are filters, pre-filters and post-filters
+
 Rspamd executes different types of filters depending on the time of execution.
 
 - `pre-filters` are executed before everything else and they can set a `pre-result` that ultimately classifies a message. Filters and post-filters are not executed in this case.
