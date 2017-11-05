@@ -438,3 +438,7 @@ li.tb-row a:hover,  li.tb-row a:focus{
   margin: 9px 14px;
   line-height: 10px;
 }
+
+.dl-changes {
+  margin-left: 20px;
+}
