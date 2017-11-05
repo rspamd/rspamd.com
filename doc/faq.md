@@ -735,11 +735,93 @@ The DMARC module also uses multiple keys to store cumulative reports: a separate
 
 It is recommended to set a limit for dynamic Rspamd data stored in Redis ratelimits, ip reputation, and DMARC reports. You could use a separate Redis instance for statistical tokens and set different limits or use separate databases (by specifying `db` when setting up the redis backend).
 
+### How to run Rspamd using Unix sockets
+
+From https://github.com/vstakhov/rspamd/issues/1905
+
+
+**Redis**
+
+`/etc/redis/rspamd.conf`  (changes only)
+
+    bind 127.0.0.1
+    port 0
+    unixsocket /var/run/redis/rspamd.sock
+    unixsocketperm 770
+    pidfile /var/run/redis/rspamd.pid
+    logfile /var/log/redis/rspamd.log
+    dir /var/lib/redis/rspamd/
+
+You should create the directory `/var/lib/redis/rspamd` and make it writable for user `redis`.
+
+If you need to launch a separate `Redis` instance for `Rspamd`, follow [these instructions](https://medium.com/@MauroMorales/running-multiple-redis-on-a-server-472518f3b603).
+
+`/etc/rspamd/local.d/redis.conf`
+
+    servers = "/var/run/redis/rspamd.sock";
+
+`/etc/rspamd/local.d/classifier-bayes.conf`
+
+    backend = "redis";
+    autolearn = true;
+
+Don't forget to add the user `_rspamd` to the group `redis` (run `usermod -a -G redis _rspamd`)
+
+You can check the connection with this:
+
+    myserver:~ # redis-cli -s /run/redis/rspamd.sock
+    redis /run/redis/rspamd.sock> ping
+    PONG
+    redis /run/redis/rspamd.sock> monitor
+    OK
+    1509722016.014458 [0 unix:/var/run/redis/rspamd.sock] "SMEMBERS" "BAYES_HAM_keys"
+    1509722018.522879 [0 unix:/var/run/redis/rspamd.sock] "SMEMBERS" "BAYES_SPAM_keys"
+    1509722018.523305 [0 unix:/var/run/redis/rspamd.sock] "HLEN" "BAYES_SPAM"
+    1509722018.523334 [0 unix:/var/run/redis/rspamd.sock] "HGET" "BAYES_SPAM" "learns"
+    1509722024.892442 [0 unix:/var/run/redis/rspamd.sock] "SMEMBERS" "BAYES_SPAM_keys"
+    1509722024.892870 [0 unix:/var/run/redis/rspamd.sock] "HLEN" "BAYES_SPAM"
+    1509722024.892899 [0 unix:/var/run/redis/rspamd.sock] "HGET" "BAYES_SPAM" "learns"
+    ...
+
+**Nginx**
+
+`/etc/tmpfiles.d/rspamd.conf`  (create this file if needed and run `systemd-tmpfiles --create`)
+
+    d  /var/run/rspamd  0755  _rspamd  _rspamd  -
+
+`/etc/rspamd/local.d/worker-controller.inc`
+
+    bind_socket = "/run/rspamd/worker-controller.socket mode=0660 owner=_rspamd group=www";
+    password = "$2$paparrytknfm8...";
+    enable_password = "$2$paparrytknfm8...";
+
+`nginx.conf`
+
+    location /rspamd/ {
+        auth_basic "Restricted Area";
+        auth_basic_user_file /srv/www/.mydomain.tld.htpasswd;
+        map $status $loggable {
+            ~^[23]  0;
+            default 1;
+        }
+        access_log /var/log/nginx/rspamd.access.log combined if=$loggable;
+        error_log /var/log/nginx/rspamd.error.log warn;
+        proxy_pass http://unix:/run/rspamd/worker-controller.socket:/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
 ## Plugin questions
 
-### How to whitelist messages
+### How to whitelist messages or skip spam checks for certain users
 
-You have multiple options here. First of all, if you need to define a whitelist based on `SPF`, `DKIM` or `DMARC` policies, then you should look at the [whitelist module]({{ site.url }}{{ site.baseurl }}/doc/modules/whitelist.html). Otherwise, there is a [multimap module]({{ site.url }}{{ site.baseurl }}/doc/modules/multimap.html) that implements different types of checks to add symbols according to list matches or to set pre-actions which allow you to reject or permit certain messages. For example, to blacklist all files from the following list in attachments:
+You have multiple options here. First of all, if you need to define a whitelist based on `SPF`, `DKIM` or `DMARC` policies, then you should look at the [whitelist module]({{ site.url }}{{ site.baseurl }}/doc/modules/whitelist.html). Otherwise, there is a [multimap module]({{ site.url }}{{ site.baseurl }}/doc/modules/multimap.html) that implements different types of checks to add symbols according to list matches or to set pre-actions which allow you to reject or permit certain messages.
+
+Another option is to disable spam filtering for some senders or recipients based on [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html). You can specify `want_spam = yes` and Rspamd will skip messages that satisfy a particular rule's conditions.
+
+### How to blacklist messages based on extension
+
+In this example, we want to blacklist the following extensions using the [multimap module]({{ site.url }}{{ site.baseurl }}/doc/modules/multimap.html):
 
 ```
 exe
@@ -748,7 +830,7 @@ scr
 lnk
 ```
 
-you could define the following multimap rule in `local.d/multimap.conf`:
+Then define the following multimap rule in `local.d/multimap.conf`:
 
 ```ucl
 filename_blacklist {
@@ -759,8 +841,6 @@ filename_blacklist {
   action = "reject";
 }
 ```
-
-Another option is to disable spam filtering for some senders or recipients based on [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html). You can specify `want_spam = yes` and Rspamd will skip messages that satisfy a particular rule's conditions.
 
 ### What are filters, pre-filters and post-filters
 Rspamd executes different types of filters depending on the time of execution.
