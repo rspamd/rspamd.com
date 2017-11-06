@@ -92,3 +92,16 @@ Rspamd supports the following Redis options (common for all modules):
 * `db`: number of database to use (by default, Rspamd will use the default Redis database with number `0`)
 * `password`: password to connect to Redis (no password by default)
 * `prefix`: use the specified prefix for keys in Redis (if supported by module)
+* `expand_keys` (1.7.0+): if set to `true` 'expand' key names used in queries (discussed further below)
+
+## Key expansion
+
+In version 1.7.0+ setting the `redis.expand_keys` configuration parameter to `true` enables special values to be replaced in key names before they are sent to Redis when queries are performed via Lua (as in the majority of plugins: such as `multimap`, `ratelimit` and `settings`). If module-specific Redis configuration is used this setting could be specified in the module configuration instead of `redis`.
+
+Given this setting is enabled, where-ever names of keys could be specified in configuration special values could be used, for example `map = "redis://${ip}!foo` in multimap configuration would dynamically set key name to something like `1.2.3.4!foo`. Variable names which could be used are as follows:
+
+* `ip`: sending IP of a message
+* `principal_recipient`: the address of the [principal recipient]({{ site.baseurl }}/doc/lua/task.html#mc5168) of a message (`Deliver-To` request header, first SMTP recipient or MIME recipient according to availability)
+* `principal_recipient_domain`: the domain name of the principal recipient
+* `from`: SMTP sender address
+* `from_domain`: SMTP sender address domain
