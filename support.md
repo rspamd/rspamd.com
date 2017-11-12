@@ -85,7 +85,7 @@ Please do not expect the immediate reply: we all have different task ongoing and
             <a class="btn btn-social btn-github btn-block" href="https://github.com/vstakhov/rspamd"><i class="fa fa-github"></i> GitHub</a>
         </div>
         <div class="col-sm-9 col-xs-12">
-            <p>If you find a bug or would like to ask for a specific feature then you can use issue tracker hosted on GitHub. We also welcome pull requests if you would like to submit patches for any part of the project: documentation, site, WebUI, Rmilter and Rspamd itself.</p>
+            <p>If you find a bug or would like to ask for a specific feature then you can use issue tracker hosted on GitHub. We also welcome pull requests if you would like to submit patches for any part of the project: documentation, site, WebUI, and Rspamd itself.</p>
         </div>
     </div>
     <div class="row support-block">

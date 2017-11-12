@@ -3,7 +3,7 @@ layout: doc_quickstart
 title: Quick start
 ---
 
-<div><h1 style="margin-top:0">Rspamd and Rmilter quick start</h1></div>
+<div><h1 style="margin-top:0">Rspamd quick start</h1></div>
 
 ## Introduction
 
@@ -11,11 +11,15 @@ This guide describes the main steps to get and start working with Rspamd. In par
 
 - Debian Jessie (or another OS with systemd)
 - Postfix MTA
-- Rmilter
 - Redis cache
 - Dovecot with Sieve plugin to sort mail and learn by moving messages to `Junk` folder
 
 For those who are planning migration from SpamAssassin, it might be useful to check the [SA migration guide]({{ site.baseurl }}/doc/tutorials/migrate_sa.html)
+
+## Alternative guides (3rd party)
+
+* [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/) - a good example of all-in-one tutorial about how to setup your own mail server
+* [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://www.c0ffee.net/blog/mail-server-guide) - similar to the previous guide but uses a different technologies stack
 
 ## Preparation steps
 
@@ -155,19 +159,16 @@ ssl_key = </var/lib/acme/live/mail.example.com/privkey
 
 ## Caching setup
 
-Both Rspamd and Rmilter use [Redis](https://redis.io) for caching.
+Both Rspamd use [Redis](https://redis.io) for caching.
 
-Rmilter uses Redis for the following optional features:
-
-- greylisting (delaying of suspicious emails)
-- rate limiting
-- whitelisting of reply messages (storing reply message IDs to avoid certain checks for replies to our own sent messages)
-
-Rspamd uses Redis as:
+Rspamd uses  [Redis](https://redis.io) as storage and caching system:
 
 - a backend for tokens storage and cache of learned messages by [statistical module](configuration/statistic.html) (BAYES classifier)
 - a fuzzy storage backend (optional)
-- a key-value storage by [many Rspamd modules](configuration/redis.html#introduction)
+- a key-value cache storage by [many Rspamd modules](configuration/redis.html#introduction)
+- greylisting (delaying of suspicious emails)
+- rate limiting
+- whitelisting of reply messages (storing reply message IDs to avoid certain checks for replies to our own sent messages)
 
 Installation of Redis is quite straightforward: install it using packages, start it with the default settings (it should listen on local interface using port 6379) and you are done. You might also want to limit memory used by Redis at some sane value:
 

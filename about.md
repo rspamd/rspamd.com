@@ -57,11 +57,11 @@ without polluting the statistical module.
 Rspamd uses a conjunction of different techniques to make a final decision about a message. This improves the overall quality of filtering and reduces the number of
 false positives (i.e. when a innocent message is incorrectly classified as spam). I have tried to simplify rspamd usage by adding the following elements:
 
-* **Web interface** - rspamd is shipped with a fully functional ajax-based web interface that allows for observing rspamd statistics; configuring rules, weights and lists; scanning
+* **Web interface** - Rspamd is shipped with a fully functional ajax-based web interface that allows for observing rspamd statistics; configuring rules, weights and lists; scanning
 and learning messages and viewing the history of scans. The interface is self-hosted, requires zero configuration and follows the recent web applications standards. You don't need a
 web server or application server to run the web UI - you just need to run rspamd itself.
 
-* **Integration with MTA** - rspamd can work with the most popular mail transfer systems, such as postfix, exim or sendmail. For postfix and sendmail, there is the [`rmilter` project](https://github.com/vstakhov/rmilter),
+* **Integration with MTA** - Rspamd can work with the most popular mail transfer systems, such as postfix, exim or sendmail.
 whilst for exim there are several solutions to work with rspamd. Should you require MTA integration then please consult with the [integration guide]({{ site.url }}{{ site.baseurl }}/doc/integration.html).
 
 * **Extensive Lua API** - rspamd ships with hundreds of [lua functions]({{ site.url }}{{ site.baseurl }}/doc/lua) that are available to write one's own rules for efficient and targeted spam filtering.
