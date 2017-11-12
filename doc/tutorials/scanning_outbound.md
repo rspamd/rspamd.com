@@ -28,7 +28,7 @@ Additionally, it is possible to disable/enable checks selectively and/or rescore
 
 ### Rmilter
 
-To enable scanning of outbound mail you should set `strict_auth = true`, see [here]({{ site.baseurl }}/rmilter/configuration.html) for more information.
+To enable scanning of outbound mail you should set `strict_auth = true`, see [here]({{ site.baseurl }}/rmilter/configuration.html) for more information (deprecated since Rspamd 1.6).
 
 ### Exim
 

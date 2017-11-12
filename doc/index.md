@@ -10,7 +10,7 @@ Here are the main introduction documents that are recommended for reading if you
 * **[Quick start]({{ site.baseurl }}/doc/quickstart.html)** - learn how to install, setup and perform initial configuring of Rspamd
 * **[MTA integration](integration.html)** - describes how to integrate Rspamd into your mail infrastructure
 * **[Upgrading](migration.html)** - the list of incompatible changes between versions of Rspamd
-* **[Frequently asked questions](faq.html)** - common questions about Rspamd and Rmilter
+* **[Frequently asked questions](faq.html)** - common questions about Rspamd
 * **[Migrating from SA](./tutorials/migrate_sa.html)** - the guide for those who want to migrate an existing SpamAssassin system to Rspamd
 
 ## Reference guide
