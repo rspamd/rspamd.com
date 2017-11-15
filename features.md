@@ -20,7 +20,7 @@ You can watch the following [introduction video](https://www.youtube.com/watch?v
 
 * [**Web interface**]({{ site.baseurl }}/webui/). Rspamd is shipped with the fully functional Ajax-based web interface that allows to monitor and configure Rspamd rules, scores, dynamic lists, to scan and learn messages and to view the history of scans. The web interface is self-hosted, requires zero configuration and follows the recent web applications standards. You don't need a web server or applications server to run web UI - you just need to run Rspamd itself and a web browser.
 
-* [**Integration with MTA**]({{ site.baseurl }}/doc/integration.html). Rspamd can work with the most popular mail transfer systems, such as Postfix, Exim or Sendmail. For Postfix and Sendmail, there is an [`Rmilter` project](https://github.com/vstakhov/rmilter), whilst there are several solutions for Exim and OpenSMTPD to scan mail on Rspamd.
+* [**Integration with MTA**]({{ site.baseurl }}/doc/integration.html). Rspamd can work with the most popular mail transfer systems, such as Postfix, Exim or Sendmail.
 
 * [**Extensive Lua API**]({{ site.baseurl }}/doc/lua). Rspamd ships with hundreds of Lua functions that are helpful to create your own rules for efficient and targeted spam filtering.
 

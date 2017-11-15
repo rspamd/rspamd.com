@@ -114,7 +114,7 @@ title: Rspamd spam filtering system
 														</div>
 														<div class="col-sm-9 col-xs-12">
 																<blockquote>
-																		<p>We use both Rspamd and Rmilter to filter spam for our users processing about 100M of messages per day on a couple of scanners. Rspamd provides an excellent opportunities to build custom rules for better spam and phishing protection.</p>
+																		<p>We use both Rspamd to filter spam for our users processing about 100M of messages per day on a couple of scanners. Rspamd provides an excellent opportunities to build custom rules for better spam and phishing protection.</p>
 																		<footer>Alexander Rayushkin <cite title="Source Title">Manager of the Email department</cite></footer>
 																		<div class="placeholder"></div>
 																</blockquote>

@@ -42,7 +42,7 @@ There are a couple of things you need to know before transition:
 
 Each action can have its own score limit which could also be modified by a user's settings. Rspamd assumes the following order of actions: `no action` <= `greylist` <= `add header` <= `rewrite subject` <= `reject`.
 
-Actions are **NOT** performed by Rspamd itself - they are just recommendations for the MTA agent, rmilter for example, that performs the necessary actions such as adding headers or rejecting mail.
+Actions are **NOT** performed by Rspamd itself - they are just recommendations for the MTA that performs the necessary actions such as adding headers or rejecting mail.
 
 SA `spam` is almost equal to the Rspamd `add header` action in the default setup. With this action, users will be able to check messages in their `Junk` folder, which is usually a desired behaviour.
 
