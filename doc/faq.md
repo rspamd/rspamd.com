@@ -891,7 +891,7 @@ You should use `rspamc learn_spam` and `rspamc learn_ham` commands to learn Spam
 
 ### How to learn Rspamd automatically
 
-Please check the [following document]({{ site.url }}{{ site.baseurl }}/configuration/statistic.html#autolearning) for more details.
+Please check the [following document]({{ site.url }}{{ site.baseurl }}/doc/configuration/statistic.html#autolearning) for more details.
 
 ### What is faster between custom Lua rules and regular expressions
 
