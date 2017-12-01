@@ -31,7 +31,14 @@ key_prefix = "rmx";
 # module-specific redis-server configuration
 #servers = "localhost";
 # a map of specific domains that should be excluded from MX check
-#exclude_domains = "/path/to/map/";
+exclude_domains = [
+	"https://rspamd.com/freemail/disposable.txt.zst",
+	"https://rspamd.com/freemail/free.txt.zst",
+	"${CONFDIR}/maillist.inc",
+	"${CONFDIR}/redirectors.inc",
+	"${CONFDIR}/dmarc_whitelist.inc",
+	"${CONFDIR}/surbl-whitelist.inc"
+];
 
 ~~~
 
