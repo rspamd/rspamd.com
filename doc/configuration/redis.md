@@ -103,5 +103,12 @@ Given this setting is enabled, where-ever names of keys could be specified in co
 * `ip`: sending IP of a message
 * `principal_recipient`: the address of the [principal recipient]({{ site.baseurl }}/doc/lua/task.html#mc5168) of a message (`Deliver-To` request header, first SMTP recipient or MIME recipient according to availability)
 * `principal_recipient_domain`: the domain name of the principal recipient
-* `from`: SMTP sender address
-* `from_domain`: SMTP sender address domain
+* `esld_principal_recipient_domain`: the domain name of the principal recipient, normalised to eSLD
+* `smtp_from`: SMTP sender address
+* `smtp_from_domain`: SMTP sender address domain
+* `esld_smtp_from_domain`: SMTP sender address domain, normalised to eSLD
+* `smtp_from_domain_or_helo`: SMTP sender address domain or HELO if address is empty/absent
+* `esld_smtp_from_domain_or_helo`: SMTP sender address domain or HELO if address is empty/absent, normalised to eSLD
+* `mime_from`: MIME sender address
+* `mime_from_domain`: MIME sender address domain
+* `esld_mime_from_domain`: MIME sender address domain, normalised to eSLD
