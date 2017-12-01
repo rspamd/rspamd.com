@@ -119,7 +119,7 @@ smtpd_relay_restrictions = check_recipient_access hash:/etc/postfix/access, reje
 smtpd_milters = inet:localhost:11332
 milter_default_action = accept
 milter_protocol = 6
-milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
+milter_mail_macros = i {auth_type} {auth_authen} {auth_author} {mail_addr} {mail_host} {mail_mailer}
 </code></pre>
 </div></div>
 
