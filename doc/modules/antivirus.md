@@ -28,10 +28,11 @@ first {
   type = "clamav";
   # If set true, log message is emitted for clean messages
   #log_clean = false;
+  # Prefix used for caching in Redis: scanner-specific defaults are used. If Redis is enabled and
+  # multiple scanners of the same type are present, it is important to set prefix to something unique.
+  #prefix = "rs_cl_";
   # For "savapi" you must also specify the following variable
   #product_id = 12345;
-  # For "savapi" you can enable logging for clean messages
-  #log_clean = true;
   # servers to query (if port is unspecified, scanner-specific default is used)
   # can be specified multiple times to pool servers
   # can be set to a path to a unix socket
