@@ -200,7 +200,7 @@ This is a command for converting statistics from SQLite to Redis. Typical invoca
 
 ~~~
 rspamadm statconvert -d /var/lib/rspamd/bayes.spam.sqlite -h 127.0.0.1 -s BAYES_SPAM
-rspamadm statconvert -d /var/lib/rspamd/bayes.ham.sqlite -h 127.0.0.1 -s BAYES_HAM -c /var/db/rspamd/learn_cache.sqlite
+rspamadm statconvert -d /var/lib/rspamd/bayes.ham.sqlite -h 127.0.0.1 -s BAYES_HAM -c /var/lib/rspamd/learn_cache.sqlite
 ~~~
 
 ~~~
