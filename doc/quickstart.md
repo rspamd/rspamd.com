@@ -339,6 +339,16 @@ If you plan to leave this as is you may wish to use a firewall to restrict acces
 
 Rspamd controller worker listens on the port `11334` by default, and the proxy worker uses port `11332` accordingly.
 
+Because Rspamd skip some checks for local networks, you may want to tune global `local_addrs` map.
+
+~~~ucl#
+# /etc/rspamd/local.d/options.inc
+
+# Local networks (default)
+local_addrs = "192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, fd00::/8, 169.254.0.0/16, fe80::/10";
+~~~
+Please review the [global options documentation]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html) for other global settings you may want to use.
+
 ## Using of Milter protocol (for Rspamd >= 1.6)
 
 From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introducing of this feature also finally obsoletes the [Rmilter](https://rspamd.com/rmilter/) project in honor of the new integration method. Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
