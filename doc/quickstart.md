@@ -159,9 +159,7 @@ ssl_key = </var/lib/acme/live/mail.example.com/privkey
 
 ## Caching setup
 
-Both Rspamd use [Redis](https://redis.io) for caching.
-
-Rspamd uses  [Redis](https://redis.io) as storage and caching system:
+Rspamd uses  [Redis](https://redis.io) as a storage and caching system. In particular, Redis is used for the following purposes:
 
 - a backend for tokens storage and cache of learned messages by [statistical module](configuration/statistic.html) (BAYES classifier)
 - a fuzzy storage backend (optional)
@@ -170,49 +168,18 @@ Rspamd uses  [Redis](https://redis.io) as storage and caching system:
 - rate limiting
 - whitelisting of reply messages (storing reply message IDs to avoid certain checks for replies to our own sent messages)
 
-Installation of Redis is quite straightforward: install it using packages, start it with the default settings (it should listen on local interface using port 6379) and you are done. You might also want to limit memory used by Redis at some sane value:
+Installation of Redis is quite straightforward: install it using the preferred way for your OS (e.g. from packages), start redis-server with the default settings (it should listen on local interface using port 6379) and you are done. You might also want to limit memory used by Redis at some sane value:
 
     maxmemory 500mb
     maxmemory-policy volatile-lru
 
-Note that for the moment by default stable releases of Redis listen for connections from all network interfaces. This is potentially dangerous and in most cases should be limited to the loopback interfaces, with the following configuration directive:
+Please bear in mind that Redis could listen for connections from all network interfaces. This is potentially dangerous and in most cases should be limited to the loopback interfaces, with the following configuration directive:
 
     bind 127.0.0.1 ::1
 
-For saving data to disk, it is also useful to setup overcommit memory behaviuor which might be useful for loaded systems. It could be done in Linux by using the following command:
+For saving data to disk, it is also useful to setup overcommit memory behavior which might be useful for loaded systems. It could be done in Linux by using the following command:
 
     echo 1 > /proc/sys/vm/overcommit_memory
-
-## Rmilter setup (for Rspamd < 1.6)
-
-**USE RMILTER IS DEPRECATED SINCE 1.6**
-
-For Rspamd 1.6, please skip to the [following section]({{ site.baseurl }}/doc/quickstart.html#using-of-milter-protocol-for-rspamd--16)
-
-When you are done with Postfix/Dovecot/Redis initial setup, it might be a good idea to setup Rmilter. Rmilter is used to connect Postfix (or Sendmail) with Rspamd. It can alter messages, change subject, reject spam, perform greylisting, check rate limits and even sign messages for authorized users/networks with DKIM signatures.
-
-To install Rmilter, please follow the instructions on the [downloads page]({{ site.baseurl }}/downloads.html) but install `rmilter` package instead of `rspamd`. With the default configuration, Rmilter will use Redis and Rspamd on the local machine. You might want to change the bind settings as the default settings the use of unix sockets which might not work in some circumstances. To use TCP sockets for Rmilter, you can set the `bind_socket` option according to your Postfix setup:
-
-    bind_socket = inet:9900@127.0.0.1;
-
-For advanced setup, please check the [Rmilter documentation]({{ site.baseurl }}/rmilter/). Rmilter starts as daemon (e.g. by typing `service rmilter start`) and writes output to the system log. If you have a systemd-less system, then you can check Rmilter logs in the `/var/log/mail.log` file. For systemd, please check your OS documentation about reading logs as the exact command might differ from system to system.
-
-If you use the recent Rspamd version (>= 1.4) then you should also disable Rmilter internal greylisting, ratelimit and dkim signing:
-
-~~~ucl
-# /etc/rmilter.conf.local
-limits {
-    enable = false;
-}
-greylisting {
-    enable = false;
-}
-dkim {
-    enable = false;
-}
-~~~
-
-Unfortunately, these options are not in the default configuration to preserve backward compatibility with the previous versions.
 
 ## Rspamd installation
 

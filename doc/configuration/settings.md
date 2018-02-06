@@ -46,9 +46,11 @@ Let's assume that we have the following settings in the configuration that have 
 
 ~~~ucl
 settings {
-	id = "dkim";
 	dkim {
-		enable_groups = ["dkim"];
+		id = "dkim";
+		apply {
+			enable_groups = ["dkim"];
+		}
 	}
 }
 ~~~
@@ -83,7 +85,7 @@ settings {
 		request_header = {
 			"MTA-Tag" = "\.example\.net$";
 		}
-		apply "default" {
+		apply {
 			symbol1 = 10.0;
 			symbol2 = 0.0;
 			actions {
@@ -106,7 +108,7 @@ settings {
 	authenticated {
 		priority = high;
 		authenticated = yes;
-		apply "default" {
+		apply {
 			groups_disabled = ["rbl", "spf"];
 		}
 	}

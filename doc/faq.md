@@ -492,6 +492,7 @@ While `override.d` and `local.d` replace entries inside block elements, `rspamd.
 What distinguishes these files is the way in which they alter the configuration - `rspamd.conf.local` adds or merges config elements (and is useful, for example, for setting custom metrics) while `rspamd.conf.override` adds or replaces config elements (and is useful for redefining settings completely).
 
 ### What are maps
+
 Maps are files that contain lists of keys or key-value pairs that could be dynamically reloaded by Rspamd when changed. The important difference to configuration elements is that map reloading is done 'live' without and expensive restart procedure. Another important thing about maps is that Rspamd can monitor both file and HTTP maps for changes (modification time for files and HTTP `If-Modified-Since` header for HTTP maps). So far, Rspamd supports `HTTP` and `file` maps.
 
 ### What can be in the maps
@@ -534,6 +535,7 @@ IP maps:
 ```
 
 ### How to sign maps
+
 From Rspamd version 1.2 onwards, each map can have a digital signature using the `EdDSA` algorithm. To sign a map you can use `rspamadm signtool` and to generate a signing keypair - `rspamadm kyypair -s -u`:
 
 ```ucl
@@ -633,6 +635,40 @@ To disable an entire module you can set `enabled = false` in its configuration.
 ### Can I scan outgoing mail with Rspamd
 
 Yes, Rspamd should be safe for outbound scanning by default, [see here for detail]({{ site.url }}{{ site.baseurl }}/doc/tutorials/scanning_outbound.html).
+
+### Can I just sign messages using DKIM
+
+Yes, use [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html) and enable just `DKIM_SIGN` symbol (and `DKIM_SIGNED` in case if `dkim_signing` module is used), e.g.
+
+```ucl
+# rspamd.conf.local
+settings { 
+  sign_id {
+    id = "dkim";
+    apply {
+      enable_groups = ["dkim", "arc"];
+    }
+  }
+  sign_authenticated {
+    authenticated = true;
+    apply {
+      enable_groups = ["dkim", "arc"];
+    }
+  }
+  sign_networks {
+    ip = ["172.16.0.0/16", "10.0.0.0/8"];
+    apply {
+      enable_groups = ["dkim", "arc"];
+    }
+  }
+}
+```
+
+In this sample, we disable all checks with the exception of DKIM/ARC check and signing. This will work in case of authenticated user, local network (2 networks in this sample) or by passing a special HTTP header when doing manual check:
+
+```
+rspamc --header="settings-id=dkim" message.eml
+```
 
 ## Administration questions
 
@@ -866,6 +902,17 @@ The overall execution order in Rspamd is the following:
 ### What is the meaning of the `URIBL_BLOCKED` symbol
 
 This symbol means that you have exceeded the amount of DNS queries allowed for non-commercial usage by SURBL services. If you use some a public DNS server, e.g. goolgle public DNS, then try switching to your local DNS resolver (or set one up, for example, [unbound](https://www.unbound.net/)). Otherwise, you should consider buying a [commercial subscription](http://www.surbl.org/df) or you won't be able to use the service. The `URIBL_BLOCKED` symbol has a weight of 0 and is used just to inform you about this problem.
+
+### What are monitored checks
+
+Rspamd periodically checks various DNS lists to avoid possible issues with DNS, for instance if your nameserver returns some weird redirect instead of NXDOMAIN error, or lists themselves, for example, if they start to blacklist the whole Internet as it happened in the past with some particular lists.
+
+Hence, Rspamd queries the following addresses:
+
+* `1.0.0.127.rbl.tld` - this **MUST** return `NXDOMAIN` for all RBLs
+* `facebook.com.uribl.tld` - it is highly unlikely that any sane URIBL would ever block Facebook, hence, this query is used to check URL black lists sanity
+
+If monitored checks fail, Rspamd will disable a failed resource and continue retrying these checks after some amount of time (around 1 minute). If checks are successfull then a resource will be enabled back.
 
 ### Why do I have `monitored` errors in my log files
 
