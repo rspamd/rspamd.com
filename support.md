@@ -93,13 +93,20 @@ Please do not expect the immediate reply: we all have different task ongoing and
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                 <input type="hidden" name="cmd" value="_s-xclick">
                 <input type="hidden" name="hosted_button_id" value="32NL9H6JS6K9C">
-                <input type="submit" value="Donate" name="submit" title="PayPal - The safer, easier way to pay online!" class="btn btn-social btn-pp btn-block">
+                <input type="submit" value="Donate using Paypal" name="submit" title="PayPal - The safer, easier way to pay online!" class="btn btn-social btn-pp btn-block">
                 <!--input type="image" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!"-->
                 <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
             </form>
         </div>
         <div class="col-sm-9 col-xs-12">
-            <p>If you would like to support Rspamd development, we are accepting donations via PayPal.</p>
+            <p>If you would like to support Rspamd development, we are accepting donations via PayPal or a wire transfer. These donations help us to cover hardware and conferences costs used for Rspamd development and promotion.</p>
+            <p>Bank account details:</p>
+            <pre>
+            RSPAMD LTD
+            IBAN: GB73MYMB23058019922227
+            SWIFT/BIC: MYMBGB2L
+            UK
+            </pre>
         </div>
     </div>
 </div>
