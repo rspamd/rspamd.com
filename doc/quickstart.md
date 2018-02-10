@@ -221,6 +221,24 @@ To start once:
 
 Though Rspamd's default config aims to be useful for most purposes you may wish to make some adjustments to suit your environment/tastes.
 
+### Using of configwizard
+
+From version 1.7, there is a configuration wizard available as `rspamadm` subcommand. This wizard can help you to configure the most commonly used features in Rspamd, for instance:
+
+* Redis server
+* Controller password
+* DKIM signing for outbound
+
+To run wizard, use the following command:
+
+```
+rspamadm configwizard
+```
+
+This tool will guide you interactively throughout the configuration process using CLI interface.
+
+### Manual configuration
+
 There are some different approaches you can take to this:
 
 1. **Not recommended: This will complicate upgrades:** Modifying the stock config files in `/etc/rspamd` directly. Your package manager will not replace the modified config files on upgrade - and may prompt you to merge changes or install these files with an added extension depending on your platform.
