@@ -20,11 +20,11 @@ You can watch the following [introduction video](https://www.youtube.com/watch?v
 
 * [**Web interface**]({{ site.baseurl }}/webui/). Rspamd is shipped with the fully functional Ajax-based web interface that allows to monitor and configure Rspamd rules, scores, dynamic lists, to scan and learn messages and to view the history of scans. The web interface is self-hosted, requires zero configuration and follows the recent web applications standards. You don't need a web server or applications server to run web UI - you just need to run Rspamd itself and a web browser.
 
-* [**Integration with MTA**]({{ site.baseurl }}/doc/integration.html). Rspamd can work with the most popular mail transfer systems, such as Postfix, Exim or Sendmail.
+* [**Integration with MTA**]({{ site.baseurl }}/doc/integration.html). Rspamd can work with the most popular mail transfer systems, such as Postfix, Exim, Sendmail or Haraka.
 
 * [**Extensive Lua API**]({{ site.baseurl }}/doc/lua). Rspamd ships with hundreds of Lua functions that are helpful to create your own rules for efficient and targeted spam filtering.
 
-* [**Dynamic tables**]({{ site.baseurl }}/doc/configuration/maps.html) - it is possible to specify bulk lists as `dynamic maps` that are checked in runtime with updating data only when they are changed. Rspamd supports file, HTTP and HTTPS maps.
+* [**Dynamic tables**]({{ site.baseurl }}/doc/faq.html#what-are-maps) - it is possible to specify bulk lists as `dynamic maps` that are checked in runtime with updating data only when they are changed. Rspamd supports file, HTTP and HTTPS maps.
 
 <div><h2><img src="img/envelope_loupe.jpg" class="" height="50" width="50" style="position: relative; bottom: 10px;"> Content scan features</h2></div>
 
@@ -44,9 +44,11 @@ There are many resources that define policies for different objects in email tra
 
 * [**SPF**]({{ site.baseurl }}/doc/modules/spf.html) checks allow to validate a message's sender using the policy defined in the DNS record of sender's domain. You can read about <abbr title="Sender Policy Framework">SPF</abbr> policies [here](http://www.openspf.org/). A number of mail systems  support SPF, such as `Gmail` or `Yahoo Mail`.
 
-* [**DKIM**]({{ site.baseurl }}/doc/modules/dkim.html) policy validates a message's cryptographic signature against a public key placed in the DNS record of sender's domain. This method allows to ensure that a message has been received from the specified domain without altering on the path.
+* [**DKIM**]({{ site.baseurl }}/doc/modules/dkim.html) policy validates a message's cryptographic signature against a public key placed in the DNS record of sender's domain. This method allows to ensure that a message has been received from the specified domain without altering on the path. Rspamd also supports [**DKIM signing**]({{ site.baseurl }}/doc/modules/dkim_signing.html
 
 * [**DMARC**]({{ site.baseurl }}/doc/modules/dmarc.html) combines DKIM and SPF techniques to define more or less restrictive policies for certain domains. Rspamd can also store data for DMARC reports in [Redis](https://redis.io) database.
+
+* [**ARC**]]({{ site.baseurl }}/doc/modules/arc.html) is a relatively new addition to the DKIM signing mechanism allowing to forward signed messages over a chain of trusted relays.
 
 * [**Whitelists**]({{ site.baseurl }}/doc/modules/whitelist.html) are used to avoid false positive hits for trusted domains that pass other checks, such as DKIM, SPF or DMARC. For example, we should not filter messages from PayPal if they are correctly signed with PayPal domain signature. On the other hand, if they are not signed and DMARC policy defines restrictive rules for DKIM, we should mark this message as spam as it is potentially phishing. Whitelist module provides different modes to perform policy matching and whitelisting or blacklisting of certain combinations of verification results.
 
@@ -56,7 +58,9 @@ There are many resources that define policies for different objects in email tra
 
 * [**Phishing checks**]({{ site.baseurl }}/doc/modules/phishing.html) are extremely useful to filter phishing messages and protect users from cyber attacks. Rspamd uses sophisticated algorithms to find phished URLs and supports the popular URL redirectors (for example, <http://t.co>) to avoid false positive hits. Popular phishing databases, such as [OpenPhish](https://openphish.com) and [PhishTank](https://phishtank.com) are also supported.
 
-* [**Rate limits**]({{ site.baseurl }}/doc/modules/ratelimit.html) allow to prevent mass mails to be sent from your own hacked users. This is an extremely useful feature to protect both inbound and outbound mail flows.
+* [**Rate limits**]({{ site.baseurl }}/doc/modules/ratelimit.html) allow to prevent mass mails to be sent from your own hacked users. This is an extremely useful feature to protect both inbound and outbound mail flows. 
+
+* [**IP reputation**]({{ site.baseurl }}/doc/modules/ip_score.html) plugin allows to adjust reputation for specific IP addresses, networks, autonomous blocks (ASN) and even countries.
 
 * [**Greylisting**]({{ site.baseurl }}/doc/modules/greylisting.html) is a common method to introduce delay for suspicious messages, as many spammers do not use the fully functional SMTP servers that allow to queue delayed messages. Rspamd implements greylisting internally and can delay messages that has a score higher than certain threshold.
 
