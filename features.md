@@ -44,11 +44,11 @@ There are many resources that define policies for different objects in email tra
 
 * [**SPF**]({{ site.baseurl }}/doc/modules/spf.html) checks allow to validate a message's sender using the policy defined in the DNS record of sender's domain. You can read about <abbr title="Sender Policy Framework">SPF</abbr> policies [here](http://www.openspf.org/). A number of mail systems  support SPF, such as `Gmail` or `Yahoo Mail`.
 
-* [**DKIM**]({{ site.baseurl }}/doc/modules/dkim.html) policy validates a message's cryptographic signature against a public key placed in the DNS record of sender's domain. This method allows to ensure that a message has been received from the specified domain without altering on the path. Rspamd also supports [**DKIM signing**]({{ site.baseurl }}/doc/modules/dkim_signing.html
+* [**DKIM**]({{ site.baseurl }}/doc/modules/dkim.html) policy validates a message's cryptographic signature against a public key placed in the DNS record of sender's domain. This method allows to ensure that a message has been received from the specified domain without altering on the path. Rspamd also supports [**DKIM signing**]({{ site.baseurl }}/doc/modules/dkim_signing.html)
 
 * [**DMARC**]({{ site.baseurl }}/doc/modules/dmarc.html) combines DKIM and SPF techniques to define more or less restrictive policies for certain domains. Rspamd can also store data for DMARC reports in [Redis](https://redis.io) database.
 
-* [**ARC**]]({{ site.baseurl }}/doc/modules/arc.html) is a relatively new addition to the DKIM signing mechanism allowing to forward signed messages over a chain of trusted relays.
+* [**ARC**]({{ site.baseurl }}/doc/modules/arc.html) is a relatively new addition to the DKIM signing mechanism allowing to forward signed messages over a chain of trusted relays.
 
 * [**Whitelists**]({{ site.baseurl }}/doc/modules/whitelist.html) are used to avoid false positive hits for trusted domains that pass other checks, such as DKIM, SPF or DMARC. For example, we should not filter messages from PayPal if they are correctly signed with PayPal domain signature. On the other hand, if they are not signed and DMARC policy defines restrictive rules for DKIM, we should mark this message as spam as it is potentially phishing. Whitelist module provides different modes to perform policy matching and whitelisting or blacklisting of certain combinations of verification results.
 
