@@ -6,14 +6,15 @@ title: Rspamd Options
 
 ## Introduction
 
-The options section defines basic Rspamd behaviour. Options are global for all types of workers. The default options are shown in the following example snippet:
+The options section defines basic Rspamd behaviour. Options are global for all types of workers. Some default options are shown in the following example snippet:
 
 ~~~ucl
 filters = "chartable,dkim,spf,surbl,regexp,fuzzy_check";
 raw_mode = false;
 one_shot = false;
 cache_file = "$DBDIR/symbols.cache";
-map_watch_interval = 1min;
+map_watch_interval = 5min;
+map_file_watch_multiplier = 0.1;
 dynamic_conf = "$DBDIR/rspamd_dynamic";
 history_file = "$DBDIR/rspamd.history";
 check_all_filters = false;
@@ -32,12 +33,6 @@ classify_headers = [
 ];
 
 control_socket = "$DBDIR/rspamd.sock mode=0600";
-
-# For webui cluster
-neighbours {
-    host.example.com { host = "host.example.com:11334"; }
-    localhost { host = "localhost:11334"; }
-}
 ~~~
 
 ## Global options
@@ -94,6 +89,57 @@ In this case, `8.8.8.8` public resolver will be used as a backup when local reso
 * `retransmits`: how many times each request is retransmitted before it is treated as failed (the overall timeout for each request is thus `timeout * retransmits`)
 * `sockets`: how many sockets are opened to a remote DNS resolver; can be tuned if you have tens of thousands of requests per second).
 
+## Neighbours list
+
+The WebUI supports displaying and aggregating statistics from a cluster of Rspamd servers and changing configuration of all cluster members at once.
+
+On the Rspamd server at which you want to point your web-browser add a neighbours list to the local.d/options.inc:
+
+~~~ucl
+neighbours {
+    server1 { host = "host1.example.com"; }
+    server2 { host = "host2.example.com"; }
+    server3 { host = "10.10.10.10:11334"; }
+}
+~~~
+
+There is no communication between the cluster members. Rspamd just sends the neighbours list to the web-browser. Everything else happens on the browser side. The web-browser makes HTTP requests directly to the neighbours on the list.
+
+For some reason (ask @cebka on IRC about that) you should have such a list in the configuration of every other neighbour. Actually, it does not matter what is configured in the `neighbours` section on other servers of the cluster. There should be at least one host entry.
+
+A dummy entry like this is enough:
+~~~ucl
+neighbours {
+    server1 {host = ""; }
+}
+~~~
+
+But if you are plannig to access WebUI on this host as well you should configure something sensible.
+
+If you have [a reverse proxy with TLS]({{ site.baseurl }}/doc/quickstart.html#setting-up-the-webui) in front of Rspamd, you need to explicitly specify the protocol and port in the `host` directive:
+~~~ucl
+neighbours {
+    server1 { host = "https://host1.example.com:443"; }
+    server2 { host = "https://host2.example.com:443"; }
+}
+~~~
+Otherwise it defaults to `http` and `11334` respectively.
+
+Also you can use the same host name but set different paths:
+
+~~~ucl
+neighbours {
+    server1 {
+        host = "https://host.example.com:443";
+        path = "/rspamd1";
+    }
+    server2 {
+        host = "https://host.example.com:443";
+        path = "/rspamd2";
+    }
+}
+~~~
+
 ## Upstream options
 
-See [this document](../upstream.html) for details.
+See [this document]({{ site.baseurl }}/doc/configuration/upstream.html) for details.
