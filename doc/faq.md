@@ -1011,21 +1011,9 @@ The map file might have insufficient permissions, or not exist. The WebUI also i
 
 ### How to setup cluster in WebUI
 
-Add to local.d/options.inc neighbors list like:
+You need to add neighbours list to the global options configuration.
 
-~~~ucl
-neighbours {
-    host.example.com { host = "host.example.com:11334"; }
-    localhost { host = "localhost:11334"; }
-}
-~~~
-
-1. Controller sends the list to web browser on request
-2. Controller uses it to allow cross domains HTTP requests for listed neighbours
-
-For [2] you should have such a list in every neighbor configuration.
-
-(By Alexander Moisseev)
+Please see the [Rspamd options settings]({{ site.baseurl }}/doc/configuration/options.html#neighbours-list) for details.
 
 ### Why does the User column show 'undefined'?
 
