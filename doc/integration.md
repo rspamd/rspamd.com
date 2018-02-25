@@ -26,12 +26,14 @@ Postfix configuration to scan messages on Rspamd daemon via milter protocol is v
 #smtpd_milters = unix:/var/lib/rspamd/milter.sock
 # or for TCP socket
 smtpd_milters = inet:localhost:11332
-milter_protocol = 6
-milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
+
 # skip mail without checks if something goes wrong
 milter_default_action = accept
-{% endhighlight %}
 
+# 6 is the default milter protocol version;
+# prior to Postfix 2.6 the default protocol was 2.
+# milter_protocol = 6
+{% endhighlight %}
 
 ## Integration with exim MTA
 
