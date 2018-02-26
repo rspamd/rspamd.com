@@ -22,16 +22,18 @@ From version 1.6, you should use [rspamd proxy worker](./workers/rspamd_proxy.ht
 
 Postfix configuration to scan messages on Rspamd daemon via milter protocol is very simple:
 
-{% highlight make %}
+```sh
 #smtpd_milters = unix:/var/lib/rspamd/milter.sock
 # or for TCP socket
 smtpd_milters = inet:localhost:11332
-milter_protocol = 6
-milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
+
 # skip mail without checks if something goes wrong
 milter_default_action = accept
-{% endhighlight %}
 
+# 6 is the default milter protocol version;
+# prior to Postfix 2.6 the default protocol was 2.
+# milter_protocol = 6
+```
 
 ## Integration with exim MTA
 
@@ -52,7 +54,7 @@ Alternatively, you can set `enable_shutdown_workaround = true` in `$LOCAL_CONFDI
 
 Here is an example of the Exim configuration:
 
-{% highlight make %}
+```sh
 # This is the global (top) section of the configuration file
 # Please note the variant parameter in spamd_address setting
 spamd_address = 127.0.0.1 11333 variant=rspamd
@@ -108,7 +110,7 @@ acl_check_spam:
     add_header = X-Spam-Bar: $spam_bar
 
   accept
-{% endhighlight %}
+```
 
 For further information please refer to the [Exim specification](http://www.exim.org/exim-html-current/doc/html/spec_html), especially the [chapter about content scanning](http://www.exim.org/exim-html-current/doc/html/spec_html/ch-content_scanning_at_acl_time.html).
 

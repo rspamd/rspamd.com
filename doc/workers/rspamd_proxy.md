@@ -32,12 +32,12 @@ In this mode, `rspamd_proxy` scans messages itself and talk to MTA directly usin
 
 ~~~ucl
 # local.d/worker-proxy.inc
-milter = yes; # Enable milter mode
-timeout = 120s; # Needed for Milter usually
 upstream "local" {
-  default = yes; # Self-scan upstreams are always default
   self_scan = yes; # Enable self-scan
 }
+
+# Proxy worker is listening on *:11332 by default
+#bind_socket = localhost:11332;
 ~~~
 
 Also you can disable<sup>[1](#fn1)</sup> [normal](normal.html) worker to free up system resources as it is not necessary in `self-scan` mode:
@@ -47,16 +47,18 @@ Also you can disable<sup>[1](#fn1)</sup> [normal](normal.html) worker to free up
 enabled = false;
 ~~~
 
-But there is a drawback: since `rspamc` uses [normal](normal.html) worker by default you need to explicitly point it to [controller](controller.html) worker port (11334):
+But there is a drawback: since `rspamc` uses [normal](normal.html) worker by default you need to explicitly point it to [controller](controller.html) worker port (11334)<sup>[2](#fn1)</sup>:
 
 ~~~
-rspamc -h localhost:11334 input-file
+rspamc -h rspamd.example.org:11334 input-file
 ~~~
 
 &nbsp;
 
 ---
 <a name="fn1">1.</a> The `enabled` option is available for workers since Rspamd 1.6.2, in  previous versions you can use `count = 0;` instead.
+
+<a name="fn1">2.</a> When connecting to local IP `rspamc` uses controller port by default (1.7+).
 
 ### Proxy mode
 
@@ -66,9 +68,6 @@ In this mode, there is a dedicated layer of Rspamd scanners with load-balancing 
 
 ~~~ucl
 # local.d/worker-proxy.inc
-milter = yes; # Enable milter mode
-timeout = 120s; # Needed for Milter usually
-
 upstream "scan" {
   default = yes;
   hosts = "round-robin:host1:11333:10,host2:11333:10,host3:11333:5,host4:11333:5";
