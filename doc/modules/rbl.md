@@ -74,7 +74,7 @@ If true, do not use the RBL if the sending host address is in `local_addrs` & do
 
 - `default_exclude_local` (true)
 
-If true & local_exclude_ip_map has been set - do not use the RBL if the sending host address is in the local IP list & do not check received headers baring these addresses.
+If true, hosts listed in `local_exclude_ip_map` should not be checked in this RBL (see also `local_exclude_ip_map` setting).
 
 - `default_is_whitelist` (false)
 
@@ -88,7 +88,7 @@ Other parameters which can be set here are:
 
 - `local_exclude_ip_map`
 
-Can be set to a URL of a list of IPv4/IPv6 addresses & subnets not to be considered as local exclusions by exclude_local checks.
+Map containing IPv4/IPv6 addresses/subnets that shouldn't be checked in RBLs (where `exclude_local` is `true` (default)).
 
 - `hash`
 
