@@ -46,7 +46,7 @@ Here is the list of projects that are desired for rspamd. However, students are 
   - [Tarantool support](#tarantool-support)
 	- [Languages based redis backend for bayes](#languages-based-redis-backend-for-bayes)
   - [Bayes signatures in webui](#bayes-signatures-in-webui)
-  - [Bag of words NN model](#bag-of-words-nn-model])
+  - [Bag of words NN model](#bag-of-words-nn-model)
   - [GnuPG signing and verification support](#gnupg-signing-and-verification-support)
 
 ### XMPP filtering support
