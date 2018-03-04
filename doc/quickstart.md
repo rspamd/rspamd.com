@@ -30,6 +30,7 @@ You should also consider to setup your own [local  DNS resolver]({{ site.baseurl
 ### TLS Setup
 
 It is strongly recommended to setup TLS for your mail system. We suggest to use certificates issued by [Let’s&nbsp; Encrypt](https://letsencrypt.org) as they are free to use and are convenient to manage. To get such a certificate for your domain you need to allow Let’s&nbsp;Encrypt to check your domain. There are many tools available for these purposes, including the official client and couple of alternative clients, for example [acmetool](https://github.com/hlandau/acme). The setup is fairly simple: just type
+
 	add-apt-repository ppa:hlandau/rhea
 	apt-get update
     apt-get install acmetool
