@@ -104,6 +104,9 @@ See [here]({{ site.baseurl }}/doc/configuration/redis.html) for information on c
 
 ### Settings: `send_mail` backend
 
+When `send_mail` backend is used in conjunction with `default` formatter,
+to avoid looping make sure e-mail messages from the metadata exporter are **not scanned** by Rspamd.
+
  - `smtp` (required): hostname of SMTP server
  - `mail_to` (required): recipient of e-mail alert
  - `mail_from`: Sender address (default empty)
