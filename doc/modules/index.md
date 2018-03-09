@@ -72,7 +72,7 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [milter_headers](milter_headers.html) - adds/removes headers from messages (requires configuration)
 - [mime_types](mime_types.html) - applies some rules about mime types met in messages
 - [multimap](multimap.html) - a complex module that operates with different types of maps.
-- [neural networks](fann.html) - allows to post-process messages using neural network classification. (requires Redis configuration and log_helper worker setup for activation).
+- [neural networks](neural.html) - allows to post-process messages using neural network classification. (requires Redis).
 - [once_received](once_received.html) - detects messages with a single `Received` headers and performs some additional checks for such messages.
 - [phishing](phishing.html) - detects messages with phished URLs.
 - [ratelimit](ratelimit.html) - implements leaked bucket algorithm for ratelimiting (requires Redis & configuration)
