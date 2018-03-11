@@ -121,7 +121,6 @@ smtpd_relay_restrictions = check_recipient_access hash:/etc/postfix/access, reje
 smtpd_milters = inet:localhost:11332
 milter_default_action = accept
 milter_protocol = 6
-milter_mail_macros = i {auth_type} {auth_authen} {auth_author} {mail_addr} {mail_host} {mail_mailer}
 </code></pre>
 </div></div>
 
@@ -337,7 +336,7 @@ In addition to equivalents to files in `/etc/rspamd/modules.d` the following inc
  - `options.inc`: included inside `options { }`
  - `worker-normal.inc`: included inside normal `worker {}` block
  - `worker-controller.inc`: included inside controller `worker {}` block
-  - `worker-proxy.inc`: included inside rspamd_proxy `worker {}` block
+ - `worker-proxy.inc`: included inside rspamd_proxy `worker {}` block
 
 
 ### Setting listening interface
@@ -390,35 +389,39 @@ For more advanced proxy usage, please see the corresponding [documentation]({{ s
 
 ### Setting the controller password
 
-Rspamd requires a password when queried from non-trusted IPs, except for scanning messages which is unrestricted (the default config trusts the loopback interface). This is configured in the file `/etc/rspamd/local.d/worker-controller.inc`. The config to be modified is shown below (replace 'q1' with your chosen password):
+Rspamd requires a password when queried from non-trusted IPs, except for scanning messages which is unrestricted (the default config trusts the loopback interface). This is configured in the file `/etc/rspamd/local.d/worker-controller.inc`.
+
+You should store an encrypted password for better security. To generate such a password just type
+
+	$ rspamadm pw
+	Enter passphrase:
+    $2$g95ywihfinjqx4r69u6mgfs9cqbfq1ay$1h4bm5uod9njfu3hdbwd3w5xf5d9u8gb7i9xnimm5u8ddq3c5byy 
+
+The config to be modified is shown below (replace 'q1' with your chosen password):
 
 ~~~ucl
 # /etc/rspamd/local.d/worker-controller.inc
-password = "q1";
+password = "$2$g95ywihfinjqx4r69u6mgfs9cqbfq1ay$1h4bm5uod9njfu3hdbwd3w5xf5d9u8gb7i9xnimm5u8ddq3c5byy";
 ~~~
 
 Optionally you may set `enable_password` - if set, data-changing operations (such as Bayes training or fuzzy storage) will require this password. For example:
 
 ~~~ucl
 # /etc/rspamd/local.d/worker-controller.inc
-enable_password = "q2";
+enable_password = "$2$qda98oexjhcf6na4mfujqjwf4qmbi545$ijkrmjx96iyj56an9jfzbba6mf1iezpog4axpeym9qhtf6nhjswy";
 ~~~
 
+From version 1.7, setting of passwords is also suggested by `rspamadm configwizard`.
+
 **Important information**: the default passwords (namely, `q1` and `q2`) are **BANNED**, so you cannot use them in your installation. Please set the appropriate passwords before using of the controller.
-
-Moreover, you can store an encrypted password for better security. To generate such a password just type
-
-	$ rspamadm pw
-	Enter passphrase:
-    $2$g95ywihfinjqx4r69u6mgfs9cqbfq1ay$1h4bm5uod9njfu3hdbwd3w5xf5d9u8gb7i9xnimm5u8ddq3c5byy 
 
 Then you can copy this string and store it in the configuration file. Rspamd used the [PBKDF2](http://en.wikipedia.org/wiki/PBKDF2) algorithm that makes it very hard to brute-force this password even if it has been compromised. From the version 1.3, Rspamd also supports [Catena](https://eprint.iacr.org/2013/525.pdf) password hashing scheme which makes brute-force attacks even more memory- and computationally expensive.
 
 For the list of all available hashing schemes, use `--list` option:
 
-        $ ./rspamadm pw --list
-        pbkdf2: PBKDF2-blake2b - standard CPU intensive "slow" KDF using blake2b hash function
-        catena: Catena-Butterfly - modern CPU and memory intensive KDF
+    $ rspamadm pw --list
+    pbkdf2: PBKDF2-blake2b - standard CPU intensive "slow" KDF using blake2b hash function
+    catena: Catena-Butterfly - modern CPU and memory intensive KDF
 
 ### Setting up the WebUI
 
@@ -548,6 +551,24 @@ metric "default" {
 }
 {% endhighlight %}
 
+From Rspamd 1.7, this has changed: now all symbols are groupped per logical group, and all scores are set in `conf/scores.d`. To override these scores, it is recommended to use `local.d/xxx.conf` where `xxx` is one of the following groups:
+
+* `fuzzy_group.conf` - fuzzy hashes scores
+* `headers_group.conf` - various headers checks
+* `hfilter_group.conf` - host filter symbols
+* `mime_types_group.conf` - mime types rules
+* `mua_group.conf` - MUA related rules
+* `neural_group.conf` - neural network produced scores
+* `phishing_group.conf` - URL phishing symbols
+* `policies_group.conf` - policies (DKIM, SPF, DMARC, ARC)
+* `rbl_group.conf` - RBL produced rules
+* `statistics_group.conf` - Bayes statistics
+* `subject_group.conf` - subject checks
+* `surbl_group.conf` - URL blackslists symbols
+
+You can also change weight of rules using the WebUI. To get the current information about symbols and scores, you can use `rspamc counters` command.
+
+
 ## Configuring maps
 
 Another feature of Rspamd is maps support. Maps are lists of values, for example, domain names or ip/networks listed in an external file or by HTTP that are periodically monitored by Rspamd and reloaded in case of updates. This technique is useful for writing your own rules, whitelisting or blacklisting some networks and so on. The important difference with maps is that rspamd restart is not required when those lists are changed. Maps are defined as `URI` strings:
@@ -564,7 +585,7 @@ Within maps you can use whitespace or comments. For example, here is an example 
     10.0.0.0/8
     fe80::/64
 
-There is a special module called `multimap` that allows you to define your own maps without writing lua rules. You can check the module's [documentation]({{ site.baseurl }}/doc/modules/multimap.html) and create your configuration in `rspamd.conf.override`.
+There is a special module called `multimap` that allows you to define your own maps without writing lua rules. You can check the module's [documentation]({{ site.baseurl }}/doc/modules/multimap.html) and create your configuration in `local.d/multimap.conf`.
 
 ## Configuring RBLs
 
