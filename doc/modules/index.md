@@ -60,6 +60,7 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [dcc](dcc.html) - performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine message bulkiness (requires configuration)
 - [dkim_signing](dkim_signing.html) - adds DKIM signatures to messages (requires configuration)
 - [dmarc](dmarc.html) - performs DMARC policy checks (requires Redis & configuration for reporting)
+- [elastic](elastic.html) - pushes scan-related information to Elasticsearch. (requires configuration)
 - [emails](emails.html) - extract emails from a message and checks it against DNS blacklists. (requires configuration)
 - [force_actions](force_actions.html) - forces actions if selected symbols are detected (requires configuration)
 - [greylisting](greylisting.html) - allows to delay suspicious messages (requires Redis)
@@ -84,11 +85,17 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [whitelist](whitelist.html) - provides a flexible way to whitelist (or blacklist) messages based on SPF/DKIM/DMARC combinations
 - [url_redirector](url_redirector.html) - dereferences redirects (requires Redis and SURBL module configuration)
 
-The following modules are explicitly disabled in the default configuration, set `enabled = true` in `/etc/rspamd/local.d/${MODULE_NAME}.conf` to enable them:
+The following modules are explicitly disabled in the default configuration, set `enabled = true` in `local.d/${MODULE_NAME}.conf` to enable them:
 
 - [mx_check](mx_check.html) - checks if sending domain has a connectable MX (requires Redis)
+
+The following modules are explicitly disabled and are experimental, so you need to set `enabled = true` in `local.d/${MODULE_NAME}.conf` **AND** to set the global option `enable_experimental = true` in `local.d/options.inc`:
+
+- [reputation](reputation.html) - generic reputation plugin
 - [url_reputation](url_reputation.html) - assigns reputation to domains in URLs (requires Redis)
 - [url_tags](url_tags.html) - persists URL tags in Redis (requires Redis)
+
+Experimental modules are not recommended for any production usage!
 
 ## Disabling module
 
