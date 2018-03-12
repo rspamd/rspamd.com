@@ -6,6 +6,14 @@ title: Upgrading
 
 This document describes incompatible changes introduced in recent Rspamd versions and details how to update your rules and configuration accordingly.
 
+## Migration to Rspamd 1.7.0
+
+You should consider running of `rspamadm configwizard` to ensure that your configuration is compatible. From version 1.7, Rspamd does not support `metrics` concept. In fact, that was never supported in the past, however, you could see `metric "default"` in many places within Rspamd configuration and settings. 
+
+In this version, we still support old `metric` keyword and scores defined under this section, for instance in `rspamd.conf.local`. However, it is now recommended to define symbols scores in groups settings (`local.d/group_*.conf`). Groups configurations live in `etc/rspamd/scores.d` folder.
+
+There is no need to undertake any action if you have your custom scores defined in the legacy files. Rspamd will continue support of definitions in these files.
+
 ## Migrating to Rspamd 1.6.5
 
 Due to a couple of serious fixes in tokenization algorithms, it is be possible that statistics and fuzzy modules will loose their preciseness. In this cases you might try to relearn your databases to improve accuracy of filtering.
