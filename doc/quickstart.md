@@ -526,7 +526,7 @@ Please review the full [statistics documentation]({{ site.baseurl }}/doc/configu
 
 Unlike SA where there are only `spam` and `ham` results, Rspamd supports different results called [`actions`]({{ site.url }}{{ site.baseurl }}/doc/faq.html#what-are-rspamd-actions).
 
-Each action can have its own score limit which can be modified by user settings. Rspamd assumes the following order of action thresholds: `no action` <= `greylist` <= `add header` <= `rewrite subject` <= `reject`.
+Each action can have its own score limit which can be modified by user settings. Rspamd assumes the following order of action thresholds: `no action` < `greylist` < `add header` < `rewrite subject` < `reject`.
 
 Actions are **NOT** performed by Rspamd itself - they are just recommendations for the MTA (via milter interface, for example) which performs the necessary actions, such as adding headers or rejecting mail.
 
