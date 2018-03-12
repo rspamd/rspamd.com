@@ -5,23 +5,13 @@ title: Rspamd spam filtering system
 
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;"><a href="https://github.com/vstakhov/rspamd/releases/tag/1.6.6">News: Rspamd 1.6.6 has been released</a></h3>
-				<span class="date"><small>2018-02-16</small></span>
-				<p style="margin-bottom: 0px; margin-top: 5px">New stable release with various bugs fixes. Centos packages are now built with Hyperscan, Luajit 2.1 and bundled jemalloc 5.0.1</p>
+				<h3 style="margin: 0px;"><a href="{{ site.baseurl }}/announce/2018/03/12/rspamd-1.7.0.html">News: Rspamd 1.7.0 has been released</a></h3>
+				<span class="date"><small>2018-03-12</small></span>
+				<p style="margin-bottom: 0px; margin-top: 5px">New major release with lots of features and improvements. Torch support, new bayes schema, language detection, rescore and corpus_test tools, configwizard helper and many other things.</p>
    </div>
-	 <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.6.6" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
-	 </div>
-</div>
-<div class="row news_row" style="position: relative;">
-		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;"><a href="https://github.com/vstakhov/rspamd/releases/tag/1.6.5">News: Rspamd 1.6.5 has been released</a></h3>
-				<span class="date"><small>2017-10-22</small></span>
-				<p style="margin-bottom: 0px; margin-top: 5px">The new main line release with many significant bugs and memory leaks fixes. In some cases, you might need to relearn your bayes database to improve statistics accuracy after this update</p>
-   </div>
-	 <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.6.5" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
-	 </div>
+   <div class="col-xs-12 col-sm-2 bottom-right">
+				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.7.0" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
+	</div>
 </div>
 
 <div class="row main-small-text-block">
