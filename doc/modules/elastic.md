@@ -31,7 +31,7 @@ timeout = 5;
 # Elasticsearch template file (json format)
 #template_file = "${PLUGINSDIR}/elastic/rspamd_template.json";
 # Kibana prebuild visualizations and dashboard template (json format)
-#kibana_file = '${PLUGINSDIR}/elastic/kibana.json',
+#kibana_file = "${PLUGINSDIR}/elastic/kibana.json";
 # Elasticsearch index name pattern
 index_pattern = "rspamd-%Y.%m.%d";
 # Import kibana template
