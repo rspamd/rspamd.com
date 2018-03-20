@@ -54,11 +54,11 @@ To do that, you should edit `local.d/neural_group.conf` file:
 
 symbols = {
   "NEURAL_SPAM" {
-    weight = "3.0"; # sample weight
+    weight = 3.0; # sample weight
     description = "Neural network spam";
   }
   "NEURAL_HAM" {
-    weight = "-3.0"; # sample weight
+    weight = -3.0; # sample weight
     description = "Neural network ham";
   }
 }
@@ -142,19 +142,19 @@ rules {
 
 symbols = {
   "NEURAL_SPAM_LONG" {
-    weight = "3.0"; # sample weight
+    weight = 3.0; # sample weight
     description = "Neural network spam (long)";
   }
   "NEURAL_HAM_LONG" {
-    weight = "-3.0"; # sample weight
+    weight = -3.0; # sample weight
     description = "Neural network ham (long)";
   }
   "NEURAL_SPAM_SHORT" {
-    weight = "2.0"; # sample weight
+    weight = 2.0; # sample weight
     description = "Neural network spam (short)";
   }
   "NEURAL_HAM_SHORT" {
-    weight = "-1.0"; # sample weight
+    weight = -1.0; # sample weight
     description = "Neural network ham (short)";
   }
 }
