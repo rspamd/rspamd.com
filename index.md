@@ -3,7 +3,16 @@ layout: default
 title: Rspamd spam filtering system
 ---
 
-
+<div class="row news_row" style="position: relative;">
+		<div class="col-xs-12 col-sm-10">
+				<h3 style="margin: 0px;"><a href="https://github.com/vstakhov/rspamd/releases/tag/1.7.2">News: Rspamd 1.7.2 has been released</a></h3>
+				<span class="date"><small>2018-03-23</small></span>
+				<p style="margin-bottom: 0px; margin-top: 5px">New mainline release with mostly bugs fixes.</p>
+   </div>
+   <div class="col-xs-12 col-sm-2 bottom-right">
+				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.7.2" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
+	</div>
+</div>
 
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
