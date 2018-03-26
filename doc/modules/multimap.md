@@ -348,7 +348,7 @@ SENDER_FROM_WHITELIST_USER {
 SENDER_FROM_REGEXP {
   type = "header";
   header = "from";
-  filter = "regexp:/.*@/";
+  filter = 'regexp:/.*@/';
   map = "file:///tmp/from_re.map";
 }
 URL_MAP {
@@ -358,7 +358,7 @@ URL_MAP {
 }
 URL_MAP_RE {
   type = "url";
-  filter = "tld:regexp:/\.[^.]+$/"; # Extracts the last component of URL
+  filter = 'tld:regexp:/\.[^.]+$/'; # Extracts the last component of URL
   map = "file:///tmp/url.map";
 }
 FILENAME_BLACKLISTED {
