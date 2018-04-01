@@ -96,7 +96,7 @@ Map containing IPv4/IPv6 addresses/subnets that shouldn't be checked in RBLs (wh
 
 - `disable_monitoring`
 
-(new in 1.6) boolean value that disables monitoring completely
+(new in 1.6) boolean value that disables monitoring completely. To enable it **should** be placed in global [options](../configuration/options.html) file. 
 
 - `monitored_address`
 
