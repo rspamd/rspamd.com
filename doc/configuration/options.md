@@ -57,6 +57,7 @@ control_socket = "$DBDIR/rspamd.sock mode=0600";
 * `max_cores_count`: maximum number of files in `cores_dir`
 * `local_addrs` or `local_networks`: map or list of IP networks used as local, so certain checks are skipped for them (e.g. SPF checks)
 * `neighbours`: list of servers in Rspamd cluster
+* `disable_monitoring`: if this flag is set to `true` then [RBL](../modules/rbl.html) monitoring is disabled completely
 
 ## DNS options
 
