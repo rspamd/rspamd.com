@@ -68,6 +68,14 @@ List of headers to be enabled for authenticated users (default `empty`).
 authenticated_headers = ["authentication-results"];
 ~~~
 
+## remove_upstream_spam_flag (1.7.1+)
+
+Set `false` to keep pre-existing spam flag added by an upstream spam filter (default `true`). Enables `remove-spam-flag`.
+
+~~~ucl
+remove_upstream_spam_flag = true;
+~~~
+
 ## local_headers
 
 List of headers to be enabled for local IPs (default `empty`).
@@ -174,6 +182,16 @@ Removes multiple headers (`headers` MUST be specified):
     "This-Too" = 1;
   }
 ~~~
+
+## remove-spam-flag (1.7.1+)
+
+Removes pre-existing spam flag added by an upstream spam filter.
+
+~~~ucl
+  header = "X-Spam";
+~~~
+
+Default name of the header to be removed is `X-Spam` which can be manipulated using the `header` setting.
 
 ## spam-header
 
