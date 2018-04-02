@@ -126,8 +126,8 @@ So each setting has the following attributes:
 	+ `user` - matches authenticated user ID of message sender if any
 	+ `authenticated` - matches any authenticated user
 	+ `request_header` - collection of request header names and regexes to match them against (condition is satisfied if any match)
-	+ `header` - collection of MIME message header names and regexes to match them against (condition is satisfied if any match), available sind Rspamd 1.7
-- `apply` - list of applied rules, identified by metric name (e.g. `default`)
+	+ `header` - collection of MIME message header names and regexes to match them against (condition is satisfied if any match), available since Rspamd 1.7
+- `apply` - list of applied rules
 	+ `symbol` - modify weight of a symbol
 	+ `actions` - defines actions
 	+ `symbols_enabled` - array of symbols that should be checked (all other rules are disabled)
@@ -160,7 +160,7 @@ The picture below describes the architecture of settings matching.
 
 Storing settings in Redis provides a very flexible way to apply settings & avoids the need to reload a map.
 
-To use settings in redis we write one or more handlers in Lua, each of which might return a key. If a key is returned, and it exists in Redis, the value of the key is used as settings. This value should be formatted as in the contents of the `apply` block or settings posted in headers.
+To use settings in Redis we write one or more handlers in Lua, each of which might return a key. If a key is returned, and it exists in Redis, the value of the key is used as settings. This value should be formatted as in the contents of the `apply` block or settings posted in headers.
 
 Let's presume that we want to base our settings on the domain of the first SMTP recipient.
 
