@@ -163,3 +163,32 @@ example.net dkim
 $ head -1 /etc/rspamd/dkim_paths.map
 example.net /var/lib/rspamd/dkim/example.net.$selector.key
 ~~~
+
+## Sign headers
+
+Rspamd allows to change headers that are required to be signed. From Rspamd 1.7.3, you can specify them as `sign_headers` option. By default, Rspamd distinguish two options:
+
+* Normal headers: they are signed as many times as you specify them. **Important security notice**: an attacker can add arbitrary headers with the same name before the headers signed and will still get a valid signature. This option is thus recommended for headers that are non **visible** to users. We want **transport** headers to be treated as normal headers here.
+* Oversigned headers: these headers are signed `N + 1` times even if `N==0`. Oversigned headers cannot be appended to a message. We usually want displayed or meaningful headers to be oversigned here.
+
+### Default sign_headers (after 1.7.3)
+
+The default setting for this option is the following:
+
+```
+sign_headers = '(o)from:(o)sender:(o)reply-to:(o)subject:(o)date:(o)message-id:\
+(o)to:(o)cc:(o)mime-version:(o)content-type:(o)content-transfer-encoding:\
+resent-to:resent-cc:resent-from:resent-sender:resent-message-id:\
+(o)in-reply-to:(o)references:list-id:list-owner:list-unsubscribe:\
+list-subscribe:list-post';
+```
+
+As you can see, oversigned headers are prefixed with `(o)` string.
+
+### Rules of headers sign
+
+`sign_headers` lists headers that are:
+
+- signed `n` times if they are present `n` times
+- for the `n = 0` case this would mean that headers are not signed if they are not present. Oversigned headers are still signed one time to prevent adding a header with this name.
+- headers listed as oversigned are signed `n + 1` times

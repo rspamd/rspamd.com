@@ -88,7 +88,7 @@ train {
 ann_expire = 2d; # For how long ANN should be preserved in Redis
 ~~~
 
-In this snippet, we define a simple network that automatically learns spam on messages with score `<= -2` and spam on messages with score `>= 8`. Upon creation, it is allowed to do additional trains for 20 more times. Rspamd trains a neural network when `(ham_samples + spam_samples) >= max_train`. It also automatically maintains equal proportions of spam and ham samples to provide fair training. If you run somehow small email system, then you can increase `max_usages` to preserve trained networks for longer time (you might also adjust `ann_expire` accordingly).
+In this snippet, we define a simple network that automatically learns ham on messages with score `<= -2` and spam on messages with score `>= 8`. Upon creation, it is allowed to do additional trains for 20 more times. Rspamd trains a neural network when `(ham_samples + spam_samples) >= max_train`. It also automatically maintains equal proportions of spam and ham samples to provide fair training. If you run somehow small email system, then you can increase `max_usages` to preserve trained networks for longer time (you might also adjust `ann_expire` accordingly).
 
 Rspamd can use the same neural network from multiple processes that could run on multiple hosts across the network. It is guaranteed that processes with different configuration symbols enabled will use different neural networks (each network has a hash of all symbols defined as a suffix for Redis keys). Furthermore, there is a guarantee that all learning will be done in a single process that atomically updates neural network data after learning.
 
