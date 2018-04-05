@@ -246,7 +246,7 @@ rspamd_config.SYMBOL = {
 
 ### Useful task manipulations
 
-There are a number of methods in [task](../lua/task.html) objects. For example, you can get any part of a message:
+There are a number of methods in [task](../lua/rspamd_task.html) objects. For example, you can get any part of a message:
 
 ~~~lua
 rspamd_config.HTML_MESSAGE = {
@@ -332,7 +332,7 @@ rspamd_config.SUBJ_ALL_CAPS = {
 }
 ~~~
 
-You can also access HTTP headers, URLs and other useful properties of Rspamd tasks. Moreover, you can use global convenience modules exported by Rspamd, such as [rspamd_util](../lua/util.html) or [rspamd_logger](../lua/logger.html) by requiring them in your rules:
+You can also access HTTP headers, URLs and other useful properties of Rspamd tasks. Moreover, you can use global convenience modules exported by Rspamd, such as [rspamd_util](../lua/rspamd_util.html) or [rspamd_logger](../lua/rspamd_logger.html) by requiring them in your rules:
 
 ~~~lua
 rspamd_config.SUBJ_ALL_CAPS = {

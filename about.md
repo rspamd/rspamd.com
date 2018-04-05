@@ -113,7 +113,7 @@ end
 ~~~
 
 * **Full access to the content of messages** - you can access text parts, headers, SMTP data and so on and so forth by using the `task` object. The full list of methods can be found
-[here]({{ site.url }}{{ site.baseurl }}/doc/lua/task.html).
+[here]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_task.html).
 
 
 * **Pre- and post- filters** - you can register callbacks that are called before or after messages processing to make results more precise or to make some early decision,

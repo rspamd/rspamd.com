@@ -338,7 +338,7 @@ local dm = task:get_date{format = 'message'} -- MIME message date
 local dt = task:get_date{format = 'connect'} -- check date
 ~~~
 
-* `get_header` - this function is totally reworked. Now `get_header` version returns just a decoded string, `get_header_raw` returns an undecoded string and `get_header_full` returns the full list of tables. Please consult the corresponding [documentation]({{ site.url }}{{ site.baseurl }}/doc/lua/task.html) for details. You also might want to update the old invocation of task:get_header to the new one.
+* `get_header` - this function is totally reworked. Now `get_header` version returns just a decoded string, `get_header_raw` returns an undecoded string and `get_header_full` returns the full list of tables. Please consult the corresponding [documentation]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_task.html) for details. You also might want to update the old invocation of task:get_header to the new one.
 Old version:
 
 ~~~lua
