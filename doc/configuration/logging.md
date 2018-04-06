@@ -81,6 +81,7 @@ Rspamd supports the following variables:
 - `len` - length of message
 - `is_spam` - a one-letter rating of spammyness: `T` for spam, `F` for ham and `S` for skipped messages
 - `action` - default metric action
+- `scores` - summary of scores
 - `symbols` - list of all symbols
 - `symbols_scores` - list of all symbols and their scores
 - `symbols_params` - list of all symbols and their options
