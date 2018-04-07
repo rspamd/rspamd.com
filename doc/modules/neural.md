@@ -38,7 +38,7 @@ Special worker is not needed, however, this module is explicitly **disabled** by
 
 Make sure at least one Redis server is [specified]({{ site.baseurl }}/doc/configuration/redis.html) in common `redis` section. Alternatively, you can define Redis server in the module configuration:
 
-`/etc/rspamd/local.d/fann_redis.conf`:
+`local.d/neural.conf` or `local.d/fann_redis.conf` (legacy support):
 
 ~~~ucl
 servers = "localhost";
