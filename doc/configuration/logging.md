@@ -9,10 +9,8 @@ Rspamd has a number of logging options. Firstly, there are three types of log ou
 
 * `error` - log only critical errors
 * `warning` - log errors and warnings
-* `notice` - log only important notices
 * `info` - log all non-debug messages
 * `debug` - log all including debug messages (huge amount of logging)
-* `silent` - log at `info` level on start and then reduce to `notice` level when forking worker processes
 
 It is possible to turn on debug messages for specific IP addresses. This can be useful for testing. For each logging type there are special mandatory parameters: log facility for syslog (read `syslog(3)` man page for details about facilities), log file for file logging. Also, file logging may be buffered for performance. To reduce logging noise, Rspamd detects sequential matching log messages and replaces them with a total number of repeats:
 
