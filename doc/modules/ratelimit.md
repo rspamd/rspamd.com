@@ -26,9 +26,15 @@ the value of this option is 'postmaster, mailer-daemon'. Supported entries are:
     * full address part of the address (1.7.0+).
 - `whitelisted_ip` - a map of ip addresses or networks whitelisted
 - `whitelisted_user` - a map of usernames which are excluded from user ratelimits
-- `max_delay` - maximum lifetime for any limit bucket (1 day by default)
+- `expiry` - maximum lifetime for any limit bucket (2 days by default)
 - `max_rcpt` - do not apply ratelimit if it contains more than this value of recipients (5 by default). This
 option allows to avoid too many work for setting buckets if there are a lot of recipients in a message).
+- `ham_factor_rate` - multiplier for rate when a ham message arrives (default: 1.01) 
+- `spam_factor_rate` - multiplier for rate when a spam message arrives (default: 0.99)
+- `ham_factor_burst` - multiplier for burst when a ham message arrives (default: 1.02)
+- `spam_factor_burst` - multiplier for burst when a spam message arrives (default: 0.98)
+- `max_rate_mult` - maximum and minimum (1/X) dynamic multiplier for rate (default: 5)
+- `max_bucket_mult` -  maximum and minimum (1/X) dynamic multiplier for rate (default: 10)
 - `rates` - a table of allowed rates in form:
 
     type = [burst,leak];
@@ -74,6 +80,15 @@ a bucket is exhausted, then a temporary reject is sent. This happens unless the 
 of bucket is enough to accept more messages (and since messages are leaking then after some
 time, it will be possible to process new messages).
 
+The bucket operations are the following:
+
+1. On check phase do a leak from bucket at the specified rate, if a burst is still higher than limit, then a message is temporary delayed (soft reject action)
+2. If a message has been delivered (or rejected), Rspamd updates burst information for each ratelimit bucket indicating that a message has passed the rate buckets. Dynamic multipliers are also updated on this phase.
+
+To demonstrate dynamic multipliers, here is a sample graph that shows how burst multiplier depends on number of ham (x > 0) and spam (x < 0) messages being received:
+
+<img class="img-responsive" width="75%" src="{{ site.baseurl }}/img/ratelimit.png">
+
 Rspamd uses 3 types of limit buckets:
 
 - `to` - a bucket based on a recipient only
@@ -93,16 +108,18 @@ restricted limits. Rspamd treats the following senders as bounce senders:
 Each recipient has its own triple of buckets, hence it is useful
 to limit number of recipients to check.
 
-Each bucket has two parameters:
+Each bucket has four parameters:
 - `capacity` - how many messages could go into a bucket before a limit is reached
 - `leak` - how many messages per second are leaked from a bucket.
+- `dynamic_rate` - the current dynamic rate multiplier
+- `dynamic_burst` - the current dynamic burst multiplier
 
 For example, a bucket with capacity `100` and leak `1` can accept up to 100 messages but then
 will accept not more than a message per second.
 
 By default, ratelimit module has the following settings which disable all limits:
 
-~~~nginx
+~~~ucl
 ratelimit {
   # Default settings for limits, 1st member is burst, second is rate
   rates {
@@ -146,7 +163,7 @@ The user can define their own keywords to compose ratelimits with.
 
 To create a custom keyword, we add `custom_keywords` setting to config pointing at a Lua script which we will create:
 
-~~~nginx
+~~~ucl
 ratelimit {
    custom_keywords = "/etc/rspamd/custom_ratelimit.lua";
    # other settings ...
@@ -185,60 +202,9 @@ Each keyword should define a `get_value` function which is passed the [task obje
 
 Since we want to apply the keyword to authenticated users we must add this to the `user_keywords` setting:
 
-~~~nginx
+~~~ucl
 ratelimit {
    user_keywords = ["user", "customuser"];
    # other settings ...
 }
-~~~
-
-Bucket size and leak rate can be specified dynamically by creating a keyword that defines a `get_limit` function returning those fields in a table (see example above) and defining the ratelimit in `dynamic_rates` config section as shown below:
-
-~~~nginx
-ratelimit {
-   dynamic_rates = {
-     customuser = "customuser";
-     # in this example customuser.get_value is called for bucket name & customuser.get_limit is called for bucket size & leak rate
-     # we can include other keywords to compose a new ratelimit key, eg. ip_customuser = "customuser"
-     # customuser.get_limit is called for bucket size & leak rate & key name is composed using customuser.get_value and the internal "ip" keyword
-   }
-   # other settings ...
-}
-~~~
-
-### Adaptive ratelimits
-
-From 1.4.0 Rspamd supports adaptive ratelimits- these allow for granting trusted senders increased ratelimits while reducing limits for hosts with bad or unknown reputation. This functionality requires the [ASN]({{ site.baseurl }}/doc/modules/asn.html) and [IP Score]({{ site.baseurl }}/doc/modules/ip_score.html) modules to be enabled.
-
-To enable adaptive ratelimits, set the following:
-
-~~~nginx
-use_ip_score = true; # default false
-~~~
-
-Other settings which are of interest are:
-
-~~~nginx
-ip_score_ham_multiplier = 1.1; # default as shown
-ip_score_spam_divisor = 1.1; # default as shown
-~~~
-
-These affect the extent to which limits will be increased or decreased respectively.
-
-Ratelimits are recalculated as follows:
-
-1) Generate a score for the particular ratelimit/sender combination between -1 and 1. If the ratelimit is of `asn` type this is calculated based on ASN reputation; If the ratelimit is of types `ip/to_ip/to_ip_from/bounce_to_ip` this is calculated based on IP reputation or, if available data is unsufficient - based on one of IPNet/ASN/country reputation (in this order), where one of these has sufficient data. If reputation is unknown the assigned score is 1.
-
-2.1) If score is positive (reputation is bad), recalculate both size of bucket and leak rate as follows:
-
-~~~
-new_score = old_score / ip_score_spam_divisor
-element = element * tanh(e * new_score)
-~~~
-
-2.2) If score is negative (reputation is good), recalculate both size of bucket and leak rate as follows:
-
-~~~
-new_score = ((1 + (old_score * -1)) * ip_score_ham_multiplier)
-element = element * new_score
 ~~~
