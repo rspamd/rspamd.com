@@ -179,16 +179,22 @@ and more generally:
 rspamadm confighelp -k timeout
 ```
 
-### How to report bugs found in Rspamd
+### How to debug some module in Rspamd
 
-If your issue is related to crashes, then you need to obtain core file prior to reporting. It is also useful to explain when a crash occurs and, if relevant, provide some minimal test message and/or problematic config.
-
-If you found some error in Lua logic, then it is usually useful to enable debugging for this module. To do that, write something like:
+If you are unaware about some functions of Rspamd [modules]({{ site.url }}{{ site.baseurl }}/doc/modules/) then it is usually useful to enable debugging for this module. To do that, write something like:
 
 ```ucl
 # local.d/logging.inc
 debug_modules = ["module_name"];
 ```
+
+Please bear in mind that some modules do not produce any useful debug so far.
+
+### How to report bugs found in Rspamd
+
+If your issue is related to crashes, then you need to obtain core file prior to reporting. It is also useful to explain when a crash occurs and, if relevant, provide some minimal test message and/or problematic config.
+
+
 
 For issues about the rules, we usually need a **message sample** that causes a problem. To protect your privacy, you can remove unrelevant headers and content. E.g. you can blind message sender/recipients, subject and/or other fields.
 

@@ -94,7 +94,7 @@ In this case, `8.8.8.8` public resolver will be used as a backup when local reso
 
 The WebUI supports displaying and aggregating statistics from a cluster of Rspamd servers and changing configuration of all cluster members at once.
 
-On the Rspamd server at which you want to point your web-browser add a neighbours list to the local.d/options.inc:
+On the Rspamd server at which you want to point your web-browser add a neighbours list to the `local.d/options.inc`:
 
 ~~~ucl
 neighbours {

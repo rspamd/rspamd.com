@@ -114,21 +114,23 @@ For example, let's override some default symbols shipped with Rspamd. To do that
         score = 20.0;
     }
 
-We can also use an override file. For example, let's redefine actions and set a more restrictive `reject` score. To do this, we create `etc/rspamd/override.d/metrics.conf` with the following content:
+We can also use an override file. For example, let's redefine actions and set a more restrictive `reject` score. To do this, we create `etc/rspamd/override.d/actions.conf` with the following content:
 
-    actions {
-      reject = 150;
-      add_header = 6;
-      greylist = 4;
-    }
+~~~ucl
+# override.d/actions.conf
+reject = 150;
+add_header = 6;
+greylist = 4;
+~~~
 
-Note that you need to define a complete action to redefine an existing one. For example, you **cannot** write something like
+You can also disable some action completely:
 
-    actions {
-      reject = 150;
-    }
+~~~ucl
+# override.d/actions.conf
+reject = null;
+~~~
 
-as this will set the other actions (`add_header` and `greylist`) as undefined.
+This will set the other actions (e.g. `add_header` and `greylist`) to their default values.
 
 ## Writing rules
 
@@ -189,13 +191,13 @@ rspamd_config.MY_LUA_SYMBOL = {
 
 ## Regexp rules
 
-Regexp rules are executed by the `regexp` module of Rspamd. You can find a detailed description of the syntax in [the regexp module documentation](../modules/regexp.html)
+Regexp rules are executed by the `regexp` module of Rspamd. You can find a detailed description of the syntax in [the regexp module documentation]({{ site.url }}{{ site.baseurl }}/doc/modules/regexp.html)
 
 Here are some hints to maximise performance of your regexp rules:
 
 * Prefer lightweight regexps, such as header or URL, to heavy ones, such as mime or body regexps
 * If you need to match text in a message's content, prefer `mime` regexps as they are executed on text content only
-* If you **really** need to match the whole messages, then you might consider using the [trie](../modules/trie.html) module as it is significantly faster
+* If you **really** need to match the whole messages, then you might consider using the [trie]({{ site.url }}{{ site.baseurl }}/doc/modules/trie.html) module as it is significantly faster
 * Avoid complex regexps, avoid backtracing, avoid negative groups `(?!)`, avoid capturing patterns (replace with `(?:)`), avoid potentially empty patterns, e.g. `/^.*$/`
 
 Following these rules allows you to create fast but efficient rules. To add regexp rules you should use the `config` global table that is defined in any Lua file used by Rspamd:
@@ -246,7 +248,7 @@ rspamd_config.SYMBOL = {
 
 ### Useful task manipulations
 
-There are a number of methods in [task](../lua/rspamd_task.html) objects. For example, you can get any part of a message:
+There are a number of methods in [task]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_task.html) objects. For example, you can get any part of a message:
 
 ~~~lua
 rspamd_config.HTML_MESSAGE = {
@@ -332,7 +334,7 @@ rspamd_config.SUBJ_ALL_CAPS = {
 }
 ~~~
 
-You can also access HTTP headers, URLs and other useful properties of Rspamd tasks. Moreover, you can use global convenience modules exported by Rspamd, such as [rspamd_util](../lua/rspamd_util.html) or [rspamd_logger](../lua/rspamd_logger.html) by requiring them in your rules:
+You can also access HTTP headers, URLs and other useful properties of Rspamd tasks. Moreover, you can use global convenience modules exported by Rspamd, such as [rspamd_util]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_util.html) or [rspamd_logger]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_logger.html) by requiring them in your rules:
 
 ~~~lua
 rspamd_config.SUBJ_ALL_CAPS = {
@@ -374,7 +376,7 @@ rspamd_config:register_symbol{
 }
 ~~~
 
-`nominal_weight` is used to define priority and the initial score multiplier. It should usually be `1.0` for normal symbols and `-1.0` for symbols with negative scores that should be executed before other symbols. Here is an example of registering one callback and a couple of virtual symbols used in the [DMARC](../modules/dmarc.html) module:
+`nominal_weight` is used to define priority and the initial score multiplier. It should usually be `1.0` for normal symbols and `-1.0` for symbols with negative scores that should be executed before other symbols. Here is an example of registering one callback and a couple of virtual symbols used in the [DMARC]({{ site.url }}{{ site.baseurl }}/doc/modules/dmarc.html) module:
 
 ~~~lua
 local id = rspamd_config:register_symbol({
