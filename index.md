@@ -5,34 +5,12 @@ title: Rspamd spam filtering system
 
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;"><a href="https://github.com/vstakhov/rspamd/releases/tag/1.7.2">News: Rspamd 1.7.2 has been released</a></h3>
-				<span class="date"><small>2018-03-23</small></span>
-				<p style="margin-bottom: 0px; margin-top: 5px">New mainline release with mostly bugs fixes.</p>
+				<h3 style="margin: 0px;"><a href="https://github.com/vstakhov/rspamd/releases/tag/1.7.3">News: Rspamd 1.7.3 has been released</a></h3>
+				<span class="date"><small>2018-04-10</small></span>
+				<p style="margin-bottom: 0px; margin-top: 5px">New mainline release with bugs fixes and reworked rate limits.</p>
    </div>
    <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.7.2" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
-	</div>
-</div>
-
-<div class="row news_row" style="position: relative;">
-		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;"><a href="https://github.com/vstakhov/rspamd/releases/tag/1.7.1">News: Rspamd 1.7.1 has been released</a></h3>
-				<span class="date"><small>2018-03-20</small></span>
-				<p style="margin-bottom: 0px; margin-top: 5px">New mainline release with some features and fixes. Lua rules are now squeezed together to improve performance.</p>
-   </div>
-   <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.7.1" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
-	</div>
-</div>
-
-<div class="row news_row" style="position: relative;">
-		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;"><a href="{{ site.baseurl }}/announce/2018/03/12/rspamd-1.7.0.html">News: Rspamd 1.7.0 has been released</a></h3>
-				<span class="date"><small>2018-03-12</small></span>
-				<p style="margin-bottom: 0px; margin-top: 5px">New major release with lots of features and improvements. Torch support, new bayes schema, language detection, rescore and corpus_test tools, configwizard helper and many other things.</p>
-   </div>
-   <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.7.0" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
+				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.7.3" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
 	</div>
 </div>
 
