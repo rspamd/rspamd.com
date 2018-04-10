@@ -101,7 +101,7 @@ In version 1.7.0+ setting the `redis.expand_keys` configuration parameter to `tr
 Given this setting is enabled, where-ever names of keys could be specified in configuration special values could be used, for example `map = "redis://${ip}!foo` in multimap configuration would dynamically set key name to something like `1.2.3.4!foo`. Variable names which could be used are as follows:
 
 * `ip`: sending IP of a message
-* `principal_recipient`: the address of the [principal recipient]({{ site.baseurl }}/doc/lua/task.html#mc5168) of a message (`Deliver-To` request header, first SMTP recipient or MIME recipient according to availability)
+* `principal_recipient`: the address of the [principal recipient]({{ site.baseurl }}/doc/lua/rspamd_task.html#mc5168) of a message (`Deliver-To` request header, first SMTP recipient or MIME recipient according to availability)
 * `principal_recipient_domain`: the domain name of the principal recipient
 * `esld_principal_recipient_domain`: the domain name of the principal recipient, normalised to eSLD
 * `smtp_from`: SMTP sender address
