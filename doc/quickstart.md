@@ -240,6 +240,8 @@ This tool will guide you interactively throughout the configuration process usin
 
 ### Manual configuration
 
+First of all, please read the basic configuration principles [here](configuration/index.html).
+
 There are some different approaches you can take to this:
 
 1. **Not recommended: This will complicate upgrades:** Modifying the stock config files in `/etc/rspamd` directly. Your package manager will not replace the modified config files on upgrade - and may prompt you to merge changes or install these files with an added extension depending on your platform.
@@ -321,6 +323,30 @@ as this will set the other actions to be undefined.
 
 Rspamd 1.7+ can still use legacy configuration converting them to the actual ones transparently on startup.
 
+### One more note about scores
+
+There are two components of the final score in Rspamd:
+
+```
+score = runtime_score * static_score
+```
+
+Runtime score is a concept used to express confidence. For example, you
+have IP reputation and it changes in range `[-1;1]` smoothly. Then you
+tell that static score for IP reputation is `3.0`. Hence,
+
+```
+score = runtime_score * static_score = 0.5 * 3.0 = 1.5
+```
+
+And you don't need to define something like
+
+- IP_SCORE_TOO_BAD
+- IP_SCORE_BAD
+- IP_SCORE_SOMEHOW_BAD
+
+... and so on to achieve this distinction.
+
 ### Other configuration advices
 
 You should notice that individual files are included **within** sections:
@@ -341,11 +367,13 @@ In addition to equivalents to files in `/etc/rspamd/modules.d` the following inc
 
 ### Setting listening interface
 
-Rspamd's normal worker will, by default, listen on all interfaces on port 11333. If you're running Rspamd on the same machine as your mailer (or whatever will be querying it) you might want to set this to 'localhost' instead. This option should be overridden in `/etc/rspamd/local.d/worker-normal.inc`:
+Rspamd's normal worker will, by default, listen on all interfaces on port 11333. **From Rspamd `1.7.4`, it has changed to `localhost` by default**. 
+
+If you're running Rspamd on the same machine as your mailer (or whatever will be querying it) you might want to set this to 'localhost' instead. This option should be defined in `/etc/rspamd/local.d/worker-normal.inc`:
 
 ~~~ucl
 # /etc/rspamd/local.d/worker-normal.inc
-bind_socket = "*:11333";
+bind_socket = "localhost:11333";
 ~~~
 
 If you plan to leave this as is you may wish to use a firewall to restrict access to your machine. Please review the [worker documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/) for more information about `bind_socket` and related settings.
@@ -354,12 +382,13 @@ Rspamd controller worker listens on the port `11334` by default, and the proxy w
 
 Because Rspamd skip some checks for local networks, you may want to tune global `local_addrs` map.
 
-~~~ucl#
+~~~ucl
 # /etc/rspamd/local.d/options.inc
 
 # Local networks (default)
 local_addrs = "192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, fd00::/8, 169.254.0.0/16, fe80::/10";
 ~~~
+
 Please review the [global options documentation]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html) for other global settings you may want to use.
 
 ## Using of Milter protocol (for Rspamd >= 1.6)
@@ -383,6 +412,12 @@ upstream "local" {
   default = yes; # Self-scan upstreams are always default
   self_scan = yes; # Enable self-scan
 }
+count = 4; # Spawn more processes in self-scan mode
+max_retries = 5; # How many times master is queried in case of failure
+discard_on_reject = false; # Discard message instead of rejection
+quarantine_on_reject = false; # Tell MTA to quarantine rejected messages
+spam_header = "X-Spam"; # Use the specific spam header
+reject_message = "Spam message rejected"; # Use custom rejection message
 ~~~
 
 For more advanced proxy usage, please see the corresponding [documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html).
