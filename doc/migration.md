@@ -6,6 +6,12 @@ title: Upgrading
 
 This document describes incompatible changes introduced in recent Rspamd versions and details how to update your rules and configuration accordingly.
 
+## Migration to Rspamd 1.7.4
+
+The only potential issue is that now Rspamd listens on **localhost only** by default. It might break some configurations where you rely on the previous behaviour, specifically, on listening on all IP addresses (e.g. `*`).
+
+However, we think that we should keep the default settings as restrictive as possible to avoid potential security issues that proved to happen with other projects with 'open to all' defaults.
+
 ## Migration to Rspamd 1.7.0
 
 You should consider running of `rspamadm configwizard` to ensure that your configuration is compatible. From version 1.7, Rspamd does not support `metrics` concept. In fact, that was never supported in the past, however, you could see `metric "default"` in many places within Rspamd configuration and settings. 
