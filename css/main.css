@@ -221,7 +221,7 @@ table.table{
 }
 
 /* Offsetting anchors to adjust for fixed navbar */
-*[id]:before {
+*[id]:not([id^=markdown-toc-]):before {
   content: "";
   display: block;
   height: 60px;
@@ -441,4 +441,14 @@ li.tb-row a:hover,  li.tb-row a:focus{
 
 .dl-changes {
   margin-left: 20px;
+}
+
+div#toc {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #AAA;
+  background-color: #FAFAFA;
+}
+.toc-header{
+  text-align: center;
 }
