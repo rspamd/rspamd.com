@@ -750,7 +750,7 @@ You should import learn cache just once with either ham or spam statistics.
 
 The only limitation of the redis backend is that it doesn't support per language statistics. This feature, however, is not needed in the majority of cases. Per user statistics in redis works in a different way than in sqlite. Please read the [corresponding documentation]({{ site.url }}{{ site.baseurl }}/doc/configuration/statistic.html) for further details.
 
-You can also convert fuzzy storage using using `rspamadm fuzzyconvert`:
+You can also convert fuzzy storage using `rspamadm fuzzyconvert`:
 
 ```
 # rspamadm fuzzyconvert -d fuzzy.db -h 127.0.0.1:6379 -e 7776000
