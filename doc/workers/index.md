@@ -39,15 +39,13 @@ All workers share a set of common options. Here is a typical example of a normal
 worker configuration that uses merely common worker options:
 
 ~~~ucl
-worker {
-    type = "normal";
+worker "normal" {
     bind_socket = "*:11333";
 }
 ~~~
 
 Here are options available to all workers:
 
-- `type` - a **mandatory** string that defines type of worker.
 - `bind_socket` - a string that defines bind address of a worker.
 - `count` - number of worker instances to run (some workers ignore that option, e.g. `fuzzy_storage`)
 - `enabled` (1.6.2+) - a Boolean (`true` or `false`), enable or disable a worker (`true` by default)
