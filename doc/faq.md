@@ -293,7 +293,7 @@ Have you added an extra `section_name {}` to `local.d/section.conf` file? For ex
 ```ucl
 # local.d/dkim_signing.conf
 dkim_signing { # !!!! DO NOT ADD THIS
- domains {
+ domain {
    ...
  }
 }
@@ -303,7 +303,7 @@ The correct version is the following:
 
 ```ucl
 # local.d/dkim_signing.conf
-domains {
+domain {
    ...
 }
 ```
