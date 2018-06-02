@@ -15,6 +15,13 @@ body {
   width: auto;
   position: static;
 }
+/* Use only web safe fonts when font-smoothing is not enabled */
+html.hasFontSmoothing-false body,
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6,
+.tooltip,.popover
+{
+    font-family: Tahoma, Arial, sans-serif;
+}
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 1024px) {
   /* Remove padding from wrapping element since we kick in the grid classes here */
