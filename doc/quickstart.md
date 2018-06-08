@@ -20,6 +20,7 @@ For those who are planning migration from SpamAssassin, it might be useful to ch
 
 * [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/) - a good example of all-in-one tutorial about how to setup your own mail server
 * [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://www.c0ffee.net/blog/mail-server-guide) - similar to the previous guide but uses a different technologies stack
+* [An alternative introduction to rspamd configuration](http://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/)
 
 ## Preparation steps
 
