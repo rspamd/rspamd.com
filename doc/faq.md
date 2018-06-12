@@ -979,12 +979,28 @@ Then you can use the resulting string (in the format `$<algorithm_id>$<salt>$<en
 Here is an example for nginx:
 
 ```nginx
-location /rspamd/ {
-  proxy_pass       http://localhost:11334/;
+rewrite ^(/save.+)$ /rspamd$1 last;
 
+location /rspamd/ {
+  #add_header      Strict-Transport-Security "max-age=15768000; includeSubdomains";
+  add_header       X-Content-Type-Options nosniff;
+  add_header       X-Frame-Options SAMEORIGIN;
+  add_header       X-XSS-Protection "1; mode=block";
+  
+  proxy_pass       http://localhost:11334/;
+  proxy_redirect   http://localhost:11334/ default;
+  proxy_read_timeout 60s;
+  
   proxy_set_header Host      $host;
   proxy_set_header X-Real-IP $remote_addr;
-  proxy_set_header X-Forwarded-For "";
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  
+  # Limit access to rspamd
+  # IPv4:
+  #allow xxx.xxx.xxx.xxx/xx;
+  # IPv6:
+  #allow xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx;
+  #deny all
 }
 ```
 
@@ -1000,6 +1016,16 @@ RewriteRule ^/rspamd/(.*) http://localhost:11334/$1 [P,L]
 ```
 
 When a connection comes from an IP listed in `secure_ip` or from a unix socket then Rspamd checks for two headers: `X-Forwarded-For` and, if that is not found- `X-Real-IP`. If one of those headers is found then Rspamd treats a connection as if it comes from the IP specified in that header. For example, `X-Real-IP: 8.8.8.8` will trigger checks against `secure_ip` for `8.8.8.8`.
+
+### Modifying configuration files using the WebUI
+
+To be able to write to rspamd configuration files, make sure, you have set proper permissions on your server running rspamd. Assuming your rspamd unix user is called "rspamd", you might set permissions like this:
+
+```
+cd /etc/rspamd
+chgrp rspamd 2tld.inc dmarc_whitelist.inc mid.inc mime_types.inc redirectors.inc spf_dkim_whitelist.inc surbl-whitelist.inc
+chmod 664 2tld.inc dmarc_whitelist.inc mid.inc mime_types.inc redirectors.inc spf_dkim_whitelist.inc surbl-whitelist.inc
+```
 
 ### Where does the WebUI store settings
 
