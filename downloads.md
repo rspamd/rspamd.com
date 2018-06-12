@@ -72,21 +72,20 @@ For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> bra
 
 Rspamd supports the following .deb based distributives:
 
-- **Debian wheezy** (amd64, i386)
-- **Debian jessie** (amd64, i386) Hyperscan and LuaJIT are enabled.
-- **Debian stretch** (amd64, i386) Hyperscan and LuaJIT are enabled.
-- **Debian sid** (amd64, i386) Hyperscan and LuaJIT are enabled.
-- **Ubuntu precise** (amd64, i386)
-- **Ubuntu trusty** (amd64, i386) Hyperscan and LuaJIT are enabled.
-- **Ubuntu xenial** (amd64, i386) Hyperscan and LuaJIT are enabled.
+- **Debian jessie** (only amd64) Hyperscan and LuaJIT are enabled.
+- **Debian stretch** (only amd64) Hyperscan and LuaJIT are enabled.
+- **Debian sid** (only amd64) Hyperscan and LuaJIT are enabled.
+- **Ubuntu trusty** (only amd64) Hyperscan and LuaJIT are enabled.
+- **Ubuntu xenial** (only amd64) Hyperscan and LuaJIT are enabled. 
+- **Ubuntu bionic** (only amd64) Hyperscan and LuaJIT are enabled.
 
 To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
 
     apt-get install -y lsb-release wget # optional
     CODENAME=`lsb_release -c -s`
     wget -O- https://rspamd.com/apt-stable/gpg.key | apt-key add -
-    echo "deb http://rspamd.com/apt-stable/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
-    echo "deb-src http://rspamd.com/apt-stable/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
+    echo "deb [arch=amd64] http://rspamd.com/apt-stable/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
+    echo "deb-src [arch=amd64] http://rspamd.com/apt-stable/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
     apt-get update
     apt-get --no-install-recommends install rspamd
 
@@ -99,8 +98,8 @@ For <a class="undecor" href="#experimentalSys2">experimental<sup>2</sup></a> bra
     apt-get install -y lsb-release wget # optional
     CODENAME=`lsb_release -c -s`
     wget -O- https://rspamd.com/apt/gpg.key | apt-key add -
-    echo "deb http://rspamd.com/apt/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
-    echo "deb-src http://rspamd.com/apt/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
+    echo "deb [arch=amd64] http://rspamd.com/apt/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
+    echo "deb-src [arch=amd64] http://rspamd.com/apt/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
     apt-get update
     apt-get --no-install-recommends install rspamd
 
