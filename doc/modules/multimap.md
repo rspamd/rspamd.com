@@ -191,8 +191,9 @@ Filename maps support this filters set:
 
 ### Hostname filters
 
-* `tld` - matches TLD (top level domain) part of the hostname
-* `tld:regexp:/re/` - extracts generic information using the specified regular expression from the TLD part
+* `tld` - matches eSLD (effective second level domain - a second-level domain or something that's effectively so like `example.com` or `example.za.org`)
+* `tld:regexp:/re/` - extracts generic information using the specified regular expression from the eSLD part
+* `top` - matches TLD (top level domain) part of the hostname
 
 ### Mempool filters
 
@@ -244,8 +245,9 @@ URL maps allows another set of filters (by default, `url` maps are matched using
 * `query` - match query string
 * `regexp:/re/` - extracts generic information using the specified regular expression from the hostname
 * `tag:name` - matches full hostnames that have URL tag with `name`
-* `tld` - matches TLD (top level domain) part of the URL
-* `tld:regexp:/re/` - extracts generic information using the specified regular expression from the TLD part
+* `tld` - matches eSLD (effective second level domain - a second-level domain or something that's effectively so like `example.com` or `example.za.org`)
+* `tld:regexp:/re/` - extracts generic information using the specified regular expression from the eSLD part
+* `top` - matches TLD (top level domain) part of the hostname
 
 ## Pre-filter maps
 

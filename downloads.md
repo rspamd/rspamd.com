@@ -37,10 +37,8 @@ title: Downloads
 <div markdown="1">
 Supported distributions:
 
-- **CentOS 6** (amd64), need EPEL
-- **CentOS 7** (amd64), need EPEL. Hyperscan and LuaJIT are enabled.
-- **Fedora 24** (amd64) Hyperscan and LuaJIT are enabled.
-- **Fedora 25** (amd64) Hyperscan and LuaJIT are enabled.
+- **CentOS 6** (x86_64), requires EPEL
+- **CentOS 7** (x86_64), requires EPEL. Hyperscan and LuaJIT are enabled.
 
 Please note that `CentOS` rpm packages **requires** [EPEL](https://fedoraproject.org/wiki/EPEL) to be installed in your system as many dependencies are missing from the base CentOS repositories. You can learn how to install EPEL from their site: <https://fedoraproject.org/wiki/EPEL>.
 `Fedora` packages do not require EPEL or any other third-party repository.
@@ -72,12 +70,12 @@ For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> bra
 
 Rspamd supports the following .deb based distributives:
 
-- **Debian jessie** (only amd64) Hyperscan and LuaJIT are enabled.
-- **Debian stretch** (only amd64) Hyperscan and LuaJIT are enabled.
-- **Debian sid** (only amd64) Hyperscan and LuaJIT are enabled.
-- **Ubuntu trusty** (only amd64) Hyperscan and LuaJIT are enabled.
-- **Ubuntu xenial** (only amd64) Hyperscan and LuaJIT are enabled. 
-- **Ubuntu bionic** (only amd64) Hyperscan and LuaJIT are enabled.
+- **Debian jessie** (only x86_64) Hyperscan and LuaJIT are enabled.
+- **Debian stretch** (only x86_64) Hyperscan and LuaJIT are enabled.
+- **Debian sid** (only x86_64) Hyperscan and LuaJIT are enabled.
+- **Ubuntu trusty** (only x86_64) Hyperscan and LuaJIT are enabled.
+- **Ubuntu xenial** (only x86_64) Hyperscan and LuaJIT are enabled. 
+- **Ubuntu bionic** (only x86_64) Hyperscan and LuaJIT are enabled.
 
 To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
 

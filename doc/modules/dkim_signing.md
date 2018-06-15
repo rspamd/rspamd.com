@@ -80,6 +80,12 @@ key_prefix = "DKIM_KEYS";
 # map of domains -> paths to keys (since rspamd 1.5.3)
 #path_map = "/etc/rspamd/dkim_paths.map";
 
+# If `true` get pubkey from DNS record and check if it matches private key
+check_pubkey = false;
+# Set to `false` if you want to skip signing if publick and private keys mismatches
+allow_pubkey_mismatch = true;
+
+
 # Domain specific settings
 domain {
 
