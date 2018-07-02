@@ -12,7 +12,7 @@ Outbound spam can be extremely damaging to the ability of your system to success
 
 Rspamd tries to be suitable for outbound scanning with no or little configuration. With proper [integration]({{ site.url }}{{ site.baseurl }}/doc/integration.html) Rspamd should have knowledge of whether mail was sent by an authenticated user (and which) as well as the IP address the mail was received from. If mail was received from an authenticated user or an IP address listed in [local_addrs]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html) several checks are immutably disabled: 
 
- - [ASN]({{ site.url }}{{ site.baseurl }}/doc/modules/asn.html): checking is disabled for local IPs
+ - [ASN]({{ site.url }}{{ site.baseurl }}/doc/modules/asn.html): checking is disabled for local IPs, unless `check_local` is set to `true`
  - [DKIM]({{ site.url }}{{ site.baseurl }}/doc/modules/dkim.html): checking is disabled; signing is enabled
  - [DMARC]({{ site.url }}{{ site.baseurl }}/doc/modules/dmarc.html): is disabled
  - [Greylist]({{ site.url }}{{ site.baseurl }}/doc/modules/greylisting.html): is disabled
