@@ -41,7 +41,7 @@ Parameters for the spamtrap modules are listed here.
 - `map`: You can define a regexp map, which automatically disables Redis for
   this module
 
-Configuration example /etc/rspamd/local.d/spamtrap.conf:
+Configuration example `/etc/rspamd/local.d/spamtrap.conf`:
 
 ~~~ucl
 action = "no action";
@@ -66,7 +66,7 @@ The first is a full email address, while the second is a catch-all domain.
 
 The following is an example that you can use for the spamtrap module. It will look
 in Redis and collect settings for dealing with spam trapped emails or domains. You
-can place this in /etc/rspamd/rspamd.conf.local:
+can place this in `/etc/rspamd/rspamd.conf.local`:
 
 ~~~ucl
 # Return spamtrap e-mail addresses from Redis
