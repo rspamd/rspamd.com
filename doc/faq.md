@@ -652,19 +652,22 @@ settings {
   sign_id {
     id = "dkim";
     apply {
-      enable_groups = ["dkim", "arc"];
+      symbols_enabled = ["DKIM_SIGNED"]; # add ARC_SIGNED for ARC signing
+      flags = ["skip_process"]; # To skip message processing
     }
   }
   sign_authenticated {
     authenticated = true;
     apply {
-      enable_groups = ["dkim", "arc"];
+      symbols_enabled = ["DKIM_SIGNED"]; # add ARC_SIGNED for ARC signing
+      flags = ["skip_process"]; # To skip message processing
     }
   }
   sign_networks {
     ip = ["172.16.0.0/16", "10.0.0.0/8"];
     apply {
-      enable_groups = ["dkim", "arc"];
+      symbols_enabled = ["DKIM_SIGNED"]; # add ARC_SIGNED for ARC signing
+      flags = ["skip_process"]; # To skip message processing
     }
   }
 }
