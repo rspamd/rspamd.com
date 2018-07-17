@@ -12,7 +12,7 @@ Rspamd uses the HTTP protocol, either version 1.0 or 1.1. Rspamd defines some he
 
 Rspamd encourages the use of the HTTP protocol since it is standard and can be used by every programming language without the use of exotic libraries. A typical HTTP request looks like the following:
 
-	POST /check HTTP/1.0
+	POST /checkv2 HTTP/1.0
 	Content-Length: 26969
 	From: smtp@example.com
 	Pass: all
@@ -26,7 +26,7 @@ You can also use chunked encoding that allows streamlined data transfer which is
 
 ### HTTP request
 
-Normally, you should just use '/check' here. However, if you want to communicate with the controller then you might want to use [controller commands](#controller-http-endpoints).
+Normally, you should just use `/checkv2` here. However, if you want to communicate with the controller then you might want to use [controller commands](#controller-http-endpoints).
 
 ### HTTP headers
 
@@ -34,17 +34,26 @@ To avoid unnecessary work, Rspamd allows an MTA to pass pre-processed data about
 
 | Header          | Description                       |
 | :-------------- | :-------------------------------- |
-| **Deliver-To:** | Defines actual delivery recipient of message. Can be used for personalized statistics and for user specific options. |
-| **IP:**         | Defines IP from which this message is received. |
-| **Helo:**       | Defines SMTP helo |
-| **Hostname:**   | Defines resolved hostname |
-| **From:**       | Defines SMTP mail from command data |
-| **Queue-Id:**   | Defines SMTP queue id for message (can be used instead of message id in logging). |
-| **Rcpt:**       | Defines SMTP recipient (there may be several `Rcpt` headers) |
-| **Pass:**       | If this header has `all` value, all filters would be checked for this message. |
-| **Subject:**    | Defines subject of message (is used for non-mime messages). |
-| **User:**       | Defines SMTP user. |
-| **Message-Length:** | Defines the length of message excluding the control block. |
+| `Deliver-To` | Defines actual delivery recipient of message. Can be used for personalized statistics and for user specific options. |
+| `IP`         | Defines IP from which this message is received. |
+| `Helo`       | Defines SMTP helo |
+| `Hostname`   | Defines resolved hostname |
+| `From`       | Defines SMTP mail from command data |
+| `Queue-Id`   | Defines SMTP queue id for message (can be used instead of message id in logging). |
+| `Rcpt`       | Defines SMTP recipient (there may be several `Rcpt` headers) |
+| `Pass`       | If this header has `all` value, all filters would be checked for this message. |
+| `Subject`    | Defines subject of message (is used for non-mime messages). |
+| `User`       | Defines SMTP user. |
+| `Message-Length` | Defines the length of message excluding the control block. |
+| `Settings-ID` | Defines [settings id](../configuration/settings.html) to apply. |
+| `Settings` | Defines [settings](../configuration/settings.html) as raw json block to apply. |
+| `User-Agent` | Defines user agent (special processing if it is `rspamc`). |
+| `MTA-Tag` | MTA defined tag (can be used in settings). |
+| `MTA-Name` | Defines MTA name, used in `Authentication-Results` routines. |
+| `TLS-Cipher` | Defines TLS cipher name. |
+| `TLS-Version` | Defines TLS version. |
+| `TLS-Cert-Issuer` | Defines Cert issuer, can be used in conjunction with `client_ca_name` in [proxy worker](../workers/rspamd_proxy.html). |
+| `Filename` | Hint for filename if used with some file. |
 
 Controller also defines certain headers, see [here](#controller-http-endpoints) for detail.
 
@@ -63,12 +72,12 @@ Rspamd reply is encoded in `JSON`. Here is a typical HTTP reply:
 
 ~~~json
 {
-    "default": {
-        "is_spam": false,
-        "is_skipped": false,
-        "score": 5.2,
-        "required_score": 7,
-        "action": "add header",
+    "is_spam": false,
+    "is_skipped": false,
+    "score": 5.2,
+    "required_score": 7,
+    "action": "add header",
+    "symbols": {
         "DATE_IN_PAST": {
             "name": "DATE_IN_PAST",
             "score": 0.1
@@ -107,9 +116,7 @@ Rspamd reply is encoded in `JSON`. Here is a typical HTTP reply:
 
 For convenience, the reply is LINTed using [JSONLint](http://jsonlint.com). The actual reply is compressed for speed.
 
-The reply can be treated as a JSON object where keys are metric names (namely `default`) and values are objects that represent metrics.
-
-Each metric has the following fields:
+Each reply has the following fields:
 
 * `is_spam` - boolean value that indicates whether a message is spam
 * `is_skipped` - boolean flag that is `true` if a message has been skipped due to settings
@@ -122,10 +129,12 @@ Each metric has the following fields:
 	- `rewrite subject` - message is suspicious and should have subject rewritten
 	- `soft reject` - message should be temporary rejected (for example, due to rate limit exhausting)
 	- `reject` - message should be rejected as spam
+* `symbols` - all symbols added during a message's processing, indexed by symbol names:
+    - `name` - name of symbol
+    - `score` - final score
+    - `options` - array of symbol options as an array of strings
 
-Additionally, metric contains all symbols added during a message's processing, indexed by symbol names.
-
-Additional keys which may be in the reply include:
+Additional keys that could be in the reply include:
 
 * `subject` - if action is `rewrite subject` this value defines the desired subject for a message
 * `urls` - a list of URLs found in a message (only hostnames)
@@ -163,8 +172,7 @@ To check a message without rspamc:
 
 The following endpoints are valid on the normal worker and accept `POST`:
 
-* `/check` - Check message and return action
-* `/symbols` - Same as `check` but also returns score & list of symbols yielded
+* `/checkv2` - Check message and return action
 
 ## Controller HTTP endpoints
 
