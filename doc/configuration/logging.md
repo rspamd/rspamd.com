@@ -61,6 +61,7 @@ Here is summary of logging parameters:
     + `map` - messages from maps in Rspamd
     + `neural` - messages from neural network module
     + `ratelimit` - messages from ratelimit network module
+    + `stat_redis` - messages from redis statistics
     + `logger` - messages from the logger itself
 
 ### Log format
