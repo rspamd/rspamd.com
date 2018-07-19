@@ -143,6 +143,65 @@ Additional keys that could be in the reply include:
 * `messages` - object containing optional messages added by Rspamd filters (such as `SPF`)
         - The value of the `smtp_message` key is intended to be returned as SMTP response text by the MTA
 
+## Milter headers
+
+This block of reply is used to manipulate headers and SMTP session. It is placed under `milter` key in the reply. Here are possible elements in this object:
+
+* `add_headers`: headers to add (object, indexed by header name)
+* `remove_headers`: headers to remove (object, indexed by header name)
+* `change_from`: change SMTP from value (plain string)
+* `reject`: custom rejection (plain string value)
+* `spam_header`: custom spam header (plain string - header name)
+
+### Adding headers
+
+`add_headers` element has the following format:
+
+```json
+{
+    "<header_name>": {
+        "value": "<header_value>",
+        "order": 0
+    },
+}
+```
+
+Where `<header_name>` represents header's name, `<header_value>` - value, and `order` the order of insertion.
+
+### Removing headers
+
+`remove_headers` element has the following format:
+
+```json
+{
+    "<header_name>": 1
+}
+```
+
+Where `<header_name>` represents header's name, and the value is the order of the header to remove (starting from 1). There are special treatment for orders `0` and negative order:
+
+* if order is equal to zero, then it means that **all* headers with this name should be removed
+* if order is negative, it means that the `N`th header from the **end** should be removed (where `N` is `abs(order)`)
+
+### Complete example
+
+```json
+{
+    "milter":
+    {
+        "add_headers": {
+            "ArcMessageSignature": {
+                "value": "some_value with JSON\nencoded values",
+                "order": 0
+            },
+        },
+        "remove_headers": {
+            "DKIM-Signature": -1
+        }
+    }
+}
+```
+
 ## Rspamd JSON control block
 
 Since Rspamd version 0.9 it is also possible to pass additional data by prepending a JSON control block to a message. So you can use either headers or a JSON block to pass data from the MTA to Rspamd.
