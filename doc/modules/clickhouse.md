@@ -206,5 +206,18 @@ clickhouse {
   #dkim_reject_symbols = ["R_DKIM_REJECT"];
   #dmarc_allow_symbols = ["DMARC_POLICY_ALLOW"];
   #dmarc_reject_symbols = ["DMARC_POLICY_REJECT", "DMARC_POLICY_QUARANTINE"];
+
+  # This section configures how long the data will be stored in ClickHouse
+  #retention {
+  #  # disabled by default
+  #  enable = true;
+  #  # drop | detach, please refer to ClickHouse docs for details
+  #  # http://clickhouse-docs.readthedocs.io/en/latest/query_language/queries.html#manipulations-with-partitions-and-parts
+  #  method = "drop";
+  #  # how many month the data should be kept in ClickHouse
+  #  period_months = 3;
+  #  # how often run the cleanup process
+  #  run_every = "7d";
+  #}
 }
 ~~~
