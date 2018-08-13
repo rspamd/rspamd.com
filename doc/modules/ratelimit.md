@@ -170,41 +170,37 @@ ratelimit {
 }
 ~~~
 
-The file should return a table containing our custom function(s). For example, here is a keyword which applies ratelimits to users only when the user is found in a map:
+The file should return a table containing our custom function(s). For example, here is a table ("custom_keywords") to contain a function ("customrl") which applies ratelimits to users only when the user is found in a map:
 
 ~~~lua
+local custom_keywords = {}
 local d = {}
-local custom_keywords = {
-  ['customuser'] = {},
-}
-function custom_keywords.customuser.init()
+
+custom_keywords.customrl = function(task)
+  local rspamd_logger = require "rspamd_logger"
   -- create map
   d['badusers'] = rspamd_config:add_map({
     ['url']= '/etc/rspamd/badusers.map',
     ['type'] = 'set',
     ['description'] = 'Bad users'
   })
-end
-function custom_keywords.customuser.get_value(task)
+  -- get authenticated user
   local user = task:get_user()
+  -- define a ratelimit
+  -- a ratelimit can be defined in simplified form (10 / 1m) or as a bucket config (table)
+  local crl = "10 / 1m"
   if not user then return end -- no user, return nil
-  if d['badusers']:get_key(user) then return user end -- user is in map, return user
-  return -- user is not in map, return nil
+  if d['badusers']:get_key(user) then
+    rspamd_logger.infox(rspamd_config, "User %s is bad, returning custom ratelimit %s", user, crl)
+    -- return redis hash to store rl data and a ratelimit
+    -- our redis hash will be "rs_custom_rl_john.doe" assuming user == john.doe
+    return "rs_customrl_" .. user, crl
+  else
+    return -- user is not in map, return nil
+  end
 end
-function custom_keywords.customuser.get_limit(task)
-  -- return {10, 0.1} -- bucket size, leak rate
-  return "10 / 1m" -- in rspamd 1.6+ we can return simplified form
-end
+
 return custom_keywords
 ~~~
 
-Each keyword should define a `get_value` function which is passed the [task object]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_task.html) and should return either a value to use in the ratelimit key or `nil` to indicate that the ratelimit should not be applied. Optionally we could also define an `init` function to perform some initialization on startup and a `condition` function which could determine whether the ratelimit is to be checked or not (typically it would make more sense to add conditions into the `get_value` function directly).
-
-Since we want to apply the keyword to authenticated users we must add this to the `user_keywords` setting:
-
-~~~ucl
-ratelimit {
-   user_keywords = ["user", "customuser"];
-   # other settings ...
-}
-~~~
+A "custom_keywords" table should define one or more functions which are passed the [task object]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_task.html). Each function should return a Redis hash _and_ a limit (for example `return my_redis_hash, "10 / 1m"`) or `nil` to indicate that the ratelimit should not be applied. A returned ratelimit can be in simplified form or a bucket config table.
