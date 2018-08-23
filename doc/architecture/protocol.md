@@ -150,8 +150,11 @@ This block of reply is used to manipulate headers and SMTP session. It is placed
 * `add_headers`: headers to add (object, indexed by header name)
 * `remove_headers`: headers to remove (object, indexed by header name)
 * `change_from`: change SMTP from value (plain string)
-* `reject`: custom rejection (plain string value)
+* `reject`: custom rejection (plain string value), e.g. `reject="discard"` or `reject="quarantine"`
 * `spam_header`: custom spam header (plain string - header name)
+* `no_action`: instead of doing any action to a message, just add header `X-Rspamd-Action` equal to that action and accept message (boolean value)
+* `add_rcpt`: (from 1.8.0) add new recipients (array of strings)
+* `del_rcpt`: (from 1.8.0) delete recipients (array of strings)
 
 ### Adding headers
 
@@ -166,7 +169,7 @@ This block of reply is used to manipulate headers and SMTP session. It is placed
 }
 ```
 
-Where `<header_name>` represents header's name, `<header_value>` - value, and `order` the order of insertion.
+Where `<header_name>` represents header's name, `<header_value>` - value, and `order` the order of insertion (e.g. 0 will be the first header).
 
 ### Removing headers
 
