@@ -912,6 +912,20 @@ The overall execution order in Rspamd is the following:
 
 This symbol means that you have exceeded the amount of DNS queries allowed for non-commercial usage by SURBL services. If you use some a public DNS server, e.g. goolgle public DNS, then try switching to your local DNS resolver (or set one up, for example, [unbound](https://www.unbound.net/)). Otherwise, you should consider buying a [commercial subscription](http://www.surbl.org/df) or you won't be able to use the service. The `URIBL_BLOCKED` symbol has a weight of 0 and is used just to inform you about this problem.
 
+### How can I use commercial feeds for SURBL/RBL others
+
+The most starightforward way is to use your own local resolver with forward zones that point to dedicated rbldnsd instance or instances that serve static zones provided by different vendors (e.g. Spamhaus or SURBL). Here is a sample configuration snippet for `Unbound` caching resolver:
+
+```
+forward-zone:
+    name: "sbl.spamhaus.org."
+    forward-addr: x.x.x.x # Your rbldnsd instance IP
+    forward-addr: y.y.y.y # Secondary server if needed
+    forward-first: yes
+```
+
+You can also change suffixes in Rspamd config to use your custom (e.g. premium zones). You should use `local.d/rbl.conf` or `local.d/surbl.conf`.
+
 ### What are monitored checks
 
 Rspamd periodically checks various DNS lists to avoid possible issues with DNS, for instance if your nameserver returns some weird redirect instead of NXDOMAIN error, or lists themselves, for example, if they start to blacklist the whole Internet as it happened in the past with some particular lists.
