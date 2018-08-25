@@ -176,14 +176,15 @@ The file should return a table containing our custom function(s). For example, h
 local custom_keywords = {}
 local d = {}
 
+-- create map
+d['badusers'] = rspamd_config:add_map({
+  ['url']= '/etc/rspamd/badusers.map',
+  ['type'] = 'set',
+  ['description'] = 'Bad users'
+})
+
 custom_keywords.customrl = function(task)
   local rspamd_logger = require "rspamd_logger"
-  -- create map
-  d['badusers'] = rspamd_config:add_map({
-    ['url']= '/etc/rspamd/badusers.map',
-    ['type'] = 'set',
-    ['description'] = 'Bad users'
-  })
   -- get authenticated user
   local user = task:get_user()
   -- define a ratelimit
