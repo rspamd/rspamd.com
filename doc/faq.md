@@ -155,6 +155,16 @@ lldb `which rspamd` -c /coreland/rspamd.core
 
 If a core file has been opened without errors then you can type `bt full` in the debugger command line to get the full stack trace that caused this particular error.
 
+### Why do I have zero score for a spam message
+
+This is a very frequent question that comes from Rspamd users. The typical log sample looks like this one:
+
+```
+2018-08-27 13:23:11 #29623(normal) <xxx>; task; rspamd_task_write_log: id: <xxx@xxx.com>, qid: <xxx>, ip: xx.xx.xx.xx, from: <info@xxx.xxx>, (default: F (soft reject): [0.00/15.00] [DBL_SPAM(6.50){xxx.dbl.spamhaus.org;},URIBL_SBL_CSS(6.50){xxx.xxx;},RBL_SPAMHAUS_CSS(2.00){xx.xx.xx.xx.zen.spamhaus.org : 127.0.0.3;},RECEIVED_SPAMHAUS_CSS(1.00){116.179.76.62.zen.spamhaus.org : 127.0.0.3;},GREYLIST(0.00){greylisted;Mon, 27 Aug 2018 10:28:11 GMT;new record;}), len: xx, time: 978.464ms real, 15.045ms virtual, dns req: 45, digest: <xxx>, rcpts: <x@x.x>, mime_rcpts: <x@x.x.>
+```
+
+Actually, Rspamd treats scores internally and no external services should depend on those scores. Generally, you need to use merely `action` to decide what to do with this or that message. For example, in the example above, greylisting module decided that we need to greylist a message and build somehow better confidence about this particular message. MTA, in turn, should emit a temporary error in this case. Scores should be used to understand the decision process but they should not be treated to make an action with a message - that's a rule of thumb.
+
 ### Why can I have different results for the same message
 
 If your message has gained a `reject` score, Rspamd will stop further checks to save resources. However, some checks, such as network checks, could still occur as they might be started before reaching this threshold for the message. Therefore, sometimes you might see different (but all greater than or equal to the `reject` threshold) results for the same message. To avoid this behaviour you can set the HTTP header
