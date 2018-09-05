@@ -163,6 +163,14 @@ Add an [authentication-results](https://tools.ietf.org/html/rfc7001) header.
   }
 ~~~
 
+## fuzzy-hashes
+
+For each matched fuzzy hash adds a header containing the hash.
+
+~~~ucl
+  header = "X-Rspamd-Fuzzy";
+~~~
+
 ## remove-header
 
 Removes a header with the specified name (`header` MUST be specified):
@@ -204,6 +212,42 @@ Adds a predefined header to mail identified as spam.
 ~~~
 
 Default name/value of the added header is `Deliver-To`/`Junk` which can be manipulated using the `header` and `value` settings.
+
+## stat-signature
+
+Attaches the stat signature to the message.
+
+~~~ucl
+  header = 'X-Stat-Signature';
+  remove = 1;
+~~~
+
+## x-rspamd-queue-id
+
+Adds a header containing the Rspamd queue id of the message.
+
+~~~ucl
+  header = 'X-Rspamd-Queue-Id';
+  remove = 1;
+~~~
+
+## x-spamd-result
+
+Adds a header containing the scan results.
+
+~~~ucl
+  header = 'X-Spamd-Result';
+  remove = 1;
+~~~
+
+## x-rspamd-server
+
+Adds a header containing the name of the Rspamd server that checked out the message.
+
+~~~ucl
+  header = 'X-Rspamd-Server';
+  remove = 1;
+~~~
 
 ## x-spamd-bar
 
