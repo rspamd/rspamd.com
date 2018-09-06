@@ -4,7 +4,7 @@
 		<h2>Download</h2>
 		<p>
 			<!-- download button with tooltip -->
-			<a class="btn btn-primary" href="https://github.com/vstakhov/rspamd/archive/1.6.5.tar.gz" data-toggle="tooltip" data-placement="bottom" title="Download the most recent stable version as source tarball">Download rspamd-1.6.5</a>
+			<a id = "btn-download" class="btn btn-primary" href="https://github.com/rspamd/rspamd/releases/latest" data-toggle="tooltip" data-placement="bottom" title="Download the most recent stable version as source tarball" >Download Rspamd</a>
 			<!-- github button -->
 			<iframe style="vertical-align: middle;" src="{{ site.baseurl }}/github-btn.html?user=vstakhov&repo=rspamd&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="215" height="38"></iframe>
 		</p>
@@ -21,3 +21,15 @@
 <!-- /container -->
 <div class="push"></div>
 {% include bottom.html %}
+
+<script>
+    "use strict";
+    (function () {
+        $.getJSON("https://api.github.com/repos/rspamd/rspamd/tags").done(function (json) {
+            var release = json[1];
+            $("#btn-download")
+                .attr("href", release.tarball_url)
+                .text("Download Rspamd-" + release.name);
+        });
+    })();
+</script>
