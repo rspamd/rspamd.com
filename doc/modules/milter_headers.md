@@ -60,7 +60,7 @@ Rmilter compatibility option (default `false`). Enables `x-spam`, `x-spamd-resul
 extended_spam_headers = true;
 ~~~
 
-## authenticated_headers
+## authenticated_headers (1.6.1+)
 
 List of headers to be enabled for authenticated users (default `empty`).
 
@@ -76,7 +76,7 @@ Set `false` to keep pre-existing spam flag added by an upstream spam filter (def
 remove_upstream_spam_flag = true;
 ~~~
 
-## local_headers
+## local_headers (1.6.1+)
 
 List of headers to be enabled for local IPs (default `empty`).
 
@@ -84,7 +84,7 @@ List of headers to be enabled for local IPs (default `empty`).
 local_headers = ["x-spamd-bar"];
 ~~~
 
-## skip_local
+## skip_local (1.6.0+)
 
 Set false to always add headers for local IPs (default `true`).
 
@@ -92,7 +92,7 @@ Set false to always add headers for local IPs (default `true`).
 skip_local = true;
 ~~~
 
-## skip_authenticated
+## skip_authenticated (1.6.0+)
     
 Set false to always add headers for authenticated users (default `true`)
 
@@ -163,7 +163,7 @@ Add an [authentication-results](https://tools.ietf.org/html/rfc7001) header.
   }
 ~~~
 
-## fuzzy-hashes
+## fuzzy-hashes (1.7.5+)
 
 For each matched fuzzy hash adds a header containing the hash.
 
@@ -171,7 +171,7 @@ For each matched fuzzy hash adds a header containing the hash.
   header = "X-Rspamd-Fuzzy";
 ~~~
 
-## remove-header
+## remove-header (1.6.2+)
 
 Removes a header with the specified name (`header` MUST be specified):
 
@@ -180,7 +180,7 @@ Removes a header with the specified name (`header` MUST be specified):
   remove = 1;
 ~~~
 
-## remove-headers
+## remove-headers (1.6.3+)
 
 Removes multiple headers (`headers` MUST be specified):
 
@@ -213,7 +213,7 @@ Adds a predefined header to mail identified as spam.
 
 Default name/value of the added header is `Deliver-To`/`Junk` which can be manipulated using the `header` and `value` settings.
 
-## stat-signature
+## stat-signature (1.6.3+)
 
 Attaches the stat signature to the message.
 
@@ -222,7 +222,7 @@ Attaches the stat signature to the message.
   remove = 1;
 ~~~
 
-## x-rspamd-queue-id
+## x-rspamd-queue-id (1.5.8+)
 
 Adds a header containing the Rspamd queue id of the message.
 
@@ -231,7 +231,7 @@ Adds a header containing the Rspamd queue id of the message.
   remove = 1;
 ~~~
 
-## x-spamd-result
+## x-spamd-result (1.5.8+)
 
 Adds a header containing the scan results.
 
@@ -240,7 +240,7 @@ Adds a header containing the scan results.
   remove = 1;
 ~~~
 
-## x-rspamd-server
+## x-rspamd-server (1.5.8+)
 
 Adds a header containing the name of the Rspamd server that checked out the message.
 
