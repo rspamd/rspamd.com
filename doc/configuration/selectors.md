@@ -27,7 +27,7 @@ urls.method('get_tld')
 
 Afterwards, these values can be used in various plugins:
 
-* [`multimap`](../moduels/multimap.html) - map type equal to `selector`
+* [`multimap`](../modules/multimap.html) - map type equal to `selector`
 * [`ratelimit`](../modules/ratelimit.html) - rate bucket description with `selector` field
 * `reputation` - TBD
 
