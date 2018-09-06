@@ -72,7 +72,6 @@ Rspamd reply is encoded in `JSON`. Here is a typical HTTP reply:
 
 ~~~json
 {
-    "is_spam": false,
     "is_skipped": false,
     "score": 5.2,
     "required_score": 7,
@@ -118,14 +117,13 @@ For convenience, the reply is LINTed using [JSONLint](http://jsonlint.com). The 
 
 Each reply has the following fields:
 
-* `is_spam` - boolean value that indicates whether a message is spam
 * `is_skipped` - boolean flag that is `true` if a message has been skipped due to settings
 * `score` - floating point value representing the effective score of message
 * `required_score` - floating point value meaning the threshold value for the metric
 * `action` - recommended action for a message:
-	- `no action` - message is likely ham;
-	- `greylist` - message should be greylisted;
-	- `add header` - message is suspicious and should be marked as spam
+	- `no action` - message is likely ham (please notice space, not an underscore)
+	- `greylist` - message should be greylisted
+	- `add header` - message is suspicious and should be marked as spam (please notice space, not an underscore)
 	- `rewrite subject` - message is suspicious and should have subject rewritten
 	- `soft reject` - message should be temporary rejected (for example, due to rate limit exhausting)
 	- `reject` - message should be rejected as spam
