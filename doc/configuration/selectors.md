@@ -13,7 +13,7 @@ From version 1.8, Rspamd includes a framework to extract data from messages and 
 smtp_from.addr.lower
 ```
 
-or get a subject's digest lowercased and trucated to 16 hex characters:
+or get a subject's digest lowercased and truncated to 16 hex characters:
 
 ```
 header('Subject').first.lower.digest.encode('hex').substring(1, 16)
@@ -36,7 +36,7 @@ Afterwards, these values can be used in various plugins:
 Typically, a selector is composed of two parts:
 
 1. Data definition (e.g. `header` or `urls`)
-2. Transform pipeline (separated by :)
+2. Transform pipeline in which multiple functions, separated by dot operators (.), are chained together
 
 You can also combine multiple selectors by using `;` as a separator:
 
