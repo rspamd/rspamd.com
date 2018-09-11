@@ -75,11 +75,12 @@ hr {
 
 }
 .btn-code{
-  background-color: #333333 !important;
-  color: #eeeeee;
-  border: none;
   font-family: monospace;
   text-decoration: none;
+  background-color: white !important;
+  color: #000000;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
 }
 code {
   background-color: rgba(0,0,0,0.04) !important;
