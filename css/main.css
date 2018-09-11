@@ -78,7 +78,7 @@ hr {
   font-family: monospace;
   text-decoration: none;
   background-color: white !important;
-  color: #000000;
+  color: #000000 !important;
   border: 1px solid #cccccc;
   border-radius: 4px;
 }
