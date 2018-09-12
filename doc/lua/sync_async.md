@@ -12,12 +12,12 @@ title: Sync and Async API comparison
 
 ## Overview {#overview}
 
-Prior to 1.8.0 if you needed to perform an action involving network request
+Prior to 1.8.0, if you needed to perform an action involving network request
 (i.e. Redis query, Anti-virus scan), you had to use callback-style approach.
 You define callback and initiate an asynchronous request and stop the execution
 to let other tasks proceed. 
 
-As soon as request is done the call back is called and the operation continues.
+As soon as request is completed, callback is called.
 
 ~~~lua
   -- define a callback
@@ -39,7 +39,7 @@ As soon as request is done the call back is called and the operation continues.
 
 Rspamd 1.8.0 is introducing a new pseudo-synchronous API. Now you can write code in a usual imperative manner but you still will not block any other tasks.
 
-Each potentially blocking operation is now appears a yielding-point. Which means, the code is get suspended until the operation is done (just like blocking) and resumes only when there is some result. Meanwhile, other tasks are processed as usual.
+Each potentially blocking operation creates a yielding-point. WhichIn turn, this means the code is suspended until the operation is done (just like blocking) and resumes only when there is some result. Meanwhile, other tasks are processed as usual.
 
 **Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
 
