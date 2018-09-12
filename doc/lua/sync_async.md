@@ -41,7 +41,9 @@ Rspamd 1.8.0 is introducing a new pseudo-synchronous API. Now you can write code
 
 Each potentially blocking operation creates a yielding-point. In turn, this means the code is suspended until the operation is done (just like blocking) and resumes only when there is some result. Meanwhile, other tasks are processed as usual.
 
+<small>
 **Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
+</small>
 
 ~~~lua
   local err, response = api.do_request(...)
