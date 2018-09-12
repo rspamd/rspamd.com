@@ -39,7 +39,7 @@ As soon as request is completed, callback is called.
 
 Rspamd 1.8.0 is introducing a new pseudo-synchronous API. Now you can write code in a usual imperative manner but you still will not block any other tasks.
 
-Each potentially blocking operation creates a yielding-point. WhichIn turn, this means the code is suspended until the operation is done (just like blocking) and resumes only when there is some result. Meanwhile, other tasks are processed as usual.
+Each potentially blocking operation creates a yielding-point. In turn, this means the code is suspended until the operation is done (just like blocking) and resumes only when there is some result. Meanwhile, other tasks are processed as usual.
 
 **Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
 
@@ -259,9 +259,7 @@ rspamd_config:register_symbol({
 {:.no_toc}
 
 <small>
-
 **Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
-
 </small>
 
 ~~~lua
@@ -565,9 +563,7 @@ rspamd_config:register_symbol({
 {:.no_toc}
 
 <small>
-
 **Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
-
 </small>
 
 ~~~lua
