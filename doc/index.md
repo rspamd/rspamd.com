@@ -23,8 +23,8 @@ There is also an external documentation about Rspamd from the system administrat
 
 ### Some quick links to the most frequently asked questions:
 
-* How to blacklist/whitelist emails? Use **[multimap module]({{ site.baseurl }}/doc/modules/multimap.html)
-* How to disable spam filter for some user or set custom thresholds? Use **[user settings]({{ site.baseurl }}/doc/configuration/settings.html)
+* How to blacklist/whitelist emails? Use **[multimap module]({{ site.baseurl }}/doc/modules/multimap.html)**
+* How to disable spam filter for some user or set custom thresholds? Use **[user settings]({{ site.baseurl }}/doc/configuration/settings.html)**
 * How to configure Rspamd? Write your custom configuration in `local.d/module_name.conf` for plugins, in `local.d/worker-type.inc` for workers, `local.d/logging.inc` for logging, `local.d/options.inc` for custom options and in `etc/rspamd/rspamd.local.lua` for adding new rules and regular expressions.
 
 Please also read the **[frequently asked questions](faq.html)** document for other commonly asked questions.
