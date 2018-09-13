@@ -29,9 +29,9 @@ Parameters for the spamtrap modules are listed here.
 - `symbol`: The name of a symbol that will be inserted, if a match between
   recipient and a spam trapped email/domain was found. Defaults to 'SPAMTRAP'
 - `score`: The score for this symbol. It defaults to neutral 0.0
-- `learn_fuzzy`: Boolean that enables or disables fuzzy learning. Defaults to
+- `learn_fuzzy`: A boolean that enables or disables fuzzy learning. Defaults to
   'false'
-- `learn_spam`: Boolean that enables or disables bayes spam learning. Defaults
+- `learn_spam`: A boolean that enables or disables bayes spam learning. Defaults
   to 'false'
 - `fuzzy_flag`: Fuzzy flag, which must match with a defined flag in fuzzy_check
   for a 'denied' rule
@@ -40,6 +40,9 @@ Parameters for the spamtrap modules are listed here.
   defaults to 'sptr\_'
 - `map`: You can define a regexp map, which automatically disables Redis for
   this module
+- `check_authed`: A boolean that enables spamtrap checks for authenticated users. Defaults to 'true'
+- `check_local`: A boolean that enables spamtrap checks for local networks Defaults to 'true'
+
 
 Configuration example `/etc/rspamd/local.d/spamtrap.conf`:
 
