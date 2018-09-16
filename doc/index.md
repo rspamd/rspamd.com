@@ -1,14 +1,16 @@
 ---
-layout: doc_main
+layout: doc_autotoc
 title: Rspamd Documentation
 ---
 
 {::options parse_block_html="true" /}
-
-<div id="toc">
+<div class="col-sm-3">
   * this unordered seed list will be replaced by toc as unordered list
   {:toc}
 </div>
+
+<div class="col-sm-9">
+  <div class="body-content doc-content">
 
 ## Installation and Administration
 
@@ -21,7 +23,7 @@ Here are the main introduction documents that are recommended for reading if you
 
 There is also an external documentation about Rspamd from the system administration point of view: [an alternative introduction to rspamd configuration](http://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/).
 
-### Some quick links to the most frequently asked questions:
+### Quick links
 
 * How to blacklist/whitelist emails? Use **[multimap module]({{ site.baseurl }}/doc/modules/multimap.html)**
 * How to disable spam filter for some user or set custom thresholds? Use **[user settings]({{ site.baseurl }}/doc/configuration/settings.html)**
@@ -44,7 +46,6 @@ This section contains documents about various configuration details.
 * **[Modules documentation](./modules/)** gives the detailed description of each Rspamd module
 * **[Workers documentation](./workers/)** contains information about different Rspamd worker processes: scanners, controller, fuzzy storage and so on
 * **[Redis configuration page]({{ site.baseurl }}/doc/configuration/redis.html)** describes how to configure Redis cache for Rspamd
-
 
 ## Developers documentation
 
@@ -77,3 +78,6 @@ There are several tutorial like documents related to various topics of Rspamd us
 * [OpenBSD Email Service, a free-email alternative relying on Rspamd](https://github.com/vedetta-com/caesonia) - configuration and guide for self-hosting
 
 <a name="fn1">1.</a> antispam plugin is deprecated, use [IMAPSieve](https://wiki.dovecot.org/HowTo/AntispamWithSieve) instead
+
+  </div>
+</div>
