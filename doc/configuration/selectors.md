@@ -181,6 +181,22 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 
 ## Type safety
 
+All selectors provide type safety controls. It means that Rspamd checks if types withing pipeline matches each other. For example, `rcpts` extractor returns a list of addresses, and `from` returns a single address. If you need to lowercase this address you need to convert it to a string as the first step. This could be done by getting a specific element of this address, e.g. `from.addr` -> this returns a `string` (you could also get `from.name` to get a displayed name, for example). Each processor has its own list of the accepted types.
+
+However, in the case of recipients, `rcpt` returns a list of addresses not a single address. Despite of this, you can still apply the same pipeline `rcpts.addr.tolower`. This magic works as many processors could be functionally applied as a map:
+
+```
+elt1 -> f(elt1) -> elt1'
+elt2 -> f(elt2) -> elt2'
+elt3 -> f(elt3) -> elt3'
+```
+
+So a list of elements of type `t` is element-wise transformed using processor `f` forming a new list of type `t1` (could be same as `t`). The length of the new list is the same.
+
+For convenience, the final values could be transformed implicitly to their string form. For example, urls, emails and IP addresses could be converted to strings implicitly.
+
+Normally, you should not care about type safety unless you have type errors. This mechanism is intended to protect selectors architecture from users mistakes.
+
 ## Own selectors
 
 ## Regular expressions selectors
