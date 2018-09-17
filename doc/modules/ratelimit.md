@@ -35,9 +35,15 @@ option allows to avoid too many work for setting buckets if there are a lot of r
 - `spam_factor_burst` - multiplier for burst when a spam message arrives (default: 0.98)
 - `max_rate_mult` - maximum and minimum (1/X) dynamic multiplier for rate (default: 5)
 - `max_bucket_mult` -  maximum and minimum (1/X) dynamic multiplier for rate (default: 10)
-- `rates` - a table of allowed rates in form:
+- `rates` - a table of allowed rates in several forms
 
-    type = [burst,leak];
+### Legacy ratelimit record
+
+This format is used before Rspamd 1.8
+
+```
+type = [burst,leak];
+```
 
 Where `type` could be one of the following:
 
@@ -47,8 +53,6 @@ Where `type` could be one of the following:
 - `to_ip`: limit per pair of recipient and sender's IP address
 - `to_ip_from`: limit per triplet: recipient, sender's envelope from and sender's IP
 - `user`: limit per authenticated user (useful for outbound limits)
-
-See [composable ratelimits](#composable-ratelimits) for more information on this topic.
 
 `burst` is a capacity of a bucket and `leak` is a rate in messages per second.
 Both these attributes are floating point values.
@@ -71,6 +75,36 @@ Valid suffixes for amounts are:
 - `m`: millions
 - `g`: billions
 
+### Modern ratelimit record
+
+From the version 1.8, you can use [selectors framework](../configuration/selectors.html) to define ratelimit buckets. The syntax of rules is also slightly different:
+
+~~~ucl
+ratelimit {
+  rates {
+    some_limit = {
+      selector = 'user.lower';
+      bucket = "10 / 1m";
+    }
+    other_limit = {
+      selector = 'rcpts.take_n(5).addr';
+      bucket = {
+        burst = 100;
+        rate = 0.01666666666666666666; # leak 1 message per minute
+      }
+    }
+    # or
+    other_limit_alt = {
+      selector = 'rcpts.take_n(5).addr';
+      bucket = {
+        burst = 100;
+        rate = "1 / 1m"; # leak 1 message per minute
+      }
+    }
+  }
+}
+~~~
+
 ## Principles of work
 
 The basic principle of ratelimiting in Rspamd is called `leaked bucket`. It could
@@ -89,11 +123,14 @@ To demonstrate dynamic multipliers, here is a sample graph that shows how burst 
 
 <img class="img-responsive" width="75%" src="{{ site.baseurl }}/img/ratelimit.png">
 
-Rspamd uses 3 types of limit buckets:
+Rspamd uses either selector or some predefined ratelimit:
 
-- `to` - a bucket based on a recipient only
-- `to:ip` - a bucket combining a recipient and a sender's IP 
-- `to:from:ip` - a bucket combining a recipient, a sender and a sender's IP
+- `bounce_to`: limit bounces per recipient
+- `bounce_to_ip`: limit bounces per recipient per ip
+- `to`: limit per recipient
+- `to_ip`: limit per pair of recipient and sender's IP address
+- `to_ip_from`: limit per triplet: recipient, sender's envelope from and sender's IP
+- `user`: limit per authenticated user (useful for outbound limits)
 
 For bounce messages there are special buckets that lack `from` component and have more
 restricted limits. Rspamd treats the following senders as bounce senders:
@@ -117,45 +154,8 @@ Each bucket has four parameters:
 For example, a bucket with capacity `100` and leak `1` can accept up to 100 messages but then
 will accept not more than a message per second.
 
-By default, ratelimit module has the following settings which disable all limits:
+By default, ratelimit module does not define any rates that efficiently disables the module.
 
-~~~ucl
-ratelimit {
-  # Default settings for limits, 1st member is burst, second is rate
-  rates {
-    # Limit for all mail per recipient
-    to = [0, 0.033333333];
-    # Limit for all mail per one source ip
-    to_ip = [0, 0.025];
-    # Limit for all mail per one source ip and from address (rate 1 per minute)
-    to_ip_from = [0, 0.01666666667];
-
-    # Limit for all bounce mail (rate 2 per hour)
-    bounce_to = [0, 0.000555556];
-    # Limit for bounce mail per one source ip
-    bounce_to_ip = [0, 0.000277778];
-
-    # Limit for all mail per user (authuser) (rate 1 per minute)
-    user = [0, 0.01666666667];
-  }
-}
-~~~
-
-### Composable ratelimits
-
-From 1.4.0 bucket names can be dynamically constructed - eg. `from` and `ip` are keywords which can be joined by underscores to form `from_ip` which will ratelimit based on SMTP sender/IP address pair.
-
-Only ratelimits containing a keyword specified in the `user_keywords` setting are checked for authenticated users (by default only `user`).
-
-Valid keywords are:
-
-* `asn`: ASN of sender (requires [asn module]({{ site.baseurl }}/doc/modules/asn.html))
-* `bounce`: True if message appears to be bounce
-* `from`: SMTP sender address
-* `ip`: IP address of sender
-* `user`: SMTP authenticated username
-* `rip`: IP address of sender if not a reserved address
-* `to`: SMTP recipient
 
 ### User-defined ratelimits
 
