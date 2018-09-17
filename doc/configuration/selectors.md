@@ -19,7 +19,7 @@ or get a subject's digest lowercased and truncated to 16 hex characters:
 header('Subject').first.lower.digest.encode('hex').substring(1, 16)
 ```
 
-You can also operate with lists, e.g. lists of urls:
+You can also operate with lists, e.g. lists of URLs:
 
 ```
 urls.method('get_tld')
@@ -54,7 +54,7 @@ header('Subject').regexp('^A-Z{10,}"\'.*')
 
 ### Null values
 
-If data transformation function or **any** transform function returns `nil` selector is completely ignored. For example, this property is utilised in `in` and `not_in` transformation functions. Here is a sample config for `ratelimit` module that uses `in` transformation combined with `id` to drop the original string.
+If data transformation function or **any** transform function returns `nil`, selector is completely ignored. For example, this property is utilised in `in` and `not_in` transformation functions. Here is a sample config for `ratelimit` module that uses `in` transformation combined with `id` to drop the original string.
 
 ```
 user_workdays = {
@@ -73,7 +73,7 @@ In this sample, `user_weekdays` will be completely ignored during weekends and, 
 
 In the previous example, the selector had multiple components:
 
-* `user.lower` - extracts authenticated username and lowercase it
+* `user.lower` - extracts authenticated username and lowercases it
 * `time('connect', '!%w').in(6, 7).id('weekends')`  - if connection time is in the specified range, return string 'weekends'
 
 These two elements are separated by `;` symbol. Modules will use these elements as a concatenated string, e.g. `user@example.com:weekends` (`:` symbol is used by ratelimit module as a separator).
@@ -87,7 +87,7 @@ rcpt_weekends = {
 };
 ```
 
-In this sample, we take up to `5` recipients, extracts address part, lowercase it and combine with a string `weekends` if the condition is satisified. When a list of elements is concatenated with a string, then this string is appended (or prepended) to each element of the list:
+In this sample, we take up to `5` recipients, extract address part, lowercase it and combine with a string `weekends` if the condition is satisfied. When a list of elements is concatenated with a string, then this string is appended (or prepended) to each element of the list:
 
 ```
 rcpt1:weekends
@@ -112,7 +112,7 @@ rcpt:rcpt2:weekends
 rcpt:rcpt3:weekends
 ```
 
-Combining of lists with different number of entries is not recommended - in this case the shortest of lists will be used:
+Combining of lists with different number of entries is not recommended - in this case the shortest of the lists will be used:
 
 ```
 id('rcpt');rcpts.take_n(5).addr.lower;urls.get_host.lower
@@ -144,7 +144,7 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
   The second argument is optional time format, see [os.date](http://pgl.yoyo.org/luai/i/os.date) description
 * `digest` - Get content digest
 * `helo` - Get helo value
-* `urls` - Get list of all urls. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_tld`
+* `urls` - Get list of all URLs. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_tld`
 * `user` - Get authenticated user name
 * `received` - Get list of received headers. If no arguments specified, returns list of tables. Otherwise, selects a specific element, e.g. `by_hostname`
 * `from` - Get MIME or SMTP from (e.g. `from(smtp)` or `from(mime)`, uses any type by default)
@@ -163,9 +163,9 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 * `last` - Returns the last element
 * `nth` - Returns the nth element
 * `regexp` - Regexp matching
-* `get_host` - Get hostname from url or a list of urls
+* `get_host` - Get hostname from URL or a list of URLs
 * `join` - Joins strings into a single string using separator in the argument
-* `get_tld` - Get tld from url or a list of urls
+* `get_tld` - Get tld from URL or a list of URLs
 * `encode` - Encode hash to string (using hex encoding by default)
 * `substring` - Extracts substring
 * `lower` - Returns the lowercased string
@@ -181,7 +181,7 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 
 ## Type safety
 
-All selectors provide type safety controls. It means that Rspamd checks if types withing pipeline matches each other. For example, `rcpts` extractor returns a list of addresses, and `from` returns a single address. If you need to lowercase this address you need to convert it to a string as the first step. This could be done by getting a specific element of this address, e.g. `from.addr` -> this returns a `string` (you could also get `from.name` to get a displayed name, for example). Each processor has its own list of the accepted types.
+All selectors provide type safety controls. It means that Rspamd checks if types within pipeline match each other. For example, `rcpts` extractor returns a list of addresses, and `from` returns a single address. If you need to lowercase this address you need to convert it to a string as the first step. This could be done by getting a specific element of this address, e.g. `from.addr` -> this returns a `string` (you could also get `from.name` to get a displayed name, for example). Each processor has its own list of the accepted types.
 
 However, in the case of recipients, `rcpt` returns a list of addresses not a single address. Despite of this, you can still apply the same pipeline `rcpts.addr.tolower`. This magic works as many processors could be functionally applied as a map:
 
@@ -193,7 +193,7 @@ elt3 -> f(elt3) -> elt3'
 
 So a list of elements of type `t` is element-wise transformed using processor `f` forming a new list of type `t1` (could be same as `t`). The length of the new list is the same.
 
-For convenience, the final values could be transformed implicitly to their string form. For example, urls, emails and IP addresses could be converted to strings implicitly.
+For convenience, the final values could be transformed implicitly to their string form. For example, URLs, emails and IP addresses could be converted to strings implicitly.
 
 Normally, you should not care about type safety unless you have type errors. This mechanism is intended to protect selectors architecture from users mistakes.
 
