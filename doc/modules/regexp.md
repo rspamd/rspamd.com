@@ -69,6 +69,7 @@ The match type is defined by special flags after the last `/` symbol:
 * `C` - spamassassin `BODY` regexp analogue(see http://spamassassin.apache.org/full/3.4.x/doc/Mail_SpamAssassin_Conf.txt)
 * `D` - spamassassin `RAWBODY` regexp analogue (raw part regexp with HTML tags b64/qp decoded)
 * `U` - URL regexp
+* `$` - from 1.8: [selectors](../configuration/selectors.html) regular expression (must include name of the registered selector)
 
 From 1.3, it is also possible to specify long regexp types for convenience in curly braces:
 
@@ -82,6 +83,7 @@ From 1.3, it is also possible to specify long regexp types for convenience in cu
 * `{sa_body}` - spamassassin `BODY` regexp analogue(see http://spamassassin.apache.org/full/3.4.x/doc/Mail_SpamAssassin_Conf.txt)
 * `{sa_raw_body}` - spamassassin `RAWBODY` regexp analogue
 * `{url}` - URL regexp
+* `{selector}` - from 1.8: [selectors](../configuration/selectors.html) regular expression (must include name of the registered selector)
 
 Each regexp also supports the following flags:
 
