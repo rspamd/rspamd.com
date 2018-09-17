@@ -233,3 +233,42 @@ lua_selectors.register_processor(rspamd_config, "take_second", {
 You can use these functions in your selectors subsequently.
 
 ## Regular expressions selectors
+
+It is also possible to use selectors for Rspamd [regexp module](../modules/regexp.html). The idea behind that is that you can use data extracted and processed by the selector framework to match it against different regular expression.
+
+First of all, you need to register a selector in regexp module (e.g. in `rspamd.local.lua` file):
+
+~~~lua
+rspamd_config:register_re_selector('test', 'user.lower;header(Subject).lower', ' ')
+~~~
+
+The first argument represents a symbolic name of the selector that will be used further to reference it in re rules. The second argument is the selector in a usual syntax. The optional last argument defines a character that will be used to join selector parts. For instance, this selector will produce a value of authenticated user concatenated with `Subject` header's value using a space character.
+
+Subsequently, you can reference this selector in regexp rules (order doesn't matter, so you can use the name of selector even before its registration in the code).
+
+~~~lua
+config['regexp']['TEST_SELECTOR_RE'] = {
+  re = 'test=/user some subject/$',
+  score = 100500,
+}
+~~~
+
+The syntax of regexp for selectors is somehow similar to the headers regexp: you define selector's name followed by `=` and the regular expression itself and use `$` as type. Omitting `$` sign will tell Rspamd that you implicitly define header regexp, not a selector one. Hence, it is important to include this symbol. Alternatively, you can use a long syntax for re type:
+
+~~~lua
+config['regexp']['TEST_SELECTOR_RE'] = {
+  re = 'test=/user some subject/{selector}',
+  score = 100500,
+}
+~~~
+
+If selector returns multiple values (e.g. recipients), then this regular expression would be matched against all elements in such a list. Hence, it might be important to include `one_shot` to avoid multiple symbols insertion if unintended:
+
+~~~lua
+rspamd_config:register_re_selector('test_rcpt', 'rcpts.addr.lower;header(Subject).lower', ' ')
+config['regexp']['TEST_SELECTOR_RCPT'] = {
+  re = 'test_rcpt=/user@example.com some subject/{selector}',
+  score = 100500,
+  one_shot = true,
+}
+~~~
