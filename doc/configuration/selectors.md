@@ -199,4 +199,37 @@ Normally, you should not care about type safety unless you have type errors. Thi
 
 ## Own selectors
 
+You can add your own extractors and process functions. This should be done prior to using of these selectors somewhere else. For example, it is guaranteed that `rspamd.local.lua` is executed before any plugins initialisation so it is generally safe to register your functions there. Here is a small example about how to register your own extractors and processors.
+
+~~~lua
+local lua_selectors = require "lua_selectors" -- Import module
+
+lua_selectors.register_selector(rspamd_config, "get_something", {
+  get_value = function(task, args) -- mandatory field
+    return task:get_something(),'string' -- result + type
+  end,
+  description = 'Sample extractor' -- optional
+})
+
+lua_selectors.register_processor(rspamd_config, "append_string", {
+  types = {'string' = true}, -- accepted types
+  process = function(input, type, args)
+    return input + table.concat(args or {}),'string' -- result + type
+  end,
+  map_type = 'string', -- can be used in map like invocation, always return 'string' type
+  description = 'Adds all arguments to the input string'
+})
+
+-- List processor example
+lua_selectors.register_processor(rspamd_config, "take_second", {
+  types = {'list' = true}, -- accepted types
+  process = function(input, t)
+    return input[2],t:match('^(.*)_list$') -- second element and list type
+  end,
+  desctiption = 'Returns the second element of the list'
+})
+~~~
+
+You can use these functions in your selectors subsequently.
+
 ## Regular expressions selectors
