@@ -10,19 +10,19 @@ title: Rspamd Selectors
 From version 1.8, Rspamd includes a framework to extract data from messages and use it further in plugins by means of transform functions. For example, you can extract SMTP from address and lowercase it by the following selector:
 
 ```
-smtp_from.addr.lower
+smtp_from.lower
 ```
 
 or get a subject's digest lowercased and truncated to 16 hex characters:
 
 ```
-header('Subject').first.lower.digest.encode('hex').substring(1, 16)
+header('Subject').lower.digest('blake2', 'hex').substring(1, 16)
 ```
 
 You can also operate with lists, e.g. lists of URLs:
 
 ```
-urls.method('get_tld')
+urls:get_tld
 ```
 
 Afterwards, these values can be used in various plugins:
@@ -36,7 +36,8 @@ Afterwards, these values can be used in various plugins:
 Typically, a selector is composed of two parts:
 
 1. Data definition (e.g. `header` or `urls`)
-2. Transform pipeline in which multiple functions, separated by dot operators (.), are chained together
+2. Optional data transformation method separated by `:`
+3. Transform pipeline in which multiple functions, separated by dot operators (.), are chained together
 
 You can also combine multiple selectors by using `;` as a separator:
 
@@ -51,6 +52,23 @@ header('Subject').regexp("^A-Z{10,}.*")
 header('Subject').regexp("^A-Z{10,}\"'.*")
 header('Subject').regexp('^A-Z{10,}"\'.*')
 ```
+
+### Data transformation method
+
+Some data extractors return complex objects (or list of such a complex objects):
+
+- table
+- userdata (Lua object)
+
+There are two possibilities to convert these complex objects to a simple ones (strings or list of strings): implicit conversion and using of the method/table key extraction. 
+
+1. For objects, implicit conversion is just calling of `tostring` while method is a plain method call. The following are equal: `ip:to_string.lower` and `ip.lower`. However, you can call different methods of the objects: `urls:get_tld` will return a list of strings with all eSLD parts of urls in the message.
+
+2. For tables, explicit conversion just extracts the specific key, for example, `from:addr` or `from('mime'):name`. Implicit conversion is a bit more complicated:
+
+  - If there is a field `value` in table it will be used for implicit conversion
+  - Otherwise, if there is a field `addr` in table it will be used for implicit conversion
+  - Otherwise `table.concat(t, ' ')` will be used for implicit conversion
 
 ### Null values
 
@@ -82,7 +100,7 @@ But what if you want to use the same for, let's say, recipients:
 
 ```
 rcpt_weekends = {
-    selector = "rcpts.take_n(5).addr.lower;time('connect', '!%w').in(6, 7).id('weekends')";
+    selector = "rcpts:addr.take_n(5).lower;time('connect', '!%w').in(6, 7).id('weekends')";
     bucket = "1 / 1m";
 };
 ```
@@ -99,7 +117,7 @@ It also works if you want to add prefix and suffix:
 
 ```
 rcpt_weekends = {
-    selector = "id('rcpt');rcpts.take_n(5).addr.lower;time('connect', '!%w').in(6, 7).id('weekends')";
+    selector = "id('rcpt');rcpts:addr.take_n(5).lower;time('connect', '!%w').in(6, 7).id('weekends')";
     bucket = "1 / 1m";
 };
 ```
@@ -115,7 +133,7 @@ rcpt:rcpt3:weekends
 Combining of lists with different number of entries is not recommended - in this case the shortest of the lists will be used:
 
 ```
-id('rcpt');rcpts.take_n(5).addr.lower;urls.get_host.lower
+id('rcpt');rcpts.take_n(5).lower;urls.get_host.lower
 ```
 
 will produce a list that might have up to 5 elements and concatenate it with a prefix:
