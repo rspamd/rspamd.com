@@ -29,7 +29,9 @@ Afterwards, these values can be used in various plugins:
 
 * [`multimap`](../modules/multimap.html) - map type equal to `selector`
 * [`ratelimit`](../modules/ratelimit.html) - rate bucket description with `selector` field
-* `reputation` - TBD
+* [`reputation`](../modules/reputation.html) - generic selector rules
+* [`regexp`](../modules/regexp.html) - regular expressions based on selector's data
+* [`clustering`] - TBD
 
 ## Selectors syntax
 
@@ -282,3 +284,5 @@ config['regexp']['TEST_SELECTOR_RCPT'] = {
   one_shot = true,
 }
 ~~~
+
+Data extracted via selector is cached internally, so you can reuse it safely in multiple regular expressions (in case of `Hyperscan` support multiple regular expressions will also be composed as usually).
