@@ -16,7 +16,7 @@ smtp_from.lower
 or get a subject's digest lowercased and truncated to 16 hex characters:
 
 ```
-header('Subject').lower.digest('blake2', 'hex').substring(1, 16)
+header('Subject').lower.digest('hex').substring(1, 16)
 ```
 
 You can also operate with lists, e.g. lists of URLs:
@@ -100,7 +100,7 @@ But what if you want to use the same for, let's say, recipients:
 
 ```
 rcpt_weekends = {
-    selector = "rcpts:addr.take_n(5).lower;time('connect', '!%w').in(6, 7).id('weekends')";
+    selector = "rcpts.take_n(5).lower;time('connect', '!%w').in(6, 7).id('weekends')";
     bucket = "1 / 1m";
 };
 ```
@@ -147,9 +147,8 @@ rcpt:rcpt3:example3.com
 ### Data definition functions
 
 Data definition part defines what exactly needs to be extracted. Here is the list of methods supported by Rspamd so far:
-
 * `request_header` - Get specific HTTP request header. The first argument must be header name.
-* `id` - Return value from function's argument or an empty string. For example, `id('Something')` returns a string 'Something'
+* `id` - Return value from function's argument or an empty string, For example, `id('Something')` returns a string 'Something'
 * `pool_var` - Get specific pool var. The first argument must be variable name, the second argument is optional and defines the type (string by default)
 * `emails` - Get list of all emails. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_user`
 * `asn` - Get AS number (ASN module must be executed first)
@@ -158,44 +157,37 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 * `time` - Get task timestamp. The first argument is type:
   - `connect`: connection timestamp (default)
   - `message`: timestamp as defined by `Date` header
-  
+
   The second argument is optional time format, see [os.date](http://pgl.yoyo.org/luai/i/os.date) description
 * `digest` - Get content digest
 * `helo` - Get helo value
-* `urls` - Get list of all URLs. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_tld`
+* `urls` - Get list of all urls. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_tld`
 * `user` - Get authenticated user name
 * `received` - Get list of received headers. If no arguments specified, returns list of tables. Otherwise, selects a specific element, e.g. `by_hostname`
-* `from` - Get MIME or SMTP from (e.g. `from(smtp)` or `from(mime)`, uses any type by default)
+* `from` - Get MIME or SMTP from (e.g. `from('smtp')` or `from('mime')`, uses any type by default)
 * `attachments` - Get list of all attachments digests
 * `header` - Get header with the name that is expected as an argument. The optional second argument accepts list of flags:
   - `full`: returns all headers with this name with all data (like task:get_header_full())
   - `strong`: use case sensitive match when matching header's name
-* `rcpts` - Get MIME or SMTP rcpts (e.g. `rcpts(smtp)` or `rcpts(mime)`, uses any type by default)
+* `rcpts` - Get MIME or SMTP rcpts (e.g. `rcpts('smtp')` or `rcpts('mime')`, uses any type by default)
 * `files` - Get all attachments files
 * `to` - Get principal recipient
 
 ### Transformation functions
 
 * `id` - Drops input value and return values from function's arguments or an empty string
-* `in` - Boolean function in. Returns either nil or its input if input is in args list
-* `last` - Returns the last element
-* `nth` - Returns the nth element
-* `regexp` - Regexp matching
-* `get_host` - Get hostname from URL or a list of URLs
-* `join` - Joins strings into a single string using separator in the argument
-* `get_tld` - Get tld from URL or a list of URLs
-* `encode` - Encode hash to string (using hex encoding by default)
 * `substring` - Extracts substring
+* `first` - Returns the first element
 * `lower` - Returns the lowercased string
 * `drop_n` - Returns list without the first n elements
-* `addr` - Get email address as a string
+* `regexp` - Regexp matching
 * `not_in` - Boolean function not in. Returns either nil or its input if input is not in args list
-* `digest` - Create a digest from string or a list of strings
-* `method` - Call specific userdata method
-* `first` - Returns the first element
-* `elt` - Extracts table value from key-value list
-* `name` - Get email name as a string
+* `in` - Boolean function in. Returns either nil or its input if input is in args list
 * `take_n` - Returns the n first elements
+* `last` - Returns the last element
+* `nth` - Returns the nth element
+* `join` - Joins strings into a single string using separator in the argument
+* `digest` - Create a digest from a string. The first argument is encoding (`hex`, `base32`, `base64`), the second argument is optional hash type (`blake2`, `sha256`, `sha1`, `sha512`, `md5`)
 
 ## Type safety
 
