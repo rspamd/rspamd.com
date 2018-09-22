@@ -108,3 +108,15 @@ Upon bucket lookup, you have the following attributes:
 $$
 f(buckets)=\sum_{i=1}^n {(spam_{i} * mult_{spam} + ham_{i} * mult_{ham} + junk_{i} * mult_{junk}) * bscore_{i}}
 $$
+
+## Selector types
+
+There are couple of pre-defined selector types, specifically:
+
+* SPF reputation - `spf` selector
+* DKIM reputation - `dkim` selector
+* IP, asn, country and network reputation - `ip` selector
+* URLs reputation - `url` selector
+* Generic reputation based on [selectors framework](../configuration/selectors.html) - `generic` selector
+
+All selector types but `generic` requires no explicit configuration. `Generic` selector requires a `selector` attribute to be set. For the advanced configuration of the selectors, you can check the source code of the module.
