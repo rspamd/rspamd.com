@@ -27,7 +27,13 @@ settings {
 }
 ~~~
 
-Alternatively, settings could be passed to Rspamd by a client by query parameter:
+To define static settings, you might want to edit `local.d/settings.conf` file (from Rspamd 1.8). If you want to use dynamic map for settings, it might be better to define it in the override file: `rspamd.conf.override`:
+
+~~~ucl
+settings = "http://host/url"
+~~~
+
+Alternatively, settings apply part (see later) could be passed to Rspamd by a client by query parameter:
 
 ~~~
 GET /symbols?settings="{symbol1 = 10.0}" HTTP/1.0
@@ -127,6 +133,7 @@ So each setting has the following attributes:
 	+ `authenticated` - matches any authenticated user
 	+ `request_header` - collection of request header names and regexes to match them against (condition is satisfied if any match)
 	+ `header` - collection of MIME message header names and regexes to match them against (condition is satisfied if any match), available since Rspamd 1.7
+	+ `selector` - apply the specific selector to check if we need to apply these settings. If selector returns non-nil, then the settings are applied (selector's value is ignored so far). Available since Rspamd 1.8.
 - `apply` - list of applied rules
 	+ `symbol` - modify weight of a symbol
 	+ `actions` - defines actions
