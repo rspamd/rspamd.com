@@ -62,6 +62,15 @@ Mandatory attributes are:
   + `/path/to/list` - shorter form of a file map
   + `cdb://path/to/list.cdb` - [CDB](http://www.corpit.ru/mjt/tinycdb.html) map in file, cannot be signed
   + `redis://<hashkey>` - Redis map, read field in the hash stored at key
+  + combination of files and http:
+  
+~~~ucl
+map = [
+  "https://maps.rspamd.com/rspamd/mime_types.inc.zst",
+  "${DBDIR}/mime_types.inc.local",
+  "fallback+file://${CONFDIR}/mime_types.inc"
+]
+~~~
 
 For header maps, you also need to specify the exact header using `header` option.
 
@@ -118,6 +127,7 @@ Type attribute means what is matched with this map. The following types are supp
 * `mempool` - matches contents of a mempool variable (specified with `variable` parameter)
 * `received` - (new in 1.5) matches elements of `Received` headers
 * `rcpt` - matches any of envelope rcpt or header `To` if envelope info is missing
+* `selector` - applies generic [selector](../configuration/selectors.html) and check data returned in the specific map. This type must have `selector` option and an optional `delimiter` option that defines how to join multiple selectors (an empty string by default). If a selector returns multiple values, e.g. `urls`, then all values are checked. Normal filter logic can also be applied to the selector's results.
 * `symbol_options` - (new in 1.6.3) match 'options' yielded by whichever symbol of interest (requires `target_symbol` parameter)
 * `url` - matches URLs in messages against maps
 
@@ -227,6 +237,10 @@ Negative values can be specified to match positions relative to the end of Recei
 * `nflags` - One or more flags which must NOT be present to match
 
 Currently available flags are `ssl` (hop used SSL) and `authenticated` (hop used SMTP authentication).
+
+### Selector options filters
+
+* `regexp:/re/` - extract data from selector's results according to some regular expression (usually not needed)
 
 ### Symbol options filters
 
