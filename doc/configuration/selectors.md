@@ -226,7 +226,7 @@ lua_selectors.register_extractor(rspamd_config, "get_something", {
 lua_selectors.register_processor(rspamd_config, "append_string", {
   types = {['string'] = true}, -- accepted types
   process = function(input, type, args)
-    return input + table.concat(args or {}),'string' -- result + type
+    return input .. table.concat(args or {}),'string' -- result + type
   end,
   map_type = 'string', -- can be used in map like invocation, always return 'string' type
   description = 'Adds all arguments to the input string'
