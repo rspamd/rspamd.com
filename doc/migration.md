@@ -6,6 +6,29 @@ title: Upgrading
 
 This document describes incompatible changes introduced in recent Rspamd versions and details how to update your rules and configuration accordingly.
 
+## Migration to Rspamd 1.8.0
+
+There are couple of slashing changes that might affect your setup, especially if you use one of the following:
+
+- **Clickhouse** module
+- **User settings**
+
+### Clickhouse changes
+
+From the version 1.8, Rspamd stops usage of multiple tables and uses one table `rspamd` with all columns in it. It provides benefits in performance and helps to avoid joins that are not extremely efficient in Clickhouse. If you have used Clickhouse module before 1.8, then your **schemas** will be converted automatically. However, **the existing data** will **NOT** be converted and will remain in the old tables. It is sometimes required to enforce new schema application by using command
+
+```
+OPTIMIZE rspamd FINAL
+```
+
+This command might take significant time to be completed if you store lots of historical data.
+
+You also need to update your **queries** that use additional Rspamd tables, such as `rspamd_urls`, `rspamd_asn`, `rspamd_attachments`, `rspamd_symbols` and others. All corresponding fields are now placed in `rspamd` table. It is impossible to migrate old data from those tables so far.
+
+### Settings changes
+
+Rspamd now provides `settings.conf` which includes `local.d/settings.conf` and `override.d/settings.conf`. If you have used some of these files to store settings please ensure that they don't conflict with the new configuration layout.
+
 ## Migration to Rspamd 1.7.4
 
 The only potential issue is that now Rspamd listens on **localhost only** by default. It might break some configurations where you rely on the previous behaviour, specifically, on listening on all IP addresses (e.g. `*`).
