@@ -233,7 +233,7 @@ lua_selectors.register_processor(rspamd_config, "append_string", {
 })
 
 -- List processor example
-lua_selectors.register_processor(rspamd_config, "take_second", {
+lua_selectors.register_transform(rspamd_config, "take_second", {
   types = {['list'] = true}, -- accepted types
   process = function(input, t)
     return input[2],t:match('^(.*)_list$') -- second element and list type
