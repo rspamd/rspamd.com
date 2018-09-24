@@ -3,13 +3,17 @@ layout: support
 title: Rspamd Support
 ---
 
+Rspamd project offers various support options, both community and commercial ones.
+
+## Community support
+
 <div>
     <div class="row support-block">
         <div class="col-sm-3 col-xs-12">
-            <a class="btn btn-social btn-primary btn-block" href="https://groups.google.com/forum/#!forum/rspamd"><i class="fa fa-envelope-o"></i> Mailing list</a>
+            <a class="btn btn-social btn-primary btn-block" href="https://lists.rspamd.com"><i class="fa fa-envelope-o"></i> Mailing lists</a>
         </div>
         <div class="col-sm-9 col-xs-12">
-            <p>You can use the following mailing list hosted at Google Groups to ask technical and general questions related to Rspamd. Please note that you need to join the mailing list before posting your questions.</p>
+            <p>You can use the `Rspamd-Users` mailing list to ask technical and general questions related to Rspamd. `Rspamd-Announce` list is a low traffic read only mailing list used for project announces.</p>
         </div>
     </div>
     <div class="row support-block">
@@ -113,4 +117,4 @@ Please do not expect the immediate reply: we all have different task ongoing and
 
 ## Commercial support
 
-If you require the additional level of support related to large or custom Rspamd setup that could involve NDA signing, you might go with the commercial support option. Should you have any questions or queries about this option then please contact <support@rspamd.com> for options and quotes.
+If you require the additional level of support related to large or custom Rspamd setup that could involve NDA signing, consulting, direct and unlimited access to the fuzzy storage, DNS lists and so on, you might go with the commercial support option. Should you have any questions or queries about this option then please contact <support@rspamd.com> for options and quotes.
