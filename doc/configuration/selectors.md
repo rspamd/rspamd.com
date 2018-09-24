@@ -224,7 +224,7 @@ lua_selectors.register_extractor(rspamd_config, "get_something", {
 })
 
 lua_selectors.register_processor(rspamd_config, "append_string", {
-  types = {'string' = true}, -- accepted types
+  types = {['string'] = true}, -- accepted types
   process = function(input, type, args)
     return input + table.concat(args or {}),'string' -- result + type
   end,
@@ -234,7 +234,7 @@ lua_selectors.register_processor(rspamd_config, "append_string", {
 
 -- List processor example
 lua_selectors.register_processor(rspamd_config, "take_second", {
-  types = {'list' = true}, -- accepted types
+  types = {['list'] = true}, -- accepted types
   process = function(input, t)
     return input[2],t:match('^(.*)_list$') -- second element and list type
   end,
