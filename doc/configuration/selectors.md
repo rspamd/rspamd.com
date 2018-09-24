@@ -216,7 +216,7 @@ You can add your own extractors and process functions. This should be done prior
 ~~~lua
 local lua_selectors = require "lua_selectors" -- Import module
 
-lua_selectors.register_selector(rspamd_config, "get_something", {
+lua_selectors.register_extractor(rspamd_config, "get_something", {
   get_value = function(task, args) -- mandatory field
     return task:get_something(),'string' -- result + type
   end,
