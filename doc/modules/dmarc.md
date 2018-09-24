@@ -93,6 +93,8 @@ report_settings {
   # sender address to use for reports
   email = "postmaster@example.net";
   # The following elements MAY be present
+  # sender name to use for reports ("Rspamd" if unset)
+  # from_name = "Rspamd";
   # SMTP host to send reports to ("127.0.0.1" if unset)
   # smtp = "127.0.0.1";
   # TCP port to use for SMTP (25 if unset)
