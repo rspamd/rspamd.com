@@ -26,13 +26,43 @@ and all you have to do is tell the rspamd where `dccifd` is listening:
 
 ~~~ucl
 dcc {
-    host = "/var/dcc/dccifd";
-    # Port is only required if `dccifd` listens on a TCP socket
-    # port = 1234
-    # Timeout in seconds (default 2)
-    # timeout = 2
+
+  enabled = true;
+
+  # Define local socket or TCP servers in upstreams syntax
+  # When sockets and servers are definined - servers is used!
+
+  socket = "/var/dcc/dccifd"; # Unix socket
+
+  #servers = "127.0.0.1:10045" # OR TCP upstreams
+  timeout = 2s; # Timeout to wait for checks
 }
 ~~~
+
+Alternatively you can configure DCC to listen to a TCP Socket on localhost or any remote server.
+For the detailed configuration have a look to the DCC manual. Here is the config line for having DCCIFD
+listening on localhost port 10045 and allowing 127.0.0.1/8 to query:
+`DCCIFD_ARGS="-SHELO -Smail_host -SSender -SList-ID -p *,10045,127.0.0.0/8"`
+
+The Rspamd dcc.conf now looks like this:
+
+~~~ucl
+dcc {
+
+  enabled = true;
+
+  # Define local socket or TCP servers in upstreams syntax
+  # When sockets and servers are definined - servers is used!
+  #socket = "/var/dcc/dccifd"; # Unix socket
+
+  servers = "127.0.0.1:10045" # OR TCP upstreams
+
+  timeout = 2s; # Timeout to wait for checks
+}
+~~~
+
+Using servers not sockets you are able to configure all [upstreams](https://rspamd.com/doc/configuration/upstream.html) features.
+
 
 Once this module is configured it will write the DCC output to the rspamd as each
 message is scanned:
