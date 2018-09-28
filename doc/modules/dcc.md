@@ -67,10 +67,11 @@ Using servers not sockets you are able to configure all [upstreams](https://rspa
 Once this module is configured it will write the DCC output to the rspamd as each
 message is scanned:
 
-`````
-Apr  5 14:19:53 mail1-ewh rspamd: (normal) lua; dcc.lua:98: sending to dcc: client=217.78.2.204#015DNSERROR helo="003b046f.slimabs.top" envfrom="23SecondAbs@slimabs.top" envrcpt="xxxx@xxxx.com"
-Apr  5 14:19:53 mail1-ewh rspamd: (normal) lua; dcc.lua:65: DCC result=R disposition=R header="X-DCC--Metrics: xxxxx.xxxx.com 1282; bulk Body=1 Fuz1=1 Fuz2=many"
-`````
+
+~~~
+2018-09-28 13:35:17 #2998(normal) <37f431>; lua; dcc.lua:169: sending to 127.0.0.1:10045
+2018-09-28 13:35:17 #2998(normal) <37f431>; dcc; dcc.lua:136: DCC result=R disposition=R header="X-DCC--Metrics: srv.ncxs.de 1481; bulk Body=2 Fuz1=2 Fuz2=many"
+~~~
 
 Any messages that DCC returns a *reject* result for (based on the configured `DCCM_REJECT_AT`
 value) will cause the symbol `DCC_BULK` to fire.
