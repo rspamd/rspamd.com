@@ -26,21 +26,52 @@ and all you have to do is tell the rspamd where `dccifd` is listening:
 
 ~~~ucl
 dcc {
-    host = "/var/dcc/dccifd";
-    # Port is only required if `dccifd` listens on a TCP socket
-    # port = 1234
-    # Timeout in seconds (default 2)
-    # timeout = 2
+
+  enabled = true;
+
+  # Define local socket or TCP servers in upstreams syntax
+  # When sockets and servers are definined - servers is used!
+
+  socket = "/var/dcc/dccifd"; # Unix socket
+
+  #servers = "127.0.0.1:10045" # OR TCP upstreams
+  timeout = 2s; # Timeout to wait for checks
 }
 ~~~
+
+Alternatively you can configure DCC to listen to a TCP Socket on localhost or any remote server.
+For the detailed configuration have a look to the DCC manual. Here is the config line for having DCCIFD
+listening on localhost port 10045 and allowing 127.0.0.1/8 to query:
+`DCCIFD_ARGS="-SHELO -Smail_host -SSender -SList-ID -p *,10045,127.0.0.0/8"`
+
+The Rspamd dcc.conf now looks like this:
+
+~~~ucl
+dcc {
+
+  enabled = true;
+
+  # Define local socket or TCP servers in upstreams syntax
+  # When sockets and servers are definined - servers is used!
+  #socket = "/var/dcc/dccifd"; # Unix socket
+
+  servers = "127.0.0.1:10045" # OR TCP upstreams
+
+  timeout = 2s; # Timeout to wait for checks
+}
+~~~
+
+Using servers not sockets you are able to configure all [upstreams](https://rspamd.com/doc/configuration/upstream.html) features.
+
 
 Once this module is configured it will write the DCC output to the rspamd as each
 message is scanned:
 
-`````
-Apr  5 14:19:53 mail1-ewh rspamd: (normal) lua; dcc.lua:98: sending to dcc: client=217.78.2.204#015DNSERROR helo="003b046f.slimabs.top" envfrom="23SecondAbs@slimabs.top" envrcpt="xxxx@xxxx.com"
-Apr  5 14:19:53 mail1-ewh rspamd: (normal) lua; dcc.lua:65: DCC result=R disposition=R header="X-DCC--Metrics: xxxxx.xxxx.com 1282; bulk Body=1 Fuz1=1 Fuz2=many"
-`````
+
+~~~
+2018-09-28 13:35:17 #2998(normal) <37f431>; lua; dcc.lua:169: sending to 127.0.0.1:10045
+2018-09-28 13:35:17 #2998(normal) <37f431>; dcc; dcc.lua:136: DCC result=R disposition=R header="X-DCC--Metrics: srv.ncxs.de 1481; bulk Body=2 Fuz1=2 Fuz2=many"
+~~~
 
 Any messages that DCC returns a *reject* result for (based on the configured `DCCM_REJECT_AT`
 value) will cause the symbol `DCC_BULK` to fire.
