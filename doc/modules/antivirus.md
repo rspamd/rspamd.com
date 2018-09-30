@@ -20,10 +20,11 @@ first {
   # action = "reject";
   # message = '${SCANNER}: virus found: "${VIRUS}"';
   # Scan mime_parts seperately - otherwise the complete mail will be transfered to AV Scanner
-  #scan_mime_parts = true;
+  #attachments_only = true; # Before 1.8.1
+  #scan_mime_parts = true; # After 1.8.1
   # Scanning Text is suitable for some av scanner databases (e.g. Sanesecurity)
-  #scan_text_mime = false;
-  #scan_image_mime = false;
+  #scan_text_mime = false; # 1.8.1 +
+  #scan_image_mime = false; # 1.8.1 +
   # If `max_size` is set, messages > n bytes in size are not scanned
   #max_size = 20000000;
   # symbol to add (add it to metric if you want non-zero weight)
@@ -56,7 +57,7 @@ first {
 
 ### Sophos SAVDI specific details
 
-There are 2 special configuration parameters for handling SAVDI warnings / error messages
+From the version 1.8.1, there are 2 special configuration parameters for handling SAVDI warnings / error messages
 in the sophos section: `savdi_report_encrypted` and `savdi_report_oversized`.
 When enabled pseudo virus names (SAVDI_FILE_OVERSIZED, SAVDI_FILE_ENCRYPTED) will be set in case
 Sophos reports encrypted file or the file is bigger than `maxscandata` in the scanprotocol section
@@ -82,6 +83,6 @@ sophos {
 
 ### SAVAPI specific details
 
-The default SAVAPI configuration has a listening unix socket. You must change this to a TCP socket. The option "ListenAddress" in savapi.conf shows some examples. Per default this module expects the socket at 127.0.0.1:4444. You can change this by setting it in the "servers" variable as seen above.
+The default SAVAPI configuration has a listening unix socket. You should change this to a TCP socket. The option "ListenAddress" in savapi.conf shows some examples. Per default this module expects the socket at 127.0.0.1:4444. You can change this by setting it in the "servers" variable as seen above.
 
-You must also set the "product_id" which must match with the id for your HBEDV.key file. If you leave this, the default value is "0" and checking will fail with a log message that the given id was invalid.
+You also need to set the "product_id" that should match with the id for your HBEDV.key file. If you leave this, the default value is "0" and checking will fail with a log message that the given id was invalid.
