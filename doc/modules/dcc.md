@@ -25,18 +25,19 @@ Once the `dccifd` daemon is started it will listen on the UNIX domain socket /va
 and all you have to do is tell the rspamd where `dccifd` is listening:
 
 ~~~ucl
-dcc {
+# local.d/dcc.conf
 
-  enabled = true;
+enabled = true;
 
-  # Define local socket or TCP servers in upstreams syntax
-  # When sockets and servers are definined - servers is used!
+# Define local socket or TCP servers in upstreams syntax
+# When sockets and servers are definined - servers is used!
 
-  socket = "/var/dcc/dccifd"; # Unix socket
+socket = "/var/dcc/dccifd"; # Unix socket (1.8.1+)
+# host = "/var/dcc/dccifd"; # Unix socket (Before 1.8.1)
 
-  #servers = "127.0.0.1:10045" # OR TCP upstreams
-  timeout = 2s; # Timeout to wait for checks
-}
+#servers = "127.0.0.1:10045" # OR TCP upstreams (1.8.1+)
+timeout = 2s; # Timeout to wait for checks
+
 ~~~
 
 Alternatively you can configure DCC to listen to a TCP Socket on localhost or any remote server.
@@ -47,18 +48,21 @@ listening on localhost port 10045 and allowing 127.0.0.1/8 to query:
 The Rspamd dcc.conf now looks like this:
 
 ~~~ucl
-dcc {
+# local.d/dcc.conf
 
-  enabled = true;
+enabled = true;
 
-  # Define local socket or TCP servers in upstreams syntax
-  # When sockets and servers are definined - servers is used!
-  #socket = "/var/dcc/dccifd"; # Unix socket
+# Define local socket or TCP servers in upstreams syntax
+# When sockets and servers are definined - servers is used!
+#socket = "/var/dcc/dccifd"; # Unix socket
 
-  servers = "127.0.0.1:10045" # OR TCP upstreams
+servers = "127.0.0.1:10045" # OR TCP upstreams (1.8.1+)
 
-  timeout = 2s; # Timeout to wait for checks
-}
+#host = "127.0.0.1:10045" # OR TCP upstreams (Before 1.8.1)
+#port= "10045" # OR TCP upstream (Before 1.8.1)
+
+timeout = 2s; # Timeout to wait for checks
+
 ~~~
 
 Using servers not sockets you are able to configure all [upstreams](https://rspamd.com/doc/configuration/upstream.html) features.
