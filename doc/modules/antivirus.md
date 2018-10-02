@@ -14,6 +14,8 @@ By default, given [Redis]({{ site.baseurl }}/doc/configuration/redis.html) is co
 Settings should be added to `/etc/rspamd/local.d/antivirus.conf`:
 
 ~~~ucl
+# local.d/antivirus.conf
+
 # multiple scanners could be checked, for each we create a configuration block with an arbitrary name
 first {
   # If set force this action if any virus is found (default unset: no action is forced)
@@ -57,16 +59,18 @@ first {
 
 ### Sophos SAVDI specific details
 
-From the version 1.8.1, there are 2 special configuration parameters for handling SAVDI warnings / error messages
+From the version 1.7.2, there are 2 special configuration parameters for handling SAVDI warnings / error messages
 in the sophos section: `savdi_report_encrypted` and `savdi_report_oversized`.
 When enabled pseudo virus names (SAVDI_FILE_OVERSIZED, SAVDI_FILE_ENCRYPTED) will be set in case
 Sophos reports encrypted file or the file is bigger than `maxscandata` in the scanprotocol section
 of the SAVDI configuration file.
 
 If you don't want to handle those pseudo virus names like everything else you could use patterns to set
-a different symbol.
+a different symbol and maybe set a score or use the symbol in force_actions.
 
 ~~~ucl
+# local.d/antivirus.conf
+
 sophos {
   ...
   savdi_report_encrypted = true;
