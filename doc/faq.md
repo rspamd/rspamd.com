@@ -285,6 +285,38 @@ Rspamd as a spam-filtering system or as a project is spelled with a capital `R` 
 
 ## Configuration questions
 
+### How to change score for some symbol
+
+Unfortunately, it is not an easy question. If you use [WebUI](../webui/) then it redefines all scores and actions thresholds. Once you set some symbol's score in WebUI it is almost impossible to change it by other ways (you can do it by changing/removing the file `$DBDIR/rspamd_dynamic` which is usually `/var/lib/rspamd_dynamic` or `/var/db/rspamd_dynamic` depending on your OS).
+
+If you want to change some symbol's score in the configuration, you should do it in the file `local.d/groups.conf`. It can be done by the following syntax:
+
+~~~ucl
+# local.d/groups.conf
+
+symbols {
+  "SOME_SYMBOL" {
+    weight = 1.0; # Define your weight
+  }
+}
+~~~
+
+Despite of the name of this file, this syntax does not change the group of the symbol, but it changes it's weight. You can also define your own symbols groups in this file:
+
+~~~ucl
+group "mygroup" {
+  max_score = 10.0;
+  
+  symbols {
+    "MY_SYMBOL" {
+      weight = 1.0; # Define your weight
+    }
+  }
+}
+~~~
+
+To redefine symbols for the existing groups, it is recommended to use a specific `local.d` or `override.d` file, for example, `local.d/rbl_group.conf` to add your custom RBLs. To get the full list of such files, you can take a look over the `groups.conf` file in the main Rspamd configuration directory (e.g. `/etc/rspamd/groups.conf`).
+
 ### Rspamd does not work as expected
 
 Please check your configuration using `rspamdadm configdump`. You can narrow search by specifying the specific module:
