@@ -4,8 +4,16 @@ title: Milter headers module
 ---
 
 # Milter headers module
+{:.no_toc}
 
 The `milter headers` module (formerly known as `rmilter headers`) has been added in Rspamd 1.5 to provide a relatively simple way to configure adding/removing of headers via Rmilter (the alternative being to use the [API]({{ site.baseurl }}/doc/lua/rspamd_task.html#me7351)). Despite its namesake it also works with [Haraka](https://haraka.github.io) and Communigate.
+
+{::options parse_block_html="true" /}
+<div id="toc">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 # Principles of operation
 
@@ -18,7 +26,7 @@ The `milter headers` module provides a number of routines to add common headers 
 
 # Options
 
-# Rmilter compatibility option (default false) (enables x-spamd-result, x-rspamd-server & x-rspamd-queue-id)
+# Add "extended Rspamd headers" (default false) (enables x-spamd-result, x-rspamd-server & x-rspamd-queue-id routines)
 # extended_spam_headers = true;
 
 # List of headers to be enabled for authenticated users (default empty)
@@ -54,7 +62,7 @@ custom {
 
 ## extended_spam_headers
 
-Rmilter compatibility option (default `false`). Enables `x-spam`, `x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`.
+Add "extended Rspamd headers" to messages [NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention) (default `false`). Enables the following routines: `x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`. 
 
 ~~~ucl
 extended_spam_headers = true;
@@ -104,7 +112,7 @@ skip_authenticated = true;
 
 List of recipients (default `empty`).
 
-Add extended Rspamd headers to messages if **EVERY** envelope recipient match this list (e.g. a list of domains mail server responsible for).
+When [`extended_spam_headers`](#extended_spam_headers) is enabled, also add extended Rspamd headers to messages if **EVERY** envelope recipient match this list (e.g. a list of domains mail server responsible for).
 
 ~~~ucl
 extended_headers_rcpt = ["user1", "@example1.com", "user2@example2.com"];
@@ -224,7 +232,7 @@ Attaches the stat signature to the message.
 
 ## x-rspamd-queue-id (1.5.8+)
 
-Adds a header containing the Rspamd queue id of the message.
+Adds a header containing the Rspamd queue id of the message [if it is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention).
 
 ~~~ucl
   header = 'X-Rspamd-Queue-Id';
@@ -233,7 +241,7 @@ Adds a header containing the Rspamd queue id of the message.
 
 ## x-spamd-result (1.5.8+)
 
-Adds a header containing the scan results.
+Adds a header containing the scan results [if the message is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention).
 
 ~~~ucl
   header = 'X-Spamd-Result';
@@ -242,7 +250,7 @@ Adds a header containing the scan results.
 
 ## x-rspamd-server (1.5.8+)
 
-Adds a header containing the name of the Rspamd server that checked out the message.
+Adds a header containing the name of the Rspamd server that checked out the message [if it is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention).
 
 ~~~ucl
   header = 'X-Rspamd-Server';
@@ -311,3 +319,38 @@ EOD;
 ~~~
 
 The key `my_routine` could then be referenced in the `use` setting like other routines.
+
+# Scan results exposure prevention
+
+To prevent exposing scan results in outbound mail, extended Rspamd headers routines (`x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`) add headers only if messages is **NOT** originated from authenticated users or `our_networks`.
+
+The [`extended_headers_rcpt`](#extended_headers_rcpt-162) option can be used to add extended Rspamd headers also to messages sent to specific recipients or domains (e.g. a list of domains the mail server responsible for).
+
+## Disabling DSN
+
+Delivery status notification (DSN) reports of *successful* delivery can contain the original message headers including Rspamd headers. The only way to prevent it is to stop offering DSN to foreign servers.
+
+Besides, disabling DSN prevents backscatter generation.
+
+### Postfix example
+
+The following configuration example allows DSN requests from local subnets and authenticated users only. The `smtpd_discard_ehlo_keyword_address_maps` is applied to `smtp` service only, `smtps` and `submission` are not affected.
+
+esmtp_access:
+```conf
+# Allow DSN requests from local subnets only
+192.168.0.0/16  silent-discard
+10.10.0.0/16    silent-discard
+0.0.0.0/0       silent-discard, dsn
+::/0            silent-discard, dsn
+```
+
+master.cf:
+```conf
+# ==========================================================================
+# service type  private unpriv  chroot  wakeup  maxproc command + args
+#               (yes)   (yes)   (no)    (never) (100)
+# ==========================================================================
+smtp      inet  n       -       n       -       1       postscreen
+  -o smtpd_discard_ehlo_keyword_address_maps=cidr:$config_directory/esmtp_access
+```
