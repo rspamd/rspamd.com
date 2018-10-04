@@ -574,7 +574,7 @@ rspamd_config:register_symbol({
     return
   end
 
-  is_ok, err = connection:add_cmd('EVAL', {lua_script, 0})
+  is_ok, err = connection:add_cmd('EVAL', {[[return "hello from lua on redis"]], 0})
 
   if not is_ok then
     return
@@ -615,6 +615,8 @@ local function redis_symbol(task)
   end
 
   local err, data
+
+  local lua_script = [[return "hello from lua on redis"]]
 
   is_ok, err = connection:add_cmd('EVAL', {lua_script, 0})
   logger.infox(task, "add_cmd: %1, %2", is_ok, err)
