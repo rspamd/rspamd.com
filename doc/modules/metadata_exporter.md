@@ -141,6 +141,8 @@ Symbols: $symbols
 
 Variables can be substituted according to general metadata keys described in the next section.
 
+The urls found in the symbols will be analysed by rspamd and matched as spam possibly. You could either setup a specific Postfix Transport to bypass rspamd or allow the `email_alert` recipient to receive spam.
+
 ### General metadata
 
 Metadata as returned by the `json` formatter can be referenced by key in `email_template`. The following keys are defined:
