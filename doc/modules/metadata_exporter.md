@@ -104,8 +104,11 @@ See [here]({{ site.baseurl }}/doc/configuration/redis.html) for information on c
 
 ### Settings: `send_mail` backend
 
-When `send_mail` backend is used in conjunction with `default` formatter,
-to avoid looping make sure e-mail messages from the metadata exporter are **not scanned** by Rspamd.
+When `send_mail` backend is used in conjunction with default formatter, the original spam message content will be analysed by Rspamd and highly likely matched as spam.
+
+When `send_mail` backend is used in conjunction with `email_alert` formatter, the URLs found in the symbols options will be analysed by Rspamd and the report will be matched as spam possibly.
+
+To avoid looping make sure e-mail messages from the metadata exporter are not scanned by Rspamd. You could either setup a specific Postfix Transport to bypass rspamd or allow the `email_alert` recipient to receive spam.
 
  - `smtp` (required): hostname of SMTP server
  - `mail_to` (required): recipient of e-mail alert
