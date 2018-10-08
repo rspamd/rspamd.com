@@ -6,6 +6,57 @@ title: Upgrading
 
 This document describes incompatible changes introduced in recent Rspamd versions and details how to update your rules and configuration accordingly.
 
+## Migration to Rspamd 1.8.1
+
+This version introduces several incompatibilities that mught be related to your setup.
+
+### General configuration change
+
+[Libucl](https://github.com/vstakhov/libucl) that is used to parse configuration files for Rspamd has been changed in a way that prevented to load incomplete chunks of the data. It means, that each include file **MUST** be a valid configuration snippet as is. For example, you migh have the following artificial example:
+
+~~~ucl
+.include "top.conf"
+var = "bar";
+.include "bottom.conf"
+~~~
+
+Where top/bottom could have something like:
+
+~~~
+# top.conf
+{
+~~~
+
+
+~~~
+# bottom.conf
+}
+~~~
+
+This will not work any longer: libucl requires that all braces are matching, still allowing implicit braces over the top object. So this file will still be valid:
+
+~~~
+# Some include
+
+section "foo" {
+  key = value;
+}
+
+param = "value";
+~~~
+
+`rspamadm configtest` will show you if your local changes to the configuration files are incompatible with the new restrictions applied.
+
+### Fuzzy and bayes misses for large text messages
+
+Due to bug introduced in 1.8.0, there algorithm used to deterministically skip words in large text parts was not deterministic. It means that the exact words pipelines produced by different Rspamd instances might be different. It could affect if your words_limit was reached (default: `words_decay = 200` words). Hence, for large text parts it was expected to have misses in fuzzy and in Bayes classification. Whilst bayes missing should not be significant, the fuzzy misses might be very severe and they might break fuzzy detection for large text parts.
+
+In 1.8.1, we have fixed this issue and, since we have already broken the compatibility with 1.7.9, we have decided to increase `words_decay` to 600. Please ensure that you don't override this parameter anywhere (e.g. in `local.d/options.inc`, `override.d/options.inc` or any other override or local file) or your compatibility with Rspamd fuzzy storage would be lost for messages with more than `words_decay` threshold words.
+
+### Different `CONFDIR` and `LOCAL_CONFDIR` case
+
+In a very unlikely case if your custom build has different values for `CONFDIR` and `LOCAL_CONFDIR` build/startup variables, you might miss your custom Lua rules that were previously loaded from `$CONFDIR/rspamd.local.lua` and from this version they are loaded from `$LOCAL_CONFDIR/rspamd.local.lua`. To our very best knowledge, it doesn't affect any official packages nor any officially supported operation systems, such as FreeBSD or OpenBSD.
+
 ## Migration to Rspamd 1.8.0
 
 There are couple of slashing changes that might affect your setup, especially if you use one of the following:
