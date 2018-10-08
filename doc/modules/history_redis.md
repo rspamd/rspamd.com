@@ -32,6 +32,7 @@ The configuration of this module is pretty straightforward (use `local.d/history
 ~~~ucl
 servers = 127.0.0.1:6379; # Redis server to store history
 key_prefix = "rs_history"; # Default key name
-nrows = 2000; # Default rows limit
-compress = true; # Use zstd compression when storing data in redis
+nrows = 200; # Default rows limit
+compress = true; # Use zstd compression when storing data in Redis
+subject_privacy = false; # subject privacy is off
 ~~~
