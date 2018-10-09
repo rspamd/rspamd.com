@@ -33,15 +33,24 @@ Where top/bottom could have something like:
 }
 ~~~
 
-This will not work any longer: libucl requires that all braces are matching, still allowing implicit braces over the top object. So this file will still be valid:
+This will not work any longer: libucl requires that all braces are matching.
 
-~~~
+However, it still allows implicit braces over the top object. So this file will still be **valid**:
+
+~~~ucl
 # Some include
 
 section "foo" {
   key = value;
 }
 
+param = "value";
+~~~
+
+or this:
+
+~~~ucl
+# Implicit object
 param = "value";
 ~~~
 
