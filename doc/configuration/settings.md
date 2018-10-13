@@ -51,12 +51,11 @@ Settings could also be indexed by ID, allowing to select a specific setting with
 Let's assume that we have the following settings in the configuration that have id `dkim`:
 
 ~~~ucl
-settings {
-	dkim {
-		id = "dkim";
-		apply {
-			enable_groups = ["dkim"];
-		}
+# local.d/settings.conf
+dkim {
+	id = "dkim";
+	apply {
+		enable_groups = ["dkim"];
 	}
 }
 ~~~
@@ -79,44 +78,43 @@ rspamc --header="settings-id=dkim" message.eml
 The settings file should contain a single section called "settings":
 
 ~~~ucl
-settings {
-	some_users {
-		id = "some_users";
-		priority = high;
-		from = "@example.com";
-		rcpt = "admin";
-		rcpt = "/user.*/";
-		ip = "172.16.0.0/16";
-		user = "@example.net";
-		request_header = {
-			"MTA-Tag" = "\.example\.net$";
-		}
-		apply {
-			symbol1 = 10.0;
-			symbol2 = 0.0;
-			actions {
-				reject = 100.0;
-				greylist = 10.0;
-				"add header" = 5.0; # Please note the space, NOT an underscore
-			}
-		}
-		# Always add these symbols when settings rule has matched
-		symbols [
-			"symbol2", "symbol4"
-		]
+# local.d/settings.conf
+some_users {
+	id = "some_users";
+	priority = high;
+	from = "@example.com";
+	rcpt = "admin";
+	rcpt = "/user.*/";
+	ip = "172.16.0.0/16";
+	user = "@example.net";
+	request_header = {
+		"MTA-Tag" = "\.example\.net$";
 	}
-	whitelist {
-		priority = low;
-		rcpt = "postmaster@example.com";
-		want_spam = yes;
-	}
-	# Disable some checks for authenticated users
-	authenticated {
-		priority = high;
-		authenticated = yes;
-		apply {
-			groups_disabled = ["rbl", "spf"];
+	apply {
+		symbol1 = 10.0;
+		symbol2 = 0.0;
+		actions {
+			reject = 100.0;
+			greylist = null; # Disable greylisting (from 1.8.1)
+			"add header" = 5.0; # Please note the space, NOT an underscore
 		}
+	}
+	# Always add these symbols when settings rule has matched
+	symbols [
+		"symbol2", "symbol4"
+	]
+}
+whitelist {
+	priority = low;
+	rcpt = "postmaster@example.com";
+	want_spam = yes;
+}
+# Disable some checks for authenticated users
+authenticated {
+	priority = high;
+	authenticated = yes;
+	apply {
+		groups_disabled = ["rbl", "spf"];
 	}
 }
 ~~~
