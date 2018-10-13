@@ -45,7 +45,7 @@ All packages are signed and should also be downloaded using `https`.
 
 DNS resolving is a very important part of the spam filtering since a lot of information is obtained from DNS lists, e.g. IP and URL blacklists, whitelists, reputation data and so on and so forth. Hence, Rspamd will be **totally** broken in case: it might even refuse to start. Furthermore, if you are using your provider's resolver or some public resolver you might be affected by blocking from the vast majority of DNS lists providers or even corrupted results. It is known that Rspamd is broken when your provider's DNS returns some IP address to redirect your browser to instead of the real response.
 
-Hence, it is **strongly** recommended to have your own recursive resolver when using Rspamd (or any other email related technology in fact). Our own recommended choice is to set up Unbound. You can read about it [here](https://wiki.archlinux.org/index.php/unbound).
+Hence, it is **strongly** recommended to have your own recursive resolver when using Rspamd (or any other email related technology in fact). Our own recommended choice is to set up Unbound or, for the most advanced setups, the [Knot Resolver](https://www.knot-resolver.cz/). You can read about Unbound basic setup [here](https://wiki.archlinux.org/index.php/unbound).
 
 Then you can either set your local resolver globally via `/etc/resolv.conf` or set it explicitly for Rspamd in `local.d/options.inc` file:
 
@@ -53,6 +53,15 @@ Then you can either set your local resolver globally via `/etc/resolv.conf` or s
  # local.d/options.inc
 dns {
 	 nameserver = ["127.0.0.1"];
+}
+~~~
+
+or, if you want some backup as a last resort, you can use `master-slave` [rotation](configuration/upstream.html) as following:
+
+~~~ucl
+ # local.d/options.inc
+dns {
+	 nameserver = "master-slave:127.0.0.1,8.8.8.8";
 }
 ~~~
 
@@ -135,6 +144,7 @@ After this, you will need to run `systemctl daemon-reload` to reread the configu
 The more information about core dumps and systemd could be found here: <https://wiki.archlinux.org/index.php/Core_dump>
 
 ### How to limit number of core files
+
 Rspamd can stop dumping cores upon reaching a specific limit. To enable this functionality you can add the following lines to `/etc/rspamd/local.d/options.inc`:
 
 ```ucl
@@ -164,6 +174,26 @@ This is a very frequent question that comes from Rspamd users. The typical log s
 ```
 
 Actually, Rspamd treats scores internally and no external services should depend on those scores. Generally, you need to use merely `action` to decide what to do with this or that message. For example, in the example above, greylisting module decided that we need to greylist a message and build somehow better confidence about this particular message. MTA, in turn, should emit a temporary error in this case. Scores should be used to understand the decision process but they should not be treated to make an action with a message - that's a rule of thumb.
+
+### Why my score is not a plain sum
+
+Some plugins in Rspamd might set so called `passthrough` action. In this case, the score might be set to some value or to the action threshold. In version 1.8.1, there will also be a special record in the log:
+
+```
+2018-10-13 09:34:20.03286 #97398(controller) <0260c3>; csession; rspamd_task_write_log: id: <xxxx>, from: <xxx>, (default: T (reject): [100500.00/15.00] [RCPT_COUNT_ONE(0.00){1;},RCVD_COUNT_THREE(0.00){3;},RE_TEST(0.00){},TOP(0.00){},TO_DN_NONE(0.00){}]), len: x, time: 1ms real, 1ms virtual, dns req: 64, digest: <xxx>, mime_rcpts: <xxx>, forced: reject "test"; score=100500.00 (set by bla)
+```
+
+The part `forced:` tells you what's happened. Here is a list of plugins that can set forced action:
+
+* [greylist](modules/greylist.html) - will set `soft reject` when a message needs to be greylisted
+* [ratelimit](modules/ratelimit.html) - will set `soft reject` when a ratelimit is reached
+* [dmarc](modules/dmarc.html) - might set actions if configured to do so (not enabled by default but listed in an example)
+* [antivirus](modules/antivirus.html) - can set actions if that's explicitly set in rules
+* [multimap](modules/multimap.html) - will set actions for maps where `action` is set
+* [replies](modules/replies.html) - can set `no action` for replies if configured to do so
+* [force_actions](modules/force_actions.html) - specific module to define passthrough actions
+* [spamtrap](modules/spamtrap.html) - can set specific bypass for spamtrap
+* [metadata_exporter](modules/metadata_exporter.html) - can set `soft reject` if cannot send reports if configured specifically
 
 ### Why can I have different results for the same message
 
