@@ -328,6 +328,22 @@ the map:
 
 Symbols that are not defined in the `symbols` attribute but used in the map are ignored and replaced by the default map symbol. If the value of a key-value pair is missing, then Rspamd just inserts the default symbol with dynamic weight equal to `1.0` (which is multiplied by metric score afterwards).
 
+### Get all matches
+
+If you want to match all possible regexps/globs in that list, not a single one, then you need to define `multi` flag for that map:
+
+~~~ucl
+# local.d/multimap.conf
+CONTENT_BLACKLISTED {
+  type = "content";
+  filter = "body"; # can be headers, full, oneline, text, rawtext
+  map = "${LOCAL_CONFDIR}/content.map";
+  symbols = ["CONTENT_BLACKLISTED1", "CONTENT_BLACKLISTED2"];
+  regexp = true;
+  multi = true;
+}
+~~~
+
 ## Conditional maps
 
 From version 1.3.1, it is possible to set up maps that depends on other rules and check map if some certain condition is satisfied. In particular, you can check that a message has a valid `SPF` policy to perform some whitelisting. However, you don't want to bother about mailing lists. Then you can write the following map condition:
@@ -412,4 +428,40 @@ SYMBOL_OPTIONS_DBL {
   symbols = ["INTERESTING_DOMAIN"];
   map = "${LOCAL_CONFDIR}/dbl_redir_symbols.map";
 }
+~~~
+
+Example adopted from [@kvaps](https://gist.github.com/kvaps/25507a87dc287e6a620e1eec2d60ebc1):
+
+* `cd /etc/rspamd`
+* create `local.d` folder if not exists
+* `cd local.d`
+* create `multimap.conf` in `/etc/rspamd/local.d/` folder if it does not exists
+* create lists:
+
+```bash
+touch local_bl_from.map.inc local_bl_ip.map.inc local_bl_rcpt.map.inc \
+local_wl_from.map.inc local_wl_ip.map.inc local_wl_rcpt.map.inc
+```
+
+* change permissions:
+
+```bash
+chmod o+w local_bl_from.map.inc local_bl_ip.map.inc local_bl_rcpt.map.inc \
+local_wl_from.map.inc local_wl_ip.map.inc local_wl_rcpt.map.inc
+```
+
+* edit `multimap.conf` (you should be in `/etc/rspamd/local.d/` folder)
+
+~~~ucl
+# local.d/multimap.conf
+
+# Blacklists
+local_bl_ip { type = "ip"; map = "$LOCAL_CONFDIR/local.d/local_bl_ip.map.inc"; symbol = "LOCAL_BL_IP"; description = "Local ip blacklist";score = 3;}
+local_bl_from { type = "from"; map = "$LOCAL_CONFDIR/local.d/local_bl_from.map.inc"; symbol = "LOCAL_BL_FROM"; description = "Local from blacklist";score = 3;}
+local_bl_rcpt { type = "rcpt"; map = "$LOCAL_CONFDIR/local.d/local_bl_rcpt.map.inc"; symbol = "LOCAL_BL_RCPT"; description = "Local rcpt blacklist";score = 3;}
+
+# Whitelists
+local_wl_ip { type = "ip"; map = "$LOCAL_CONFDIR/local.d/local_wl_ip.map.inc"; symbol = "LOCAL_WL_IP"; description = "Local ip whitelist";score = -5;}
+local_wl_from { type = "from"; map = "$LOCAL_CONFDIR/local.d/local_wl_from.map.inc"; symbol = "LOCAL_WL_FROM"; description = "Local from whitelist";score = -5;}
+local_wl_rcpt { type = "rcpt"; map = "$LOCAL_CONFDIR/local.d/local_wl_rcpt.map.inc"; symbol = "LOCAL_WL_RCPT"; description = "Local rcpt whitelist";score = -5;}
 ~~~
