@@ -69,6 +69,10 @@ rules {
 }
 ~~~
 
+The picture below demonstrates how reputation tokens are being processed:
+
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/reputation1.png" width="50%"></center>
+
 ### Backends configuration and principles of work
 
 Selectors provide so called tokens for backends. For example, in case of IP reputation, that could be `asn`, `ipnet` and `country`. Each token is mapped to some key in the backend. If we talk about Redis backend, then there is a concept of **buckets**. Each bucket has a set of counters that represents count of messages with some specific action:
@@ -108,6 +112,8 @@ Upon bucket lookup, you have the following attributes:
 $$
 f(buckets)=\sum_{i=1}^n {(spam_{i} * mult_{spam} + ham_{i} * mult_{ham} + junk_{i} * mult_{junk}) * bscore_{i}}
 $$
+
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/reputation2.png" width="50%"></center>
 
 ## Selector types
 

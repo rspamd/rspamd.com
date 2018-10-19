@@ -7,6 +7,8 @@ title: Rspamd Selectors
 
 ## Introduction
 
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/selectors.png" width="50%"></center>
+
 From version 1.8, Rspamd includes a framework to extract data from messages and use it further in plugins by means of transform functions. For example, you can extract SMTP from address and lowercase it by the following selector:
 
 ```
