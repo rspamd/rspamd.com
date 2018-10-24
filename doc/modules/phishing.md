@@ -93,7 +93,9 @@ phishing {
 
 ## Phishtank support
 
-There is also [phishtank](https://phishtank.com) support in rspamd since 1.3. This feed is quite large (about 50Mb) so you might want to setup some reverse proxy (e.g. nginx) to cache that data among rspamd instances:
+There is also [phishtank](https://phishtank.com) support in rspamd since 1.3. Since 1.8 phishtank is enabled in stock configuration and queries phishtank.rspamd.com via DNS.
+
+On previous versions, you have to set up `phishtank_map`. This feed is quite large (about 50Mb) so you might want to setup some reverse proxy (e.g. nginx) to cache that data among rspamd instances:
 
 ~~~nginx
 proxy_cache_path /data/nginx/cache levels=1:2 keys_zone=phish:10m;
