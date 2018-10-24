@@ -108,7 +108,7 @@ When `send_mail` backend is used in conjunction with default formatter, the orig
 
 When `send_mail` backend is used in conjunction with `email_alert` formatter, the URLs found in the symbols options will be analysed by Rspamd and the report will be matched as spam possibly.
 
-To avoid looping make sure e-mail messages from the metadata exporter are not scanned by Rspamd. You could either setup a specific Postfix Transport to bypass rspamd or allow the `email_alert` recipient to receive spam.
+<mark>To avoid <b>looping</b> make sure e-mail messages from the metadata exporter are <b>not scanned</b> by Rspamd.</mark> You could either setup a specific Postfix Transport to bypass rspamd or allow the `email_alert` recipient to receive spam.
 
  - `smtp` (required): hostname of SMTP server
  - `mail_to` (required): recipient of e-mail alert
