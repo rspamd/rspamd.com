@@ -117,6 +117,12 @@ Additional settings:
 sysctl kern.sugid_coredump=1
 ```
 
+To automatically set the variables each time the machine boots, add them to `/etc/sysctl.conf`. For instance,
+
+```
+kern.corefile=/coreland/%N.core
+```
+
 #### Setting system limits
 
 In distros with traditional SysV init, you can use the service init file, for example `/etc/init.d/rspamd` to permit dumping of core files by setting the appropriate resource limit. You will need to add the following line:
