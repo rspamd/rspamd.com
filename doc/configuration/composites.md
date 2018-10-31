@@ -132,11 +132,17 @@ In this example `COMP3` wants to save `DATE_IN_PAST` once again, however `COMP2`
 
 ## Composites with symbol groups
 
-It is possible to include a group of symbols in a composite rule. This effectively means **any** symbol of the specified group:
+It is possible to include a group of symbols in a composite rule. This effectively means **any** matched symbol of the specified group:
+
+* `g:<group>` - matches **any** symbol
+* `g+:<group>` - matches any symbol with **positive** score
+* `g-:<group>` - matches any symbol with **negative** score
+
+Removal policies are applied only to the matched symbols and not to the entire group.
 
 ~~~ucl
 TEST2 {
-    expression = "SYMBOL2 & !g:mua";
+    expression = "SYMBOL2 & !g:mua & g+:fuzzy";
 }
 ~~~
 
