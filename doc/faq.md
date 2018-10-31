@@ -716,6 +716,32 @@ Additionally you can dynamically selectively enable/disable symbols with [settin
 
 To disable an entire module you can set `enabled = false` in its configuration.
 
+### How can I disable some Rspamd action
+
+You can dynamically enable/disable actions with [settings module]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html). From version 1.8.1, you can set `null` to some module there:
+
+~~~ucl
+settings {
+  some_settings {
+    authenticated = true;
+    apply {
+      actions {
+        rewrite_subject = null;
+      }
+    }
+  }
+}
+~~~
+
+### How can I disable greylisting
+
+Just disable `greylisting` module by adding the following configuration:
+
+~~~ucl
+# local.d/greylisting.conf
+enabled = false;
+~~~
+
 ### Can I scan outgoing mail with Rspamd
 
 Yes, Rspamd should be safe for outbound scanning by default, [see here for detail]({{ site.url }}{{ site.baseurl }}/doc/tutorials/scanning_outbound.html).
