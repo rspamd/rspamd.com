@@ -70,7 +70,7 @@ classifier "bayes" {
 It is also possible to organize per-user statistics using SQLite3 backend. However, you should ensure that Rspamd is called at the
 finally delivery stage (e.g. LDA mode) to avoid multi-recipients messages. In case of a multi-recipient message, Rspamd would just use the
 first recipient for user-based statistics which might be inappropriate for your configuration (however, Rspamd prefers SMTP recipients over MIME ones and prioritize
-the special LDA header called `Deliver-To` that can be appended by `-d` options for `rspamc`). To enable per-user statistics, just add `users_enabled = true` property
+the special LDA header called `Delivered-To` that can be appended by `-d` options for `rspamc`). To enable per-user statistics, just add `users_enabled = true` property
 to the **classifier** configuration. You can use per-user and per-language statistics simultaneously. For both types of statistics, Rspamd also
 looks to the default language and default user's statistics allowing to have the common set of tokens shared for all users/languages.
 
