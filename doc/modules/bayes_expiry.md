@@ -19,7 +19,7 @@ new_schema = true;
 
 The following settings are valid:
 - **expire**: TTL that `bayes expiry` should set for tokens. Does not affect `common` tokens. See [expiration modes](#expiration-modes) for detail. Supported values are:
-  * time in seconds (time unit suffixes are supported);
+  * time in seconds (time unit suffixes are supported). The maximum possible TTL value in Redis is 2147483647 (int32);
   * `-1`: make tokens persistent;
   * `false`: disable `bayes expiry` for the classifier. Does not affect TTLs of existing tokens. This means tokens that already have TTLs will be expired by Redis. New learned tokens  will be persistent.
 - **lazy**: `true` - enable lazy expiration mode (disabled by default). See [expiration modes](#expiration-modes) for detail.
@@ -51,9 +51,6 @@ Operation:
 - Do nothing with an `insignificant` or `infrequent` token.
 - Discriminate a `common` token: reset TTL to a low value (10d) if the token has greater TTL.
 
-Advantages:
-- Starting with Redis 4.0 `volatile-lfu` eviction policy can be used to expire `significant` tokens.
-
 Disadvantages:
 - Statistics cannot kept off-line longer than `expire` time. TTLs need to be periodically updating by `bayes expiry` module. This means it requires special procedures to backup statistics. If you just make a copy of the `*.rdb` file, you should know that it has a "shelf-life". If you restore it after `expire` time, all tokens will be expired.
 - Constant TTL updating of `significant` tokens is unnecessary if no eviction policy is configured in Redis that assumes `significant` tokens eviction.
@@ -68,9 +65,6 @@ Advantages:
 - Statistics can be kept off-line as long as necessary without the risk of `significant` tokens lose.
 - Avoids unnecessary TTL updates as much as possible.
 
-Disadvantages:
-- `Significant` tokens are persistent and cannot be evicted.
-
 To enable lazy expiration mode add `lazy = true;` to the classifier configuration.
 
 ### Changing expiration mode
@@ -83,3 +77,40 @@ If new `expire` value is lower than current one then TTLs greater than new `expi
 
 In order to set expire value greater than current one, first you need to make tokens persistent (set `expire = -1;`) and wait until at least one expiry cycle completed.
 Then you can set new `expire` value.
+
+## Limiting memory usage to a fixed amount
+
+The Redis `maxmemory` directive and `volatile-ttl` eviction policy can be used to set a memory limit for the statistics dataset. Redis checks the memory usage, and if it is greater than the `maxmemory` limit, it evicts keys with a shorter TTL according to the policy. It is also possible to keep memory usage at almost constant level by setting TTL to a very high value so keys never expire but being evicted instead.
+
+To apply the memory limit and eviction policy only to the Bayesian statistics dataset, it should be stored in a separate Redis instance. Detailed explanation of multi-instance Redis configuration can be found in the [Redis replication](../tutorials/redis_replication.html) tutorial.
+
+`local.d/classifier-bayes.conf`:
+
+```ucl
+backend = "redis";
+servers = "localhost:6378";
+
+new_schema = true;
+expire = 2144448000;
+lazy = true;
+```
+
+Where `expire = 2144448000;` sets very high TTL (68 years) as we do not need to actually expire keys.
+
+`/usr/local/etc/redis-bayes.conf`:
+
+```sh
+include /usr/local/etc/redis.conf
+
+port 6378
+
+pidfile /var/run/redis/bayes.pid
+logfile /var/log/redis/bayes.log
+dbfilename bayes.rdb
+dir /var/db/redis/bayes/
+
+maxmemory 500MB
+maxmemory-policy volatile-ttl
+```
+
+Where `maxmemory 500MB` sets Redis to use the specified amount of memory for the instance's dataset and `maxmemory-policy volatile-ttl` sets Redis to use the eviction policy when the `maxmemory` limit is reached.
