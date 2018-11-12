@@ -59,14 +59,9 @@ Or perform some attachments analysis (e.g. top attachments types for Spam):
 SELECT
     count() AS c,
     d
-FROM rspamd_attachments
+FROM rspamd
 ARRAY JOIN Attachments.ContentType AS d
-ANY INNER JOIN
-(
-    SELECT Digest
-    FROM rspamd
-    WHERE (Date = today()) AND ((Action = 'reject') OR (Action = 'add header'))
-) USING (Digest)
+WHERE (Date = today()) AND ((Action = 'reject') OR (Action = 'add header'))
 GROUP BY d
 ORDER BY c DESC
 LIMIT 5
@@ -110,53 +105,49 @@ Before using of this module, you need to create certain tables in clickhouse. He
 ~~~
 CREATE TABLE rspamd
 (
-  Date Date,
-  TS DateTime,
-  From String,
-  MimeFrom String,
-  IP String,
-  Score Float64,
-  NRcpt UInt8,
-  Size UInt32,
-  IsWhitelist Enum8('blacklist' = 0, 'whitelist' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('blacklist' = 0, 'whitelist' = 1, 'unknown' = 2)),
-  IsBayes Enum8('ham' = 0, 'spam' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('ham' = 0, 'spam' = 1, 'unknown' = 2)),
-  IsFuzzy Enum8('whitelist' = 0, 'deny' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('whitelist' = 0, 'deny' = 1, 'unknown' = 2)),
-  IsFann Enum8('ham' = 0, 'spam' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('ham' = 0, 'spam' = 1, 'unknown' = 2)),
-  IsDkim Enum8('reject' = 0, 'allow' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('reject' = 0, 'allow' = 1, 'unknown' = 2)),
-  IsDmarc Enum8('reject' = 0, 'allow' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('reject' = 0, 'allow' = 1, 'unknown' = 2)),
-  NUrls Int32,
-  Action Enum8('reject' = 0, 'rewrite subject' = 1, 'add header' = 2, 'greylist' = 3, 'no action' = 4, 'soft reject' = 5) DEFAULT CAST('no action' AS Enum8('reject' = 0, 'rewrite subject' = 1, 'add header' = 2, 'greylist' = 3, 'no action' = 4, 'soft reject' = 5)),
-  FromUser String,
-  MimeUser String,
-  RcptUser String,
-  RcptDomain String,
-  ListId String,
-  Digest FixedString(32)
-) ENGINE = MergeTree(Date, (TS, From), 8192)
-
-CREATE TABLE rspamd_attachments (
-  Date Date,
-  Digest FixedString(32),
-  `Attachments.FileName` Array(String),
-  `Attachments.ContentType` Array(String),
-  `Attachments.Length` Array(UInt32),
-  `Attachments.Digest` Array(FixedString(16))
-) ENGINE = MergeTree(Date, Digest, 8192)
-
-CREATE TABLE rspamd_urls (
-  Date Date,
-  Digest FixedString(32),
-  `Urls.Tld` Array(String),
-  `Urls.Url` Array(String)
-) ENGINE = MergeTree(Date, Digest, 8192)
-
-CREATE TABLE rspamd_asn (
     Date Date,
-    Digest FixedString(32),
+    TS DateTime,
+    From String,
+    MimeFrom String,
+    IP String,
+    Score Float64,
+    NRcpt UInt8,
+    Size UInt32,
+    IsWhitelist Enum8('blacklist' = 0, 'whitelist' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('blacklist' = 0, 'whitelist' = 1, 'unknown' = 2)),
+    IsBayes Enum8('ham' = 0, 'spam' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('ham' = 0, 'spam' = 1, 'unknown' = 2)),
+    IsFuzzy Enum8('whitelist' = 0, 'deny' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('whitelist' = 0, 'deny' = 1, 'unknown' = 2)),
+    IsFann Enum8('ham' = 0, 'spam' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('ham' = 0, 'spam' = 1, 'unknown' = 2)),
+    IsDkim Enum8('reject' = 0, 'allow' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('reject' = 0, 'allow' = 1, 'unknown' = 2)),
+    IsDmarc Enum8('reject' = 0, 'allow' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('reject' = 0, 'allow' = 1, 'unknown' = 2)),
+    NUrls Int32,
+    Action Enum8('reject' = 0, 'rewrite subject' = 1, 'add header' = 2, 'greylist' = 3, 'no action' = 4, 'soft reject' = 5) DEFAULT CAST('no action' AS Enum8('reject' = 0, 'rewrite subject' = 1, 'add header' = 2, 'greylist' = 3, 'no action' = 4, 'soft reject' = 5)),
+    FromUser String,
+    MimeUser String,
+    RcptUser String,
+    RcptDomain String,
+    ListId String,
+    `Attachments.FileName` Array(String),
+    `Attachments.ContentType` Array(String),
+    `Attachments.Length` Array(UInt32),
+    `Attachments.Digest` Array(FixedString(16)),
+    `Urls.Tld` Array(String),
+    `Urls.Url` Array(String),
+    Emails Array(String),
     ASN String,
     Country FixedString(2),
-    IPNet String
-) ENGINE = MergeTree(Date, Digest, 8192)
+    IPNet String,
+    `Symbols.Names` Array(String),
+    `Symbols.Scores` Array(Float64),
+    `Symbols.Options` Array(String),
+    Digest FixedString(32)
+) ENGINE = MergeTree(Date, (TS, From), 8192);
+
+CREATE TABLE rspamd_version
+(
+  Version UInt32
+) ENGINE = TinyLog;
+
+INSERT INTO rspamd_version (Version) Values (2);
 ~~~
 
 You can install this schema running Clickhouse CLI:
@@ -187,14 +178,6 @@ clickhouse {
   # If a message has a domain in this map in From: header and DKIM signature,
   # record general metadata in a table named after the domain
   #from_tables = "/etc/rspamd/clickhouse_from.map";
-  # These are tables used to store data in Clickhouse
-  # Table used to store ASN information (default unset: not collected)
-  #asn_table = "rspamd_asn"; # default unset
-  # The following table names are set by default
-  # Set these if you use want to use different table names
-  #table = "rspamd"; # general metadata
-  #attachments_table = "rspamd_attachments"; # attachment metadata
-  #urls_table = "rspamd_urls"; # url metadata
   # These are symbols of other checks in Rspamd
   # Set these if you use non-default symbol names (unlikely)
   #bayes_spam_symbols = ["BAYES_SPAM"];
