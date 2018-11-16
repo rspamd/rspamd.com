@@ -37,15 +37,11 @@ option allows to avoid too many work for setting buckets if there are a lot of r
 - `max_bucket_mult` -  maximum and minimum (1/X) dynamic multiplier for rate (default: 10)
 - `rates` - a table of allowed rates in several forms
 
-### Legacy ratelimit record
 
-This format is used before Rspamd 1.8
+### Ratelimit record
 
-```
-type = [burst,leak];
-```
-
-Where `type` could be one of the following:
+From the version 1.8.2, you can use [selectors framework](../configuration/selectors.html) to define ratelimit buckets. 
+Hence, you can use either selector or one of the predefined ratelimits:
 
 - `bounce_to`: limit bounces per recipient
 - `bounce_to_ip`: limit bounces per recipient per ip
@@ -54,55 +50,39 @@ Where `type` could be one of the following:
 - `to_ip_from`: limit per triplet: recipient, sender's envelope from and sender's IP
 - `user`: limit per authenticated user (useful for outbound limits)
 
-`burst` is a capacity of a bucket and `leak` is a rate in messages per second.
-Both these attributes are floating point values.
-
-From version `1.5` it is also possible to define limits in a simplified form:
-`bounce_to = "2 / 5m";`
-
-The line above defines a bucket with a size of 2 and a leak rate of 2 message in 5 minutes (so 2 messages will be allowed per 5 minute period).
-
-You can use suffixes for both time and amount of messages.
-
-Valid suffixes for periods are:
-- `s`: seconds
-- `m`: minutes
-- `h`: hours
-- `d`: days
-
-Valid suffixes for amounts are:
-- `k`: thousands
-- `m`: millions
-- `g`: billions
-
-### Modern ratelimit record
-
-From the version 1.8, you can use [selectors framework](../configuration/selectors.html) to define ratelimit buckets. The syntax of rules is also slightly different:
-
 ~~~ucl
-ratelimit {
+# local.d/ratelimit.conf
   rates {
+    # Selector based ratelimit
     some_limit = {
       selector = 'user.lower';
-      bucket = "10 / 1m";
+      # You can define more than one bucket, however, you need to use array syntax only
+      bucket = [
+      {
+        burst = 100;
+        rate = "10 / 1min";
+      },
+      {
+        burst = 10;
+        rate = "100 / 1min";
+      }]
     }
-    other_limit = {
-      selector = 'rcpts.take_n(5).addr';
+    # Predefined ratelimit
+    to = {
       bucket = {
         burst = 100;
         rate = 0.01666666666666666666; # leak 1 message per minute
       }
     }
-    # or
+    # or define it with selector
     other_limit_alt = {
-      selector = 'rcpts.take_n(5).addr';
+      selector = 'rcpts:addr.take_n(5)';
       bucket = {
         burst = 100;
         rate = "1 / 1m"; # leak 1 message per minute
       }
     }
   }
-}
 ~~~
 
 ## Principles of work
@@ -122,15 +102,6 @@ The bucket operations are the following:
 To demonstrate dynamic multipliers, here is a sample graph that shows how burst multiplier depends on number of ham (x > 0) and spam (x < 0) messages being received:
 
 <img class="img-responsive" width="75%" src="{{ site.baseurl }}/img/ratelimit.png">
-
-Rspamd uses either selector or some predefined ratelimit:
-
-- `bounce_to`: limit bounces per recipient
-- `bounce_to_ip`: limit bounces per recipient per ip
-- `to`: limit per recipient
-- `to_ip`: limit per pair of recipient and sender's IP address
-- `to_ip_from`: limit per triplet: recipient, sender's envelope from and sender's IP
-- `user`: limit per authenticated user (useful for outbound limits)
 
 For bounce messages there are special buckets that lack `from` component and have more
 restricted limits. Rspamd treats the following senders as bounce senders:
@@ -205,3 +176,42 @@ return custom_keywords
 ~~~
 
 A "custom_keywords" table should define one or more functions which are passed the [task object]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_task.html). Each function should return a Redis hash _and_ a limit (for example `return my_redis_hash, "10 / 1m"`) or `nil` to indicate that the ratelimit should not be applied. A returned ratelimit can be in simplified form or a bucket config table.
+
+### Legacy ratelimit record
+
+This format is used before Rspamd 1.8
+
+```
+type = [burst,leak];
+```
+
+Where `type` could be one of the following:
+
+- `bounce_to`: limit bounces per recipient
+- `bounce_to_ip`: limit bounces per recipient per ip
+- `to`: limit per recipient
+- `to_ip`: limit per pair of recipient and sender's IP address
+- `to_ip_from`: limit per triplet: recipient, sender's envelope from and sender's IP
+- `user`: limit per authenticated user (useful for outbound limits)
+
+`burst` is a capacity of a bucket and `leak` is a rate in messages per second.
+Both these attributes are floating point values.
+
+From version `1.5` it is also possible to define limits in a simplified form:
+`bounce_to = "2 / 5m";`
+
+The line above defines a bucket with a size of 2 and a leak rate of 2 message in 5 minutes (so 2 messages will be allowed per 5 minute period).
+
+You can use suffixes for both time and amount of messages.
+
+Valid suffixes for periods are:
+- `s`: seconds
+- `m`: minutes
+- `h`: hours
+- `d`: days
+
+Valid suffixes for amounts are:
+- `k`: thousands
+- `m`: millions
+- `g`: billions
+
