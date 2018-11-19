@@ -113,6 +113,7 @@ smtpd_relay_restrictions = check_recipient_access hash:/etc/postfix/access, reje
 smtpd_milters = inet:localhost:11332
 milter_default_action = accept
 milter_protocol = 6
+
 </code></pre>
 </div></div>
 
