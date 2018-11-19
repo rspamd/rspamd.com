@@ -43,8 +43,8 @@ We assume that you are installing Postfix with your OS's package manager (e.g. `
 <div id="main_cf" class="collapse collapse-block">
 <pre><code>
 # SSL setup (we assume the same certs for IMAP and SMTP here)
-smtpd_tls_cert_file = /etc/letsencrypt/live/<your.domain>/fullchain.pem
-smtpd_tls_key_file = /etc/letsencrypt/live/<your.domain>/privkey.pem
+smtpd_tls_cert_file = /etc/letsencrypt/live/your.domain/fullchain.pem
+smtpd_tls_key_file = /etc/letsencrypt/live/your.domain/privkey.pem
 smtpd_use_tls = yes
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
@@ -468,9 +468,9 @@ http {
         add_header X-XSS-Protection "1; mode=block";
 
         include ssl.conf;
-        ssl_certificate /etc/letsencrypt/live/<your.domain>/fullchain.pem;
-        ssl_trusted_certificate /etc/letsencrypt/live/<your.domain>/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/<your.domain>/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/your.domain/fullchain.pem;
+        ssl_trusted_certificate /etc/letsencrypt/live/your.domain/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/your.domain/privkey.pem;
 
         server_name example.com;
 
