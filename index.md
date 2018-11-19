@@ -5,12 +5,12 @@ title: Rspamd spam filtering system
 
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;"><a href="https://rspamd.com/announce/2018/10/16/rspamd-1.8.1.html">News: Rspamd 1.8.1 has been released</a></h3>
+				<h3 style="margin: 0px;"><a href="https://rspamd.com/announce/2018/11/19/rspamd-1.8.2.html">News: Rspamd 1.8.2 has been released</a></h3>
 				<span class="date"><small>2018-10-16</small></span>
 				<p style="margin-bottom: 0px; margin-top: 5px">New major release with bugs fixes and new features.</p>
    </div>
    <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.8.1" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
+				<a class="btn btn-primary pull-right" href="https://github.com/vstakhov/rspamd/releases/tag/1.8.2" style="margin-top: 10px;">Changes<small><i class="fa fa-chevron-right"></i></small></a>
 	</div>
 </div>
 
