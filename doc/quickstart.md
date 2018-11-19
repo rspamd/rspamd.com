@@ -9,12 +9,10 @@ title: Quick start
 
 This guide describes the main steps to get and start working with Rspamd. In particular, we describe the following setup:
 
-- Debian Jessie (or another OS with systemd)
+- Ubuntu Bionic (or another OS with systemd)
 - Postfix MTA
 - Redis cache
 - Dovecot with Sieve plugin to sort mail and learn by moving messages to `Junk` folder
-
-For those who are planning migration from SpamAssassin, it might be useful to check the [SA migration guide]({{ site.baseurl }}/doc/tutorials/migrate_sa.html)
 
 ## Alternative guides (3rd party)
 
@@ -30,19 +28,12 @@ You should also consider to setup your own [local  DNS resolver]({{ site.baseurl
 
 ### TLS Setup
 
-It is strongly recommended to setup TLS for your mail system. We suggest to use certificates issued by [Let’s&nbsp; Encrypt](https://letsencrypt.org) as they are free to use and are convenient to manage. To get such a certificate for your domain you need to allow Let’s&nbsp;Encrypt to check your domain. There are many tools available for these purposes, including the official client and couple of alternative clients, for example [acmetool](https://github.com/hlandau/acme). The setup is fairly simple: just type
-
-    add-apt-repository ppa:hlandau/rhea
-    apt-get update
-    apt-get install acmetool
-    acmetool quickstart
-    acmetool want mail.example.com
-
+It is strongly recommended to setup TLS for your mail system. We suggest to use certificates issued by [Let’s&nbsp; Encrypt](https://letsencrypt.org) as they are free to use and are convenient to manage. You can read more about this topic in one of the quides available in the Internet, for instance, [this one](https://www.upcloud.com/support/secure-postfix-using-lets-encrypt/).
 In this guide, we assume that all services have the same certificate which might not be desired if you want greater levels of security.
 
 ### Postfix setup
 
-We assume that you are installing Postfix with your OS's package manager (e.g. `apt-get install postfix`). Here is the desired configuration for Postfix:
+We assume that you are installing Postfix with your OS's package manager (e.g. `apt install postfix`). Here is the desired configuration for Postfix:
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-block btn-code" data-toggle="collapse" data-target="#main_cf">
@@ -52,8 +43,8 @@ We assume that you are installing Postfix with your OS's package manager (e.g. `
 <div id="main_cf" class="collapse collapse-block">
 <pre><code>
 # SSL setup (we assume the same certs for IMAP and SMTP here)
-smtpd_tls_cert_file = /var/lib/acme/live/mail.example.com/fullchain
-smtpd_tls_key_file = /var/lib/acme/live/mail.example.com/privkey
+smtpd_tls_cert_file = /etc/letsencrypt/live/<your.domain>/fullchain.pem
+smtpd_tls_key_file = /etc/letsencrypt/live/<your.domain>/privkey.pem
 smtpd_use_tls = yes
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
@@ -136,7 +127,7 @@ You also need to create maps for access control and virtual aliases:
 
 For <abbr title="Internet Mail Access Protocol">IMAP</abbr> we recommend to install Dovecot. For Debian based systems you can use the following packages:
 
-	apt-get install dovecot-imapd dovecot-sieve
+	apt install dovecot-imapd dovecot-sieve
 
 Configuration of Dovecot (especially its authentication mechanisms) is a bit out of the scope for this guide but you can find many good guides at the [Dovecot main site](http://dovecot.org). By default, Dovecot uses Unix users in system and place mail into the standard mailbox `/var/mail/username`.
 
@@ -155,13 +146,13 @@ Furthermore, it might be useful to setup TLS to avoid passwords and other sensib
 # /etc/dovecot/conf.d/10-ssl.conf
 
 ssl = required
-ssl_cert = </var/lib/acme/live/mail.example.com/fullchain
-ssl_key = </var/lib/acme/live/mail.example.com/privkey
+ssl_cert = </etc/letsencrypt/live/<your.domain>/fullchain.pem
+ssl_key = </etc/letsencrypt/live/<your.domain>/privkey.pem
 ~~~
 
 ## Caching setup
 
-Rspamd uses  [Redis](https://redis.io) as a storage and caching system. In particular, Redis is used for the following purposes:
+Rspamd uses [Redis](https://redis.io) as a storage and caching system. In particular, Redis is used for the following purposes:
 
 - a backend for tokens storage and cache of learned messages by [statistical module](configuration/statistic.html) (BAYES classifier)
 - a fuzzy storage backend (optional)
@@ -173,7 +164,7 @@ Rspamd uses  [Redis](https://redis.io) as a storage and caching system. In parti
 Installation of Redis is quite straightforward: install it using the preferred way for your OS (e.g. from packages), start redis-server with the default settings (it should listen on local interface using port 6379) and you are done. You might also want to limit memory used by Redis at some sane value:
 
     maxmemory 500mb
-    maxmemory-policy volatile-lru
+    maxmemory-policy volatile-ttl
 
 Please bear in mind that Redis could listen for connections from all network interfaces. This is potentially dangerous and in most cases should be limited to the loopback interfaces, with the following configuration directive:
 
@@ -199,7 +190,7 @@ You can verify it's running as follows:
 systemctl status rspamd
 ```
 
-### Ubuntu, Debian Wheezy
+### Old Debian based systems (Ubuntu before xenial, Debian before jessie)
 
 To enable run on startup:
 
@@ -209,7 +200,7 @@ To start once:
 
 	/etc/init.d/rspamd start
 
-### CentOS 6
+### CentOS/RHEL 6
 
 To enable run on startup:
 
@@ -243,13 +234,7 @@ This tool will guide you interactively throughout the configuration process usin
 
 First of all, please read the basic configuration principles [here](configuration/index.html).
 
-There are some different approaches you can take to this:
-
-1. **Not recommended: This will complicate upgrades:** Modifying the stock config files in `/etc/rspamd` directly. Your package manager will not replace the modified config files on upgrade - and may prompt you to merge changes or install these files with an added extension depending on your platform.
-
-2. You could create an `rspamd.conf.local` and/or `rspamd.conf.override` file in the `/etc/rspamd` directory. What distinguishes these is the way in which they alter the configuration - `rspamd.conf.local` adds or _merges_ config elements while `rspamd.conf.override` adds or _replaces_ config elements. Both affect the top-level of configuration. Objects on this level are conventionally collections (`{}`) - which can be merged - as can lists `[]`, other types of settings are effectively overridden by merge operations according to their priority (site-local configuration files being higher priority than stock).
-
-3. **Recommended where-ever possible** is use of special include files that are referenced in the stock configuration. Conventionally every configuration file in `/etc/rspamd/` will include two such includes:
+It is recommended to use the special include files that are referenced in the stock configuration. Conventionally every configuration file in `/etc/rspamd/` will include two such includes:
 
 ~~~ucl
 # /etc/rspamd/modules.d/imaginary_module.conf
@@ -276,53 +261,47 @@ Since Rspamd 1.7, you can edit `local.d/actions.conf` for thresholds setup:
  greylist = 4; # Apply greylisting when reaching this score (will emit `soft reject action`)
 ~~~
 
-For symbols scores, you should redefine scores defined in `scores.d/` directory where they are placed by a symbol's group. A simplier way to cange scores is using of the WebUI or `configwizard` routine (TBD).
+For symbols scores, you should redefine scores defined in `scores.d/` directory where they are placed by a symbol's group:
 
+* `fuzzy_group.conf` - fuzzy hashes scores
+* `headers_group.conf` - various headers checks
+* `hfilter_group.conf` - host filter symbols
+* `mime_types_group.conf` - mime types rules
+* `mua_group.conf` - MUA related rules
+* `neural_group.conf` - neural network produced scores
+* `phishing_group.conf` - URL phishing symbols
+* `policies_group.conf` - policies (DKIM, SPF, DMARC, ARC)
+* `rbl_group.conf` - RBL produced rules
+* `statistics_group.conf` - Bayes statistics
+* `subject_group.conf` - subject checks
+* `surbl_group.conf` - URL blackslists symbols
 
-**Pre 1.7 configuration**
+You can also change weight of rules using the WebUI. To get the current information about symbols and scores, you can use `rspamc counters` command.
 
-For all Rspamd versions before 1.7, there was so called `metric` concept. Initially it was designed to split scoring of messages to multiple logical compositions. However, it has never been used and it was constantly a source of confusion.
-
-For legacy setup, you can modify the following files.
-
- `/etc/rspamd/local.d/metrics.conf`:
+If you want to add your own rule or just change the score without taking extra care about groups, you can still use file `local.d/groups.conf` in the following way:
 
 ~~~ucl
-# /etc/rspamd/local.d/metrics.conf
-symbol "BLAH" {
-    score = 20.0;
+# /etc/rspamd/local.d/groups.conf
+
+# Just scores for Rspamd defined symbols
+symbols = {
+  "R_DKIM_ALLOW" = {
+    score = -0.1;
+  }
+  "BAYES_SPAM" = {
+    score = 5.0;
+  }
 }
 
-group "Some group" {
-    symbol "FOO" {
-        score = 20.0;
+# Your own symbols and groups
+group "mygroup" {
+  symbols =  {
+    "FOO" {
+      score = 20.0;
     }
+  }
 }
 ~~~
-
-We can also use an override file. For example, let's redefine actions thresholds and set a more restrictive `reject` score. To do this, we create `etc/rspamd/local.d/metrics.conf` with the following content:
-
-~~~ucl
-# /etc/rspamd/local.d/metrics.conf
-actions {
-    reject = 150;
-    add_header = 6;
-    greylist = 4;
-}
-~~~
-
-You need to define complete objects to override existing ones. For example, you **cannot** write something like
-
-~~~ucl
-# /etc/rspamd/local.d/metrics.conf
-actions {
-    reject = 150;
-}
-~~~
-
-as this will set the other actions to be undefined.
-
-Rspamd 1.7+ can still use legacy configuration converting them to the actual ones transparently on startup.
 
 ### One more note about scores
 
@@ -354,7 +333,7 @@ You should notice that individual files are included **within** sections:
 
     module { .include "..."; }
 
-Hence, you don't need to repeat `module { ... }` inside the included file.
+Hence, you don't need to repeat `module { ... }` inside the included file! Rspamd will issue an error in this case: `nested section: module { module { ... } }, it is likely a configuration error`.
 
 In addition to equivalents to files in `/etc/rspamd/modules.d` the following includes are referenced in the stock configuration (both of `local.d`/`override.d`):
 
@@ -429,8 +408,8 @@ Rspamd requires a password when queried from non-trusted IPs, except for scannin
 
 You should store an encrypted password for better security. To generate such a password just type
 
-	$ rspamadm pw
-	Enter passphrase:
+    $ rspamadm pw
+    Enter passphrase:
     $2$g95ywihfinjqx4r69u6mgfs9cqbfq1ay$1h4bm5uod9njfu3hdbwd3w5xf5d9u8gb7i9xnimm5u8ddq3c5byy 
 
 The config to be modified is shown below (replace 'q1' with your chosen password):
@@ -451,13 +430,7 @@ From version 1.7, setting of passwords is also suggested by `rspamadm configwiza
 
 **Important information**: the default passwords (namely, `q1` and `q2`) are **BANNED**, so you cannot use them in your installation. Please set the appropriate passwords before using of the controller.
 
-Then you can copy this string and store it in the configuration file. Rspamd used the [PBKDF2](http://en.wikipedia.org/wiki/PBKDF2) algorithm that makes it very hard to brute-force this password even if it has been compromised. From the version 1.3, Rspamd also supports [Catena](https://eprint.iacr.org/2013/525.pdf) password hashing scheme which makes brute-force attacks even more memory- and computationally expensive.
-
-For the list of all available hashing schemes, use `--list` option:
-
-    $ rspamadm pw --list
-    pbkdf2: PBKDF2-blake2b - standard CPU intensive "slow" KDF using blake2b hash function
-    catena: Catena-Butterfly - modern CPU and memory intensive KDF
+Then you can copy this string and store it in the configuration file.
 
 ### Setting up the WebUI
 
@@ -494,9 +467,9 @@ http {
         add_header X-XSS-Protection "1; mode=block";
 
         include ssl.conf;
-        ssl_certificate /var/lib/acme/live/mail.example.com/fullchain;
-        ssl_trusted_certificate /var/lib/acme/live/mail.example.com/fullchain;
-        ssl_certificate_key /var/lib/acme/live/mail.example.com/privkey;
+        ssl_certificate /etc/letsencrypt/live/<your.domain>/fullchain.pem;
+        ssl_trusted_certificate /etc/letsencrypt/live/<your.domain>/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/<your.domain>/privkey.pem;
 
         server_name example.com;
 
@@ -558,52 +531,6 @@ backend = "redis";
 
 Please review the full [statistics documentation]({{ site.baseurl }}/doc/configuration/statistic.html) for further information as well as the [Redis configuration documentation]({{ site.baseurl }}/doc/configuration/redis.html) if you plan to use Redis.
 
-## Adjusting scores and actions
-
-Unlike SA where there are only `spam` and `ham` results, Rspamd supports different results called [`actions`]({{ site.url }}{{ site.baseurl }}/doc/faq.html#what-are-rspamd-actions).
-
-Each action can have its own score limit which can be modified by user settings. Rspamd assumes the following order of action thresholds: `no action` < `greylist` < `add header` < `rewrite subject` < `reject`.
-
-Actions are **NOT** performed by Rspamd itself - they are just recommendations for the MTA (via milter interface, for example) which performs the necessary actions, such as adding headers or rejecting mail.
-
-SA `spam` is almost equal to Rspamd `add header` action in the default setup. With this action, users will be able to check for messages in their `Junk` or `Spam` folder which is usually a desired behaviour.
-
-Scores and action settings are defined in the `metric` section. To override existing settings, or add scores for new symbols, you can use the `rspamd.conf.local` file. Here is an example of altering the `reject` action, changing the existing symbol and adding new symbol:
-
-{% highlight ucl %}
-metric "default" {
-    actions {
-        reject = 900; # Set higher reject score
-    }
-
-    symbol "MAILLIST" {
-        score = -4.1; # Rewrite score
-    }
-
-    symbol "MY_SYMBOL" {
-        score = 2.1;
-        description = "My new symbol";
-    }
-}
-{% endhighlight %}
-
-From Rspamd 1.7, this has changed: now all symbols are groupped per logical group, and all scores are set in `conf/scores.d`. To override these scores, it is recommended to use `local.d/xxx.conf` where `xxx` is one of the following groups:
-
-* `fuzzy_group.conf` - fuzzy hashes scores
-* `headers_group.conf` - various headers checks
-* `hfilter_group.conf` - host filter symbols
-* `mime_types_group.conf` - mime types rules
-* `mua_group.conf` - MUA related rules
-* `neural_group.conf` - neural network produced scores
-* `phishing_group.conf` - URL phishing symbols
-* `policies_group.conf` - policies (DKIM, SPF, DMARC, ARC)
-* `rbl_group.conf` - RBL produced rules
-* `statistics_group.conf` - Bayes statistics
-* `subject_group.conf` - subject checks
-* `surbl_group.conf` - URL blackslists symbols
-
-You can also change weight of rules using the WebUI. To get the current information about symbols and scores, you can use `rspamc counters` command.
-
 
 ## Configuring maps
 
@@ -642,6 +569,10 @@ Though Rspamd is free to use for any purpose many of the RBLs used in the defaul
 [Mailspike](http://mailspike.net/usage.html) - Limit of 100k messages or queries per day
 
 [UCEProtect](http://www.uceprotect.net/en/index.php?m=6&s=11) - If you're sending 100k queries or more per day you should use the (free) Rsync service.
+
+[SURBL](http://www.surbl.org/usage-policy) - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
+
+[Rspamd URIBL](http://www.rspamd.com/feed-policies.html) - Commercial use forbidden (see link for definition); Limit of 250k queries per day
 
 Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) and [SURBL]({{ site.url }}{{ site.baseurl }}/doc/modules/surbl.html) module documentation for information about disabling RBLs/SURBLs.
 
@@ -771,14 +702,18 @@ You might also want to enable the following modules:
  servers = "redis:6384";
 timeout = 25s; # Sometimes ANNs are very large
 train {
-        max_train = 2000; # How many training samples to store before learn
-        spam_score = 9; # When to learn spam
-        ham_score = -1; # When to learn ham
-        mse = 0.001; # Target error
+  max_train = 1k; # Number ham/spam samples needed to start train
+  max_usages = 20; # Number of learn iterations while ANN data is valid
+  spam_score = 8; # Score to learn spam
+  ham_score = -2; # Score to learn ham
+  learning_rate = 0.01; # Rate of learning
+  max_iterations = 25; # Maximum iterations of learning (better preciseness but also lower speed of learning)
 }
+
+ann_expire = 2d; # For how long ANN should be preserved in Redis
 ```
 
 * [Ratelimit]({{ site.baseurl }}/doc/modules/ratelimit.html): this module is very useful to limit spam waves as it allows to temporary delay senders that have either bad reputation or send email too agressively without somehow a good reputation. Requires a volatile Redis instance.
 * [Replies]({{ site.baseurl }}/doc/modules/replies.html): whitelists replies to your user's mail. It is very useful to provide users instant communication with known recipients. Requires a volatile Redis instance.
 * [URL redirector]({{ site.baseurl }}/doc/modules/url_redirector.html): resolves URL redirects on some common redirectors and URLs shorteners, e.g. `t.co` or `goo.gl`. Requires a volatile Redis instance.
-* [Clickhouse]({{ site.baseurl }}/doc/modules/clickhouse.html): saves analytical data to the [Clickhouse](https://clickhouse.yandex) server. Clickhouse server can be used thereafter to create new filtering rules or maintaining blacklists. You can treat it as an advanced syslog with indexes and complex analytics queries. There are also graphical interfaces available for Clickhouse, e.g. for Grafana.
+* [Clickhouse]({{ site.baseurl }}/doc/modules/clickhouse.html): saves analytical data to the [Clickhouse](https://clickhouse.yandex) server. Clickhouse server can be used thereafter to create new filtering rules or maintaining blacklists. You can treat it as an advanced syslog with indexes and complex analytics queries. There are also graphical interfaces available for Clickhouse, e.g. [Redash](https://redash.io/)
