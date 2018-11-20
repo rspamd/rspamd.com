@@ -4,7 +4,7 @@
 	<ol class="breadcrumb">
 		<li><a href="{{ site.baseurl }}/">Home</a></li>
 		<li><a href="{{ site.baseurl }}/doc/index.html">Documentation</a></li>
-		<li class="active">{{ page.title }}</li>
+        <li class="active">{{ page.title }}</li>
 	</ol>
 	<div class="row">
 		{{ content }}
@@ -27,6 +27,10 @@
         footer.reverse().forEach(function(elt) {
             target.prepend(elt);
         });
+
+        var path = "{{ page.path }}";
+		$("h1").append('<a target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/' + path +
+			 '" class="edit-btn undecor"><i class="fa fa-pencil"></i> Edit Page</a>');
 
     });
 </script>

@@ -12,6 +12,8 @@ title: Rspamd Documentation
 <div class="col-sm-9">
   <div class="body-content doc-content">
 
+# Rspamd Documentation Index
+
 ## Installation and Administration
 
 Here are the main introduction documents that are recommended for reading if you are going to use Rspamd in your mail system.

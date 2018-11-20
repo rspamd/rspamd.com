@@ -460,3 +460,21 @@ div#toc {
 .toc-header{
   text-align: center;
 }
+
+h1 {
+  position: relative;
+  padding-right: 100px;
+}
+  
+.edit-btn {
+  margin-left: 20px;
+  font-size: 14px;
+  border: none;
+  background-color: #e8e7e7;
+  border-radius: 5px;
+  padding: 4px 10px;
+  position: absolute;
+  top: 10px;
+  right: 0;
+  outline: none;
+}

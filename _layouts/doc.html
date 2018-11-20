@@ -4,7 +4,9 @@
 				<li><a href="{{ site.baseurl }}/">Home</a></li>
 				<li><a href="{{ site.baseurl }}/doc/index.html">Documentation</a></li>
 				<li class="active">{{ page.title }}</li>
+				<li><a href="http://prose.io/rspamd/rspamd.com/edit/master/{{ page.path }}">Edit page</a></li>
 		</ol>
+		
 		<div class="body-content doc-content">
 							{{ content }}
 		</div><!-- /.body-content -->
@@ -14,3 +16,11 @@
 		-->
 </div> <!-- /container -->
 {% include bottom.html %}
+
+<script>
+	$( document ).ready(function() {
+		var path = "{{ page.path }}";
+		$("h1").append('<a target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/' + path +
+			 '" class="edit-btn undecor"><i class="fa fa-pencil"></i> Edit Page</a>');
+	});
+</script>

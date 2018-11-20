@@ -71,3 +71,11 @@
 	<!-- row -->
 	<div class="push"></div>
 	{% include bottom.html %}
+
+	<script>
+		$( document ).ready(function() {
+			var path = "{{ page.path }}";
+			$("h1").append('<a target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/' + path +
+			 '" class="edit-btn undecor"><i class="fa fa-pencil"></i> Edit Page</a>');
+		});
+	</script>
