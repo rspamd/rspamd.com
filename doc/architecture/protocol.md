@@ -46,7 +46,7 @@ To avoid unnecessary work, Rspamd allows an MTA to pass pre-processed data about
 | `User`       | Defines SMTP user. |
 | `Message-Length` | Defines the length of message excluding the control block. |
 | `Settings-ID` | Defines [settings id](../configuration/settings.html) to apply. |
-| `Settings` | Defines [settings](../configuration/settings.html) as raw json block to apply. |
+| `Settings` | Defines list of rules ([settings](../configuration/settings.html) `apply` part) as raw json block to apply. |
 | `User-Agent` | Defines user agent (special processing if it is `rspamc`). |
 | `MTA-Tag` | MTA defined tag (can be used in settings). |
 | `MTA-Name` | Defines MTA name, used in `Authentication-Results` routines. |
