@@ -76,7 +76,7 @@ Rspamd supports a custom log format when writing information about a message to 
 	$time_virtual virtual, dns req: $dns_req
 	EOD
 
-Newlines are replaced with spaces. Both text and variables are supported in the log format line. Each variable can have an optional `if_` prefix, which will log only if it is triggered. Moreover, each variable can have an optional body value, where `$` is replaced with the variable value (as many times as it is found in the body, e.g. `$var{$$$$}` will be replaced with the variable's name repeated 4 times).
+Newlines are replaced with spaces. Both text and variables are supported in the log format line. Each variable can have an optional `if_` prefix, which will log only if it is triggered. Moreover, each variable can have an optional body value, where `$` is replaced with the variable value (as many times as it is found in the body, e.g. `$if_var{$$$$}` will be replaced with the variable's name repeated 4 times).
 
 Rspamd supports the following variables:
 
@@ -110,3 +110,6 @@ Rspamd supports the following variables:
 			return 'text parts: ' .. tostring(#task:get_text_parts()) end
 	}
 ~~~
+
+- `filename` (from 1.8.0) - name of file if HTTP agent (e.g. rspamc) passes it
+- `forced_action` (from 1.8.2) - forced action if form `<action> "<message>"; score=<score> (set by <module>)`
