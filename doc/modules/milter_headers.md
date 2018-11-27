@@ -15,11 +15,11 @@ The `milter headers` module (formerly known as `rmilter headers`) has been added
   {:toc}
 </div>
 
-# Principles of operation
+## Principles of operation
 
 The `milter headers` module provides a number of routines to add common headers which can be selectively enabled and configured. User-defined routines can also be added to configuration.
 
-# Configuration
+## Configuration
 
 ~~~ucl
 # local.d/milter_headers.conf:
@@ -58,9 +58,9 @@ custom {
 }
 ~~~
 
-# Options
+## Options
 
-## extended_spam_headers
+### extended_spam_headers
 
 Add "extended Rspamd headers" to messages [NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention) (default `false`). Enables the following routines: `x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`. 
 
@@ -68,7 +68,7 @@ Add "extended Rspamd headers" to messages [NOT originated from authenticated use
 extended_spam_headers = true;
 ~~~
 
-## authenticated_headers (1.6.1+)
+### authenticated_headers (1.6.1+)
 
 List of headers to be enabled for authenticated users (default `empty`).
 
@@ -76,7 +76,7 @@ List of headers to be enabled for authenticated users (default `empty`).
 authenticated_headers = ["authentication-results"];
 ~~~
 
-## remove_upstream_spam_flag (1.7.1+)
+### remove_upstream_spam_flag (1.7.1+)
 
 Set `false` to keep pre-existing spam flag added by an upstream spam filter (default `true`). Enables `remove-spam-flag`.
 
@@ -84,7 +84,7 @@ Set `false` to keep pre-existing spam flag added by an upstream spam filter (def
 remove_upstream_spam_flag = true;
 ~~~
 
-## local_headers (1.6.1+)
+### local_headers (1.6.1+)
 
 List of headers to be enabled for local IPs (default `empty`).
 
@@ -92,7 +92,7 @@ List of headers to be enabled for local IPs (default `empty`).
 local_headers = ["x-spamd-bar"];
 ~~~
 
-## skip_local (1.6.0+)
+### skip_local (1.6.0+)
 
 Set false to always add headers for local IPs (default `true`).
 
@@ -100,7 +100,7 @@ Set false to always add headers for local IPs (default `true`).
 skip_local = true;
 ~~~
 
-## skip_authenticated (1.6.0+)
+### skip_authenticated (1.6.0+)
     
 Set false to always add headers for authenticated users (default `true`)
 
@@ -108,7 +108,7 @@ Set false to always add headers for authenticated users (default `true`)
 skip_authenticated = true;
 ~~~
 
-## extended_headers_rcpt (1.6.2+)
+### extended_headers_rcpt (1.6.2+)
 
 List of recipients (default `empty`).
 
@@ -120,7 +120,7 @@ extended_headers_rcpt = ["user1", "@example1.com", "user2@example2.com"];
 
 `extended_headers_rcpt` has higher precedence than `skip_local` and `skip_authenticated`. 
 
-## use
+### use
 
 Routines to use- this is the only required setting (may be omitted if using `extended_spam_headers`)
 
@@ -128,11 +128,11 @@ Routines to use- this is the only required setting (may be omitted if using `ext
 use = ["x-spamd-bar", "authentication-results"];
 ~~~
 
-# Functions
+## Functions
 
 Available routines and their settings are as below, default values are as indicated:
 
-## authentication-results
+### authentication-results
 
 Add an [authentication-results](https://tools.ietf.org/html/rfc7001) header.
 
@@ -171,7 +171,7 @@ Add an [authentication-results](https://tools.ietf.org/html/rfc7001) header.
   }
 ~~~
 
-## fuzzy-hashes (1.7.5+)
+### fuzzy-hashes (1.7.5+)
 
 For each matched fuzzy hash adds a header containing the hash.
 
@@ -179,7 +179,7 @@ For each matched fuzzy hash adds a header containing the hash.
   header = "X-Rspamd-Fuzzy";
 ~~~
 
-## remove-header (1.6.2+)
+### remove-header (1.6.2+)
 
 Removes a header with the specified name (`header` MUST be specified):
 
@@ -188,7 +188,7 @@ Removes a header with the specified name (`header` MUST be specified):
   remove = 1;
 ~~~
 
-## remove-headers (1.6.3+)
+### remove-headers (1.6.3+)
 
 Removes multiple headers (`headers` MUST be specified):
 
@@ -199,7 +199,7 @@ Removes multiple headers (`headers` MUST be specified):
   }
 ~~~
 
-## remove-spam-flag (1.7.1+)
+### remove-spam-flag (1.7.1+)
 
 Removes pre-existing spam flag added by an upstream spam filter.
 
@@ -209,7 +209,7 @@ Removes pre-existing spam flag added by an upstream spam filter.
 
 Default name of the header to be removed is `X-Spam` which can be manipulated using the `header` setting.
 
-## spam-header
+### spam-header
 
 Adds a predefined header to mail identified as spam.
 
@@ -221,7 +221,7 @@ Adds a predefined header to mail identified as spam.
 
 Default name/value of the added header is `Deliver-To`/`Junk` which can be manipulated using the `header` and `value` settings.
 
-## stat-signature (1.6.3+)
+### stat-signature (1.6.3+)
 
 Attaches the stat signature to the message.
 
@@ -230,7 +230,7 @@ Attaches the stat signature to the message.
   remove = 1;
 ~~~
 
-## x-rspamd-queue-id (1.5.8+)
+### x-rspamd-queue-id (1.5.8+)
 
 Adds a header containing the Rspamd queue id of the message [if it is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention).
 
@@ -239,7 +239,7 @@ Adds a header containing the Rspamd queue id of the message [if it is NOT origin
   remove = 1;
 ~~~
 
-## x-spamd-result (1.5.8+)
+### x-spamd-result (1.5.8+)
 
 Adds a header containing the scan results [if the message is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention).
 
@@ -248,7 +248,7 @@ Adds a header containing the scan results [if the message is NOT originated from
   remove = 1;
 ~~~
 
-## x-rspamd-server (1.5.8+)
+### x-rspamd-server (1.5.8+)
 
 Adds a header containing the name of the Rspamd server that checked out the message [if it is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention).
 
@@ -257,7 +257,7 @@ Adds a header containing the name of the Rspamd server that checked out the mess
   remove = 1;
 ~~~
 
-## x-spamd-bar
+### x-spamd-bar
 
 Adds a visual indicator of spam/ham level.
 
@@ -269,7 +269,7 @@ Adds a visual indicator of spam/ham level.
   remove = 1;
 ~~~
 
-## x-spam-level
+### x-spam-level
 
 Another visual indicator of spam level- SpamAssassin style.
 
@@ -279,7 +279,7 @@ Another visual indicator of spam level- SpamAssassin style.
   remove = 1;
 ~~~
 
-## x-spam-status
+### x-spam-status
 
 SpamAssassin-style X-Spam-Status header indicating spam status.
 
@@ -288,7 +288,7 @@ SpamAssassin-style X-Spam-Status header indicating spam status.
   remove = 1;
 ~~~
 
-## x-virus
+### x-virus
 
 ~~~ucl
   header = "X-Virus";
@@ -300,7 +300,7 @@ SpamAssassin-style X-Spam-Status header indicating spam status.
 
 Adds a header containing names of virii detected by scanners configured in [Antivirus module]({{ site.baseurl }}/doc/modules/antivirus.html) in case that virii are detected in a message.
 
-# Custom routines
+## Custom routines
 
 User-defined routines can be defined in configuration in the `custom` section, for example:
 
@@ -320,13 +320,13 @@ EOD;
 
 The key `my_routine` could then be referenced in the `use` setting like other routines.
 
-# Scan results exposure prevention
+## Scan results exposure prevention
 
 To prevent exposing scan results in outbound mail, extended Rspamd headers routines (`x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`) add headers only if messages is **NOT** originated from authenticated users or `our_networks`.
 
 The [`extended_headers_rcpt`](#extended_headers_rcpt-162) option can be used to add extended Rspamd headers also to messages sent to specific recipients or domains (e.g. a list of domains the mail server responsible for).
 
-## Disabling DSN
+### Disabling DSN
 
 Delivery status notification (DSN) reports of *successful* delivery can contain the original message headers including Rspamd headers. The only way to prevent it is to stop offering DSN to foreign servers.
 
