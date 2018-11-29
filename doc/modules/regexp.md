@@ -84,6 +84,9 @@ From 1.3, it is also possible to specify long regexp types for convenience in cu
 * `{sa_raw_body}` - spamassassin `RAWBODY` regexp analogue
 * `{url}` - URL regexp
 * `{selector}` - from 1.8: [selectors](../configuration/selectors.html) regular expression (must include name of the registered selector)
+* `{words}` - unicode normalized and lowercased words extracted from the text (excluding URLs), subject and From displayed name
+* `{raw_words}` - same but with no normalization (converted to utf8 however)
+* `{stem_words}` - unicode normalized, lowercased and [stemmed](https://en.wikipedia.org/wiki/Stemming) words extracted from the text (excluding URLs), subject and From displayed name
 
 Each regexp also supports the following flags:
 
@@ -118,6 +121,19 @@ Rspamd supports a set of internal functions to do some common spam filtering tas
 * `is_html_balanced()` - check whether HTML part has balanced tags
 * `is_recipients_sorted()` - return `true` if there are more than 5 recipients in a message and they are sorted
 * `raw_header_exists()` - does the same as `header_exists`
+* `has_flag(flag)` - returns `true` is this task has a specific flag:
+  - `pass_all`
+  - `no_log`
+  - `no_stat`
+  - `skip`
+  - `extended_urls`
+  - `learn_spam`
+  - `learn_ham`
+  - `greylisted`
+  - `broken_headers`
+  - `skip_process`
+  - `milter`
+  - `bad_unicode`
 
 Many of these functions are just legacy but they are supported in terms of compatibility.
 
