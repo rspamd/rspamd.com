@@ -18,6 +18,8 @@ This document describes how to setup Redis cache in Rspamd.
 * [IP score plugin]({{ site.baseurl }}/doc/modules/ip_score.html) uses Redis to store data about AS, countries and networks reputation
 * [Multimap module]({{ site.baseurl }}/doc/modules/multimap.html) can use Redis as readonly database for maps
 * [MX Check module]({{ site.baseurl }}/doc/modules/mx_check.html) uses Redis for caching
+* [Reputation module]({{ site.baseurl }}/doc/modules/reputation.html) uses Redis for caching
+* [Neural network module]({{ site.baseurl }}/doc/modules/neural.html) uses Redis for data storage
 
 Furthermore, Redis is used to store Bayes tokens in the [statistics]({{ site.baseurl }}/doc/configuration/statistic.html) module. Rspamd provides several ways to configure Redis storage. There is also support for Redis [replication](http://redis.io/topics/replication), so Rspamd can **write** values to one set of Redis servers and **read** data from another set.
 
@@ -34,7 +36,7 @@ dmarc {
 However it is better to use local and override dirs for these purposes, for example, `/etc/rspamd/local.d/dmarc.conf` for this case:
 
 ~~~ucl
-# /etc/rspamd/local.d/dmarc.conf
+# local.d/dmarc.conf
 servers = "127.0.0.1";
 ~~~
 
@@ -56,14 +58,16 @@ Setting Redis options for each individual module might be simplified by using of
 
 ~~~ucl
 # /etc/rspamd/local.d/redis.conf
-servers = "127.0.0.1";
+read_servers = "127.0.0.1,10.0.0.1";
+write_servers = "127.0.0.1";
 ~~~
 
 It is also possible to redefine Redis options inside `redis` section for the specific module or modules:
 
 ~~~ucl
 # /etc/rspamd/local.d/redis.conf
-servers = "127.0.0.1";
+read_servers = "127.0.0.1,10.0.0.1";
+write_servers = "127.0.0.1";
 
 dmarc {
   servers = "10.0.1.1";
@@ -112,3 +116,18 @@ Given this setting is enabled, where-ever names of keys could be specified in co
 * `mime_from`: MIME sender address
 * `mime_from_domain`: MIME sender address domain
 * `esld_mime_from_domain`: MIME sender address domain, normalised to eSLD
+
+## Redis Sentinel
+
+From the version 1.8.3, Rspamd supports [Redis Sentinel](https://redis.io/topics/sentinel). Sentinels could be defined as following:
+
+~~~ucl
+# local.d/redis.conf
+sentinels = "127.0.0.1,10.0.0.1,10.0.0.2"; # Servers list (default port 5000)
+sentinel_watch_time = 1min; # How often Rspam will query sentinels for masters and slaves
+sentinel_masters_pattern = "^mymaster.*$"; # Defines masters pattern to match in Lua syntax (no pattern means all masters)
+~~~
+
+Then, Rspamd will query sentinels for the current masters that will be used as `write_servers` and slaves that will be used as `read_servers`. Since multi-master is not really supported by Redis sentinel, it is not very useful for volatile data (e.g. all caches). However, this feature might be useful for switching masters when accessing non-volatile data, e.g. statistics, fuzzy storage or neural networks data.
+
+Please bear in mind that you still need to configure the initial set of servers that would be used if no sentinel can be accessed.
