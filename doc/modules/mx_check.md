@@ -48,16 +48,16 @@ Symbols indicated by configuration should be added to metric to provide non-zero
 symbol "MX_INVALID" {
   score = 1.0;
   description = "No connectable MX";
-  one_shot = "true";
+  one_shot = true;
 }
 symbol "MX_MISSING" {
   score = 2.0;
   description = "No MX record";
-  one_shot = "true";
+  one_shot = true;
 }
 symbol "MX_GOOD" {
   score = -0.5;
   description = "MX was ok";
-  one_shot = "true";
+  one_shot = true;
 }
 ~~~
