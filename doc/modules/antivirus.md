@@ -5,9 +5,15 @@ title: Antivirus module
 
 # Antivirus module
 
-Antivirus module (new in Rspamd 1.4) provides integration with virus scanners. Currently supported are [ClamAV](http://www.clamav.net), [F-Prot](http://www.f-prot.com/products/corporate_users/unix/linux/mailserver.html), [Sophos](https://www.sophos.com/en-us/medialibrary/PDFs/partners/sophossavdidsna.pdf) (via SAVDI) and [Avira](https://www.avira.com/de/oem-antivirus) (via SAVAPI).
+Antivirus module (available from Rspamd 1.4) provides integration with virus scanners. Currently supported are:
 
-### Configuration
+* [ClamAV](http://www.clamav.net)
+* [F-Prot](http://www.f-prot.com/products/corporate_users/unix/linux/mailserver.html)
+* [Sophos](https://www.sophos.com/en-us/medialibrary/PDFs/partners/sophossavdidsna.pdf) (via SAVDI) 
+* [Avira](https://www.avira.com/de/oem-antivirus) (via SAVAPI)
+* [Kaspersky antivirus](https://www.kaspersky.com/small-to-medium-business-security/linux-mail-server) (from 1.8.3)
+
+## Configuration
 
 By default, given [Redis]({{ site.baseurl }}/doc/configuration/redis.html) is configured globally and `antivirus` is not explicitly disabled in redis configuration, results are cached in Redis according to message checksums.
 
@@ -17,7 +23,7 @@ Settings should be added to `/etc/rspamd/local.d/antivirus.conf`:
 # local.d/antivirus.conf
 
 # multiple scanners could be checked, for each we create a configuration block with an arbitrary name
-first {
+clamav {
   # If set force this action if any virus is found (default unset: no action is forced)
   # action = "reject";
   # message = '${SCANNER}: virus found: "${VIRUS}"';
@@ -57,7 +63,7 @@ first {
 }
 ~~~
 
-### Sophos SAVDI specific details
+## Sophos SAVDI specific details
 
 From the version 1.7.2, there are 2 special configuration parameters for handling SAVDI warnings / error messages
 in the sophos section: `savdi_report_encrypted` and `savdi_report_oversized`.
@@ -85,8 +91,23 @@ sophos {
 }
 ~~~
 
-### SAVAPI specific details
+## SAVAPI specific details
 
 The default SAVAPI configuration has a listening unix socket. You should change this to a TCP socket. The option "ListenAddress" in savapi.conf shows some examples. Per default this module expects the socket at 127.0.0.1:4444. You can change this by setting it in the "servers" variable as seen above.
 
 You also need to set the "product_id" that should match with the id for your HBEDV.key file. If you leave this, the default value is "0" and checking will fail with a log message that the given id was invalid.
+
+## Kaspersky specific
+
+You might want to use `clamav` socket to scan data. Since it is a Unix socket, you can only use it for local scan. It is also important that Rspamd should be able to write into Kaspersky Unix socket. For example, you can add Rspamd user (`_rspamd` on Linux most likely) into `klusers` group: `usermod -G klusers _rspamd` in Linux. Rspamd will also write data into some intermeniet files that are normally placed in `/tmp` folder.
+
+~~~ucl
+# local.d/antivirus.conf
+kaspersky {
+  symbol = "KAS_VIRUS";
+  servers = "/var/run/klms/rds_av";
+  max_size = 2048000;
+  attachments_only = true;
+  tmpdir = "/tmp"; # Must be writable by `_rspamd` user and readable by `klusers` user/group
+}
+~~~
