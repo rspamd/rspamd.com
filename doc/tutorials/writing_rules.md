@@ -1,7 +1,8 @@
 ---
-layout: doc
+layout: doc_lua
 title: Writing rules for Rspamd
 ---
+
 # Writing Rspamd rules
 
 In this tutorial, I describe how to create new rules for Rspamd - both Lua and regexp rules.
@@ -114,7 +115,7 @@ For example, let's override some default symbols shipped with Rspamd. To do that
         score = 20.0;
     }
 
-We can also use an override file. For example, let's redefine actions and set a more restrictive `reject` score. To do this, we create `etc/rspamd/override.d/actions.conf` with the following content:
+We can also use an override file. For example, let's redefine actions and set a more restrictive `reject` score. To do this, we create `/etc/rspamd/override.d/actions.conf` with the following content:
 
 ~~~ucl
 # override.d/actions.conf
@@ -155,13 +156,18 @@ Rule weights are usually defined in the `metrics` section and contain the follow
 
 For built-in rules scores are placed in the file called `${CONFDIR}/metrics.conf`, however, you have two possibilities to define scores for your rules:
 
-1. Define scores in `rspamd.conf.local` as following:
+1. Define scores in `local.d/groups.conf` as following:
 
 ~~~ucl
-metric "default" {
+symbol "MY_SYMBOL" {
+  description = "my cool rule";
+  score = 1.5;
+}
+# Or, if you want to include it into a group:
+group "mygroup" {
 	symbol "MY_SYMBOL" {
-		description = "my cool rule";
-		score = 1.5;
+	  description = "my cool rule";
+	  score = 1.5;
 	}
 }
 ~~~
@@ -195,15 +201,14 @@ Regexp rules are executed by the `regexp` module of Rspamd. You can find a detai
 
 Here are some hints to maximise performance of your regexp rules:
 
-* Prefer lightweight regexps, such as header or URL, to heavy ones, such as mime or body regexps
+* Prefer lightweight regexps, such as header or URL, to heavy ones, such as mime or body regexps (unless you are using Hyperscan)
 * If you need to match text in a message's content, prefer `mime` regexps as they are executed on text content only
-* If you **really** need to match the whole messages, then you might consider using the [trie]({{ site.url }}{{ site.baseurl }}/doc/modules/trie.html) module as it is significantly faster
-* Avoid complex regexps, avoid backtracing, avoid negative groups `(?!)`, avoid capturing patterns (replace with `(?:)`), avoid potentially empty patterns, e.g. `/^.*$/`
+* If you need to match the whole messages, then you might want to use [hyperscan](https://hyperscan.io). It is normally included in the Rspamd packages, however, your OS might provide own packages without Hyperscan. Please consider reading [pattern support](http://intel.github.io/hyperscan/dev-reference/compilation.html#pattern-support) to avoid expensive PCRE fallback.
+* Avoid complex regexps, avoid backtracing, avoid negative groups `(?!)`, avoid capturing patterns (replace with `(?:)`), avoid potentially empty patterns, e.g. `/^.*$/`, especially when using hyperscan
 
-Following these rules allows you to create fast but efficient rules. To add regexp rules you should use the `config` global table that is defined in any Lua file used by Rspamd:
+Following these rules allows you to create fast and efficient rules. To add regexp rules you should use the `config` global table that is defined in any Lua file used by Rspamd:
 
 ~~~lua
-config['regexp'] = {} -- Remove all regexp rules (including internal ones)
 local reconf = config['regexp'] -- Create alias for regexp configs
 
 local re1 = 'From=/foo@/H' -- Mind local here
@@ -226,7 +231,7 @@ Lua rules are more powerful than regexp ones but they are not as heavily optimiz
 
 ### Return values
 
-Each Lua rule can return 0, or false, meaning that the rule has not matched, or true if the symbol should be inserted. In fact, you can return any positive or negative number which would be multiplied by the rule's score, e.g. if the rule score is `1.2`, then when your function returns `1` the symbol will have a  score of `1.2`, and when your function returns `2.0` then the symbol will have a score of `2.4`.
+Each Lua rule can return `0`, or `false`, meaning that the rule has not matched, or true if the symbol should be inserted. In fact, you can return any positive or negative number which would be multiplied by the rule's static score, e.g. if the rule score is `1.2`, then when your function returns `1` the symbol will have a  score of `1.2`, and when your function returns `0.5` then the symbol will have a score of `0.6`. The common convention of the return values is to return **confidence factor** varying from `0` to `1.0`.
 
 ### Rule conditions
 
@@ -467,12 +472,15 @@ if rule['score'] then
 end
 ~~~
 
+You can also use [`coroutines`](https://rspamd.com/doc/lua/sync_async.html) to simplify your asynchronous code.
+
 ## Redis requests
 
-Rspamd uses Redis heavily for different purposes. There are couple of useful functions that are defined in the file `global_functions.lua` and are included by `rspamd.lua`. These functions should be available globally in all Lua modules. Here is an example of parsing Redis config for a module and making requests subsequently:
+Rspamd uses Redis heavily for different purposes. There are couple of useful functions that are defined in the file `lua_redis.lua`. These functions should be available globally in all Lua modules. Here is an example of parsing Redis config for a module and making requests subsequently:
 
 ~~~lua
 local redis_params
+local lua_redis = require "lua_redis"
 
 local function symbol_cb(task)
   local function redis_set_cb(err)
@@ -482,7 +490,7 @@ local function symbol_cb(task)
   end
   -- Create hash of message-id and store to redis
   local key = make_key(task)
-  local ret = rspamd_redis_make_request(task,
+  local ret = lua_redis.redis_make_request(task,
     redis_params, -- connect params
     key, -- hash key
     true, -- is write
@@ -493,7 +501,7 @@ local function symbol_cb(task)
 end
 
 -- Load redis server for module named 'module'
-redis_params = rspamd_parse_redis_server('module')
+redis_params = lua_redis.parse_redis_server('module')
 if redis_params then
   -- Register symbol
 end
@@ -501,7 +509,7 @@ end
 
 ## Difference between `config` and `rspamd_config`
 
-It might be confusing that there are two variables with a common meaning. (This is a legacy of older versions of Rsp.html). However, currently `rspamd_config` represents an object that can have many purposes:
+It might be confusing that there are two variables with a common meaning. Unfortunately, this is a legacy of older versions of Rspamd. However, currently `rspamd_config` represents an object that can be used for almost all configuration tasks:
 
 * Get configuration options:
 
@@ -539,7 +547,7 @@ config['regexp']['SYMBOL'] = {
 }
 ~~~
 
-Such syntax is discouraged, however, and is preserved mostly for compatibility reasons.
+Such syntax is discouraged, however, and is preserved mostly for compatibility reasons. Furthermore, you cannot use neither async requests nor coroutines in such callbacks - it will cause Rspamd crash.
 
 ## Configuration order
 
@@ -556,5 +564,7 @@ Rules in Rspamd are checked in the following order:
 1. **Pre-filters**: checked every time and can stop all further processing by calling `task:set_pre_result()`
 2. **All symbols***: can depend on each other by calling `rspamd_config:add_dependency(from, to)`
 3. **Statistics**: is checked only when all symbols are checked
-4. **Composites**: combine symbols to adjust the final results
+4. **Composites**: combine symbols to adjust the final results; pass 1
 5. **Post-filters**: are executed even if a message is already rejected and symbols processing has been stopped
+6. **Composites**: combine symbols to adjust the final results; pass 2
+7. **Idempotent**: execute rules that cannot change result (e.g. data exporters)
