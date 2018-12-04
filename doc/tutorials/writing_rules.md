@@ -507,6 +507,57 @@ if redis_params then
 end
 ~~~
 
+## Using maps from Lua plugin
+
+Maps hold dynamically loaded data like lists or IP trees. It is possible to use 3 types of maps:
+
+* **radix** stores IP addresses
+* **hash** stores plain strings and values
+* **set** stores plain strings with no values
+* **regexp** stores regular expressions (powered by hyperscan if possible)
+* **regexp_multi** stores regular expressions and returns **all* matches using `get_key` method
+* **glob** stores glob expressions (powered by hyperscan if possible)
+* **glob_multi** stores glob expressions and returns **all* matches using `get_key` method
+* **callback** call for a specified Lua callback when a map is loaded or changed, map's content is passed to that callback as a parameter
+
+Here is a sample of using maps from Lua API:
+
+~~~lua
+local rspamd_logger = require "rspamd_logger"
+
+-- Add two maps in configuration section
+local hash_map = rspamd_config:add_map{
+  type = "hash",
+  urls = ['file:///path/to/file'],
+  description = 'sample map'
+}
+local radix_tree = rspamd_config:add_map{
+  type = 'radix', 
+  urls = ['http://somehost.com/test.dat', 'fallback+file:///path/to/file'], 
+  description = 'sample ip map'
+}
+local generic_map = rspamd_config:add_map{
+  type = 'callback',
+  urls = ['file:///path/to/file']
+  description = 'sample generic map',
+  callback = function(str)
+    -- This callback is called when a map is loaded or changed
+    -- Str contains map content
+    rspamd_logger.info('Got generic map content: ' .. str)
+  end
+}
+
+local function sample_symbol_cb(task)
+    -- Check whether hash map contains from address of message
+    if hash_map:get_key(task:get_from()) then
+        -- Check whether radix map contains client's ip
+        if radix_map:get_key(task:get_from_ip_num()) then
+        ...
+        end
+    end
+end
+~~~
+
 ## Difference between `config` and `rspamd_config`
 
 It might be confusing that there are two variables with a common meaning. Unfortunately, this is a legacy of older versions of Rspamd. However, currently `rspamd_config` represents an object that can be used for almost all configuration tasks:
