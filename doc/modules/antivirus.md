@@ -9,7 +9,7 @@ Antivirus module (available from Rspamd 1.4) provides integration with virus sca
 
 * [ClamAV](http://www.clamav.net)
 * [F-Prot](http://www.f-prot.com/products/corporate_users/unix/linux/mailserver.html)
-* [Sophos](https://www.sophos.com/en-us/medialibrary/PDFs/partners/sophossavdidsna.pdf) (via SAVDI) 
+* [Sophos](https://www.sophos.com/en-us/medialibrary/PDFs/partners/sophossavdidsna.pdf) (via SAVDI)
 * [Avira](https://www.avira.com/de/oem-antivirus) (via SAVAPI)
 * [Kaspersky antivirus](https://www.kaspersky.com/small-to-medium-business-security/linux-mail-server) (from 1.8.3)
 
@@ -64,6 +64,11 @@ clamav {
 ~~~
 
 ## Sophos SAVDI specific details
+
+Sophos SAVDI is a little daemon which extends Sophos Anti-Virus for Linux to be reachable via TCP sockets using the generic ICAP or the Sophos specific Sophie and SSSP protocols. You need to install both Sophos Anti-Virus for Linux and the Sophos SAVDI daemon.
+
+Rspamd is using the SSSP protocol to communicate with SAVDI. For a SAVDI config example - maybe have a look here:
+[https://gist.github.com/c-rosenberg/671b0a5d8b1b5a937e3e161f8515c666](https://gist.github.com/c-rosenberg/671b0a5d8b1b5a937e3e161f8515c666)
 
 From the version 1.7.2, there are 2 special configuration parameters for handling SAVDI warnings / error messages
 in the sophos section: `savdi_report_encrypted` and `savdi_report_oversized`.
