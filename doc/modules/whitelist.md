@@ -59,6 +59,10 @@ score for `github.com`:
 or if using map:
 
     github.com 2.0
+    
+## Note with regard to DKIM whitelist
+
+The `valid_dkim = true` check verifies more than just `R_DKIM_ALLOW` has been triggered.  It also verifies that the DKIM domain being validated is equal to the domain in the FROM envelop.  Thus a message sent by a sender `x.com` that has been DKIM signed by `mailchimp.app` will not set `valid_dkim` to true and the whitelist rule will not fire.
 
 ## Configuration example
 
