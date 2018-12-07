@@ -74,6 +74,9 @@ the special LDA header called `Delivered-To` that can be appended by `-d` option
 to the **classifier** configuration. You can use per-user and per-language statistics simultaneously. For both types of statistics, Rspamd also
 looks to the default language and default user's statistics allowing to have the common set of tokens shared for all users/languages.
 
+### Classifier and headers
+The classifer will only learn headers that are defined in `classify_headers` in the `options.inc` file.  It is therefore not necessary to remove any headers added (such as X-Spam or others) before learning, as these headers will not be used for classification.
+
 ## Using Lua scripts for `per_user` classifier
 
 It is also possible to create custom Lua scripts to use customized user or language for a specific task. Here is an example
