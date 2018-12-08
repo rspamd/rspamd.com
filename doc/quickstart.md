@@ -383,7 +383,7 @@ Here, we describe the simplest `self-scan` option:
 
 <img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
 
-In this mode, `rspamd_proxy` scans messages itself and talk to MTA directly using Milter protocol. The advantage of this mode is its simplicity. Here is a samle configuration for this mode:
+In this mode, `rspamd_proxy` scans messages itself and talk to MTA directly using Milter protocol. The advantage of this mode is its simplicity. Here is a sample configuration for this mode:
 
 ~~~ucl
 # local.d/worker-proxy.inc
