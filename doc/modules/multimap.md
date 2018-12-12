@@ -107,6 +107,7 @@ Optional map configuration attributes:
 * `symbols` - array of symbols that this map can insert (for key-value pairs), [learn more](#multiple-symbols-maps)
 * `score` - score of the symbol (can be redefined in the `metric` section)
 * `description` - map description
+* `message` - message returned to MTA on prefilter reject action being triggered
 * `group` - group for the symbol (can be redefined in `metric`)
 * `require_symbols` - expression of symbols that have to match for a specific message: [learn more](#conditional-maps)
 * `filter` - match specific part of the input (for example, email domain): [here](#map-filters) is the complete definition of maps filters
@@ -403,6 +404,7 @@ FILENAME_BLACKLISTED {
   filter = "extension";
   map = "${LOCAL_CONFDIR}/filename.map";
   action = "reject";
+  message = "A restricted file type was found";
 }
 CONTENT_BLACKLISTED {
   type = "content";
