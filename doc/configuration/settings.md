@@ -127,8 +127,10 @@ So each setting has the following attributes:
 	+ `from` - match SMTP from
 	+ `rcpt` - match RCPT
 	+ `ip` - match source IP address
+	+ `hostname` - match the source hostname (regexp supported)
 	+ `user` - matches authenticated user ID of message sender if any
 	+ `authenticated` - matches any authenticated user
+	+ `local` - matches any local IP
 	+ `request_header` - collection of request header names and regexes to match them against (condition is satisfied if any match)
 	+ `header` - collection of MIME message header names and regexes to match them against (condition is satisfied if any match), available since Rspamd 1.7
 	+ `selector` - apply the specific selector to check if we need to apply these settings. If selector returns non-nil, then the settings are applied (selector's value is ignored so far). Available since Rspamd 1.8.
@@ -140,6 +142,7 @@ So each setting has the following attributes:
 	+ `symbols_disabled` - array of disabled checks by symbol name (all other rules are enabled)
 	+ `groups_disabled` - array of disabled checks by group name (all other rules are enabled)
 - `symbols` - add symbols from the list if a rule has matched
+- `inverse` - inverse match (e.g. it will NOT match when all elements are matched and vice-versa)
 
 If `symbols_enabled` or `groups_enabled` are found in `apply` element, then Rspamd disables all checks with the exception of the enabled ones. When `enabled` and `disabled` options are both presented, then the precedence of operations is the following:
 
