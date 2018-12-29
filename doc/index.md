@@ -4,14 +4,6 @@ title: Rspamd Documentation
 ---
 
 {::options parse_block_html="true" /}
-<div class="col-sm-3">
-  * this unordered seed list will be replaced by toc as unordered list
-  {:toc}
-</div>
-
-<div class="col-sm-9">
-  <div class="body-content doc-content">
-
 # Rspamd Documentation Index
 
 ## Installation and Administration
@@ -128,6 +120,3 @@ There are several tutorial like documents related to various topics of Rspamd us
 * [OpenBSD Email Service, a free-email alternative relying on Rspamd](https://github.com/vedetta-com/caesonia) - configuration and guide for self-hosting
 
 <a name="fn1">1.</a> antispam plugin is deprecated, use [IMAPSieve](https://wiki.dovecot.org/HowTo/AntispamWithSieve) instead
-
-  </div>
-</div>
