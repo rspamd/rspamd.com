@@ -1,5 +1,5 @@
 ---
-layout: doc_conf
+layout: doc
 title: UCL language
 ---
 # UCL configuration language

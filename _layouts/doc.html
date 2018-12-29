@@ -1,27 +1,300 @@
+<!-- remove the white space after footer-->
 {% include top.html %}
-<div class="container">
-		<ol class="breadcrumb">
-				<li><a href="{{ site.baseurl }}/">Home</a></li>
-				<li><a href="{{ site.baseurl }}/doc/index.html">Documentation</a></li>
-				<li class="active">{{ page.title }}</li>
-				<li><a href="http://prose.io/rspamd/rspamd.com/edit/master/{{ page.path }}">Edit page</a></li>
-		</ol>
-		
-		<div class="body-content doc-content">
-							{{ content }}
-		</div><!-- /.body-content -->
-		<!--
-				<p>Code licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.</p>
-				<p>Based on <a href="http://getbootstrap.com">Bootstrap</a>. Icons from <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>. Web fonts from <a href="http://www.google.com/webfonts">Google</a>.</p>
-		-->
-</div> <!-- /container -->
-{% include bottom.html %}
 
+<style>
+	.r-docs-nav {
+		width: 250px;
+		position: fixed;
+		overflow: scroll;
+		height: calc(100vh - 70px);
+		margin-left: -2px;
+		padding-left: 2px;
+		padding-bottom: 80px;
+	}
+
+	.r-docs-nav ul {
+		list-style: none;
+		padding-left: 15px;
+	}
+
+	.r-docs-nav > ul {
+		padding-left: 0;
+		padding-right: 28px;
+	}
+
+	.r-docs-subnav {
+		border-top: 1px solid #e4e4e4;
+		position: relative;
+	}
+
+	.r-docs-subnav:first-child {
+		border-top: none;
+	}
+
+	.r-docs-subnav.active-subnav:before {
+		content: '';
+		position: absolute;
+		top: -1px;
+		bottom: -1px;
+		left: 0;
+		width: 2px;
+		background-color: #de4700;
+	}
+
+	.r-docs-subnav > ul {
+		display: none;
+		padding-left: 21px;
+		padding-bottom: 6px;
+	}
+
+	.r-docs-subnav.active-subnav > ul {
+		display: block;
+	}
+
+	.r-docs-subnav.active-subnav > a {
+		font-weight: bold;
+	}
+
+	.r-docs-nav a {
+		color: black;
+		display: block;
+		padding: 5px 5px 5px 8px;
+		line-height: 1.3;
+	}
+
+	.r-docs-nav .r-docs-subnav ul a {
+		padding: 0;
+	}
+
+	.r-docs-nav a.active-link {
+		font-weight: bold;
+		color: #de4700;
+	}
+
+	.r-docs-content {
+		width: calc(100% - 250px);
+		margin-left: 250px;
+	}
+
+	@media screen and (max-width: 768px) {
+		.r-docs-nav {
+			width: 100%;
+			position: static;
+			height: auto;
+			margin-top: 10px;
+			overflow: visible;
+			padding-bottom: 0;
+		}
+
+		.r-docs-content {
+			width: 100%;
+			margin-left: 0;
+		}
+
+		.r-docs-nav > ul {
+			padding-right: 0;
+		}
+	}
+
+</style>
+
+<div class="container">
+	<div class="r-docs">
+		<div class="r-docs-nav">
+			<ul>
+				<li class="r-docs-subnav">
+					<a href="{{ site.baseurl }}/doc/index.html">RSPAMD Documentation</a>
+				</li>
+
+				<li class="r-docs-subnav">
+					<a href="#">Tutorials and Guides</a>
+					<ul>
+						<li><a href="{{ site.baseurl }}/doc/quickstart.html">Quick start</a></li>
+						<li><a href="{{ site.baseurl }}/doc/integration.html">MTA integration</a></li>
+						<li><a href="{{ site.baseurl }}/doc/migration.html">Upgrading</a></li>
+						<li><a href="{{ site.baseurl }}/doc/faq.html">FAQ</a></li>
+						<li><a href="{{ site.baseurl }}/doc/fuzzy_storage.html">Own fuzzy storage</a></li>
+						<li><a href="{{ site.baseurl }}/doc/tutorials/redis_replication.html">Replication in Redis</a></li>
+            <li><a href="{{ site.baseurl }}/doc/tutorials/scanning_outbound.html">How to scan outbound emails</a></li>
+            <li><a href="{{ site.baseurl }}/doc/tutorials/stunnel_setup.html">Setup Stunnel to protect WebUI</a></li>
+					</ul>
+				</li>
+
+				<li class="r-docs-subnav">
+					<a href="{{ site.baseurl }}/doc/configuration/index.html">Configuration structure</a>
+					<ul>
+						<li><a href="{{ site.baseurl }}/doc/configuration/index.html">Overview</a></li>
+						<li><a href="{{ site.baseurl }}/doc/configuration/ucl.html">Universal configuration language (UCL)</a></li>
+						<li><a href="{{ site.baseurl }}/doc/configuration/composites.html">Composite symbols</a></li>
+						<li><a href="{{ site.baseurl }}/doc/configuration/logging.html">Logging setup</a></li>
+						<li><a href="{{ site.baseurl }}/doc/configuration/metrics.html">Symbols scores and metrics setup</a></li>
+						<li><a href="{{ site.baseurl }}/doc/configuration/options.html">Common options</a></li>
+						<li><a href="{{ site.baseurl }}/doc/configuration/redis.html">Redis server setup</a></li>
+						<li><a href="{{ site.baseurl }}/doc/configuration/statistic.html">Statistical module setup</a></li>
+						
+						<li><a href="{{ site.baseurl }}/doc/configuration/upstream.html">Upstreams setup</a></li>
+						<li><a href="{{ site.baseurl }}/doc/configuration/selectors.html">Selectors</a></li>
+						<li><a href="{{ site.baseurl }}/doc/configuration/redis.html">Redis configuration</a></li>
+					</ul>
+				</li>
+
+				<li class="r-docs-subnav">
+					<a href="{{ site.baseurl }}/doc/modules/">Modules documentation</a>
+					<ul>
+						<li><a href="{{ site.baseurl }}/doc/modules/index.html">Overview</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/antivirus.html">Antivirus</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/arc.html">ARC module</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/asn.html">ASN module</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/bayes_expiry.html">Bayes expiry module</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/clickhouse.html">Clickhouse module</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/chartable.html">Chartable</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/dcc.html">DCC module</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/dkim.html">DKIM</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/dkim_signing.html">DKIM signing</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/dmarc.html">DMARC</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/elastic.html">Elasticsearch exporter</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/emails.html">Emails scan</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/force_actions.html">Force Actions</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/fuzzy_check.html">Fuzzy check</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/fuzzy_collect.html">Fuzzy Collection</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/greylisting.html">Greylisting module</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/history_redis.html">History redis module</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/ip_score.html">IP Score</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/maillist.html">Mailing list</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/metadata_exporter.html">Metadata exporter</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/metric_exporter.html">Metric exporter</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/mid.html">MID module</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/milter_headers.html">Milter headers</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/mime_types.html">Mime types</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/multimap.html">Multimap</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/mx_check.html">MX Check</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/neural.html">Neural network module</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/phishing.html">Phishing check</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/ratelimit.html">Ratelimit</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/rbl.html">RBL</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/regexp.html">Regexp</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/reputation.html">Reputation</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/once_received.html">Received policy</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/replies.html">Replies module</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/rspamd_update.html">Rspamd updates</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/spamassassin.html">Spamassassin rules</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/spamtrap.html">Spamtrap</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/spf.html">SPF</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/surbl.html">Surbl</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/trie.html">Trie matcher</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/url_redirector.html">URL redirector</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/url_reputation.html">URL reputation</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/url_tags.html">URL tags</a></li>
+						<li><a href="{{ site.baseurl }}/doc/modules/whitelist.html">Whitelist</a></li>
+					</ul>
+				</li>
+
+				<li class="r-docs-subnav">
+					<a href="{{ site.baseurl }}/doc/workers/">Workers documentation</a>
+					<ul>
+						<li><a href="{{ site.baseurl }}/doc/workers/index.html">Overview</a></li>
+						<li><a href="{{ site.baseurl }}/doc/workers/normal.html">Normal worker (scanner)</a></li>
+						<li><a href="{{ site.baseurl }}/doc/workers/controller.html">Controller worker</a></li>
+						<li><a href="{{ site.baseurl }}/doc/workers/fuzzy_storage.html">Fuzzy hashes storage</a></li>
+					</ul>
+				</li>
+
+				<li class="r-docs-subnav">
+					<a href="#">Developers documentation</a>
+					<ul>
+						<li><a href="{{ site.baseurl }}/doc/tutorials/writing_rules.html">Writing Rspamd rules</a></li>
+						<li><a href="{{ site.baseurl }}/doc/lua/sync_async.html">Coroutines and async calls</a></li>
+						<li><a href="{{ site.baseurl }}/doc/architecture/index.html">Architecture information</a></li>
+						<li><a href="{{ site.baseurl }}/doc/architecture/protocol.html">Protocol documentation</a></li>
+					</ul>
+				</li>
+
+				<li class="r-docs-subnav">
+					<a href="{{ site.baseurl }}/doc/lua/">Lua API reference</a>
+					<ul>
+						<li>
+								<a href="{{ site.baseurl }}/doc/lua/">Overview</a>
+						</li>
+						<li>
+							<a href="#">Rspamd Lua C API</a>
+							<ul>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_task.html">Rspamd task module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_mimepart.html">Rspamd message parts module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_config.html">Rspamd configuration module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_html.html">Rspamd html module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_map.html">Rspamd map module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/ucl.html">Rspamd UCL module (+JSON)</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_regexp.html">Rspamd regexp message module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_ip.html">Rspamd ip module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_http.html">Rspamd http module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_trie.html">Rspamd trie module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_resolver.html">Rspamd dns module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_expression.html">Rspamd expression module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_redis.html">Rspamd redis module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_upstream.html">Rspamd upstream module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_logger.html">Rspamd logger module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_cryptobox.html">Rspamd cryptobox module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_url.html">Rspamd url module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_tcp.html">Rspamd tcp client module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_mempool.html">Rspamd memory pool module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_util.html">Rspamd generic utilities</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">Rspamd Plain Lua API</a>
+							<ul>
+								<li><a href="{{ site.baseurl }}/doc/lua/lua_redis.html">Lua redis module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/lua_util.html">Lua general utilities</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/lua_maps.html">Lua maps module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/lua_selectors.html">Lua selectors module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/lua_clickhouse.html">Lua clickhouse module</a></li>
+							</ul>
+					</ul>
+				</li>
+
+				<li class="r-docs-subnav">
+					<a href="#">Other topics</a>
+					<ul>
+						<li><a href="{{ site.baseurl }}/doc/tutorials/site_contributing.html">Contributing to web-site</a></li>
+						<li><a href="{{ site.baseurl }}/doc/tutorials/feedback_from_users_with_IMAPSieve.html">Getting feedback from users with IMAPSieve</a></li>
+						<li><a href="{{ site.baseurl }}/doc/rspamadm.html">Rspamadm command</a></li>
+					</ul>
+				</li>
+
+				<li class="r-docs-subnav">
+					<a href="#">External resources</a>
+					<ul>
+						<li><a href="https://thomas-leister.de/en/mailserver-debian-stretch/">Dovecot, Postfix, MySQL, Rspamd on Debian 9 Stretch</a></li>
+						<li><a href="http://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/">Alternative introduction</a></li>
+						<li><a href="https://www.c0ffee.net/blog/mail-server-guide">Postfix, Dovecot, Rspamd, and LDAP on FreeBSD</a></li>
+						<li><a href="https://github.com/vedetta-com/caesonia">OpenBSD Email Service relying on Rspamd</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+		<div class="r-docs-content">
+			{{ content }}
+		</div>
+    </div>
+</div>
+<div class="push"></div>
+{% include bottom.html %}
 <script>
-	$( document ).ready(function() {
-		var path = "{{ page.path }}";
+    $( document ).ready(function() {
+        $('.r-docs-subnav').on('click', function(e) {
+            if (!$( this ).hasClass( 'active-subnav' )) {
+                $('.r-docs-subnav.active-subnav').removeClass('active-subnav');
+                $(this).addClass('active-subnav');
+            }
+        });
+
+        $('.r-docs-nav a[href$="' + window.location.pathname + '"]').addClass('active-link')
+			.closest('.r-docs-subnav').addClass('active-subnav');
+
+        var path = "{{ page.path }}";
 		$("h1").append('<a target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/' + path +
 			 '" class="edit-btn undecor"><i class="fa fa-pencil"></i> Edit Page</a>');
-	});
+    });
 </script>
 </html>

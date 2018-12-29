@@ -1,5 +1,5 @@
 ---
-layout: doc_lua
+layout: doc
 title: Sync and Async API comparison
 ---
 

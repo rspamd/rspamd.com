@@ -1,5 +1,5 @@
 ---
-layout: doc_conf
+layout: doc
 title: Users settings description
 ---
 # Rspamd user settings
