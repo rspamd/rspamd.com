@@ -1,5 +1,5 @@
 ---
-layout: doc_lua
+layout: doc
 title: Lua API documentation
 ---
 

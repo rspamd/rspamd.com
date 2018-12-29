@@ -1,5 +1,5 @@
 ---
-layout: doc_modules
+layout: doc
 title: Neural network module
 ---
 

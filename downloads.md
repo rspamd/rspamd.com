@@ -1,5 +1,5 @@
 ---
-layout: downloads
+layout: doc
 title: Downloads
 ---
 

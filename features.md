@@ -1,5 +1,5 @@
 ---
-layout: features
+layout: doc
 title: Rspamd features
 ---
 

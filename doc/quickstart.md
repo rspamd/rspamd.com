@@ -1,5 +1,5 @@
 ---
-layout: doc_quickstart
+layout: doc
 title: Quick start
 ---
 
