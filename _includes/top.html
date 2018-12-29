@@ -42,6 +42,35 @@
         ga('create', 'UA-5492966-5', 'auto');
         ga('send', 'pageview');
     </script>
+    <style>
+        .r-nav-container {
+            padding-right: 18px;
+        }
+
+        .donate button {
+            border: 1px solid #fff;
+        }
+
+        .r-nav-container .navbar-toggle {
+            margin-right: 0;
+            border-color: #fff !important;
+        }
+
+        .r-nav-container .navbar-toggle:hover {
+            border-color: #97310e !important;
+        }
+
+        @media screen and (min-width: 768px) and (max-width: 896px) {
+            .navbar-nav > li > a {
+                padding: 15px 10px;
+                font-size: 12px;
+            }
+
+            .donate button {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 
 <!--body style="padding-top: 50px" data-offset="50"-->
@@ -50,7 +79,7 @@
     <!-- Navigation -->
     <div id="wrapper">
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
+        <div class="r-nav-container">
             <div class="navbar-header">
                 <!--toggle button for xs-size-->
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
