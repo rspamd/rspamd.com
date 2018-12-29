@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: doc
 title: Compare Rspamd with other spam filters
 ---
 

@@ -59,7 +59,7 @@
 		color: black;
 		display: block;
 		padding: 5px 5px 5px 8px;
-		line-height: 1.3;
+		line-height: 1.5;
 	}
 
 	.r-docs-nav .r-docs-subnav ul a {
@@ -103,7 +103,14 @@
 		<div class="r-docs-nav">
 			<ul>
 				<li class="r-docs-subnav">
-					<a href="{{ site.baseurl }}/doc/index.html">RSPAMD Documentation</a>
+					<a href="{{ site.baseurl }}/doc/index.html">About Rspamd</a>
+					<ul>
+							<li><a href="{{ site.baseurl }}/downloads.html">Downloads</a></li>
+							<li><a href="{{ site.baseurl }}/features.html">Features</a></li>
+							<li><a href="{{ site.baseurl }}/performance.html">Performance</a></li>
+							<li><a href="{{ site.baseurl }}/comparison.html">Comparison</a></li>
+							<li><a href="{{ site.baseurl }}/media.html">Videos about Rspamd</a></li>
+					</ul>
 				</li>
 
 				<li class="r-docs-subnav">
@@ -112,7 +119,6 @@
 						<li><a href="{{ site.baseurl }}/doc/quickstart.html">Quick start</a></li>
 						<li><a href="{{ site.baseurl }}/doc/integration.html">MTA integration</a></li>
 						<li><a href="{{ site.baseurl }}/doc/migration.html">Upgrading</a></li>
-						<li><a href="{{ site.baseurl }}/doc/faq.html">FAQ</a></li>
 						<li><a href="{{ site.baseurl }}/doc/fuzzy_storage.html">Own fuzzy storage</a></li>
 						<li><a href="{{ site.baseurl }}/doc/tutorials/redis_replication.html">Replication in Redis</a></li>
             <li><a href="{{ site.baseurl }}/doc/tutorials/scanning_outbound.html">How to scan outbound emails</a></li>
@@ -121,9 +127,12 @@
 				</li>
 
 				<li class="r-docs-subnav">
+						<a href="{{ site.baseurl }}/doc/faq.html">FAQ</a>
+				</li>
+
+				<li class="r-docs-subnav">
 					<a href="{{ site.baseurl }}/doc/configuration/index.html">Configuration structure</a>
 					<ul>
-						<li><a href="{{ site.baseurl }}/doc/configuration/index.html">Overview</a></li>
 						<li><a href="{{ site.baseurl }}/doc/configuration/ucl.html">Universal configuration language (UCL)</a></li>
 						<li><a href="{{ site.baseurl }}/doc/configuration/composites.html">Composite symbols</a></li>
 						<li><a href="{{ site.baseurl }}/doc/configuration/logging.html">Logging setup</a></li>
@@ -141,7 +150,6 @@
 				<li class="r-docs-subnav">
 					<a href="{{ site.baseurl }}/doc/modules/">Modules documentation</a>
 					<ul>
-						<li><a href="{{ site.baseurl }}/doc/modules/index.html">Overview</a></li>
 						<li><a href="{{ site.baseurl }}/doc/modules/antivirus.html">Antivirus</a></li>
 						<li><a href="{{ site.baseurl }}/doc/modules/arc.html">ARC module</a></li>
 						<li><a href="{{ site.baseurl }}/doc/modules/asn.html">ASN module</a></li>
@@ -192,8 +200,8 @@
 				<li class="r-docs-subnav">
 					<a href="{{ site.baseurl }}/doc/workers/">Workers documentation</a>
 					<ul>
-						<li><a href="{{ site.baseurl }}/doc/workers/index.html">Overview</a></li>
 						<li><a href="{{ site.baseurl }}/doc/workers/normal.html">Normal worker (scanner)</a></li>
+						<li><a href="{{ site.baseurl }}/doc/workers/rspamd_proxy.html">Proxy worker</a></li>
 						<li><a href="{{ site.baseurl }}/doc/workers/controller.html">Controller worker</a></li>
 						<li><a href="{{ site.baseurl }}/doc/workers/fuzzy_storage.html">Fuzzy hashes storage</a></li>
 					</ul>
@@ -213,41 +221,38 @@
 					<a href="{{ site.baseurl }}/doc/lua/">Lua API reference</a>
 					<ul>
 						<li>
-								<a href="{{ site.baseurl }}/doc/lua/">Overview</a>
-						</li>
-						<li>
 							<a href="#">Rspamd Lua C API</a>
 							<ul>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_task.html">Rspamd task module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_mimepart.html">Rspamd message parts module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_config.html">Rspamd configuration module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_html.html">Rspamd html module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_map.html">Rspamd map module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/ucl.html">Rspamd UCL module (+JSON)</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_regexp.html">Rspamd regexp message module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_ip.html">Rspamd ip module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_http.html">Rspamd http module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_trie.html">Rspamd trie module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_resolver.html">Rspamd dns module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_expression.html">Rspamd expression module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_redis.html">Rspamd redis module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_upstream.html">Rspamd upstream module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_logger.html">Rspamd logger module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_cryptobox.html">Rspamd cryptobox module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_url.html">Rspamd url module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_tcp.html">Rspamd tcp client module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_mempool.html">Rspamd memory pool module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_util.html">Rspamd generic utilities</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_task.html">Task module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_mimepart.html">Message parts module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_config.html">Configuration module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_html.html">Html module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_map.html">Maps module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/ucl.html">UCL module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_regexp.html">Regexp module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_ip.html">IP module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_http.html">HTTP module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_trie.html">Trie module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_resolver.html">DNS module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_expression.html">Expression module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_redis.html">Redis module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_upstream.html">Upstream module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_logger.html">Logger module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_cryptobox.html">Cryptobox module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_url.html">URL module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_tcp.html">TCP client module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_mempool.html">Memory pool module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/rspamd_util.html">Utilities module</a></li>
 							</ul>
 						</li>
 						<li>
 							<a href="#">Rspamd Plain Lua API</a>
 							<ul>
-								<li><a href="{{ site.baseurl }}/doc/lua/lua_redis.html">Lua redis module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/lua_util.html">Lua general utilities</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/lua_maps.html">Lua maps module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/lua_selectors.html">Lua selectors module</a></li>
-								<li><a href="{{ site.baseurl }}/doc/lua/lua_clickhouse.html">Lua clickhouse module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/lua_redis.html">Redis module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/lua_util.html">Utilities module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/lua_maps.html">Maps module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/lua_selectors.html">Selectors module</a></li>
+								<li><a href="{{ site.baseurl }}/doc/lua/lua_clickhouse.html">Clickhouse module</a></li>
 							</ul>
 					</ul>
 				</li>
@@ -289,10 +294,10 @@
             }
         });
 
-        $('.r-docs-nav a[href$="' + window.location.pathname + '"]').addClass('active-link')
+    $('.r-docs-nav a[href$="' + window.location.pathname + '"]').addClass('active-link')
 			.closest('.r-docs-subnav').addClass('active-subnav');
 
-        var path = "{{ page.path }}";
+    var path = "{{ page.path }}";
 		$("h1").append('<a target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/' + path +
 			 '" class="edit-btn undecor"><i class="fa fa-pencil"></i> Edit Page</a>');
     });
