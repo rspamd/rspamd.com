@@ -1,5 +1,5 @@
 ---
-layout: performance
+layout: doc
 title: Rspamd performance
 ---
 
