@@ -1,5 +1,5 @@
 ---
-layout: doc_lua
+layout: doc
 title: Writing rules for Rspamd
 ---
 

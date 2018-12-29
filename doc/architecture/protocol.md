@@ -1,5 +1,5 @@
 ---
-layout: doc_arch
+layout: doc
 title: Rspamd Architecture
 ---
 # Rspamd protocol

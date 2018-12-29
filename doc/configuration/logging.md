@@ -1,5 +1,5 @@
 ---
-layout: doc_conf
+layout: doc
 title: Rspamd Logging
 ---
 # Rspamd logging settings

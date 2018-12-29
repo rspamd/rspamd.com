@@ -1,5 +1,5 @@
 ---
-layout: doc_autotoc
+layout: doc
 title: Rspamd Documentation
 ---
 

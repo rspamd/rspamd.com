@@ -1,5 +1,5 @@
 ---
-layout: doc_faq
+layout: doc
 title: Frequently asked questions
 ---
 
