@@ -2,9 +2,15 @@
 {% include top.html %}
 
 <style>
+	.r-docs-container {
+		width: calc(100vw - 44px);
+		margin: auto;
+	}
+
 	.r-docs-nav {
-		width: 250px;
+		width: 300px;
 		position: fixed;
+		top: 70px;
 		overflow: scroll;
 		height: calc(100vh - 70px);
 		margin-left: -2px;
@@ -58,12 +64,12 @@
 	.r-docs-nav a {
 		color: black;
 		display: block;
-		padding: 5px 5px 5px 8px;
-		line-height: 1.5;
+		padding: 8px 5px 5px 8px;
+		line-height: 1;
 	}
 
 	.r-docs-nav .r-docs-subnav ul a {
-		padding: 0;
+		padding: 5px 0;
 	}
 
 	.r-docs-nav a.active-link {
@@ -72,8 +78,16 @@
 	}
 
 	.r-docs-content {
-		width: calc(100% - 250px);
-		margin-left: 250px;
+		width: calc(100% - 300px);
+		margin-left: 300px;
+		padding-top: 60px;
+		margin-top: -60px;
+	}
+
+
+	.r-docs-content h1, .r-docs-content h2, .r-docs-content h3 {
+		padding-top: 70px;
+		margin-top: -50px;
 	}
 
 	@media screen and (max-width: 768px) {
@@ -98,7 +112,7 @@
 
 </style>
 
-<div class="container">
+<div class="r-docs-container">
 	<div class="r-docs">
 		<div class="r-docs-nav">
 			<ul>
@@ -283,7 +297,6 @@
 		</div>
     </div>
 </div>
-<div class="push"></div>
 {% include bottom.html %}
 <script>
     $( document ).ready(function() {

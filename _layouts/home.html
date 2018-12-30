@@ -1,0 +1,207 @@
+{% include top.html %}
+<!-- remove the white space after footer-->
+
+<style>
+	.home-container {
+		width: calc(100vw - 44px);
+		margin: auto;
+	}
+	.r-banner {
+		min-height: calc(100vh - 160px);
+		background-color: #bde7fb;
+		background-image: url(img/r-bg.jpg);
+		background-size: cover;
+		margin-top: -20px;
+		display: flex;
+		align-items: center;
+	}
+
+	.r-banner .container {
+		text-align: center;
+		padding-top: 50px;
+		padding-bottom: 50px;
+	}
+
+	.r-banner h1 {
+		padding: 0;
+		font-size: 75px;
+	}
+
+	.r-banner p {
+		font-size: 20px;
+	}
+
+	.r-banner a {
+		font-size: 20px;
+		margin-top: 8px;
+		padding: 8px 30px;
+	}
+
+	.r-tile h2 i {
+		position: relative;
+		font-size: 21px;
+	}
+
+	.r-tiles-group {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		justify-content: space-between;
+		margin: 40px -5px;
+	}
+
+	.r-tile {
+		display: flex;
+		flex-basis: calc(33.33% - 10px);
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		padding: 10px;
+		border: 1px solid #dddddd;
+		border-radius: 4px;
+		margin: 8px 0;
+		min-height: 250px;
+		color: #333;
+		text-decoration: none;
+		transition: all 300ms ease;
+	}
+
+	.r-tile:hover {
+		color: #333;
+		text-decoration: none;
+		-webkit-box-shadow: 0 0 23px 0 rgba(0,0,0,0.2);
+		-moz-box-shadow: 0 0 23px 0 rgba(0,0,0,0.2);
+		box-shadow: 0 0 23px 0 rgba(0,0,0,0.2);
+	}
+
+	.r-tile:hover h2 {
+		color: #dd4814;
+	}
+
+	.r-tile img {
+		width: 80px;
+		margin: 10px auto 0;
+	}
+
+	.r-tile h2 {
+		margin: 10px 0;
+		font-size: 28px;
+		transition: all 300ms ease;
+		text-align: center;
+	}
+
+	.r-tile p {
+		height: 60px;
+		text-align: center;
+	}
+
+	.who-uses .carousel-content {
+		display: flex;
+		height: 240px;
+		align-items: center;
+	}
+
+	.who-uses #text-carousel {
+		padding: 20px;
+		background-image: linear-gradient(to right, #E8E8E8 0%, white 30%, white 70%, #E8E8E8 100%);
+		border-radius: 4px;
+		margin-bottom: 50px;
+	}
+
+	.who-uses .carousel-control.right {
+		background: none;
+		opacity: 1;
+		z-index: 100;
+	}
+
+	.who-uses .carousel-control.left {
+		background: none;
+		opacity: 1;
+		z-index: 100;
+	}
+
+	.who-uses blockquote {
+		margin-bottom: 0;
+		padding: 0 20px;
+	}
+
+	@media screen and (max-width: 910px) {
+		.who-uses .carousel-content {
+			height: 280px;
+		}
+	}
+
+	@media screen and (max-width: 850px) {
+		.r-tile {
+			flex-basis: calc(50% - 10px);
+		}
+	}
+
+	@media (max-width: 768px) {
+		.who-uses blockquote {
+			margin: 0;
+			padding: 0 0 0 10px;
+		}
+
+		.who-uses .carousel-content img {
+			max-width: 100px;
+		}
+	}
+
+	@media screen and (max-width: 550px) {
+		.r-tile {
+			flex-basis: 100%;
+			min-height: 0;
+		}
+
+		.r-tile p {
+			height: auto;
+		}
+
+		.who-uses .carousel-content {
+			height: 290px;
+		}
+	}
+
+	@media screen and (max-width: 500px) {
+		.r-banner h1 {
+			font-size: 50px;
+		}
+
+		.r-banner p {
+			font-size: 16px;
+		}
+
+		.r-banner a {
+			font-size: 16px;
+		}
+
+		.r-tile h2 {
+			font-size: 24px;
+		}
+
+		.r-tile h2 i {
+			font-size: 16px;
+			top: -1px;
+		}
+	}
+</style>
+	<div class="r-banner">
+		<div class="container">
+			<h1>Rspamd</h1>
+			<p>Fast, free and open-source spam filtering system.</p>
+			<a class="btn btn-primary btn-large" href="{{ site.baseurl }}/doc/quickstart.html">Quick start <small><i class="fa fa-chevron-right"></i></small></a>
+		</div>
+	</div>
+
+	<div class="home-container">
+		{{ content }}
+
+		<!--
+		        <p>Code licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.</p>
+		        <p>Based on <a href="http://getbootstrap.com">Bootstrap</a>. Icons from <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>. Web fonts from <a href="http://www.google.com/webfonts">Google</a>.</p>
+		-->
+
+	</div>
+{% include bottom.html %}
+</html>
