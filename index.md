@@ -10,66 +10,42 @@ title: Rspamd spam filtering system
 				<p style="margin-bottom: 0px; margin-top: 5px">New major release with bugs fixes and new features.</p>
    </div>
    <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://rspamd.com/announce/2018/12/03/rspamd-1.8.3.html" style="margin-top: 10px;">Learn more <small><i class="fa fa-chevron-right"></i></small></a>
+				<a class="btn btn-primary pull-right" href="https://rspamd.com/announce/2018/12/03/rspamd-1.8.3.html" style="margin-top: 10px;">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
 	</div>
 </div>
 
-<div class="row main-small-text-block">
-		<div class="col-xs-12 col-sm-6 col-md-4 main-small-text">
-		    <div class="thumbnail">
-				    <img src="img/performance.jpg" class="" height="80" width="80">
-						<div class="caption">
-								<h2><a href="{{ site.baseurl }}/performance.html">Performance <small><i class="fa fa-chevron-right" style="color: #dd4814"></i></small></a></h2>
-								<p class="text-justify">Rspamd is designed to be fast and can process up to 100 emails per second
-								using a single CPU core</p>
-						</div>
-				</div>
-		</div>
-		<div class="col-xs-12 col-sm-6 col-md-4 main-small-text">
-		    <div class="thumbnail">
-				    <img src="img/features.jpg" class="" height="80" width="80">
-						<div class="caption">
-								<h2><a href="{{ site.baseurl }}/features.html">Features <small><i class="fa fa-chevron-right" style="color: #dd4814"></i></small></a></h2>
-								<p class="text-justify">Learn about the wide range of technologies supported by Rspamd to filter spam</p>
-						</div>
-				</div>
-		</div>
-		<div class="col-xs-12 col-sm-6 col-md-4 main-small-text">
-				<div class="thumbnail">
-						<img src="img/compare.jpg" class="" height="80" width="80">
-						<div class="caption">
-								<h2><a href="{{ site.baseurl }}/comparison.html">Compare <small><i class="fa fa-chevron-right" style="color: #dd4814"></i></small></a></h2>
-								<p class="text-justify">Compare Rspamd with other spam filtering systems</p>
-						</div>
-				</div>
-		</div>
-		<div class="col-xs-12 col-sm-6 col-md-4 main-small-text">
-				<div class="thumbnail">
-						<img src="img/documentation.jpg" class="" height="80" width="80">
-						<div class="caption">
-								<h2><a href="{{ site.baseurl }}/doc/">Documentation <small><i class="fa fa-chevron-right" style="color: #dd4814"></i></small></a></h2>
-								<p class="text-justify">Study how to install, configure and extend Rspamd using the documentation provided</p>
-						</div>
-				</div>
-		</div>
-		<div class="col-xs-12 col-sm-6 col-md-4 main-small-text">
-				<div class="thumbnail">
-						<img src="img/media.jpg" class="" height="80" width="80">
-						<div class="caption">
-								<h2><a href="{{ site.baseurl }}/media.html">Media <small><i class="fa fa-chevron-right" style="color: #dd4814"></i></small></a></h2>
-								<p class="text-justify">Watch videos and presentations about Rspamd</p>
-						</div>
-				</div>
-		</div>
-		<div class="col-xs-12 col-sm-6 col-md-4 main-small-text">
-				<div class="thumbnail">
-						<img src="img/support.jpg" class="" height="80" width="80">
-						<div class="caption">
-								<h2><a href="{{ site.baseurl }}/support.html">Donation &amp; Support <small><i class="fa fa-chevron-right" style="color: #dd4814"></i></small></a></h2>
-								<p class="text-justify">Check this page if you need help or want to make a donation or contribute to Rspamd</p>
-						</div>
-				</div>
-		</div>
+<div class="r-tiles-group">
+    <a href="{{ site.baseurl }}/performance.html" class="r-tile">
+        <img src="img/performance.jpg" alt="">
+        <h2>Performance&nbsp;<i class="fa fa-chevron-right"></i></h2>
+        <p>Rspamd is designed to be fast and can process up to 100 emails per second
+        using a single CPU core</p>
+    </a>
+    <a href="{{ site.baseurl }}/features.html" class="r-tile">
+        <img src="img/features.jpg" alt="">
+        <h2>Features&nbsp;<i class="fa fa-chevron-right"></i></h2>
+        <p>Learn about the wide range of technologies supported by Rspamd to filter spam</p>
+    </a>
+    <a href="{{ site.baseurl }}/comparison.html" class="r-tile">
+        <img src="img/compare.jpg" alt="">
+        <h2>Compare&nbsp;<i class="fa fa-chevron-right"></i></h2>
+        <p>Compare Rspamd with other spam filtering systems</p>
+    </a>
+    <a href="{{ site.baseurl }}/doc/" class="r-tile">
+        <img src="img/documentation.jpg" alt="">
+        <h2>Documentation&nbsp;<i class="fa fa-chevron-right"></i></h2>
+        <p>Study how to install, configure and extend Rspamd using the documentation provided</p>
+    </a>
+    <a href="{{ site.baseurl }}/media.html" class="r-tile">
+        <img src="img/media.jpg" alt="">
+        <h2>Media&nbsp;<i class="fa fa-chevron-right"></i></h2>
+        <p>Watch videos and presentations about Rspamd</p>
+    </a>
+    <a href="{{ site.baseurl }}/support.html" class="r-tile">
+        <img src="img/support.jpg" alt="">
+        <h2>Donation &amp; Support&nbsp;<i class="fa fa-chevron-right"></i></h2>
+        <p>Check this page if you need help or want to make a donation or contribute to Rspamd</p>
+    </a>
 </div>
 <div class="row who-uses">
 		<div id="text-carousel" class="carousel slide" data-ride="carousel">
@@ -83,7 +59,7 @@ title: Rspamd spam filtering system
 		    <!-- Wrapper for slides -->
 		            <div class="carousel-inner">
 										<div class="item active">
-												<div class="carousel-content">
+												<div class="carousel-content"><div>
 														<div class="col-sm-3 col-xs-12">
 																<a href="http://www.locaweb.com.br/" target="_blank"><img src="img/logo_locaweb.png" class="img-responsive"></a>
 														</div>
@@ -95,10 +71,10 @@ title: Rspamd spam filtering system
 																		<footer>Rafael Abdo <cite title="Source Title">Computer Security Incident Coordinator</cite></footer>
 																</blockquote>
 														</div>
-												</div>
+												</div></div>
 										</div>
 										<div class="item">
-												<div class="carousel-content">
+												<div class="carousel-content"><div>
 														<div class="col-sm-3 col-xs-12">
 																<a href="http://www.rambler.ru/" target="_blank"><img src="img/Rambler_logo.png" class="img-responsive"></a>
 														</div>
@@ -109,10 +85,10 @@ title: Rspamd spam filtering system
 																		<div class="placeholder"></div>
 																</blockquote>
 														</div>
-												</div>
+												</div></div>
 										</div>
 										<div class="item">
-												<div class="carousel-content">
+												<div class="carousel-content"><div>
 																<div class="col-sm-2 col-xs-12 col-sm-offset-1">
 																		<a href="https://www.adix.nl/" target="_blank"><img src="img/adix_logo.png" class="img-responsive"></a>
 																</div>
@@ -123,10 +99,10 @@ title: Rspamd spam filtering system
 																				<div class="placeholder"></div>
 																		</blockquote>
 																</div>
-												</div>
+												</div></div>
 										</div>
 										<div class="item">
-												<div class="carousel-content">
+												<div class="carousel-content"><div>
 																<div class="col-sm-2 col-xs-12 col-sm-offset-1">
 																		<a href="http://www.ozon.ru/" target="_blank"><img src="img/ozon_logo.png" class="img-responsive"></a>
 																</div>
@@ -137,7 +113,7 @@ title: Rspamd spam filtering system
 																				<div class="placeholder"></div>
 																		</blockquote>
 																</div>
-												</div>
+												</div></div>
 										</div>
 		            </div>
 		</div>
