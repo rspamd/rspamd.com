@@ -16,19 +16,19 @@ This guide describes the main steps to get and start working with Rspamd. In par
 
 ## Alternative guides (3rd party)
 
-* [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/) - a good example of all-in-one tutorial about how to setup your own mail server
-* [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://www.c0ffee.net/blog/mail-server-guide) - similar to the previous guide but uses a different technologies stack
-* [An alternative introduction to rspamd configuration](http://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/)
+* [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/){:target="&#95;blank"} - a good example of all-in-one tutorial about how to setup your own mail server
+* [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://www.c0ffee.net/blog/mail-server-guide){:target="&#95;blank"} - similar to the previous guide but uses a different technologies stack
+* [An alternative introduction to rspamd configuration](http://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/){:target="&#95;blank"}
 
 ## Preparation steps
 
-First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. In this guide, we describe the setup of the [Postfix MTA](http://www.postfix.org/). However, Rspamd can work with other MTA software - you can find details in the [integration document]({{ site.baseurl }}/doc/integration.html).
+First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. In this guide, we describe the setup of the [Postfix MTA](http://www.postfix.org/){:target="&#95;blank"}. However, Rspamd can work with other MTA software - you can find details in the [integration document]({{ site.baseurl }}/doc/integration.html).
 
 You should also consider to setup your own [local  DNS resolver]({{ site.baseurl }}/doc/faq.html#resolver-setup).
 
 ### TLS Setup
 
-It is strongly recommended to setup TLS for your mail system. We suggest to use certificates issued by [Let’s&nbsp; Encrypt](https://letsencrypt.org) as they are free to use and are convenient to manage. You can read more about this topic in one of the quides available in the Internet, for instance, [this one](https://www.upcloud.com/support/secure-postfix-using-lets-encrypt/).
+It is strongly recommended to setup TLS for your mail system. We suggest to use certificates issued by [Let’s&nbsp; Encrypt](https://letsencrypt.org){:target="&#95;blank"} as they are free to use and are convenient to manage. You can read more about this topic in one of the quides available in the Internet, for instance, [this one](https://www.upcloud.com/support/secure-postfix-using-lets-encrypt/){:target="&#95;blank"}.
 In this guide, we assume that all services have the same certificate which might not be desired if you want greater levels of security.
 
 ### Postfix setup
@@ -130,7 +130,7 @@ For <abbr title="Internet Mail Access Protocol">IMAP</abbr> we recommend to inst
 
 	apt install dovecot-imapd dovecot-sieve
 
-Configuration of Dovecot (especially its authentication mechanisms) is a bit out of the scope for this guide but you can find many good guides at the [Dovecot main site](http://dovecot.org). By default, Dovecot uses Unix users in system and place mail into the standard mailbox `/var/mail/username`.
+Configuration of Dovecot (especially its authentication mechanisms) is a bit out of the scope for this guide but you can find many good guides at the [Dovecot main site](http://dovecot.org){:target="&#95;blank"}. By default, Dovecot uses Unix users in system and place mail into the standard mailbox `/var/mail/username`.
 
 However, you should setup Postfix authentication. This lives in `/etc/dovecot/conf.d/10-master.conf`: make sure that you have uncommented the following lines in this file:
 
@@ -153,7 +153,7 @@ ssl_key = </etc/letsencrypt/live/<your.domain>/privkey.pem
 
 ## Caching setup
 
-Rspamd uses [Redis](https://redis.io) as a storage and caching system. In particular, Redis is used for the following purposes:
+Rspamd uses [Redis](https://redis.io){:target="&#95;blank"} as a storage and caching system. In particular, Redis is used for the following purposes:
 
 - a backend for tokens storage and cache of learned messages by [statistical module](configuration/statistic.html) (BAYES classifier)
 - a fuzzy storage backend (optional)
@@ -374,7 +374,7 @@ Please review the [global options documentation]({{ site.url }}{{ site.baseurl }
 
 ## Using of Milter protocol (for Rspamd >= 1.6)
 
-From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introducing of this feature also finally obsoletes the [Rmilter](https://rspamd.com/rmilter/) project in honor of the new integration method. Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
+From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introducing of this feature also finally obsoletes the `rmilter` project in honor of the new integration method. Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
 
 * Proxy mode (for large instances) with a dedicated scan layer
 * Self-scan mode (for small instances)
@@ -435,7 +435,7 @@ Then you can copy this string and store it in the configuration file.
 
 ### Setting up the WebUI
 
-WebUI is managed by a controller worker but you might want to proxy its requests using nginx, for example, to add `TLS` support. Here is a minimal setup required for nginx to do that:
+WebUI is managed by a controller worker but you might want to proxy its requests using Nginx, for example, to add `TLS` support. Here is a minimal setup required for nginx to do that:
 
 <div>
 <a class="btn btn-info btn-block btn-code" data-toggle="collapse" data-target="#nginx_cf"><i class="fa fa-caret-square-o-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf" class="collapse collapse-block"><pre><code>
@@ -501,7 +501,7 @@ http {
 </div>
 </div>
 
-You might also use subdirs, as suggested by [@julienmalik](https://github.com/julienmalik):
+You might also use subdirs, as suggested by [@julienmalik](https://github.com/julienmalik){:target="&#95;blank"}:
 
 <div>
 <a class="btn btn-info btn-block btn-code" data-toggle="collapse" data-target="#nginx_cf1"><i class="fa fa-caret-square-o-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf1" class="collapse collapse-block"><pre><code>
@@ -555,25 +555,25 @@ There is a special module called `multimap` that allows you to define your own m
 
 Though Rspamd is free to use for any purpose many of the RBLs used in the default configuration aren't & care should be taken to see that your use cases are not infringing. Notes about specific RBLs follow below (please follow the links for details):
 
-[Spamhaus](https://www.spamhaus.org/organization/dnsblusage/) - Commercial use forbidden (see link for definition); Limit of 300k queries or 100k SMTP connections per day
+[Spamhaus](https://www.spamhaus.org/organization/dnsblusage/){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 300k queries or 100k SMTP connections per day
 
-[URIBL](http://uribl.com/about.shtml) - Requires a commercial subscription if 'excessive queries' are sent (numbers unclear).
+[URIBL](http://uribl.com/about.shtml){:target="&#95;blank"} - Requires a commercial subscription if 'excessive queries' are sent (numbers unclear).
 
-[SURBL](http://www.surbl.org/usage-policy) - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
+[SURBL](http://www.surbl.org/usage-policy){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
 
-[DNSWL](https://www.dnswl.org/?page_id=9) - Commercial use forbidden (see link for definition); Limit of 100k queries per day
+[DNSWL](https://www.dnswl.org/?page_id=9){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 100k queries per day
 
-[SpamEatingMonkey](http://spameatingmonkey.com/faq.html#query-limits) - Limit of 100k queries per day or more than 5 queries per second for more than a few minutes
+[SpamEatingMonkey](http://spameatingmonkey.com/faq.html#query-limits){:target="&#95;blank"} - Limit of 100k queries per day or more than 5 queries per second for more than a few minutes
 
-[SORBS](http://www.sorbs.net/general/using.shtml#largesites) - Limit of 100k users or more than 5 messages per second sustained
+[SORBS](http://www.sorbs.net/general/using.shtml#largesites){:target="&#95;blank"} - Limit of 100k users or more than 5 messages per second sustained
 
-[Mailspike](http://mailspike.net/usage.html) - Limit of 100k messages or queries per day
+[Mailspike](http://mailspike.net/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
 
-[UCEProtect](http://www.uceprotect.net/en/index.php?m=6&s=11) - If you're sending 100k queries or more per day you should use the (free) Rsync service.
+[UCEProtect](http://www.uceprotect.net/en/index.php?m=6&s=11){:target="&#95;blank"} - If you're sending 100k queries or more per day you should use the (free) Rsync service.
 
-[SURBL](http://www.surbl.org/usage-policy) - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
+[SURBL](http://www.surbl.org/usage-policy){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
 
-[Rspamd URIBL](http://www.rspamd.com/feed-policies.html) - Commercial use forbidden (see link for definition); Limit of 250k queries per day
+[Rspamd URIBL](http://www.rspamd.com/feed-policies.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
 
 Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) and [SURBL]({{ site.url }}{{ site.baseurl }}/doc/modules/surbl.html) module documentation for information about disabling RBLs/SURBLs.
 
@@ -654,14 +654,14 @@ if header :is "X-Spam" "Yes" {
 }
 {% endhighlight %}
 
-You can also setup rspamc to learn via passing messages to a certain email address. I recommend using `/etc/aliases` for these purposes and `mail-redirect` command (e.g. provided by [Mail Redirect addon](https://addons.mozilla.org/en-GB/thunderbird/addon/mailredirect/) for `Thunderbird` MUA). The desired aliases could be the following:
+You can also setup rspamc to learn via passing messages to a certain email address. I recommend using `/etc/aliases` for these purposes and `mail-redirect` command (e.g. provided by [Mail Redirect addon](https://addons.mozilla.org/en-GB/thunderbird/addon/mailredirect/){:target="&#95;blank"} for `Thunderbird` MUA). The desired aliases could be the following:
 
     learn-spam123: "| rspamc learn_spam"
     learn-ham123: "| rspamc learn_ham"
 
 You'd need some less predictable aliases to avoid sending messages to such addresses by some adversary or just by a mistake to prevent statistics pollution.
 
-There is also an add-on for Thunderbird MUA written by Alexander Moisseev to visualise Rspamd stats. You can download it from its [homepage](https://addons.mozilla.org/en-GB/thunderbird/addon/rspamd-spamness/). You'd need to add extended spam headers (`X-Spamd-Result`) with Rmilter and/or (from add-on's version 0.8.0) `X-Spam-Score` and `X-Spam-Report` headers with Exim to make the whole setup work.
+There is also an add-on for Thunderbird MUA written by Alexander Moisseev to visualise Rspamd stats. You can download it from its [homepage](https://addons.mozilla.org/en-GB/thunderbird/addon/rspamd-spamness/){:target="&#95;blank"}. You'd need to add extended spam headers (`X-Spamd-Result`) with Rmilter and/or (from add-on's version 0.8.0) `X-Spam-Score` and `X-Spam-Report` headers with Exim to make the whole setup work.
 
 To enable extended spam headers in Rmilter add the following line to `rmilter.conf`:
 
@@ -717,4 +717,4 @@ ann_expire = 2d; # For how long ANN should be preserved in Redis
 * [Ratelimit]({{ site.baseurl }}/doc/modules/ratelimit.html): this module is very useful to limit spam waves as it allows to temporary delay senders that have either bad reputation or send email too agressively without somehow a good reputation. Requires a volatile Redis instance.
 * [Replies]({{ site.baseurl }}/doc/modules/replies.html): whitelists replies to your user's mail. It is very useful to provide users instant communication with known recipients. Requires a volatile Redis instance.
 * [URL redirector]({{ site.baseurl }}/doc/modules/url_redirector.html): resolves URL redirects on some common redirectors and URLs shorteners, e.g. `t.co` or `goo.gl`. Requires a volatile Redis instance.
-* [Clickhouse]({{ site.baseurl }}/doc/modules/clickhouse.html): saves analytical data to the [Clickhouse](https://clickhouse.yandex) server. Clickhouse server can be used thereafter to create new filtering rules or maintaining blacklists. You can treat it as an advanced syslog with indexes and complex analytics queries. There are also graphical interfaces available for Clickhouse, e.g. [Redash](https://redash.io/)
+* [Clickhouse]({{ site.baseurl }}/doc/modules/clickhouse.html): saves analytical data to the [Clickhouse](https://clickhouse.yandex){:target="&#95;blank"} server. Clickhouse server can be used thereafter to create new filtering rules or maintaining blacklists. You can treat it as an advanced syslog with indexes and complex analytics queries. There are also graphical interfaces available for Clickhouse, e.g. [Redash](https://redash.io/){:target="&#95;blank"}
