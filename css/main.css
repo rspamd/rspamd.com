@@ -77,11 +77,12 @@ hr {
 }
 
 .row-footer{
-    position: relative;
+    position: absolute;
     bottom: 0;
     left: 0;
+    width: 100%;
     background-color: #E8E8E8;
-    padding: 10px 0px 30px 0px;
+    padding: 10px 0 30px 0;
 }
 .jumbotron {
   padding-top: 10px;
@@ -160,14 +161,11 @@ h2{
   margin-left: 0px;
 }
 #wrapper {/*for removing wite space after footer*/
-    min-height: 100%;
-    height: auto !important;
-    height: 100%;
-    margin: 0 auto -78px;
+  min-height: calc(100vh - 70px);
+  position: relative;
+  padding-bottom: 100px;
 }
-.push {/*add a wite space before footer*/
-    height: 78px;
-}
+
 .breadcrumb{
   background-color: transparent;
   padding-left: 0;

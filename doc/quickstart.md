@@ -3,7 +3,7 @@ layout: doc
 title: Quick start
 ---
 
-<div><h1 style="margin-top:0">Rspamd quick start</h1></div>
+<div><h1>Rspamd quick start</h1></div>
 
 ## Introduction
 
