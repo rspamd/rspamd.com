@@ -112,7 +112,7 @@ acl_check_spam:
   accept
 ```
 
-For further information please refer to the [Exim specification](http://www.exim.org/exim-html-current/doc/html/spec_html), especially the [chapter about content scanning](http://www.exim.org/exim-html-current/doc/html/spec_html/ch-content_scanning_at_acl_time.html).
+For further information please refer to the [Exim specification](http://www.exim.org/exim-html-current/doc/html/spec_html){:target="&#95;blank"}, especially the [chapter about content scanning](http://www.exim.org/exim-html-current/doc/html/spec_html/ch-content_scanning_at_acl_time.html){:target="&#95;blank"}.
 
 ## Using Rspamd with Sendmail MTA
 
@@ -125,10 +125,9 @@ Then compile m4 to cf in the usual way.
 
 ## Integration with Haraka MTA
 
-Support for rspamd is available in haraka v2.7.0+: <http://haraka.github.io/manual/plugins/rspamd.html>.
+Support for rspamd is available in [Haraka v2.7.0+](http://haraka.github.io/manual/plugins/rspamd.html){:target="&#95;blank"}.
 
 To enable: add `rspamd` to the `DATA` section of your `config/plugins` file and edit `config/rspamd.ini` to suit your preferences.
-
 
 ## LDA mode
 
