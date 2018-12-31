@@ -4,6 +4,13 @@ title: Rspamd Architecture
 ---
 # Rspamd protocol
 
+{::options parse_block_html="true" /}
+
+<div id="toc">
+  * this unordered seed list will be replaced by toc as unordered list
+  {:toc}
+</div>
+
 ## Protocol basics
 
 Rspamd uses the HTTP protocol, either version 1.0 or 1.1. Rspamd defines some headers which allow the passing of extra information about a scanned message, such as envelope data, IP address or SMTP SASL authentication data, etc. Rspamd supports normal and chunked encoded HTTP requests.
@@ -23,6 +30,25 @@ Rspamd encourages the use of the HTTP protocol since it is standard and can be u
 	<your message goes here>
 
 You can also use chunked encoding that allows streamlined data transfer which is useful if you don't know the length of a message.
+
+## Rspamd protocol encryption
+
+Rspamd supports encryption by means of lightweight protocol called HTTPCrypt. You can read details about this protocol in the following [paper](https://highsecure.ru/httpcrypt.pdf){:target="&#95;blank"}. To enable encryption, you need to generate keypair and push it in the corresponding worker's section (e.g. `worker-controller.inc` or `worker-normal.inc` or, even, in `worker-proxy.inc`):
+
+```
+$ rspamadm keypair
+
+keypair {
+    privkey = "e4gr3yuw4xiy6dikdpqus8cmxj8c6pqstt448ycwhewhhrtxdahy";
+    id = "gnyieumi6sp6d3ykkukep9yuaq13q4u6xycmiqaw7iahsrz97acpposod1x8zogynnishtgxr47o815dgsz9t69d66jcm1drjei4a5d";
+    pubkey = "fg8uwtce9sta43sdwzddb11iez5thcskiufj4ug8esyfniqq5iiy";
+    type = "kex";
+    algorithm = "curve25519";
+    encoding = "base32";
+}
+```
+
+Unfortunately, this protocol is not widely adopted by popular libraries, however, you can use it with `rspamc` client and with any other internal clients, including Rspamd proxy which can be used as an encryption bridge to perform spam scanning using Rspamd. You can also use Nginx to perform SSL termination for Rspamd. Rspamd client side (e.g. proxy or `rspamc`) supports SSL encryption natively, however, there is no support of SSL on the server's side so far.
 
 ### HTTP request
 
@@ -113,7 +139,7 @@ Rspamd reply is encoded in `JSON`. Here is a typical HTTP reply:
 }
 ~~~
 
-For convenience, the reply is LINTed using [JSONLint](http://jsonlint.com). The actual reply is compressed for speed.
+For convenience, the reply is LINTed using [JSONLint](http://jsonlint.com){:target="&#95;blank"}. The actual reply is compressed for speed.
 
 Each reply has the following fields:
 

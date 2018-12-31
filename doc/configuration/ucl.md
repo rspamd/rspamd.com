@@ -4,7 +4,7 @@ title: UCL language
 ---
 # UCL configuration language
 
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+**Table of Contents**
 
 - [Introduction](#introduction)
 - [Basic structure](#basic-structure)
