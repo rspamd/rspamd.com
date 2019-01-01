@@ -147,18 +147,7 @@ h2{
   background: url({{ site.baseurl }}/img/rmilter_jumbotron.png);
   background-size: cover;
 }
-.support-block {
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-right: 5px;
-  padding-left: 5px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-right: 0px;
-  margin-left: 0px;
-}
+
 #wrapper {/*for removing wite space after footer*/
   min-height: 100vh;
   position: relative;
@@ -272,19 +261,14 @@ blockquote {
 .btn-pp{
   background-color: #ffcc66;
   border: 1px solid #ff9933;
-  color: #003366;
+  color: #000;
 }
 .btn-pp:hover{
   background-color:#feb74b;
-  color: #003366;
+  color: #000;
 }
-.support-block p{
-  margin-bottom: 0px;
-}
+
 @media (max-width: 768px) {
-  .support-block p{
-    margin-top: 10px;
-  }
   .who-uses blockquote{
     font-size: 10px;
   }

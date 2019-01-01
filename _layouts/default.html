@@ -1,29 +1,76 @@
 {% include top.html %}
-<!-- remove the white space after footer-->
+<style>
+	.r-container {
+		width: calc(100vw - 44px);
+		margin: auto;
+	}
 
+	.r-container ul, .r-container ol {
+		padding-left: 15px;
+	}
 
-	<!-- Jumbotron -->
-	<div class="jumbotron" id="jumbo-head">
-		<div class="container">
-			<h1 style="margin-bottom:0px;">Rspamd</h1>
-			<p style="font-size:16px;">Fast, free and open-source spam filtering system.</p>
-			<!--p><a class="btn btn-primary btn-large" href="{{ site.baseurl }}/doc/quickstart.html">Quick start &raquo;</a></p-->
-		</div>
-	</div>
+	h1 {
+		margin: 40px 0 20px;
+	}
 
-	<div class="container">
-		<div class="body-content">
-			{{ content }}
-		</div>
-		<!-- /.body-content -->
+	h2 {
+		font-size: 24px;
+	}
 
+	#full-list-of-the-meaningful-changes + ul {
+		display: none;
+	}
+
+	#full-list-of-the-meaningful-changes + ul.visible {
+		display: block;
+		list-style: none;
+		padding: 0;
+	}
+
+	.pagination > .active > span {
+		color: #ffffff !important;
+		background-color: #de4700 !important;
+		border-color: #de4700 !important;
+	}
+
+	.r-post-changes {
+		font-size: 14px;
+		font-weight: bold;
+		position: relative;
+		display: inline-block;
+	}
+
+	.r-post-changes:hover {
+		cursor: pointer;
+		text-decoration: underline;
+	}
+
+	.r-post-changes i {
+		padding: 0 5px;
+		position: relative;
+	}
+
+	.r-post-changes.open i {
+		transform: rotate(180deg);
+		top: 2px;
+	}
+</style>
+
+	<div class="r-container">
+		{{ content }}
 		<!--
-		        <p>Code licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.</p>
-		        <p>Based on <a href="http://getbootstrap.com">Bootstrap</a>. Icons from <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>. Web fonts from <a href="http://www.google.com/webfonts">Google</a>.</p>
-				-->
-
+			<p>Code licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.</p>
+			<p>Based on <a href="http://getbootstrap.com">Bootstrap</a>. Icons from <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>. Web fonts from <a href="http://www.google.com/webfonts">Google</a>.</p>
+		-->
 	</div>
-	<!-- /container -->
-	<div class="push"></div>
 {% include bottom.html %}
+
+<script>
+    $( document ).ready(function() {
+        $('h2:contains("Full list of the meaningful changes")').addClass('r-post-changes').append('<i class="fa fa-chevron-down"></i>').on('click', function(e) {
+            $( this ).toggleClass('open');
+            $( this ).next().toggleClass('visible');
+        });
+    });
+</script>
 </html>

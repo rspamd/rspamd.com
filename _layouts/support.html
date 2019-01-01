@@ -1,25 +1,79 @@
 {% include top.html %}
 
-<!-- Jumbotron -->
-<div class="jumbotron" id="jumbo-head">
-	<div class="container">
-		<h1 class="jumbo-main-text" style="margin-bottom:0px;">Rspamd support</h1>
-	</div>
-</div>
+<style>
+	.r-container {
+		width: calc(100vw - 44px);
+		margin: auto;
+	}
 
-<div class="container">
-	<div class="body-content doc-content">
-		{{ content }}
-	</div>
-	<!-- /.body-content -->
+	.r-support {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 20px;
+	}
 
+	.r-support:last-of-type {
+		margin-bottom: 0;
+	}
+
+	.r-support-btn {
+		width: 280px;
+		max-width: 100%;
+	}
+
+	.r-support-content {
+		width: calc(100% - 300px);
+	}
+
+	.r-support-content pre {
+		border: none;
+		padding: 0;
+		margin-bottom: 0;
+	}
+
+	.r-support-content > p {
+		margin-bottom: 0;
+	}
+
+	h1 {
+		margin: 40px 0 20px;
+	}
+
+	.r-support-btn.r-support-btn-pp {
+		position: relative;
+		height: 38px;
+	}
+
+	.r-support-btn.r-support-btn-pp:before {
+		content: '';
+		position: absolute;
+		background-image: url(img/pp.png);
+		background-size: 28px;
+		background-repeat: no-repeat;
+		background-position: center;
+		width: 33px;
+		height: 38px;
+		z-index: 100;
+		border-right: 1px solid #ff981f;
+	}
+
+	@media screen and (max-width: 768px) {
+		.r-support {
+			display: block;
+		}
+
+		.r-support-content {
+			width: 100%;
+			margin-top: 5px;
+		}
+	}
+</style>
+<div class="r-container">
+	{{ content }}
 	<!--
-		        <p>Code licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.</p>
-		        <p>Based on <a href="http://getbootstrap.com">Bootstrap</a>. Icons from <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>. Web fonts from <a href="http://www.google.com/webfonts">Google</a>.</p>
-				-->
-
+		<p>Code licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.</p>
+		<p>Based on <a href="http://getbootstrap.com">Bootstrap</a>. Icons from <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>. Web fonts from <a href="http://www.google.com/webfonts">Google</a>.</p>
+	-->
 </div>
-<!-- /container -->
-<div class="push"></div>
 {% include bottom.html %}
 </html>
