@@ -3,7 +3,7 @@ layout: support
 title: Rspamd Support
 ---
 
-## Community support
+# Community support
 
 
 <div class="r-support">
@@ -109,6 +109,6 @@ UK</pre>
     </div>
 </div>
 
-## Commercial support
+# Commercial support
 
 If you require the additional level of support related to large or custom Rspamd setup that could involve NDA signing, consulting, direct and unlimited access to the fuzzy storage, DNS lists and so on, you might go with the commercial support option. Should you have any questions or queries about this option then please contact <support@rspamd.com> for options and quotes.
