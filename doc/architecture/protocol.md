@@ -66,6 +66,7 @@ To avoid unnecessary work, Rspamd allows an MTA to pass pre-processed data about
 | `Hostname`   | Defines resolved hostname |
 | `From`       | Defines SMTP mail from command data |
 | `Queue-Id`   | Defines SMTP queue id for message (can be used instead of message id in logging). |
+| `Raw`        | If set to `yes`, then Rspamd assumes that the content is not MIME and treat it as raw data. |
 | `Rcpt`       | Defines SMTP recipient (there may be several `Rcpt` headers) |
 | `Pass`       | If this header has `all` value, all filters would be checked for this message. |
 | `Subject`    | Defines subject of message (is used for non-mime messages). |
