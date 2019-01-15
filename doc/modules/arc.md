@@ -2,6 +2,7 @@
 layout: doc
 title: ARC module
 ---
+
 # ARC module
 
 This module checks [ARC](http://arc-spec.org/) signatures and seals for emails scanned.
@@ -15,7 +16,7 @@ The configuration of this module is very similar to both  [dkim](./dkim.html) an
 
 - `whitelist` - a map of domains that should not be checked with ARC (e.g. if that domains have totally broken ARC signer)
 
-# Principles of operation
+## Principles of operation
 
 The ARC signing module chooses signing domains and selectors according to a predefined policy which can be modified with various settings. Description of this policy follows:
 
@@ -24,7 +25,7 @@ The ARC signing module chooses signing domains and selectors according to a pred
  * If authenticated user is present, this should be suffixed with @domain where domain is what's seen is envelope/header From address
  * Selector and path to key are selected from domain-specific config if present, falling back to global config
 
-# Configuration
+## Configuration
 
 ~~~ucl
 # local.d/arc.conf
