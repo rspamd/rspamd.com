@@ -2,9 +2,18 @@
 layout: doc
 title: Regexp module
 ---
-# Rspamd regexp module
 
-This is a core module that deals with regexp expressions to filter messages.
+# Rspamd regexp module
+{:.no_toc}
+
+This is a core module that deals with regular expressions, internal functions and Lua code to filter messages.
+
+{::options parse_block_html="true" /}
+<div id="toc">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 ## Principles of work
 
@@ -47,7 +56,7 @@ Rspamd support the following components within expressions:
 * Internal functions
 * Lua global functions (not widely used)
 
-### Regular expressions
+## Regular expressions
 
 In rspamd, regular expressions could match different parts of messages:
 
@@ -98,7 +107,7 @@ Each regexp also supports the following flags:
 * `O` - do not optimize regexp (rspamd optimizes regexps by default)
 * `r` - use non-utf8 regular expressions (raw bytes). This is default `true` if `raw_mode` is set to `true` in the options section.
 
-### Internal functions
+## Internal functions
 
 Rspamd supports a set of internal functions to do some common spam filtering tasks:
 
@@ -137,12 +146,12 @@ Rspamd supports a set of internal functions to do some common spam filtering tas
 
 Many of these functions are just legacy but they are supported in terms of compatibility.
 
-### Lua atoms
+## Lua atoms
 
 Lua atoms now can be lua global functions names or callbacks. This is 
 a compatibility feature for previously written rules.
 
-### Regexp objects
+## Regexp objects
 
 From rspamd 1.0, it is possible to add more power to regexp rules by using of
 table notation while writing rules. A table can have the following fields:
@@ -168,3 +177,19 @@ config['regexp']['RE_TEST'] = {
     end,
 }
 ~~~
+
+## Lua functions
+
+From version `1.8.4`, there is also support of using local Lua functions from regexp atoms using Regexp objects notation. These functions need to be defined in `functions` element that, in turn, should be a table of functions:
+
+~~~lua
+config.regexp.BLA = {
+  re = [[/re1/ & /re2/ & (lua:myfunction1 | !lua:myfunction2)]],
+  functions = {
+    myfunction1 = function(task) ... end,
+    myfunction2 = function(task) ... end,
+  }
+}
+~~~
+
+Please bear in mind that you **cannot** use asynchronous functions (including those with [coroutines](../lua/sync_async.html)) in these Lua snippets as Rspamd will not wait for them to be finished. The only way to use such functions in Regexp expressions is to create a dedicated rule that performs async stuff and then register dependency for regexp symbol: `rspamd_config:register_dependency('RE_SYMBOL', 'ASYNC_SYMBOL')` and then call `task:has_symbol('ASYNC_SYMBOL')` in Lua function defined in Regexp expression.
