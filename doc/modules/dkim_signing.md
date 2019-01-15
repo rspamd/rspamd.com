@@ -9,7 +9,7 @@ The DKIM signing module has been added in Rspamd 1.5 to provide a relatively sim
 
 DKIM signing currently works with Milter based MTAs (Sendmail, Postfix), Haraka & Communigate. For DKIM signing to work, you must [scan outbound mail with rspamd]({{ site.baseurl }}/doc/tutorials/scanning_outbound.html).
 
-# Principles of operation
+## Principles of operation
 
 The DKIM signing module chooses signing domains and selectors according to a predefined policy which can be modified with various settings. Description of this policy follows:
 
@@ -18,7 +18,7 @@ The DKIM signing module chooses signing domains and selectors according to a pre
  * If authenticated user is present, this should be suffixed with @domain where domain is what's seen is envelope/header From address
  * Selector and path to key are selected from domain-specific config if present, falling back to global config
 
-# Configuration
+## Configuration
 
 ~~~ucl
 # local.d/dkim_signing.conf
