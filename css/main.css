@@ -449,7 +449,7 @@ h1 {
   background-color: #e8e7e7;
   border-radius: 5px;
   padding: 4px 10px;
-  position: absolute;
+  position: sticky;
   top: 10px;
   right: 0;
   outline: none;
