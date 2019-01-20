@@ -15,6 +15,25 @@ Antivirus module (available from Rspamd 1.4) provides integration with virus sca
 
 ## Configuration
 
+The configuration for an antivirus setup is done by defining rules. If the antivirus reports one or more viruses the configured symbol will be set (e.g. CLAM_VIRUS) with the viruses as description and the if set the reset action will be triggered.
+
+When there is an error during the connection or the antivirus reports failures the fail symbol (e.g. CLAM_VIRUS_FAIL) will be set with the error message as description. For both symbols you can use patterns to set a dedicated symbol for any virus name or error message:
+
+~~~ucl
+...
+  patterns {
+    # symbol_name = "pattern";
+    JUST_EICAR = '^Eicar-Test-Signature$';
+  }
+  patterns_fail { # 1.8.4+
+    # symbol_name = "pattern";
+    CLAM_LIMITS_EXCEEDED = '^Heuristics\.Limits\.Exceeded$';
+  }
+...
+~~~
+
+In the default configuration the complete mail will be send to the antivirus system. You can change this behavior by setting scan_mime_parts = true; to send all mime parts detected as attachments seperately. Set scan_text_mime or scan_image_mime to true if you also want text mimes and images send to the AV scanner.
+
 By default, given [Redis]({{ site.baseurl }}/doc/configuration/redis.html) is configured globally and `antivirus` is not explicitly disabled in redis configuration, results are cached in Redis according to message checksums.
 
 Settings should be added to `/etc/rspamd/local.d/antivirus.conf`:
@@ -70,7 +89,9 @@ Sophos SAVDI is a little daemon which extends Sophos Anti-Virus for Linux to be 
 Rspamd is using the SSSP protocol to communicate with SAVDI. For a SAVDI config example - maybe have a look here:
 [https://gist.github.com/c-rosenberg/671b0a5d8b1b5a937e3e161f8515c666](https://gist.github.com/c-rosenberg/671b0a5d8b1b5a937e3e161f8515c666)
 
-From the version 1.7.2, there are 2 special configuration parameters for handling SAVDI warnings / error messages
+Note: Since 1.9.0 SAVDI errors  will be reported in the fail symbol (e.g. SOPHOS_VIRUS_FAIL). So the following configuration is obsolete. 
+
+From the version 1.7.2 up to 1.8.3, there are 2 special configuration parameters for handling SAVDI warnings / error messages
 in the sophos section: `savdi_report_encrypted` and `savdi_report_oversized`.
 When enabled pseudo virus names (SAVDI_FILE_OVERSIZED, SAVDI_FILE_ENCRYPTED) will be set in case
 Sophos reports encrypted file or the file is bigger than `maxscandata` in the scanprotocol section
