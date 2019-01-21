@@ -3,16 +3,16 @@ layout: doc
 title: Writing rules for Rspamd
 ---
 
+# Writing Rspamd rules
+
+In this tutorial, we describe how to create new rules for Rspamd - both Lua and regexp rules.
+
 {::options parse_block_html="true" /}
 
 <div id="toc">
   * this unordered seed list will be replaced by toc as unordered list
   {:toc}
 </div>
-
-# Writing Rspamd rules
-
-In this tutorial, we describe how to create new rules for Rspamd - both Lua and regexp rules.
 
 ## Introduction
 
