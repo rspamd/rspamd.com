@@ -5,12 +5,14 @@ title: External Services module
 
 # External Services module
 
-External Services module (available from Rspamd 1.9.0) provides integration with various external services. Currently supported are:
+External Services module (available from Rspamd 1.9.0) provides integration with various external services.
 
-*   [ICAP Protocol (generic)](https://en.wikipedia.org/wiki/Internet_Content_Adaptation_Protocol)
-*   [oletools via olefy](https://github.com/HeinleinSupport/olefy)
-*   [DCC](https://www.dcc-servers.net/dcc/)
-*   [VadeSecure](https://www.vadesecure.com/)
+{::options parse_block_html="true" /}
+<div id="toc">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 ## Configuration
 
