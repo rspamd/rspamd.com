@@ -10,7 +10,7 @@ External Services module (available from Rspamd 1.9.0) provides integration with
 *   [ICAP Protocol (generic)](https://en.wikipedia.org/wiki/Internet_Content_Adaptation_Protocol)
 *   [oletools via olefy](https://github.com/HeinleinSupport/olefy)
 *   [DCC](https://www.dcc-servers.net/dcc/)
-*   [VadeSecure](https://www.vadesecure.com/de/)
+*   [VadeSecure](https://www.vadesecure.com/)
 
 ## Configuration
 
@@ -268,7 +268,7 @@ A little help for the flags:
 *   V=VBA strings (VBA string expressions (potential obfuscation))
 
 
-# DCC specific details
+## DCC specific details
 
 This modules performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine
 the *bulkiness* of a message (e.g. how many recipients have seen it).
@@ -279,7 +279,7 @@ be sure the message is spam and can assign a greater weight to it.
 
 Please view the License terms on the DCC website before you enable this module.
 
-## Module configuration
+### Module configuration
 
 This module requires that you have the `dccifd` daemon configured, running and
 working correctly.  To do this you must download and build the [latest DCC client]
@@ -307,3 +307,95 @@ DCC identifies bulky mails by creating hash and therefor DCC needs the complete 
 
 Any messages that DCC returns a *reject* result for (based on the configured `DCCM_REJECT_AT`
 value) will cause the symbol `DCC_REJECT` to fire. DCC_BULK will be calculated from the body, fuz1, fuz2 return values and has a dynamic score.
+
+## VadeSecure specific details
+
+You need a valid VadeSecure [Filterd](https://www.vadesecure.com/en/email-content-filtering-isp/) installation. Please [contact VadeSecure](https://www.vadesecure.com) to obtain a valid trial or commercial license to get this product.
+
+After that, you can use VadeSecure to adjust symbols according to the category returned by filterd. Here are the default settings for this module (you can redefine them in `local.d/external_services.conf` file as usual):
+
+~~~ucl
+vadesecure {
+  default_port = 23808,
+  url = '/api/v1/scan',
+  use_https = false,
+  timeout = 5.0,
+  log_clean = false,
+  retransmits = 1,
+  cache_expire = 7200, -- expire redis in 2h
+  message = '${SCANNER}: spam message found: "${VIRUS}"',
+  detection_category = "hash",
+  default_score = 1,
+  action = false,
+  log_spamcause = true,
+  symbol_fail = 'VADE_FAIL',
+  symbol = 'VADE_CHECK',
+  symbols = {
+    clean = {
+      symbol = 'VADE_CLEAN',
+      score = -0.5,
+      description = 'VadeSecure decided message to be clean'
+    },
+    spam = {
+      high = {
+        symbol = 'VADE_SPAM_HIGH',
+        score = 8.0,
+        description = 'VadeSecure decided message to be clearly spam'
+      },
+      medium = {
+        symbol = 'VADE_SPAM_MEDIUM',
+        score = 5.0,
+        description = 'VadeSecure decided message to be highly likely spam'
+      },
+      low = {
+        symbol = 'VADE_SPAM_LOW',
+        score = 2.0,
+        description = 'VadeSecure decided message to be likely spam'
+      },
+    },
+    malware = {
+      symbol = 'VADE_MALWARE',
+      score = 8.0,
+      description = 'VadeSecure decided message to be malware'
+    },
+    scam = {
+      symbol = 'VADE_SCAM',
+      score = 7.0,
+      description = 'VadeSecure decided message to be scam'
+    },
+    phishing = {
+      symbol = 'VADE_PHISHING',
+      score = 8.0,
+      description = 'VadeSecure decided message to be phishing'
+    },
+    commercial =  {
+      symbol = 'VADE_COMMERCIAL',
+      score = 0.0,
+      description = 'VadeSecure decided message to be commercial message'
+    },
+    community =  {
+      symbol = 'VADE_COMMUNITY',
+      score = 0.0,
+      description = 'VadeSecure decided message to be community message'
+    },
+    transactional =  {
+      symbol = 'VADE_TRANSACTIONAL',
+      score = 0.0,
+      description = 'VadeSecure decided message to be transactional message'
+    },
+    suspect = {
+      symbol = 'VADE_SUSPECT',
+      score = 3.0,
+      description = 'VadeSecure decided message to be suspicious message'
+    },
+    bounce = {
+      symbol = 'VADE_BOUNCE',
+      score = 0.0,
+      description = 'VadeSecure decided message to be bounce message'
+    },
+    other = 'VADE_OTHER',
+  }
+}
+~~~
+
+You can define subcategories for symbols if needed (see `spam` example above).
