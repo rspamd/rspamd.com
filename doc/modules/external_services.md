@@ -147,9 +147,9 @@ Typical error responses like `X-Infection-Found: Type=2; Resolution=2; Threat=En
 
 ## oletools specific details
 
-Oletools is a great python module for scanning and analyzing office documents with macros. Typically a macro-virus uses an auto-exec function to be loaded when the document is opened next to functions for executing code in a shell or save files to the system. oletools classifies bad functions in AutoExec and Suspiciuos. In the default mode the oletools module will set the result when at least one AutoExec and one Suspiciuos function is used.
+Oletools is a great python module for scanning and analyzing office documents with macros. Typically a macro-virus uses an auto-exec function to be loaded when the document is opened next to functions for executing code in a shell or save files to the system. oletools classifies bad functions in AutoExec and Suspicious. In the default mode the oletools module will set the result when at least one AutoExec and one Suspicious function is used.
 
-Please take in mind oletools is not an antivirus scanner. It just analyzes a macro. There are also legit office files with AutoExec and Suspiciuos functions. Also we have seen some macro viruses not using AutoExec functions. If you want a more detailed control over the oletools modules behavior, have a look to the extended mode below. Maybe you also want to have a look to the olevba documentation: [https://github.com/decalage2/oletools/wiki/olevba](https://github.com/decalage2/oletools/wiki/olevba)
+Please take in mind oletools is not an antivirus scanner. It just analyzes a macro. There are also legit office files with AutoExec and Suspicious functions. Also we have seen some macro viruses not using AutoExec functions. If you want a more detailed control over the oletools modules behavior, have a look to the extended mode below. Maybe you also want to have a look to the olevba documentation: [https://github.com/decalage2/oletools/wiki/olevba](https://github.com/decalage2/oletools/wiki/olevba)
 
 The oletools default behavior is useful if you don't want to block all office files with macros, but files with macros using functions often seen in macro viruses.
 
@@ -308,7 +308,7 @@ dcc {
 DCC identifies bulky mails by creating hash and therefor DCC needs the complete message to work properly. `scan_mime_parts = false` is already set in the defaults.
 
 Any messages that DCC returns a *reject* result for (based on the configured `DCCM_REJECT_AT`
-value) will cause the symbol `DCC_REJECT` to fire. DCC_BULK will be calculated from the body, fuz1, fuz2 return values and has a dynamic score.
+value) will cause the symbol `DCC_REJECT` to fire. `DCC_BULK` will be calculated from the body, fuz1, fuz2 return values and has a dynamic score.
 
 ## VadeSecure specific details
 
@@ -401,3 +401,73 @@ vadesecure {
 ~~~
 
 You can define subcategories for symbols if needed (see `spam` example above).
+
+# SpamAssassin specific details
+
+SpamAssassin is supported by using the spamd daemon. Please take in mind there is also a dedicated spamassassin module with different benefits. The dedicated spamassassin module is able to load spamassassin rules directly into the Rspamd environment whereas the External Services SpamAssassin module communicates to a full separate spamassassin installation.
+
+Just a warning - compared to Rspamd SpamAssassin is much more CPU-hungry and will maybe slow down your server. If you just want to use your existing spamassassin rules you should go with the dedicated spamassassin module or even tranfer your rules into multimaps and/or composites.
+
+The benefit of this module is the support of all spamassassin features and plugins (e.g. iXHash). Also if you are using the Neural Network plugin you maybe don't want to import thousands of extra symbols into Rspamd. Another approach is maybe the soft migration from a SpamAssassin setup to Rspamd.
+
+## Spamd setup
+
+Enable the spamassassin spamd daemon to listen on a socket or a TCP port. You might want to disable all unused plugins or even all remote checks by editing the config files in /etc/mail/spamassassin.
+
+## spamassassin module default setup
+
+In the default setup no special configuration is needed. The module will set all reported spamassassin symbols as string into the Rspamd SPAMD symbol. The score reported by spamd will be set as dynamic score. If you set the weight of the symbol it will be used as a mutliplier - so `dynamic_score * weight = total score`.
+
+~~~ucl
+# local.d/external_services.conf
+
+spamassassin {
+  symbol = "SPAMD"
+  type = "spamassassin";
+  servers = "127.0.0.1:783";
+}
+~~~
+
+## spamassassin module extended setup
+
+~~~ucl
+# local.d/external_services.conf
+
+spamassassin {
+  ...
+  extended = true;
+  ...
+}
+~~~
+
+When setting `extended = true` the module will set all reported symbols as dedicated threats. Be aware in the extended configuration the score calculation is `number of threats * dynamic_score * weight = total score`. You can use `one_shot = true` change this behavior.
+
+
+~~~ucl
+# local.d/external_services_group.conf
+symbols = {
+...
+  "SPAMD" {
+    weight = 1.0;
+    description = "SPAMD found symbols";
+    one_shot = true;
+  }
+...
+}
+~~~
+
+Having every symbol set as dedicated threat it is possible to set a Rspamd symbol for reported spamassassin symbols using patters.
+
+~~~ucl
+# local.d/external_services.conf
+
+spamassassin {
+  ...
+  patterns {
+    # symbol_name = "pattern";
+    SPAMD_NIXSPAM_IXHASH = "^NIXSPAM_IXHASH$";
+    SPAMD_GENERIC_IXHASH = "^GENERIC_IXHASH$";
+  }
+  ...
+}
+~~~
