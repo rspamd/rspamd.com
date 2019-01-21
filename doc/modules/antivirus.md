@@ -13,6 +13,13 @@ Antivirus module (available from Rspamd 1.4) provides integration with virus sca
 * [Avira](https://www.avira.com/de/oem-antivirus) (via SAVAPI)
 * [Kaspersky antivirus](https://www.kaspersky.com/small-to-medium-business-security/linux-mail-server) (from 1.8.3)
 
+{::options parse_block_html="true" /}
+<div id="toc">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
+
 ## Configuration
 
 The configuration for an antivirus setup is done by defining rules. If the antivirus reports one or more viruses the configured symbol will be set (e.g. CLAM_VIRUS) with the viruses as description and the if set the reset action will be triggered.
