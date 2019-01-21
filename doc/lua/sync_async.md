@@ -3,6 +3,10 @@ layout: doc
 title: Sync and Async API comparison
 ---
 
+# Rspamd asynchronous calls
+
+This guide describes how to make asynchronous calls from Rspamd plugins and rules.
+
 {::options parse_block_html="true" /}
 
 <div id="toc">
