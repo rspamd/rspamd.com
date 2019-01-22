@@ -97,6 +97,8 @@ sysctl kernel.core_uses_pid=1
 sysctl fs.suid_dumpable=2
 ```
 
+You also need to install `debuginfo` package, that is called `rspamd-debuginfo` for RPM based Linux distributions and `rspamd-dbg` for Debian based ones (e.g. Ubuntu).
+
 **FreeBSD specific**
 
 For FreeBSD you can have either one core for all processes by setting:
