@@ -399,21 +399,34 @@ Unlike SpamAssassin, Rspamd **suggests** the desired action for a specific messa
 - `no action`: allow message
 - `soft reject`: temporarily delay message (this is used, for instance, to greylist or ratelimit messages)
 
-This might be a bit confusing but internally Rspamd operates with rules. Each rule can add positive or negative score to the result. Therefore it is required to have some thresholds for actions that are applied to a message. These thresholds are defined in `metric.actions` section:
+From version 1.9, there are also some more actions:
+
+- `quarantine`: push a message to quarantine (must be supported by MTA)
+- `discard`: silently discard a message
+
+From version 1.9, you can also define any action you'd like with it's own threshold or use that in `force_actions` module:
 
 ```ucl
-metric {
-    name = "default";
-    # If this param is set to non-zero
-    # then a metric would accept all symbols
-    # unknown_weight = 1.0
+actions {
+  # Generic threshold
+  my_action = {
+    score = 9.0;
+  },
+  # Force action only
+  phishing = {
+    flags = ["no_threshold"],
+  }
+}
+```
 
-    actions {
-      reject = 15;
-      add_header = 6;
-      greylist = 4;
-    }
-    ...
+This might be a bit confusing but internally Rspamd operates with rules. Each rule can add positive or negative score to the result. Therefore it is required to have some thresholds for actions that are applied to a message. These thresholds are defined in `actions` section:
+
+```ucl
+actions {
+  reject = 15;
+  add_header = 6;
+  greylist = 4;
+}
 ```
 
 As you can see, it is slightly different from the real actions list. The name `actions` should actually be treated as `score thresholds` but it has this name historically. As you can see, there is no `discard` and `soft reject` actions but there is a very special `greylist` element that specifies score threshold for greylisting plugin.
