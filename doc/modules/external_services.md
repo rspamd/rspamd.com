@@ -53,7 +53,7 @@ Also you are able to use 2 types of mime part filters:
 ...
 ~~~
 
-mime_parts_filter_regex will match on the content-type or the filename of an attachment. mime_parts_filter_ext will only match the extension of the filename.
+mime_parts_filter_regex will match on the content-type detected by rspamd or mime part header or the declared filename of an attachment or an archive file listing. mime_parts_filter_ext will only match the extension of the declared filename or an archives file list.
 
 Next to the defaults you normally have to set individual config options for each rule detailed below.
 
@@ -126,6 +126,7 @@ This module was tested with these icap implementations:
 *   ClamAV (using c-icap server and squidclamav)
 *   Sophos (via SAVDI)
 *   Symantec Protection Engine for Cloud Services
+*   Kaspersky Web Traffic Security 6.0
 
 Please report other working or non-working icap implementations.
 
