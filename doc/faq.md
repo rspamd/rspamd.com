@@ -27,19 +27,27 @@ git log <old_hash>..<new_hash>
 
 Experimental packages are considered less stable but they are normally built when all internal tests are passed. These packages also include new major and minor features that might be useful for your setup.
 
+You should consider experimental packages in the following cases:
+
+* You experience a significant issue with a stable package that is (likely) fixed in experimental packages
+* You are running small system so you can live on bleeding edge version of Rspamd and can downgrade package manually if needed (e.g. if a fresh package has something bad with your configuration)
+* You can test a new version using [mirroring in Rspamd proxy]({{ site.baseurl }}/doc/workers/rspamd_proxy.html).
+
+The last option is recommended for all users in fact even if you prefer to use stable packages only. This would help you to reduce stress and risks by not testing new versions on production *but* testing them with your **specific** configuration and production traffic. The only disadvantage is that it requires some computational and mental resources to build a mirror for experiments as you need to mirror your full environment, including local configs and Redis instances (probably with less `maxmemory` limit, of course).
+
 ### How Rspamd packages are built
 
 Rspamd packages are provided for many [platforms]({{ site.url }}{{ site.baseurl }}/downloads.html). The packages are built using the following principles:
 
 1. Enable `link time optimizations` where possible to improve the overall performance
-2. Bundle [LuaJIT](https://luajit.org) using 2.1 beta versions from the vendor. This provides up to 30% improvement over the vanilla LuaJIT normally available in your distributive.
+2. Bundle [LuaJIT](https://luajit.org) using 2.1 beta versions from the vendor. In some experiments, this proved to provide up to 30% improvement over the stable LuaJIT.
 3. Enable jemalloc
 4. Enable neural networks support (libfann before 1. 7, torch after 1.7)
 5. Support [Hyperscan](https://01.org/hyperscan)
 
 Some of these options are not available on some older platforms (Debian wheezy, Ubuntu Precise or CentOS 6) due to limitations of software provided.
 
-All packages are signed and should also be downloaded using `https`.
+All packages are signed and should also be downloaded using `https`. Debugging packages are also available (`rspamd-debuginfo` for RPM packages and `rspamd-dbg` for DEB ones).
 
 ### Resolver setup
 
@@ -78,7 +86,7 @@ chmod 1777 /coreland
 
 It is also good idea is to add the following settings to `/etc/sysctl.conf` and then run `sysctl -p` to apply them:
 
-**Linux sepcific**
+**Linux specific**
 
 ```
 sysctl kernel.core_pattern=/coreland/%e.core
@@ -323,6 +331,20 @@ Rspamd as a spam-filtering system or as a project is spelled with a capital `R` 
 
 ## Configuration questions
 
+### How to get my configuration
+
+You can do it by `rspamadm configdump` command. It will link all files together and will show it to you as Rspamd observes it internally.
+
+You can convert it to json using `-j` flag or preserve comments by passing `-c` flag. You can also dump merely specific parts of the config by typing
+
+```
+rspamadm configdump multimap
+rspamadm configdump worker
+rspamadm configdump classifier
+```
+
+Configuration snippets are usually asked if you want to report some issue found in Rspamd in case if you use non-standard configuration.
+
 ### How to change score for some symbol
 
 Unfortunately, it is not an easy question. If you use [WebUI](../webui/) then it redefines all scores and actions thresholds. Once you set some symbol's score in WebUI it is almost impossible to change it by other ways (you can do it by changing/removing the file `$DBDIR/rspamd_dynamic` which is usually `/var/lib/rspamd_dynamic` or `/var/db/rspamd_dynamic` depending on your OS).
@@ -355,18 +377,7 @@ group "mygroup" {
 
 To redefine symbols for the existing groups, it is recommended to use a specific `local.d` or `override.d` file, for example, `local.d/rbl_group.conf` to add your custom RBLs. To get the full list of such files, you can take a look over the `groups.conf` file in the main Rspamd configuration directory (e.g. `/etc/rspamd/groups.conf`).
 
-### Rspamd does not work as expected
-
-Please check your configuration using `rspamdadm configdump`. You can narrow search by specifying the specific module:
-
-```
-rspamadm configdump fuzzy_check
-rspamadm configdump options
-rspamadm configdump options.dns
-rspamadm configdump worker
-```
-
-### Rspamd still does not work as expected
+### Rspamd configuration is broken
 
 Have you added an extra `section_name {}` to `local.d/section.conf` file? For example, this one will **NOT** work:
 
@@ -387,6 +398,8 @@ domain {
    ...
 }
 ```
+
+Rspamd now also reports about this sort of nesting on configuration load and in `rspamadm configtest` as well.
 
 ### What are Rspamd actions
 
