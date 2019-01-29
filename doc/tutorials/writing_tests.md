@@ -74,4 +74,28 @@ Unfortunately, it is currently impossible to execute specific unit tests only.
 
 ## Functional tests
 
-TODO: write this
+Functional tests are intended to test the whole setup of Rspamd and you should first learn some basics about the [Robot framework](https://robotframework.org/) that is used to write tests.
+
+Functional tests live in `test/functional` directory. To run functional tests, you first need to **install** Rspamd in your system (or a container). Then you can run them manually using something like `RSPAMD_INSTALLROOT=/usr/local robot -s '280*' ~/rspamd/test/functional/cases`, where:
+
+* `RSPAMD_INSTALLROOT` - a prefix where Rspamd is installed (e.g. `/usr` for the vast majority of Linux installations)
+* `-s` - pattern to match tests (may be skipped if all tests are needed)
+* `~/rspamd/test/functional/cases` - directory where test cases are placed
+
+Functional tests are also executed by [Rspamd CI](https://ci.rspamd.com/rspamd/rspamd). It also covers pull requests you send on the Github site.
+
+### Functional tests structure
+
+Each test usually has 3 components:
+
+* Test case (written in Robot) that lives in `test/functional/cases`
+* Some configuration that lives in `test/functional/configs`
+* Messages to scan in `test/functional/messages`
+
+In many cases you'd also need to have some specific Lua code that should be placed in `test/functional/lua`. For complicated setups, e.g. if you need some fake or real external service, you could need to write some python code that should be placed to `test/functional/lib` and, for fake services, in `test/functional/util`.
+
+You could find plenty of examples about how to run those fake servers in the existing tests.
+
+### Test case structure
+
+TODO
