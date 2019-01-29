@@ -98,4 +98,72 @@ You could find plenty of examples about how to run those fake servers in the exi
 
 ### Test case structure
 
-TODO
+Each test is enclosed within some specific test case. Test case consist of `setup`, `set of tests` and `teardown`.
+
+General testing advices for the Robot Framework are listed [here](https://github.com/robotframework/HowToWriteGoodTestCases/blob/master/HowToWriteGoodTestCases.rst).
+
+Test case has also a preamble that defines some common variables and setup + teardown procedures:
+
+```
+*** Settings ***
+Suite Setup     Rbl Setup
+Suite Teardown  Rbl Teardown
+Library         ${TESTDIR}/lib/rspamd.py
+Resource        ${TESTDIR}/lib/rspamd.robot
+Variables       ${TESTDIR}/lib/vars.py
+
+*** Variables ***
+${CONFIG}       ${TESTDIR}/configs/plugins.conf
+${MESSAGE}      ${TESTDIR}/messages/spam_message.eml
+${RSPAMD_SCOPE}  Suite
+${URL_TLD}      ${TESTDIR}/../lua/unit/test_tld.dat
+```
+
+Setup procedure starts Rspamd using specific config file, teardown procedure, in turn, switches everything off. Both are listed in the `Keywords` section:
+
+```
+*** Keywords ***
+Rbl Setup
+  ${PLUGIN_CONFIG} =  Get File  ${TESTDIR}/configs/rbl.conf
+  Set Suite Variable  ${PLUGIN_CONFIG}
+  Generic Setup  PLUGIN_CONFIG
+
+Rbl Teardown
+  Normal Teardown
+  Terminate All Processes    kill=True
+```
+
+Test cases are listed within `*** Test Cases ***` section:
+
+```
+*** Test Cases ***
+RBL FROM MISS
+  ${result} =  Scan Message With Rspamc  ${MESSAGE}  -i  1.2.3.4
+  Check Rspamc  ${result}  FAKE_RBL_CODE_2  inverse=True
+
+RBL FROM HIT
+  ${result} =  Scan Message With Rspamc  ${MESSAGE}  -i  4.3.2.1
+  Check Rspamc  ${result}  FAKE_RBL_CODE_2
+```
+
+### General advices for making test cases for Rspamd
+
+* Always use fake DNS records:
+
+~~~ucl
+dns {
+ fake_records = [
+ { # ed25519
+   name = "test._domainkey.example.com";
+   type = txt;
+   replies = ["k=ed25519; p=yi50DjK5O9pqbFpNHklsv9lqaS0ArSYu02qp1S0DW1Y="];
+ },
+ ...
+ ]
+}
+~~~
+
+* Use fake servers to emulate large software (e.g. a virus scanner)
+* Try to reduce external dependencies, DNS requests, TCP requests etc
+* Push all tests that require some specific config within a single test suite to avoid setup/teardown cost on testing
+* Logs for tests are saved in `$(CURDIR)/robot-save`: you can find the exact configuration and the full debug logs for all tests; test name is enclosed in queue id of the messages to simplify logs reading
