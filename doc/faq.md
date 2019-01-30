@@ -648,7 +648,7 @@ IP maps:
 
 ### How to sign maps
 
-From Rspamd version 1.2 onwards, each map can have a digital signature using the `EdDSA` algorithm. To sign a map you can use `rspamadm signtool` and to generate a signing keypair - `rspamadm kyypair -s -u`:
+From Rspamd version 1.2 onwards, each map can have a digital signature using the `EdDSA` algorithm. To sign a map you can use `rspamadm signtool` and to generate a signing keypair - `rspamadm keypair -s -u`:
 
 ```ucl
 keypair {
