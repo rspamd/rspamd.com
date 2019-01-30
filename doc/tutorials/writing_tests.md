@@ -18,8 +18,8 @@ Testing is an important part of maintaining stable product. In case of Rspamd, t
 
 Rspamd has two types of tests:
 
-* Unit tests - those type of tests are intended to test some particular function in Rspamd and are written in Lua + FFI (if testing plain C function) using [telescope framework](https://github.com/norman/telescope);
-* Functional tests - are used to test the whole daemon behaviour with complex setup involving custom configuration, external services, such as Redis, and so on. Functional tests are written using [Robot framework](https://robotframework.org/).
+* Unit tests - those type of tests are intended to test some particular function in Rspamd and are written in Lua + FFI (if testing plain C function) using [Telescope framework](https://github.com/norman/telescope);
+* Functional tests - are used to test the whole daemon behaviour with complex setup involving custom configuration, external services, such as Redis, and so on. Functional tests are written using [Robot Framework](https://robotframework.org/).
 
 ## Unit tests
 
@@ -74,7 +74,7 @@ Unfortunately, it is currently impossible to execute specific unit tests only.
 
 ## Functional tests
 
-Functional tests are intended to test the whole setup of Rspamd and you should first learn some basics about the [Robot framework](https://robotframework.org/) that is used to write tests.
+Functional tests are intended to test the whole setup of Rspamd and you should first learn some basics about the [Robot Framework](https://robotframework.org/) that is used to write tests.
 
 Functional tests live in `test/functional` directory. To run functional tests, you first need to **install** Rspamd in your system (or a container). Then you can run them manually using something like `RSPAMD_INSTALLROOT=/usr/local robot -s '280*' ~/rspamd/test/functional/cases`, where:
 
@@ -82,7 +82,7 @@ Functional tests live in `test/functional` directory. To run functional tests, y
 * `-s` - pattern to match tests (may be skipped if all tests are needed)
 * `~/rspamd/test/functional/cases` - directory where test cases are placed
 
-Functional tests are also executed by [Rspamd CI](https://ci.rspamd.com/rspamd/rspamd). It also covers pull requests you send on the Github site.
+Functional tests are also executed by [Rspamd CI](https://ci.rspamd.com/rspamd/rspamd). It also covers pull requests you send on the GitHub site.
 
 ### Functional tests structure
 
@@ -92,7 +92,7 @@ Each test usually has 3 components:
 * Some configuration that lives in `test/functional/configs`
 * Messages to scan in `test/functional/messages`
 
-In many cases you'd also need to have some specific Lua code that should be placed in `test/functional/lua`. For complicated setups, e.g. if you need some fake or real external service, you could need to write some python code that should be placed to `test/functional/lib` and, for fake services, in `test/functional/util`.
+In many cases you'd also need to have some specific Lua code that should be placed in `test/functional/lua`. For complicated setups, e.g. if you need some fake or real external service, you could need to write some Python code that should be placed to `test/functional/lib` and, for fake services, in `test/functional/util`.
 
 You could find plenty of examples about how to run those fake servers in the existing tests.
 
@@ -100,7 +100,7 @@ You could find plenty of examples about how to run those fake servers in the exi
 
 Each test is enclosed within some specific test case. Test case consist of `setup`, `set of tests` and `teardown`.
 
-General testing advices for the Robot Framework are listed [here](https://github.com/robotframework/HowToWriteGoodTestCases/blob/master/HowToWriteGoodTestCases.rst).
+General testing advice on the Robot Framework is listed [here](https://github.com/robotframework/HowToWriteGoodTestCases/blob/master/HowToWriteGoodTestCases.rst).
 
 Test case has also a preamble that defines some common variables and setup + teardown procedures:
 
@@ -146,7 +146,7 @@ RBL FROM HIT
   Check Rspamc  ${result}  FAKE_RBL_CODE_2
 ```
 
-### General advices for making test cases for Rspamd
+### General advice on making test cases for Rspamd
 
 * Always use fake DNS records:
 
