@@ -4,10 +4,18 @@ title: DKIM signing module
 ---
 
 # DKIM signing module
+{:.no_toc}
 
 The DKIM signing module has been added in Rspamd 1.5 to provide a relatively simple way to configure DKIM signing, the more flexible alternative being [sign_condition]({{ site.baseurl }}/doc/modules/dkim.html#dkim-signatures) in the DKIM module.
 
 DKIM signing currently works with Milter based MTAs (Sendmail, Postfix), Haraka & Communigate. For DKIM signing to work, you must [scan outbound mail with rspamd]({{ site.baseurl }}/doc/tutorials/scanning_outbound.html).
+
+{::options parse_block_html="true" /}
+<div id="toc">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 ## Principles of operation
 
@@ -17,6 +25,8 @@ The DKIM signing module chooses signing domains and selectors according to a pre
  * If envelope from address is not empty, the effective second level domain must match the MIME header From
  * If authenticated user is present, this should be suffixed with @domain where domain is what's seen is envelope/header From address
  * Selector and path to key are selected from domain-specific config if present, falling back to global config
+ 
+If using DKIM private keys stored in files, you need to ensure that Rspamd scanner processes (e.g. normal worker, controller or a proxy in self-scan mode) can **open** signing keys, so they should be accessible for the user `_rspamd` in the most of the cases.
 
 ## Configuration
 
@@ -102,6 +112,24 @@ domain {
 
 }
 ~~~
+
+## DKIM keys management
+
+Rspamd always use `relaxed/relaxed` encoding with `rsa-sha256` signature algorithm. This selection seems to be the most appropriate for all cases. Rspamd adds a special element called `DKIM-Signature` to the output when signing has been done.
+
+You can generate DKIM keys for your domain using `rspamadm dkim_keygen` utility:
+
+~~~
+rspamadm dkim_keygen -s 'test' -d example.com
+
+-----BEGIN PRIVATE KEY-----
+...
+-----END PRIVATE KEY-----
+test._domainkey IN TXT ( "v=DKIM1; k=rsa; "
+  "p=MIGJAoGBALBrq9K6yxAXHwircsTnDTsd2Kg426z02AnoKTvyYNqwYT5Dxa02lyOiAXloXVIJsyfuGOOoSx543D7DGWw0plgElHXKStXy1TZ7fJfbEtuc5RASIKqOAT1iHGfGB1SZzjt3a3vJBhoStjvLulw4h8NC2jep96/QGuK8G/3b/SJNAgMBAAE=" ) ;
+~~~
+
+The first part is DKIM private key (that should be saved to some file) and the second part is DNS record for the public part that you should place in your zone's file. This command can also save both private and public parts to files.
 
 ## DKIM keys in Redis
 
@@ -198,3 +226,60 @@ As you can see, oversigned headers are prefixed with `(o)` string.
 - signed `n` times if they are present `n` times
 - for the `n = 0` case this would mean that headers are not signed if they are not present. Oversigned headers are still signed one time to prevent adding a header with this name.
 - headers listed as oversigned are signed `n + 1` times
+
+### Issues using Sendmail on DKIM signing and verification
+
+This part of the documentation has been contributed by Dilyan Palauzov.
+
+When using the sendmail MTA in both signing and verifying mode, there are
+a few issues of which to be aware that might cause operational problems
+and deserve consideration.
+
+*  When the MTA will be used for relaying emails, e.g. delivering to other
+   hosts using the aliases mechanism, it is important not to break
+   signatures inserted by the original sender.  This is particularly sensitive
+   particular when the sending domain has published a "reject" DMARC policy.
+
+   By default, sendmail quotes to address header fields when there are no
+   quotes and the display part of the address contains a period or an
+   apostrophe.  However, Rspamd only observes the raw, unmodified form of
+   the header field, and so the content that gets verified and what gets
+   signed will not be the same, guaranteeing the attached signature is not
+   valid.
+
+   To direct sendmail not to modify the headers, add this to your sendmail.mc:
+
+    	conf(`confMUST_QUOTE_CHARS', `')
+
+* As stated in sendmail's KNOWNBUGS file, sendmail truncates header field
+  values longer than 256 characters, which could mean truncating the domain
+  of a long From: header field value and invalidating the signature.
+  You may wish to consider increasing MAXNAME in sendmail/conf.h to mitigate
+  changing the messages and invalidating their signatures.  This change
+  requires recompiling sendmail.
+
+* Similar to the first bullet above, sendmail may wrap very long single-line recipient
+  fields for presentation purposes; for example:
+
+```
+    To: very long name <a@example.org>,anotherloo...ong name b <b@example.org>
+```
+
+  ... might be rewritten as:
+    
+```
+    To: very long name <a@example.org>,
+    	anotherloo...ong name b <b@example.org>
+```
+
+  This rewrite is also done after Rspamd has seen the message, meaning
+  the signature Rspamd attaches to the message does not match the
+  content it signed.  There is not a known configuration change to
+  mitigate this mutation.
+
+  The only known mechanism for dealing with this is to have distinct
+  settings of Rspamd do the verifying (inbound) and signing (outbound)
+  so that the version that arrives at the signing instance is already
+  in the rewritten form, guaranteeing the input and output are the same
+  and thus the signature matches the payload. You can do such a split using [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html).
+
