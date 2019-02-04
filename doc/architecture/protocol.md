@@ -80,6 +80,7 @@ To avoid unnecessary work, Rspamd allows an MTA to pass pre-processed data about
 | `TLS-Cipher` | Defines TLS cipher name. |
 | `TLS-Version` | Defines TLS version. |
 | `TLS-Cert-Issuer` | Defines Cert issuer, can be used in conjunction with `client_ca_name` in [proxy worker](../workers/rspamd_proxy.html). |
+| `URL-Format` | Supported from version 1.9: return all URLs and email if this header is `extended`. |
 | `Filename` | Hint for filename if used with some file. |
 
 Controller also defines certain headers, see [here](#controller-http-endpoints) for detail.
