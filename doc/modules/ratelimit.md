@@ -3,6 +3,7 @@ layout: doc
 title: Ratelimit module
 ---
 # Ratelimit plugin
+{:.no_toc}
 
 Ratelimit plugin is designed to limit messages coming from certain senders, to
 certain recipients from certain IP addresses combining these parameters into
@@ -10,6 +11,13 @@ a separate limits.
 
 All limits are stored in [Redis](http://redis.io) server (or servers cluster) to enable
 shared cache between different scanners.
+
+{::options parse_block_html="true" /}
+<div id="toc">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 ## Module configuration
 
