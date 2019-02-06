@@ -8,6 +8,8 @@ title: Clickhouse module
 
 Clickhouse module pushes a variety of message-related metadata to an instance of [Clickhouse](https://clickhouse.yandex/), an open-source column-oriented DBMS useful for realtime analytics. Information that could be collected includes: senders/recipients/scores of scanned messages and metadata such as DKIM/DMARC/bayes/fuzzy status & information about URLs and attachments.
 
+You can also use [Redash](https://redash.io) to build your own analytical board using this module (similar to Elastic + Kibana).
+
 {::options parse_block_html="true" /}
 <div id="toc">
   <h2 class="toc-header">Contents</h2>
