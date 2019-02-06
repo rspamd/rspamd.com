@@ -4,10 +4,81 @@ title: Clickhouse module
 ---
 
 # Clickhouse module
+{:.no_toc}
 
 Clickhouse module pushes a variety of message-related metadata to an instance of [Clickhouse](https://clickhouse.yandex/), an open-source column-oriented DBMS useful for realtime analytics. Information that could be collected includes: senders/recipients/scores of scanned messages and metadata such as DKIM/DMARC/bayes/fuzzy status & information about URLs and attachments.
 
-### Clickhouse usage examples
+{::options parse_block_html="true" /}
+<div id="toc">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
+
+## Module Configuration
+
+Example configuration shown below, minimum working configuration is `clickhouse {}`:
+
+~~~ucl
+clickhouse {
+  # Push update when 1000 records are collected (1000 if unset)
+  limit = 1000;
+  # IP:port of Clickhouse server ("localhost:8123" if unset)
+  server = "localhost:8123";
+  # Timeout to wait for response (5 seconds if unset)
+  timeout = 5;
+  # How many bits of sending IP to mask in logs for IPv4 (19 if unset)
+  ipmask = 19;
+  # How many bits of sending IP to mask in logs for IPv6 (48 if unset)
+  ipmask6 = 48;
+  # Record URL paths? (default false)
+  full_urls = false;
+  # This parameter points to a map of domain names
+  # If a message has a domain in this map in From: header and DKIM signature,
+  # record general metadata in a table named after the domain
+  #from_tables = "/etc/rspamd/clickhouse_from.map";
+  # These are symbols of other checks in Rspamd
+  # Set these if you use non-default symbol names (unlikely)
+  #bayes_spam_symbols = ["BAYES_SPAM"];
+  #bayes_ham_symbols = ["BAYES_HAM"];
+  #fann_symbols = ["FANN_SCORE"];
+  #fuzzy_symbols = ["FUZZY_DENIED"];
+  #whitelist_symbols = ["WHITELIST_DKIM", "WHITELIST_SPF_DKIM", "WHITELIST_DMARC"];
+  #dkim_allow_symbols = ["R_DKIM_ALLOW"];
+  #dkim_reject_symbols = ["R_DKIM_REJECT"];
+  #dmarc_allow_symbols = ["DMARC_POLICY_ALLOW"];
+  #dmarc_reject_symbols = ["DMARC_POLICY_REJECT", "DMARC_POLICY_QUARANTINE"];
+  
+  # Other options
+  #database = 'default';
+  #use_https = false;
+  # Transport compression
+  #use_gzip = true;
+  # Store data for local scanes
+  #allow_local = false;
+  # Basic auth
+  #user = null;
+  #password = null;
+  # Disable SSL verification
+  #no_ssl_verify = false,
+
+  # This section configures how long the data will be stored in ClickHouse
+  #retention {
+  #  # disabled by default
+  #  enable = true;
+  #  # drop | detach, please refer to ClickHouse docs for details
+  #  # http://clickhouse-docs.readthedocs.io/en/latest/query_language/queries.html#manipulations-with-partitions-and-parts
+  #  method = "drop";
+  #  # how many month the data should be kept in ClickHouse
+  #  period_months = 3;
+  #  # how often run the cleanup process
+  #  run_every = "7d";
+  #}
+}
+~~~
+
+
+## Clickhouse usage examples
 
 Clickhouse module is extremely useful to perform statistical researches for mail flows. For example, to find top sending domains for spam and ham:
 
@@ -98,9 +169,9 @@ LIMIT 10
 └──────────────────────────────────────┴─────────────────┴────────┘
 ~~~
 
-### Clickhouse tables schema
+## Clickhouse tables schema
 
-Before using of this module, you need to create certain tables in clickhouse. Here is the desired schema for these tables:
+Before using of this module, Rspamd needs to create certain tables in Clickhouse. This operation, as well as schema version upgrade (if needed), are performed automatically by Rspamd using `on_load` scripts. Here is the desired schema for Rspamd tables:
 
 ~~~
 CREATE TABLE rspamd
@@ -148,59 +219,4 @@ CREATE TABLE rspamd_version
 ) ENGINE = TinyLog;
 
 INSERT INTO rspamd_version (Version) Values (2);
-~~~
-
-You can install this schema running Clickhouse CLI:
-
-~~~
-clickhouse-client --multiline
-~~~
-
-### Configuration
-
-Example configuration shown below, minimum working configuration is `clickhouse {}`:
-
-~~~ucl
-clickhouse {
-  # Push update when 1000 records are collected (1000 if unset)
-  limit = 1000;
-  # IP:port of Clickhouse server ("localhost:8123" if unset)
-  server = "localhost:8123";
-  # Timeout to wait for response (5 seconds if unset)
-  timeout = 5;
-  # How many bits of sending IP to mask in logs for IPv4 (19 if unset)
-  ipmask = 19;
-  # How many bits of sending IP to mask in logs for IPv6 (48 if unset)
-  ipmask6 = 48;
-  # Record URL paths? (default false)
-  full_urls = false;
-  # This parameter points to a map of domain names
-  # If a message has a domain in this map in From: header and DKIM signature,
-  # record general metadata in a table named after the domain
-  #from_tables = "/etc/rspamd/clickhouse_from.map";
-  # These are symbols of other checks in Rspamd
-  # Set these if you use non-default symbol names (unlikely)
-  #bayes_spam_symbols = ["BAYES_SPAM"];
-  #bayes_ham_symbols = ["BAYES_HAM"];
-  #fann_symbols = ["FANN_SCORE"];
-  #fuzzy_symbols = ["FUZZY_DENIED"];
-  #whitelist_symbols = ["WHITELIST_DKIM", "WHITELIST_SPF_DKIM", "WHITELIST_DMARC"];
-  #dkim_allow_symbols = ["R_DKIM_ALLOW"];
-  #dkim_reject_symbols = ["R_DKIM_REJECT"];
-  #dmarc_allow_symbols = ["DMARC_POLICY_ALLOW"];
-  #dmarc_reject_symbols = ["DMARC_POLICY_REJECT", "DMARC_POLICY_QUARANTINE"];
-
-  # This section configures how long the data will be stored in ClickHouse
-  #retention {
-  #  # disabled by default
-  #  enable = true;
-  #  # drop | detach, please refer to ClickHouse docs for details
-  #  # http://clickhouse-docs.readthedocs.io/en/latest/query_language/queries.html#manipulations-with-partitions-and-parts
-  #  method = "drop";
-  #  # how many month the data should be kept in ClickHouse
-  #  period_months = 3;
-  #  # how often run the cleanup process
-  #  run_every = "7d";
-  #}
-}
 ~~~
