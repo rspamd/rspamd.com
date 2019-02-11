@@ -11,6 +11,7 @@ This document describes several methods of integrating rspamd with some popular 
 * [Exim](http://exim.org)
 * [Sendmail](http://sendmail.org)
 * [Haraka](https://haraka.github.io/)
+* [EmailSuccess](https://www.emailsuccess.com)
 
 This document also describes the rspamd LDA proxy mode that can be used for any MTA.
 
@@ -128,6 +129,16 @@ Then compile m4 to cf in the usual way.
 Support for rspamd is available in [Haraka v2.7.0+](http://haraka.github.io/manual/plugins/rspamd.html){:target="&#95;blank"}.
 
 To enable: add `rspamd` to the `DATA` section of your `config/plugins` file and edit `config/rspamd.ini` to suit your preferences.
+
+## Integration with EmailSuccess MTA
+
+Support for rspamd is available from [EmailSuccess v11.19](https://www.emailsuccess.com/emailsuccess-introduces-rspamd-integration){:target="&#95;blank"}.
+
+To enable: in the administration console, type `filter-module-set rspamd enabled true`. Edit filtering options with the `filter-module-show rspamd` and `filter-module-set rspamd` commands to suit your preferences.
+
+You'll also need to enable the filter for each input interface (both SMTP and API) with `input-set INPUT1 filter enabled`, `ws-set rest_filter true` and `ws-set soap_filter true` commands.
+
+For further information please refer directly to [EmailSuccess documentation](https://doc.emailsuccess.com){:target="&#95;blank"}.
 
 ## LDA mode
 
