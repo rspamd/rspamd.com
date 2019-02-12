@@ -19,66 +19,113 @@ You can also use [Redash](https://redash.io) to build your own analytical board 
 
 ## Module Configuration
 
-Example configuration shown below, minimum working configuration is `clickhouse {}`:
+Example configuration shown below, for the minimum working configuration you need to define Clickhouse servers:
 
 ~~~ucl
-clickhouse {
-  # Push update when 1000 records are collected (1000 if unset)
-  limit = 1000;
-  # IP:port of Clickhouse server ("localhost:8123" if unset)
-  server = "localhost:8123";
-  # Timeout to wait for response (5 seconds if unset)
-  timeout = 5;
-  # How many bits of sending IP to mask in logs for IPv4 (19 if unset)
-  ipmask = 19;
-  # How many bits of sending IP to mask in logs for IPv6 (48 if unset)
-  ipmask6 = 48;
-  # Record URL paths? (default false)
-  full_urls = false;
-  # This parameter points to a map of domain names
-  # If a message has a domain in this map in From: header and DKIM signature,
-  # record general metadata in a table named after the domain
-  #from_tables = "/etc/rspamd/clickhouse_from.map";
-  # These are symbols of other checks in Rspamd
-  # Set these if you use non-default symbol names (unlikely)
-  #bayes_spam_symbols = ["BAYES_SPAM"];
-  #bayes_ham_symbols = ["BAYES_HAM"];
-  #fann_symbols = ["FANN_SCORE"];
-  #fuzzy_symbols = ["FUZZY_DENIED"];
-  #whitelist_symbols = ["WHITELIST_DKIM", "WHITELIST_SPF_DKIM", "WHITELIST_DMARC"];
-  #dkim_allow_symbols = ["R_DKIM_ALLOW"];
-  #dkim_reject_symbols = ["R_DKIM_REJECT"];
-  #dmarc_allow_symbols = ["DMARC_POLICY_ALLOW"];
-  #dmarc_reject_symbols = ["DMARC_POLICY_REJECT", "DMARC_POLICY_QUARANTINE"];
-  
-  # Other options
-  #database = 'default';
-  #use_https = false;
-  # Transport compression
-  #use_gzip = true;
-  # Store data for local scanes
-  #allow_local = false;
-  # Basic auth
-  #user = null;
-  #password = null;
-  # Disable SSL verification
-  #no_ssl_verify = false,
+# local.d/clickhouse.conf
 
-  # This section configures how long the data will be stored in ClickHouse
-  #retention {
-  #  # disabled by default
-  #  enable = true;
-  #  # drop | detach, please refer to ClickHouse docs for details
-  #  # http://clickhouse-docs.readthedocs.io/en/latest/query_language/queries.html#manipulations-with-partitions-and-parts
-  #  method = "drop";
-  #  # how many month the data should be kept in ClickHouse
-  #  period_months = 3;
-  #  # how often run the cleanup process
-  #  run_every = "7d";
-  #}
+# Push update when 1000 records are collected (1000 if unset)
+limit = 1000;
+# IP:port of Clickhouse server ("localhost:8123" if unset)
+server = "localhost:8123";
+# Timeout to wait for response (5 seconds if unset)
+timeout = 5;
+# How many bits of sending IP to mask in logs for IPv4 (19 if unset)
+ipmask = 19;
+# How many bits of sending IP to mask in logs for IPv6 (48 if unset)
+ipmask6 = 48;
+# Record URL paths? (default false)
+full_urls = false;
+# This parameter points to a map of domain names
+# If a message has a domain in this map in From: header and DKIM signature,
+# record general metadata in a table named after the domain
+#from_tables = "/etc/rspamd/clickhouse_from.map";
+# These are symbols of other checks in Rspamd
+# Set these if you use non-default symbol names (unlikely)
+#bayes_spam_symbols = ["BAYES_SPAM"];
+#bayes_ham_symbols = ["BAYES_HAM"];
+#fann_symbols = ["FANN_SCORE"];
+#fuzzy_symbols = ["FUZZY_DENIED"];
+#whitelist_symbols = ["WHITELIST_DKIM", "WHITELIST_SPF_DKIM", "WHITELIST_DMARC"];
+#dkim_allow_symbols = ["R_DKIM_ALLOW"];
+#dkim_reject_symbols = ["R_DKIM_REJECT"];
+#dmarc_allow_symbols = ["DMARC_POLICY_ALLOW"];
+#dmarc_reject_symbols = ["DMARC_POLICY_REJECT", "DMARC_POLICY_QUARANTINE"];
+# Subject related (from 1.9)
+insert_subject = false; 
+# Privacy is off
+subject_privacy = false; 
+# Default hash-algorithm to obfuscate subject
+subject_privacy_alg = 'blake2';
+# Prefix to show it's obfuscated
+subject_privacy_prefix = 'obf';
+# Cut the length of the hash
+subject_privacy_length = 16;
+
+# Other options
+#database = 'default';
+#use_https = false;
+# Transport compression
+#use_gzip = true;
+# Store data for local scanes
+#allow_local = false;
+# Basic auth
+#user = null;
+#password = null;
+# Disable SSL verification
+#no_ssl_verify = false,
+
+# This section configures how long the data will be stored in ClickHouse
+#retention {
+#  # disabled by default
+#  enable = true;
+#  # drop | detach, please refer to ClickHouse docs for details
+#  # http://clickhouse-docs.readthedocs.io/en/latest/query_language/queries.html#manipulations-with-partitions-and-parts
+#  method = "drop";
+#  # how many month the data should be kept in ClickHouse
+#  period_months = 3;
+#  # how often run the cleanup process
+#  run_every = 7d;
+#}
+~~~
+
+### Clickhouse retention
+
+Privacy is important for many email systems. Clickhouse dumps might store client sensitive data. Rspamd supports automatic cleanup of the outdated data using **retention policies**. By default, data is not expired in Clickhouse. However, you can set expiration as following (e.g. to comply with GDPR):
+
+~~~ucl
+# local.d/clickhouse.conf
+retention {
+  enable = true;
+  # drop | detach, please refer to ClickHouse docs for details
+  # http://clickhouse-docs.readthedocs.io/en/latest/query_language/queries.html#manipulations-with-partitions-and-parts
+  method = "drop";
+  # how many month the data should be kept in ClickHouse
+  period_months = 3;
+  # how often run the cleanup process
+  run_every = 7d;
 }
 ~~~
 
+To remove data for particular users, you might consider using of the [Clickhouse mutations](https://clickhouse.yandex/docs/en/query_language/alter/#alter-mutations)
+
+### Subject privacy
+
+Similarly to previous, from the version 1.9, you can store email subject in Clickhouse (disabled by default). Here are settings available:
+
+~~~ucl
+insert_subject = false; 
+# Privacy is off
+subject_privacy = false; 
+# Default hash-algorithm to obfuscate subject
+subject_privacy_alg = 'blake2';
+# Prefix to show it's obfuscated
+subject_privacy_prefix = 'obf';
+# Cut the length of the hash
+subject_privacy_length = 16;
+~~~
+
+You can use obfuscated subjects to group messages with a same subject for example.
 
 ## Clickhouse usage examples
 
@@ -198,6 +245,7 @@ CREATE TABLE rspamd
     MimeUser String,
     RcptUser String,
     RcptDomain String,
+    Subject String,
     ListId String,
     `Attachments.FileName` Array(String),
     `Attachments.ContentType` Array(String),
@@ -220,5 +268,5 @@ CREATE TABLE rspamd_version
   Version UInt32
 ) ENGINE = TinyLog;
 
-INSERT INTO rspamd_version (Version) Values (2);
+INSERT INTO rspamd_version (Version) Values (3);
 ~~~
