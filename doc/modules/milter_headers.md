@@ -185,7 +185,7 @@ Removes a header with the specified name (`header` MUST be specified):
 
 ~~~ucl
   header = "Remove-This";
-  remove = 1;
+  remove = 0; # 0 means remove all, 1 means remove the first one , -1 remove the last and so on
 ~~~
 
 ### remove-headers (1.6.3+)
@@ -194,8 +194,8 @@ Removes multiple headers (`headers` MUST be specified):
 
 ~~~ucl
   headers {
-    "Remove-This" = 1;
-    "This-Too" = 1;
+    "Remove-This" = 0;
+    "This-Too" = 0;
   }
 ~~~
 
@@ -216,7 +216,7 @@ Adds a predefined header to mail identified as spam.
 ~~~ucl
   header = "Deliver-To";
   value = "Junk";
-  remove = 1;
+  remove = 0;
 ~~~
 
 Default name/value of the added header is `Deliver-To`/`Junk` which can be manipulated using the `header` and `value` settings.
@@ -227,7 +227,7 @@ Attaches the stat signature to the message.
 
 ~~~ucl
   header = 'X-Stat-Signature';
-  remove = 1;
+  remove = 0;
 ~~~
 
 ### x-rspamd-queue-id (1.5.8+)
@@ -236,7 +236,7 @@ Adds a header containing the Rspamd queue id of the message [if it is NOT origin
 
 ~~~ucl
   header = 'X-Rspamd-Queue-Id';
-  remove = 1;
+  remove = 0;
 ~~~
 
 ### x-spamd-result (1.5.8+)
@@ -245,7 +245,7 @@ Adds a header containing the scan results [if the message is NOT originated from
 
 ~~~ucl
   header = 'X-Spamd-Result';
-  remove = 1;
+  remove = 0;
 ~~~
 
 ### x-rspamd-server (1.5.8+)
@@ -254,7 +254,7 @@ Adds a header containing the name of the Rspamd server that checked out the mess
 
 ~~~ucl
   header = 'X-Rspamd-Server';
-  remove = 1;
+  remove = 0;
 ~~~
 
 ### x-spamd-bar
@@ -266,7 +266,7 @@ Adds a visual indicator of spam/ham level.
   positive = "+";
   negative = "-";
   neutral = "/";
-  remove = 1;
+  remove = 0;
 ~~~
 
 ### x-spam-level
@@ -276,7 +276,7 @@ Another visual indicator of spam level- SpamAssassin style.
 ~~~ucl
   header = "X-Spam-Level";
   char = "*";
-  remove = 1;
+  remove = 0;
 ~~~
 
 ### x-spam-status
@@ -285,14 +285,14 @@ SpamAssassin-style X-Spam-Status header indicating spam status.
 
 ~~~ucl
   header = "X-Spam-Status";
-  remove = 1;
+  remove = 0;
 ~~~
 
 ### x-virus
 
 ~~~ucl
   header = "X-Virus";
-  remove = 1;
+  remove = 0;
   # The following setting is an empty list by default and required to be set
   # These are user-defined symbols added by the antivirus module
   symbols = ["CLAM_VIRUS", "FPROT_VIRUS"];
@@ -311,7 +311,7 @@ return function(task, common_meta)
   -- parameters are task and metadata from previous functions
   return nil, -- no error
     {['X-Foo'] = 'Bar'}, -- add header: X-Foo: Bar
-    {['X-Foo'] = 1}, -- remove foreign X-Foo headers
+    {['X-Foo'] = 0 }, -- remove foreign X-Foo headers
     {} -- metadata to return to other functions
   end
 EOD;
