@@ -176,6 +176,7 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 * `rcpts` - Get MIME or SMTP rcpts (e.g. `rcpts('smtp')` or `rcpts('mime')`, uses any type by default)
 * `files` - Get all attachments files
 * `to` - Get principal recipient
+* `languages` - Get languages met in a message (from 1.9)
 
 ### Transformation functions
 
