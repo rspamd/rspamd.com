@@ -33,9 +33,9 @@ local ok_langs = {
 rspamd_config.LANG_FILTER = {
   callback = function(task)
     local any_ok = false
-    local parts = task:get_text_parts()
+    local parts = task:get_text_parts() or {}
     local ln
-    for i, p in ipairs(parts) do
+    for _,p in ipairs(parts) do
       ln = p:get_language() or ''
       local dash = ln:find('-')
       if dash then
