@@ -141,6 +141,7 @@ So each setting has the following attributes:
 	+ `groups_enabled` - array of rules groups that should be checked (all other rules are disabled)
 	+ `symbols_disabled` - array of disabled checks by symbol name (all other rules are enabled)
 	+ `groups_disabled` - array of disabled checks by group name (all other rules are enabled)
+	+ `subject` - set subject based on the new pattern: `%s` is replaced with the existing subject, `%d` is replaced with the message's spam score (e.g. `subject = "SPAM: %s (%d)"`)
 - `symbols` - add symbols from the list if a rule has matched
 - `inverse` - inverse match (e.g. it will NOT match when all elements are matched and vice-versa)
 
