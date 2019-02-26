@@ -120,5 +120,5 @@ $$
 
 By default this value is `1.0` meaning that no weight growing is defined. By increasing this value you increase the effective score of messages with multiple `spam` rules matched. This value is not affected by negative score values.
 
-* `subject` - string value that replaces the message's subject if the `rewrite subject` action is applied. Original subject can be included with `%s`.
+* `subject` - string value that replaces the message's subject if the `rewrite subject` action is applied. Original subject can be included with `%s`. Message score can be filled using `%d` extension.
 * `unknown_weight` - weight for unknown rules. If this parameter is specified, all rules can add symbols to this metric. If such a rule is not specified by this metric then its weight is equal to this option's value. Please note, that adding this option means that all rules will be checked by Rspamd, on the contrary, if no `unknown_weight` metric is specified then rules that are not registered anywhere are silently ignored by Rspamd.
