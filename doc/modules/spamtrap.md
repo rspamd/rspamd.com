@@ -19,7 +19,7 @@ automatically turned off.
 
 To use Redis - [see here]({{ site.baseurl }}/doc/configuration/redis.html) for information about configuring Redis.
 
-An example of a map is hown below.
+An example of a map is shown below.
 
 ### Module settings
 
@@ -60,7 +60,7 @@ An example of a map file is:
 
 ~~~text
 /^test@example\.test$/
-/^.*@catchalldomain.test$/
+/^.*@catchalldomain\.test$/
 ~~~
 
 The first is a full email address, while the second is a catch-all domain.
