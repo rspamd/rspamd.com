@@ -661,15 +661,12 @@ You can also setup rspamc to learn via passing messages to a certain email addre
 
 You'd need some less predictable aliases to avoid sending messages to such addresses by some adversary or just by a mistake to prevent statistics pollution.
 
-There is also an add-on for Thunderbird MUA written by Alexander Moisseev to visualise Rspamd stats. You can download it from its [homepage](https://addons.mozilla.org/en-GB/thunderbird/addon/rspamd-spamness/){:target="&#95;blank"}. You'd need to add extended spam headers (`X-Spamd-Result`) with Rmilter and/or (from add-on's version 0.8.0) `X-Spam-Score` and `X-Spam-Report` headers with Exim to make the whole setup work.
+There is also an add-on for Thunderbird MUA written by Alexander Moisseev to visualise Rspamd stats. You can download the latest version from its [homepage](https://github.com/moisseev/rspamd-spamness/){:target="&#95;blank"} or a version reviewed by `moz://a` from  [Tunderbird Add-ons page](https://addons.thunderbird.net/thunderbird/addon/rspamd-spamness/){:target="&#95;blank"}. You'd need to add extended spam headers (`X-Spamd-Result`) with Rspamd proxy worker and/or (from add-on's version 0.8.0) `X-Spam-Score` and `X-Spam-Report` headers with Exim to make the whole setup work.
 
-To enable extended spam headers in Rmilter add the following line to `rmilter.conf`:
+To enable extended spam headers in [Milter headers module]({{ site.baseurl }}/doc/modules/milter_headers.html) add the following line to `local.d/milter_headers.conf`:
 
 {% highlight ucl %}
-spamd {
-...
-        extended_spam_headers = yes;
-}
+extended_spam_headers = true;
 {% endhighlight %}
 
 To enable headers in Exim refer to the "Integration with Exim MTA" section of the [MTA integration]({{ site.baseurl }}/doc/integration.html) document.
