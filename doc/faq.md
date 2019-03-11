@@ -377,7 +377,7 @@ group "mygroup" {
 
 To redefine symbols for the existing groups, it is recommended to use a specific `local.d` or `override.d` file, for example, `local.d/rbl_group.conf` to add your custom RBLs. To get the full list of such files, you can take a look over the `groups.conf` file in the main Rspamd configuration directory (e.g. `/etc/rspamd/groups.conf`).
 
-### Rspamd configuration is broken
+### Rspamd configuration nesting
 
 Have you added an extra `section_name {}` to `local.d/section.conf` file? For example, this one will **NOT** work:
 
@@ -400,6 +400,23 @@ domain {
 ```
 
 Rspamd now also reports about this sort of nesting on configuration load and in `rspamadm configtest` as well.
+
+### Rspamd paths
+
+There are several variables defined in UCL configuration parser and they are also exported via `rspamd_paths` global table in Lua code (available everywhere). Here are the default meanings and values for those paths (by `${PREFIX}` we denote the default installation prefix, e.g. `/usr`):
+
+  * `CONFDIR` = `${PREFIX}/etc/rspamd` - main path for the configuration
+  * `LOCAL_CONFDIR` = `${PREFIX}/etc/rspamd` - path for the user's defined configuration
+  * `RUNDIR` = OS specific (`/var/run/rspamd` on Linux) - used to store volatile runtime data (e.g. PIDs)
+  * `DBDIR` = OS specific (`/var/lib/rspamd` on Linux) - used to store static runtime data (e.g. databases or cached files)
+  * `SHAREDIR` = `${PREFIX}/share/rspamd` - used to store shared files
+  * `LOGDIR` = OS specific (`/var/log/rspamd` on Linux) - used to store Rspamd logs in file logging mode
+  * `LUALIBDIR` = `${SHAREDIR}/lualib` - used to store shared Lua files (included in Lua path)
+  * `PLUGINSDIR` = `${SHAREDIR}/plugins` - used to place Lua plugins
+  * `RULESDIR` = `${SHAREDIR}/rules` - used to place Lua rules
+  * `LIBDIR` = `${PREFIX}/lib/rspamd` - used to place shared libraries (included in RPATH and Lua CPATH)
+  * `WWWDIR` = `${SHAREDIR}/www` - used to store static WebUI files
+
 
 ### What are Rspamd actions
 
