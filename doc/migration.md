@@ -23,8 +23,10 @@ This version should not generally be incompatible with the previous one aside of
 - Here are default values for the paths used by Rspamd:
   * `CONFDIR` = `${PREFIX}/etc/rspamd` - main path for the configuration
   * `LOCAL_CONFDIR` = `${PREFIX}/etc/rspamd` - path for the user's defined configuration
-  * `RUNDIR` = OS specific - used to store runtime data
+  * `RUNDIR` = OS specific (`/var/run/rspamd` on Linux) - used to store volatile runtime data (e.g. PIDs)
+  * `DBDIR` = OS specific (`/var/lib/rspamd` on Linux) - used to store static runtime data (e.g. databases or cached files)
   * `SHAREDIR` = `${PREFIX}/share/rspamd` - used to store shared files
+  * `LOGDIR` = OS specific (`/var/log/rspamd` on Linux) - used to store Rspamd logs in file logging mode
   * `LUALIBDIR` = `${SHAREDIR}/lualib` - used to store shared Lua files (included in Lua path)
   * `PLUGINSDIR` = `${SHAREDIR}/plugins` - used to place Lua plugins
   * `RULESDIR` = `${SHAREDIR}/rules` - used to place Lua rules
