@@ -3,8 +3,35 @@ layout: doc
 title: Upgrading
 ---
 # Updating Rspamd
+{:.no_toc}
 
 This document describes incompatible changes introduced in recent Rspamd versions and details how to update your rules and configuration accordingly.
+
+{::options parse_block_html="true" /}
+<div id="toc">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
+
+## Migration to Rspamd 1.9.0
+
+This version should not generally be incompatible with the previous one aside of the case if you build Rspamd from the sources or use a custom package. From the version 1.9, Rspamd has changed some of the default instalation paths:
+
+- There is a new `${LIBDIR}/rspamd/librspamd-server.so` library that contains common functions for `rspamd`, `rspamadm` and `rspamc` binaries
+- `${PLUGINSDIR}` is now set to a specific path for Lua plugins and is **no longer** in the Lua path; it is suggested to use `${LUALIBDIR}` for all shared Lua code
+- Here are default values for the paths used by Rspamd:
+  * `CONFDIR` = `${PREFIX}/etc/rspamd` - main path for the configuration
+  * `LOCAL_CONFDIR` = `${PREFIX}/etc/rspamd` - path for the user's defined configuration
+  * `RUNDIR` = OS specific - used to store runtime data
+  * `SHAREDIR` = `${PREFIX}/share/rspamd` - used to store shared files
+  * `LUALIBDIR` = `${SHAREDIR}/lualib` - used to store shared Lua files (included in Lua path)
+  * `PLUGINSDIR` = `${SHAREDIR}/plugins` - used to place Lua plugins
+  * `RULESDIR` = `${SHAREDIR}/rules` - used to place Lua rules
+  * `LIBDIR` = `${PREFIX}/lib/rspamd` - used to place shared libraries (included in RPATH and Lua CPATH)
+  * `WWWDIR` = `${SHAREDIR}/www` - used to store static WebUI files
+
+For those who are using the default packages there should be no changes. Even in the case if you are using old `${PLUGINSDIR}` to store your custom plugins, Rspamd will look at the old location as a fallback in the plugins loading logic.
 
 ## Migration to Rspamd 1.8.1
 
