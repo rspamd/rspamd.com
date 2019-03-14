@@ -1191,9 +1191,9 @@ Please see the [Rspamd options settings]({{ site.baseurl }}/doc/configuration/op
 
 The User column shows the authenticated username of the message sender- you would have to be scanning authenticated outbound mail to see something here.
 
-### How to exclude some entries from History tab?
+### How to exclude rows from the History tab?
 
-To exclude some entries (lines) from `History` tab you could add **minus sign** before `IP-address`, `Envelope From`, etc in `Search` field like this `-sender@test.ru`
+To exclude some rows from the `History` tab you could add a **minus sign**  (**-**) before a query value (`IP-address`, `Envelope From`, etc) in the `Search` field, like this one: `-sender@test.ru`
 
 ## Lua questions
 
