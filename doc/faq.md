@@ -4,8 +4,16 @@ title: Frequently asked questions
 ---
 
 # Frequently asked questions
+{:.no_toc}
 
 This document includes some questions and practical examples that are frequently asked by Rspamd users.
+
+{::options parse_block_html="true" /}
+<div id="toc">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 ## General questions
 
