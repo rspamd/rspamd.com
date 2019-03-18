@@ -35,6 +35,8 @@ This version should not generally be incompatible with the previous one aside of
 
 For those who are using the default packages there should be no changes. Even in the case if you are using old `${PLUGINSDIR}` to store your custom plugins, Rspamd will look at the old location as a fallback in the plugins loading logic.
 
+Another incompatible change has been introduced for those who are using **`coroutines based`** Rspamd Lua API. From this version, you need to register symbols where coroutines are used with `coro` flag to allow them to be functional (otherwise they just crash Rspamd). More details are available in the following [issue](https://github.com/rspamd/rspamd/issues/2789).
+
 ## Migration to Rspamd 1.8.1
 
 This version introduces several incompatibilities that mught be related to your setup.
