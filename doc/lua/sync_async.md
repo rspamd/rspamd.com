@@ -46,7 +46,7 @@ Rspamd 1.8.0 is introducing a new pseudo-synchronous API. Now you can write code
 Each potentially blocking operation creates a yielding-point. In turn, this means the code is suspended until the operation is done (just like blocking) and resumes only when there is some result. Meanwhile, other tasks are processed as usual.
 
 <small>
-**Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
+**Please note** that synchronous mode requires symbol to be registered with **`coro`** flag from the version 1.9 (see "full example").
 </small>
 
 ~~~lua
@@ -141,7 +141,7 @@ rspamd_config:register_symbol({
 {:.no_toc}
 
 <small>
-**Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
+**Please note** that synchronous mode requires symbol to be registered with **coro** flag (see "full example").
 </small>
 
 ~~~ lua
@@ -192,8 +192,8 @@ rspamd_config:register_symbol({
   name = 'SIMPLE_HTTP',
   score = 1.0,
   callback = http_symbol,
-  -- Symbol using Synchronous API should have "no_squeeze" flag.
-  no_squeeze = true
+  -- Symbol using Synchronous API should have "coro" flag.
+  flags = 'coro',
 })
 
 {% endhighlight %}
@@ -265,7 +265,7 @@ rspamd_config:register_symbol({
 {:.no_toc}
 
 <small>
-**Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
+**Please note** that synchronous mode requires symbol to be registered with **coro** flag (see "full example").
 </small>
 
 ~~~lua
@@ -313,8 +313,8 @@ rspamd_config:register_symbol({
   name = 'SIMPLE_DNS_SYNC',
   score = 1.0,
   callback = dns_sync_symbol,
-  -- Symbol using Synchronous API should have "no_squeeze" flag.
-  no_squeeze = true
+  -- Symbol using Synchronous API should have "coro" flag.
+  flags = 'coro',
 })
 {% endhighlight %}
 </div></div>
@@ -374,7 +374,8 @@ rspamd_config:register_symbol({
   name = 'SIMPLE_TCP_ASYNC_TEST',
   score = 1.0,
   callback = http_simple_tcp_async_symbol,
-  no_squeeze = true
+  -- Symbol using Synchronous API should have "coro" flag.
+  flags = 'coro',
 })
 {% endhighlight %}
 </div></div>
@@ -385,7 +386,7 @@ rspamd_config:register_symbol({
 {:.no_toc}
 
 <small>
-**Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
+**Please note** that synchronous mode requires symbol to be registered with **coro** flag (see "full example").
 </small>
 
 ~~~lua
@@ -489,7 +490,8 @@ rspamd_config:register_symbol({
   name = 'HTTP_TCP_TEST',
   score = 1.0,
   callback = http_tcp_symbol,
-  no_squeeze = true
+  -- Symbol using Synchronous API should have "coro" flag.
+  flags = 'coro',
 })
 {% endhighlight %}
 </div></div>
@@ -558,7 +560,8 @@ rspamd_config:register_symbol({
   name = 'SIMPLE_REDIS_ASYNC_TEST',
   score = 1.0,
   callback = redis_simple_async_api,
-  no_squeeze = true
+  -- Symbol using Synchronous API should have "coro" flag.
+  flags = 'coro',
 })
 
 {% endhighlight %}
@@ -569,7 +572,7 @@ rspamd_config:register_symbol({
 {:.no_toc}
 
 <small>
-**Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
+**Please note** that synchronous mode requires symbol to be registered with **coro** flag (see "full example").
 </small>
 
 ~~~lua
@@ -649,7 +652,8 @@ rspamd_config:register_symbol({
   name = 'REDIS_TEST',
   score = 1.0,
   callback = redis_symbol,
-  no_squeeze = true
+  -- Symbol using Synchronous API should have "coro" flag.
+  flags = 'coro',
 })
 
 {% endhighlight %}
