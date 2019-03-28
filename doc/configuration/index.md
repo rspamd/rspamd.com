@@ -3,9 +3,17 @@ layout: doc
 title: General information
 ---
 # Rspamd configuration
+{:.no_toc}
 
 Rspamd uses the Universal Configuration Language (UCL) for its configuration. The UCL format is described in detail in this [document](ucl.html). Rspamd defines several variables and macros to extend
 UCL functionality.
+
+{::options parse_block_html="true" /}
+<div id="toc">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 ## UCL sections and includes
 
@@ -164,3 +172,51 @@ modules {
 The modules section defines the path or paths of directories or specific files. If a directory is specified then all files with a `.lua` suffix are loaded as lua plugins (the directory path is treated as a `*.lua` shell pattern).
 
 This configuration is not intended to be changed by the user, rather it should be overridden in site-specific configuration files- see the [quickstart]({{ site.baseurl }}/doc/quickstart.html#configuring-rspamd) for details. Nevertheless, packaging will generally never overwrite configuration files on upgrade if they have been touched by the user. Please read the [migration notes]({{ site.baseurl }}/doc/migration.html) carefully if you upgrade Rspamd to a new version for all incompatible configuration changes.
+
+## Jinja templating
+
+From version 1.9.1, Rspamd supports [Jinja2 templates](http://jinja.pocoo.org) provided by [Lupa Lua library](https://foicica.com/lupa/). You can read the basic syntax documnentation and the abilities provided by these templating engines using the links above.
+
+Templating might be useful to hide some secrets from config files and places them in environment. Rspamd automatically reads environment variables that start from `RSPAMD_` prefix and pushes it to the `env` variable, e.g. `RSPAMD_foo=bar` comes to `env.foo="bar"` in templates.
+
+`env` variable also contains the following information:
+
+* `ver_major` - major version (e.g. `1`)
+* `ver_minor` - minor version (e.g. `9`)
+* `ver_patch` - patch version (e.g. `1`)
+* `version` - full version as a string (e.g. `1.9.1`)
+* `ver_num` - numeric version as a hex string (e.g. `0x1090100000000`)
+* `ver_id` - git id or `release` if not a git build
+* `hostname` - local hostname
+
+You can also add values, not merely plain strings but any Lua objects, e.g. tables, specifying additional environment files with `--lua-env` command line argument. This file will be read by `root` user if Rspamd main process starts as root and then drops privilleges. These file or files when specified multiple times should return a table as a single possible outcome, for example:
+
+```lua
+return {
+  var1 = "value",
+  var2 = {
+    subvar1 = "foo",
+    subvar2 = true,
+  }
+}
+```
+
+You can use them as following in the config files:
+
+~~~ucl
+{% if env.var2.subvar2 %}
+foo = {{ env.var1 }};
+baz = {{ env.var2.subvar2 }};
+{% endif %}
+~~~
+
+You can also use that for secure storing of the passwords:
+
+~~~ucl
+# local.d/controller.inc
+{% if env.password %}
+password = "{{ env.password|pbkdf }}"; # Password also will be encrypted using `catena` PBKDF
+{% endif %}
+~~~
+
+From this version, your config files should be Jinja safe, meaning that there should be no special sequences like `{%` or `{{` anywhere in your configuration.
