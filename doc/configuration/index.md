@@ -175,7 +175,11 @@ This configuration is not intended to be changed by the user, rather it should b
 
 ## Jinja templating
 
-From version 1.9.1, Rspamd supports [Jinja2 templates](http://jinja.pocoo.org) provided by [Lupa Lua library](https://foicica.com/lupa/). You can read the basic syntax documnentation and the abilities provided by these templating engines using the links above.
+{% raw %}
+
+From version 1.9.1, Rspamd supports [Jinja2 templates](http://jinja.pocoo.org) provided by [Lupa Lua library](https://foicica.com/lupa/). You can read the basic syntax documnentation and the abilities provided by these templating engines using the links above. Rspamd itself uses a specific syntax for variable tags: `{=` and `=}` instead of the traditional `{{` and `}}` as these tags could mean, e.g. a table in table in Lua.
+
+{% endraw %}
 
 Templating might be useful to hide some secrets from config files and places them in environment. Rspamd automatically reads environment variables that start from `RSPAMD_` prefix and pushes it to the `env` variable, e.g. `RSPAMD_foo=bar` comes to `env.foo="bar"` in templates.
 
@@ -206,8 +210,8 @@ You can use them as following in the config files:
 {% raw %}
 ~~~ucl
 {% if env.var2.subvar2 %}
-foo = {{ env.var1 }};
-baz = {{ env.var2.subvar2 }};
+foo = {= env.var1 =};
+baz = {= env.var2.subvar2 =};
 {% endif %}
 ~~~
 {% endraw %}
@@ -218,14 +222,14 @@ You can also use that for secure storing of the passwords:
 ~~~ucl
 # local.d/controller.inc
 {% if env.password %}
-password = "{{ env.password|pbkdf }}"; # Password also will be encrypted using `catena` PBKDF
+password = "{= env.password|pbkdf =}"; # Password also will be encrypted using `catena` PBKDF
 {% endif %}
 ~~~
 {% endraw %}
 
 {% raw %}
 
-As a consequence, from the version 1.9.1, your config files should be Jinja safe, meaning that there should be no special sequences like `{%` or `{{` anywhere in your configuration. Alternatively, you can escape them using `raw` and `endraw` tags.
+As a consequence, from the version 1.9.1, your config files should be Jinja safe, meaning that there should be no special sequences like `{%` or `{=` anywhere in your configuration. Alternatively, you can escape them using `raw` and `endraw` tags.
 
 {% endraw %}
 
