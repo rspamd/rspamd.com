@@ -219,4 +219,14 @@ password = "{{ env.password|pbkdf }}"; # Password also will be encrypted using `
 {% endif %}
 ~~~
 
-From this version, your config files should be Jinja safe, meaning that there should be no special sequences like `{% "{%" %}` or `{% "{{" %}` anywhere in your configuration.
+{% raw %}
+
+As a consequence, from the version 1.9.1, your config files should be Jinja safe, meaning that there should be no special sequences like `{%` or `{{` anywhere in your configuration. Alternatively, you can escape them with the following trick:
+
+~~~ucl
+{% raw %}
+# Something that includes {% or {{ or anything else
+{% endraw %}
+~~~
+
+{% endraw %}
