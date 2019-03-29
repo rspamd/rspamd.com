@@ -203,21 +203,25 @@ return {
 
 You can use them as following in the config files:
 
+{% raw %}
 ~~~ucl
 {% if env.var2.subvar2 %}
 foo = {{ env.var1 }};
 baz = {{ env.var2.subvar2 }};
 {% endif %}
 ~~~
+{% endraw %}
 
 You can also use that for secure storing of the passwords:
 
+{% raw %}
 ~~~ucl
 # local.d/controller.inc
 {% if env.password %}
 password = "{{ env.password|pbkdf }}"; # Password also will be encrypted using `catena` PBKDF
 {% endif %}
 ~~~
+{% endraw %}
 
 {% raw %}
 
@@ -225,8 +229,10 @@ As a consequence, from the version 1.9.1, your config files should be Jinja safe
 
 {% endraw %}
 
+{% raw %}
 ~~~ucl
 {% raw %}
 # Something that includes {% or {{ or anything else
 {% endraw %}
 ~~~
+{% endraw %}
