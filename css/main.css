@@ -457,6 +457,14 @@ h1 {
 
 .button-fixed-bottom {
   position: fixed;
-  bottom: 0px;
-  right: 0px;
+  bottom: 15px;
+  right: 15px;
+  border-radius: 50%;
+  background: #dc4813;
+  color: white;
+  border: none;
+}
+.button-fixed-bottom:hover {
+  background: #ca3e0c;
+  color: white;
 }
