@@ -454,3 +454,9 @@ h1 {
   right: 0;
   outline: none;
 }
+
+.button-fixed-bottom {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+}

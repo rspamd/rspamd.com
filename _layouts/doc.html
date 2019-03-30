@@ -88,6 +88,10 @@
 	.r-docs-content h1, .r-docs-content h2, .r-docs-content h3 {
 		padding-top: 70px;
 		margin-top: -50px;
+		display: flex;
+    justify-content: start;
+    align-items: center;
+    line-height: 2;
 	}
 
 	@media screen and (max-width: 768px) {
@@ -296,7 +300,7 @@
 			</ul>
 		</div>
 
-		<div class="r-docs-content">
+		<div class="r-docs-content doc-content">
 			{{ content }}
 		</div>
     </div>
