@@ -4,8 +4,16 @@ title: Greylisting module
 ---
 
 # Greylisting module
+{:.no_toc}
 
 This module is intended to delay messages that have spam score above `greylisting` action threshold.
+
+{::options parse_block_html="true" /}
+<div id="toc">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 ## Principles of work
 
@@ -39,6 +47,8 @@ First of all, you need to setup Redis server for storing hashes. This procedure 
 * **`timeout`**: defines greylisting timeout (5 min by default)
 * **`whitelisted_ip`**: map of IP addresses and/or subnets to skip greylisting for
 * **`whitelist_domains_url`**: map of hostnames and/or eSLDs of hostnames to skip greylisting for
+* **`report_time`**: tell when greylisting is epired (appended to `message`)
+* **`whitelist_symbols`**: skip greylisting when specific symbols have been found (from 1.9.1)
 
 If you need to skip greylisting based on other conditions disabling the `GREYLIST_CHECK` and `GREYLIST_SAVE` symbols with [settings module]({{ site.baseurl }}/doc/configuration/settings.html) might suffice.
 
