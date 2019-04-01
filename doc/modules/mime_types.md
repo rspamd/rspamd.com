@@ -36,7 +36,7 @@ extension_map = {
 
 When an attachment extension matches left part but the content type does not match the right part then symbol `MIME_BAD_ATTACHMENT` is inserted.
 
-### Archives support
+## Archives support
 
 Since 1.3, this module supports archives processing (rar and zip formats) and can check files inside archives. There are additional options added for more precise archives checks, for example, a special symbol for nested archives. Here is the default configuration of mime_types with comments:
 
@@ -81,4 +81,27 @@ archive_extensions = {
   7z = 1,
   cab = 1,
 };
+~~~
+
+## User settings usage
+
+From version 1.9.1, it is possible to tune this module via [Users settings](https://rspamd.com/doc/configuration/settings.html). To use that, one can apply the following settings:
+
+~~~ucl
+test {
+  from = "user@example.com";
+
+  apply {
+    plugins {
+      mime_types = {
+        bad_extensions = {
+          exe = 100500,
+        },
+        bad_archive_extensions = {
+          js = 100500,
+        },
+      }
+    }
+  }
+}
 ~~~
