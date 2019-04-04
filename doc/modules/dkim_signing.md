@@ -19,13 +19,15 @@ DKIM signing currently works with Milter based MTAs (Sendmail, Postfix), Haraka 
 
 ## Principles of operation
 
-The DKIM signing module chooses signing domains and selectors according to a predefined policy which can be modified with various settings. Description of this policy follows:
+The DKIM signing module chooses signing domains and selectors according to a predefined policy which can be modified with various settings. Description of this default policy follows:
 
- * To be eligible for signing, a mail must be received from an authenticated user OR a reserved IP address OR an address in the `sign_networks` map (if defined)
+ * To be eligible for signing, a mail must be received from an authenticated user OR a reserved (local) IP address OR an address in the `sign_networks` map (if defined)
  * If envelope from address is not empty, the effective second level domain must match the MIME header From
  * If authenticated user is present, this should be suffixed with @domain where domain is what's seen is envelope/header From address
  * Selector and path to key are selected from domain-specific config if present, falling back to global config
- 
+
+The default global config (fallback mode) searches for keys at the defined `path`. The path is constructed using the eSLD normalized domain name of header from and the default selector defined with `selector` (dkim). So the search path for user@test.example.com would be `/var/lib/rspamd/dkim/example.com.dkim.key`. If a key is found the message will be signed.
+
 If using DKIM private keys stored in files, you need to ensure that Rspamd scanner processes (e.g. normal worker, controller or a proxy in self-scan mode) can **open** signing keys, so they should be accessible for the user `_rspamd` in the most of the cases.
 
 ## Configuration
@@ -266,7 +268,7 @@ and deserve consideration.
 ```
 
   ... might be rewritten as:
-    
+
 ```
     To: very long name <a@example.org>,
     	anotherloo...ong name b <b@example.org>
@@ -282,4 +284,3 @@ and deserve consideration.
   so that the version that arrives at the signing instance is already
   in the rewritten form, guaranteeing the input and output are the same
   and thus the signature matches the payload. You can do such a split using [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html).
-
