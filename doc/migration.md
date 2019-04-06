@@ -14,6 +14,16 @@ This document describes incompatible changes introduced in recent Rspamd version
   {:toc}
 </div>
 
+## Migration to Rspamd 1.9.1
+
+{% raw %}
+
+From version 1.9.1, Rspamd supports [Jinja2 templates](http://jinja.pocoo.org) provided by [Lupa Lua library](https://foicica.com/lupa/). You can read the basic syntax documnentation and the abilities provided by these templating engines using the links above. Rspamd itself uses a specific syntax for variable tags: `{=` and `=}` instead of the traditional `{{` and `}}` as these tags could mean, e.g. a table in table in Lua.
+
+As a consequence, from the version 1.9.1, your config files should be Jinja safe, meaning that there should be no special sequences like `{%` or `{=` anywhere in your configuration. Alternatively, you can escape them using `raw` and `endraw` tags as described [here](https://shopify.github.io/liquid/tags/raw/).
+
+{% endraw %}
+
 ## Migration to Rspamd 1.9.0
 
 This version should not generally be incompatible with the previous one aside of the case if you build Rspamd from the sources or use a custom package. From the version 1.9, Rspamd has changed some of the default instalation paths:
