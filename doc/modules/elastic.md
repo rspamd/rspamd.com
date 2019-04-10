@@ -38,4 +38,9 @@ index_pattern = "rspamd-%Y.%m.%d";
 import_kibana = false;
 # Use https if needed
 use_https = false;
+# credential to connect to ElasticSearch (optional)
+user = "rspamd"
+password = "supersecret"
+# ingest_-geoip is a module (true if ElasticSearch >= 6.7.0)
+ingest_module = false;
 ~~~
