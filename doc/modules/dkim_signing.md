@@ -200,6 +200,51 @@ $ head -1 /etc/rspamd/dkim_paths.map
 example.net /var/lib/rspamd/dkim/example.net.$selector.key
 ~~~
 
+## Use of `signing_table`
+
+From the version 1.9.2, Rspamd supports OpenDKIM compatible settings:
+
+- `signing_table`:
+
+Defines a table used to select one or more signatures to apply to a message based on the address found in the From: header field. Keys in this table vary depending on the type of table used; values in this data set should include one field that contains a name found in the KeyTable (see above) that identifies which key should be used in generating the signature, and an optional second field naming the signer of the message that will be included in the "i=" tag in the generated signature. Note that the "i=" value will not be included in the signature if it conflicts with the signing domain (the "d=" value).
+
+If the first field contains only a "%" character, it will be replaced by the domain found in the From: header field. Similarly, within the optional second field, any "%" character will be replaced by the domain found in the From: header field.
+
+In Rspamd, this table is treated as `refile`! So you should use **glob** style regular expressions to do matching.
+
+- `key_table`
+
+Gives the location of a file mapping key names to signing keys. If present, overrides any KeyFile setting in the configuration file. The data set named here maps each key name to three values: (a) the name of the domain to use in the signature’s "d=" value; (b) the name of the selector to use in the signature’s "s=" value; and (c) either a private key or a path to a file containing a private key. If the first value consists solely of a percent sign ("%") character, it will be replaced by the apparent domain of the sender when generating a signature. If the third value starts with a slash ("/") character, or "./" or "../", then it is presumed to refer to a file from which the private key should be read, otherwise it is itself a PEM-encoded private key or a base64-encoded DER private key; a "%" in the third value in this case will be replaced by the apparent domain name of the sender. The SigningTable (see below) is used to select records from this table to be used to add signatures based on the message sender.
+
+Rspamd also supports embedded tables as for all other maps in the config, e.g. here is a sample used for functional testing:
+
+~~~ucl
+# local.d/dkim_signing.conf
+signing_table = [
+  "*@cacophony.za.org cacophony.za.org",
+];
+
+key_table = [
+  "cacophony.za.org %:eddsa:m5kGxtckRfsNe5EuYTe7bvkDjSh7LXaX3aXyIMPGLR0=",
+];
+~~~
+
+When using these options, they *passthrough* all mismatch checks. The only meaninglful setting is `sign_networks` in this mode as it corresponds with OpenDKIM behaviour. Otherwise, Rspamd will perform signing based on matching of the Mime `From` header with the entries in `signing_table`
+
+## HTTP headers based DKIM signing
+
+To simplify REST services integration, Rspamd supports dkim signing based solely on HTTP request headers. To use this feature one can use the boolean setting called `use_http_headers`. When this mode is enabled Rspamd ignores all other ways to sign message and wait merely for the specified **request** headers (not email headers!):
+
+ Header | Definition
+---------|-----------
+`PerformDkimSign` | Switch DKIM signing on (if `Yes`)
+`SignOnAuthFailed` | Sign messages with failed DKIM (dkim check must be performed before)
+`DkimDomain` | Dkim signing domain
+`DkimSelector` | Selector for signing
+`DkimPrivateKey` | Private key encoded in Base64
+
+All headers are mandatory. Dkim check dependency is automatically enabled but you need to ensure that `DKIM_CHECK` has been enabled in user settings. This mode is normally used in conjunction with `Setting` header that allows bypassing of the resting checks (see [Users settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html)) documentation for more details).
+
 ## Sign headers
 
 Rspamd allows to change headers that are required to be signed. From Rspamd 1.7.3, you can specify them as `sign_headers` option. By default, Rspamd distinguish two options:
@@ -229,7 +274,7 @@ As you can see, oversigned headers are prefixed with `(o)` string.
 - for the `n = 0` case this would mean that headers are not signed if they are not present. Oversigned headers are still signed one time to prevent adding a header with this name.
 - headers listed as oversigned are signed `n + 1` times
 
-### Issues using Sendmail on DKIM signing and verification
+## Issues using Sendmail on DKIM signing and verification
 
 This part of the documentation has been contributed by Dilyan Palauzov.
 
