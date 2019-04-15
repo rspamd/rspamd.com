@@ -2,6 +2,7 @@
 layout: doc
 title: Rspamd Composites
 ---
+
 # Rspamd composite symbols
 
 ## Introduction
@@ -37,7 +38,7 @@ TEST {
 }
 ~~~
 
-Composite rule can include other composites in the body. There is no restriction on definition order:
+Composite rule can include another composites in the body. There is no restriction on definition order:
 
 ~~~ucl
 TEST1 {
@@ -50,11 +51,13 @@ TEST2 {
 
 Composites should not be recursive; but this is normally detected and avoided by Rspamd automatically.
 
+Please note, that symbols are removed **after** composites pass. Hence, you cannot rely in one composite that some symbol has been removed by another composite.
+
 It is also possible to setup policies for composites regarding symbols enclosed within a composite expression. By default Rspamd **removes** symbols and weights that trigger composite with the composite itself. However, it is possible to change this setting by 2 ways.
 
 1. Set up removal policy for each symbol:
-    * `~`: remove weight of symbol
-    * `-`: do not remove anything
+    * `~`: remove symbol only (weight is preserved)
+    * `-`: do not remove anything (both weight and the symbol itself are removed)
     * `^`: force removing of symbol and weight (by default, Rspamd prefers to leave symbols when some composite wants to remove and another composite wants to leave any of score/name pair)
 2. Set the default policy for all elements in the expression using `policy` option:
     * `default`: default policy - remove weight and symbol
@@ -80,9 +83,9 @@ TEST_COMPOSITE2 {
 Composites can record symbols in a metric or record their weights. That could be used to create non-captive composites. For example, you have symbol `A` and `B` with weights `W_a` and `W_b` and a composite `C` with weight `W_c`.
 
 * If `C` is `A & B` then if rule `A` and rule `B` matched then these symbols are *removed* and their weights are removed as well, leading to a single symbol `C` with weight `W_c`.
-* If `C` is `-A & B`, then rule `A` is preserved, but the symbol `C` is inserted. The weight of `A` is preserved as well, so the total weight of `-A & B` will be `W_a + W_c`.
-* If `C` is `~A & B`, then rule `A` is preserved, but it's weight is removed,
-  leading to the total weight of `W_a` only
+* If `C` is `-A & B`, then rule `A` is preserved, but the symbol `C` is inserted. The weight of `A` is preserved as well, so the total weight of `-A & B` will be `W_a + W_c` (weight of `B` is still removed).
+* If `C` is `~A & B`, then rule `A` is removed, but it's weight is preserved,
+  leading to the total weight of `W_a + W_c`
 
 When you have multiple composites which include the same symbol and a composite wants to remove the symbol and another composite wants to preserve it, then the symbol is preserved by default. Here are some more examples:
 
@@ -155,3 +158,5 @@ DKIM_MIXED {
     enabled = false;
 }
 ~~~
+
+You can also disable composites from the [users settings](settings.html) from Rspamd `1.9`.
