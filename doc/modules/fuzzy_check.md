@@ -152,3 +152,7 @@ you can also delete a hash you find in the log output:
 
 On learning, rspamd sends commands to **all** servers inside specific rule. On check,
 rspamd selects a server in round-robin matter.
+
+## Usage of the feeds provided by `rspamd.com`
+
+If you use `rspamd.com` feeds (enabled by default) you need to qualify [**free usage policy**](https://rspamd.com/doc/usage_policy.html) or you would be blocked from using this service. There is a special symbol called `FUZZY_BLOCKED` that means that you violate these terms and are no longer permitted to use this service. This symbol has no weight and it should not affect any mail processing operations.
