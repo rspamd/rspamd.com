@@ -57,7 +57,7 @@ It is also possible to setup policies for composites regarding symbols enclosed 
 
 1. Set up removal policy for each symbol:
     * `~`: remove symbol only (weight is preserved)
-    * `-`: do not remove anything (both weight and the symbol itself are removed)
+    * `-`: do not remove anything (both weight and the symbol itself are preserved)
     * `^`: force removing of symbol and weight (by default, Rspamd prefers to leave symbols when some composite wants to remove and another composite wants to leave any of score/name pair)
 2. Set the default policy for all elements in the expression using `policy` option:
     * `default`: default policy - remove weight and symbol
@@ -113,7 +113,7 @@ COMP2 {
     expression = "!BLAH | DATE_IN_PAST";
 }
 COMP3 {
-    expression = "!BLAH | -DATE_IN_PAST";
+    expression = "!BLAH | ~DATE_IN_PAST";
 }
 ~~~
 
