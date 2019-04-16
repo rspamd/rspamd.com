@@ -632,6 +632,28 @@ What distinguishes these files is the way in which they alter the configuration 
 
 Maps are files that contain lists of keys or key-value pairs that could be dynamically reloaded by Rspamd when changed. The important difference to configuration elements is that map reloading is done 'live' without and expensive restart procedure. Another important thing about maps is that Rspamd can monitor both file and HTTP maps for changes (modification time for files and HTTP `If-Modified-Since` header for HTTP maps). So far, Rspamd supports `HTTP` and `file` maps.
 
+All maps behaves in the same way so you can have some choices about how to define a map:
+
+1. Plain path to file or http (like `map = "http://example.com/file.txt"` or `map = "/tmp/mymap"`)
+2. Composite path like `map = ["http://example.com/file.txt", "/tmp/mymap"]`. Maps data is concatenated from the sources.
+3. An embedded map like `map = ["foo bar"];` or `map = ["foo 1", "bar b", "baz bababa"]` or `map = ["192.168.1.1/24", "10.0.0.0/8"]`
+4. A fully decomposed object with lots of options
+
+For the second option it is also possible to have a composite path with fallback:
+
+~~~ucl
+exceptions = [
+  "https://maps.rspamd.com/rspamd/2tld.inc.zst",
+  "${DBDIR}/2tld.inc.local",
+  "fallback+file://${CONFDIR}/2tld.inc"
+];
+~~~
+
+In the example above `fallback+file://${CONFDIR}/2tld.inc` will be used when the first composite backend is somehow unreachable (e.g. when first load of Rspamd or all elements are invalid).
+
+Bear in mind that (1) and (3) can only be distinguished by making an array like `map = ["192.168.1.1/24"]`
+Historically just for radix map (ipnetwork ones) you could also use `map = "192.168.1.1/24"` but it is not recommended.
+
 ### What can be in the maps
 
 Maps can have the following objects:
