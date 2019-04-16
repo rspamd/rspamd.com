@@ -3,9 +3,8 @@ layout: doc
 title: Quick start
 ---
 
-<div><h1>Rspamd quick start</h1></div>
-
-## Introduction
+# Rspamd quick start
+{:.no_toc}
 
 This guide describes the main steps to get and start working with Rspamd. In particular, we describe the following setup:
 
@@ -13,6 +12,13 @@ This guide describes the main steps to get and start working with Rspamd. In par
 - Postfix MTA
 - Redis cache
 - Dovecot with Sieve plugin to sort mail and learn by moving messages to `Junk` folder
+
+{::options parse_block_html="true" /}
+<div id="toc">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 ## Alternative guides (3rd party)
 
@@ -540,6 +546,28 @@ Another feature of Rspamd is maps support. Maps are lists of values, for example
 * `http://example.com/file.map` - HTTP map (server should respect `If-Modified-Since` header to avoid unnecessary updates)
 * `file:///path/to/map` - file map
 * `/path/to/map` - alternative syntax for file map
+
+All maps behaves in the same way so you can have some choices about how to define a map:
+
+1. Plain path to file or http (like `map = "http://example.com/file.txt"` or `map = "/tmp/mymap"`)
+2. Composite path like `map = ["http://example.com/file.txt", "/tmp/mymap"]`. Maps data is concatenated from the sources.
+3. An embedded map like `map = ["foo bar"];` or `map = ["foo 1", "bar b", "baz bababa"]` or `map = ["192.168.1.1/24", "10.0.0.0/8"]`
+4. A fully decomposed object with lots of options
+
+For the second option it is also possible to have a composite path with fallback:
+
+~~~ucl
+exceptions = [
+  "https://maps.rspamd.com/rspamd/2tld.inc.zst",
+  "${DBDIR}/2tld.inc.local",
+  "fallback+file://${CONFDIR}/2tld.inc"
+];
+~~~
+
+In the example above `fallback+file://${CONFDIR}/2tld.inc` will be used when the first composite backend is somehow unreachable (e.g. when first load of Rspamd or all elements are invalid).
+
+Bear in mind that (1) and (3) can only be distinguished by making an array like `map = ["192.168.1.1/24"]`
+Historically just for radix map (ipnetwork ones) you could also use `map = "192.168.1.1/24"` but it is not recommended.
 
 Within maps you can use whitespace or comments. For example, here is an example of ip/network map:
 
