@@ -17,7 +17,7 @@ To qualify for free usage of the feeds you must satisfy the following conditions
 
 1. Your use of the feeds data is **non-commercial**
 
-**or**
+    **or**
 
 2. Your query volume is less than **500,000 queries per day**
 
