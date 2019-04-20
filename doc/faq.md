@@ -187,7 +187,7 @@ gdb `which rspamd` -c /coreland/rspamd.core
 lldb `which rspamd` -c /coreland/rspamd.core
 ```
 
-If a core file has been opened without errors then you can type `bt full` in the debugger command line to get the full stack trace that caused this particular error.
+If a core file has been opened without errors then you can type `bt full` for GDB or `bt all` for LLDB in the debugger command line to get the full stack trace that caused this particular error.
 
 ### Why do I have zero score for a spam message
 
