@@ -62,6 +62,8 @@ dmarc {
 }
 ~~~
 
+Note that the actions defined are prefilters.  This is important as setting 'quarantine = "add_header"' will cause rspamd to accept any mail that has a DMARC=quarantine result, then add a header to it, *even if that mail scores a result that would have otherwise resulted in the mail being marked as spam and rejected*.  
+
 ## Reporting
 
 From Rspamd 1.6 experimental support for generation of DMARC reports is provided.
