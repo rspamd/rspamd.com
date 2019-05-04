@@ -64,7 +64,13 @@ key_prefix = "ARC_KEYS";
 #path_map = "/etc/rspamd/arc_paths.map";
 
 # From version 1.8.4, Rspamd uses a different set of sign_headers for ARC:
-sign_headers = "(o)from:(o)sender:(o)reply-to:(o)subject:(o)date:(o)message-id:(o)to:(o)cc:(o)mime-version:(o)content-type:(o)content-transfer-encoding:resent-to:resent-cc:resent-from:resent-sender:resent-message-id:(o)in-reply-to:(o)references:list-id:list-owner:list-unsubscribe:list-subscribe:list-post:dkim-signature"
+```
+sign_headers = '(o)autocrypt:(o)cc:(o)content-transfer-encoding:(o)content-type:\
+(o)date:dkim-signature:(o)from:(o)in-reply-to:list-help:list-id:list-owner:\
+list-post:list-subscribe:list-unsubscribe:(o)message-id:(o)mime-version:\
+(o)openpgp:(o)references:(o)reply-to:resent-cc:resent-from:\
+resent-message-id:resent-sender:resent-to:sender:(o)subject:(o)to';
+```
 
 # Domain specific settings
 domain {

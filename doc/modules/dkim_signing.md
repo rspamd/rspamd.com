@@ -257,11 +257,11 @@ Rspamd allows to change headers that are required to be signed. From Rspamd 1.7.
 The default setting for this option is the following:
 
 ```
-sign_headers = '(o)from:(o)sender:(o)reply-to:(o)subject:(o)date:(o)message-id:\
-(o)to:(o)cc:(o)mime-version:(o)content-type:(o)content-transfer-encoding:\
-resent-to:resent-cc:resent-from:resent-sender:resent-message-id:\
-(o)in-reply-to:(o)references:list-id:list-owner:list-unsubscribe:\
-list-subscribe:list-post:(o)openpgp:(o)autocrypt';
+sign_headers = '(o)autocrypt:(o)cc:(o)content-transfer-encoding:(o)content-type:\
+(o)date:(o)from:(o)in-reply-to:list-help:list-id:list-owner:\
+list-post:list-subscribe:list-unsubscribe:(o)message-id:(o)mime-version:\
+(o)openpgp:(o)references:(o)reply-to:resent-cc:resent-from:\
+"resent-message-id:resent-sender:resent-to:sender:(o)subject:(o)to';
 ```
 
 As you can see, oversigned headers are prefixed with `(o)` string.
