@@ -141,6 +141,40 @@ To automatically set the variables each time the machine boots, add them to `/et
 kern.corefile=/coreland/%N.core
 ```
 
+**macOS specific**
+
+macOS default settings disable core dumps, and set the sticky bit on
+the macOS core dump directory `/cores` so that core dumps may only be 
+appended, not deleted.
+
+To see the existing hard and soft settings on macOS:
+```
+sysctl -a | grep core | grep -v cpu
+ulimit -c
+launchctl limit | grep core
+ls -ld /cores
+```
+
+Enable core dumps on macOS, and see them in the Finder if desired:
+```
+ulimit -c unlimited
+sudo launchctl limit core unlimited
+# defaults write com.apple.finder AppleShowAllFiles TRUE
+```
+
+Disable core dumps on macOS, and not show `/cores` in the Finder:
+```
+ulimit -c 0
+sudo launchctl limit core 0 unlimited
+# defaults delete com.apple.finder AppleShowAllFiles
+```
+
+Delete core dumps on macOS:
+```
+sudo chown root /cores/core.*
+sudo rm /cores/core.*
+```
+
 #### Setting system limits
 
 In distros with traditional SysV init, you can use the service init file, for example `/etc/init.d/rspamd` to permit dumping of core files by setting the appropriate resource limit. You will need to add the following line:

@@ -150,7 +150,7 @@ Rspamd has been ported to the following BSD like operating systems:
 - **FreeBSD**
 - **NetBSD**
 - **OpenBSD**
-- **OSX** (using MacPorts)
+- **macOS** (using MacPorts)
 
 FreeBSD users can install Rspamd from [ports](http://www.freshports.org/mail/rspamd/) or use the experimental line of packages by [rspamd-devel](http://www.freshports.org/mail/rspamd-devel/) port.
 
@@ -158,7 +158,12 @@ Users of NetBSD (and other systems with pkgsrc) can use [pkgsrc](http://pkgsrc.s
 
 OpenBSD users can use [ports](http://openports.se/mail/rspamd).
 
-OSX users can install from [MacPorts](https://trac.macports.org/browser/trunk/dports/mail/rspamd/Portfile).
+macOS users can install from [MacPorts](https://github.com/macports/macports-ports/blob/master/mail/rspamd/Portfile):
+```
+sudo port install rspamd
+sudo port load rspamd
+```
+
 </div>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="system5">
