@@ -8,8 +8,7 @@ title: Greylisting module
 
 This module is intended to delay messages that have spam score above `greylisting` action threshold.
 
-{::options parse_block_html="true" /}
-<div id="toc">
+<div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
   * TOC
   {:toc}

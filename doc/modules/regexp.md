@@ -8,8 +8,7 @@ title: Regexp module
 
 This is a core module that deals with regular expressions, internal functions and Lua code to filter messages.
 
-{::options parse_block_html="true" /}
-<div id="toc">
+<div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
   * TOC
   {:toc}

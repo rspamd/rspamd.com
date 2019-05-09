@@ -10,8 +10,7 @@ The DKIM signing module has been added in Rspamd 1.5 to provide a relatively sim
 
 DKIM signing currently works with Milter based MTAs (Sendmail, Postfix), Haraka & Communigate. For DKIM signing to work, you must [scan outbound mail with rspamd]({{ site.baseurl }}/doc/tutorials/scanning_outbound.html).
 
-{::options parse_block_html="true" /}
-<div id="toc">
+<div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
   * TOC
   {:toc}

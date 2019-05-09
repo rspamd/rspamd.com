@@ -7,9 +7,7 @@ title: Sync and Async API comparison
 
 This guide describes how to make asynchronous calls from Rspamd plugins and rules.
 
-{::options parse_block_html="true" /}
-
-<div id="toc">
+<div id="toc" markdown="1">
   * this unordered seed list will be replaced by toc as unordered list
   {:toc}
 </div>
@@ -71,6 +69,7 @@ It returns two values:
   - content `string` Response body
   - headers `table` (header -> value) list of response headers
 
+
 #### Asynchronous HTTP request
 {:.no_toc}
 
@@ -91,7 +90,6 @@ It returns two values:
   })
 ~~~~~
 
-{::options parse_block_html="false" /}
 
 <div>
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#async_http">
@@ -134,7 +132,6 @@ rspamd_config:register_symbol({
 {% endhighlight %}
 
 </div></div>
-{::options parse_block_html="true" /}
 
 
 #### Synchronous HTTP request
@@ -155,7 +152,6 @@ rspamd_config:register_symbol({
   end
   ...
 ~~~~~~~~~~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#sync_http">
@@ -198,7 +194,6 @@ rspamd_config:register_symbol({
 
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
 
 
 ### DNS module {#API-example-DNS-module}
@@ -221,7 +216,6 @@ task:get_resolver():resolve_a({
   ...
 })
 ~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#async_dns">
@@ -258,7 +252,6 @@ rspamd_config:register_symbol({
 })
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
 
 
 #### Synchronous DNS request
@@ -278,7 +271,6 @@ rspamd_config:register_symbol({
     task:insert_result('DNS_SYNC', 1.0, tostring(results[1]))
   end
 ~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#sync_dns">
@@ -318,7 +310,6 @@ rspamd_config:register_symbol({
 })
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
 
 
 ### TCP module {#API-example-TCP-module}
@@ -339,7 +330,6 @@ It is recommended to use `lua_tcp_sync` module to work TCP.
     ...
   })
 ~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#async_tcp">
@@ -379,7 +369,6 @@ rspamd_config:register_symbol({
 })
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
 
 
 #### Synchronous TCP request
@@ -409,7 +398,6 @@ rspamd_config:register_symbol({
   is_ok, data = connection:read_once(); 
   task:insert_result('HTTP_RESPONSE', 1.0, data or err)
 ~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#sync_tcp">
@@ -495,7 +483,6 @@ rspamd_config:register_symbol({
 })
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
 
 
 ### Redis module {#API-example-Redis-module}
@@ -518,7 +505,6 @@ rspamd_config:register_symbol({
   local request = {...}
   redis_lua.request(redis_params, attrs, request)
 ~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#async_redis">
@@ -566,7 +552,6 @@ rspamd_config:register_symbol({
 
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
 
 #### Synchronous Redis request
 {:.no_toc}
@@ -593,7 +578,6 @@ rspamd_config:register_symbol({
   end
   ...
 ~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#sync_redis">
@@ -658,5 +642,3 @@ rspamd_config:register_symbol({
 
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
-

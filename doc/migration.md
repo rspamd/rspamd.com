@@ -7,8 +7,7 @@ title: Upgrading
 
 This document describes incompatible changes introduced in recent Rspamd versions and details how to update your rules and configuration accordingly.
 
-{::options parse_block_html="true" /}
-<div id="toc">
+<div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
   * TOC
   {:toc}

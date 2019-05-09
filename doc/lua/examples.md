@@ -10,8 +10,7 @@ Here is the collection of the useful Lua rules snippets that are not the officia
 
 To enable these snippets, you can place them to the `rspamd.local.lua` file. Typically it will be `/etc/rspamd/rspamd.local.lua` file for the Linux distros (or `/usr/local/etc/rspamd/rspamd.local.lua` for others).
 
-{::options parse_block_html="true" /}
-<div id="toc">
+<div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
   * TOC
   {:toc}

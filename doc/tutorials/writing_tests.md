@@ -7,9 +7,7 @@ title: Writing tests for Rspamd
 
 Testing is an important part of maintaining stable product. In case of Rspamd, there was a historical lack of proper testing, however, we are working on improvements here. Any help from the community with regard to tests is much appreciated.
 
-{::options parse_block_html="true" /}
-
-<div id="toc">
+<div id="toc" markdown="1">
   * this unordered seed list will be replaced by toc as unordered list
   {:toc}
 </div>

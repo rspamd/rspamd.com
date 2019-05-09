@@ -4,9 +4,7 @@ title: Rspamd Architecture
 ---
 # Rspamd protocol
 
-{::options parse_block_html="true" /}
-
-<div id="toc">
+<div id="toc" markdown="1">
   * this unordered seed list will be replaced by toc as unordered list
   {:toc}
 </div>

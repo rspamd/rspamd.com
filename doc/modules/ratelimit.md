@@ -12,8 +12,7 @@ a separate limits.
 All limits are stored in [Redis](http://redis.io) server (or servers cluster) to enable
 shared cache between different scanners.
 
-{::options parse_block_html="true" /}
-<div id="toc">
+<div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
   * TOC
   {:toc}

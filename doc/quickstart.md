@@ -13,8 +13,7 @@ This guide describes the main steps to get and start working with Rspamd. In par
 - Redis cache
 - Dovecot with Sieve plugin to sort mail and learn by moving messages to `Junk` folder
 
-{::options parse_block_html="true" /}
-<div id="toc">
+<div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
   * TOC
   {:toc}

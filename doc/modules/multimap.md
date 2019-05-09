@@ -7,8 +7,7 @@ title: Multimap module
 
 Multimap module is designed to handle rules that are based on different types of lists that are dynamically updated by Rspamd and called `maps`. This module is useful for whitelists, blacklists and other lists to be organized via files. It can also load remote lists using `HTTP` and `HTTPS` protocols or `RESP` (REdis Serialization Protocol). This article explains in detail all configuration options and features of this module.
 
-{::options parse_block_html="true" /}
-<div id="toc">
+<div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
   * TOC
   {:toc}
