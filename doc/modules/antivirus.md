@@ -23,7 +23,9 @@ Antivirus module (available from Rspamd 1.4) provides integration with virus sca
 
 The configuration for an antivirus setup is done by defining rules. If the antivirus reports one or more viruses the configured symbol will be set (e.g. CLAM_VIRUS) with the viruses as description and the if set the reset action will be triggered.
 
-When there is an error during the connection or the antivirus reports failures the fail symbol (e.g. CLAM_VIRUS_FAIL) will be set with the error message as description. For both symbols you can use patterns to set a dedicated symbol for any virus name or error message:
+When there is an error during the connection or the antivirus reports failures the fail symbol (e.g. CLAM_VIRUS_FAIL) will be set with the error message as description. It is possible to make a `soft reject` by using the [force_actions]({{ site.baseurl }}/doc/configuration/force_actions.html) plugin if the antivirus has failed to scan the email (for example during a database reloading)
+
+For both symbols you can use patterns to set a dedicated symbol for any virus name or error message:
 
 ~~~ucl
 ...
