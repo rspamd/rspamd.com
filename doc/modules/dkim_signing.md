@@ -249,28 +249,27 @@ All headers are mandatory. Dkim check dependency is automatically enabled but yo
 Rspamd allows to change headers that are required to be signed. From Rspamd 1.7.3, you can specify them as `sign_headers` option. By default, Rspamd distinguish two options:
 
 * Normal headers: they are signed as many times as you specify them. **Important security notice**: an attacker can add arbitrary headers with the same name before the headers signed and will still get a valid signature. This option is thus recommended for headers that are non **visible** to users. We want **transport** headers to be treated as normal headers here.
-* Oversigned headers: these headers are signed `N + 1` times even if `N==0`. Oversigned headers cannot be appended to a message. We usually want displayed or meaningful headers to be oversigned here.
+* Oversigned headers: these headers are signed `N + 1` times **even if `N==0`**. Oversigned headers cannot be appended to a message. We usually want displayed or meaningful headers to be oversigned here.
+* Optionally oversigned headers (from 1.9.3): these headers are signed `N + 1` times **if `N<>0` only**. Oversigned headers cannot be appended to a message. We usually want displayed but optional headers to be oversigned in this way.
 
-### Default sign_headers (after 1.7.3)
+Oversigned headers are prefixed with `(o)` string. Optionally oversigned headers are prefixed with `(x)` string.
 
-The default setting for this option is the following:
+### Default sign_headers (after 1.9.3)
 
-```
-sign_headers = '(o)from:(o)sender:(o)reply-to:(o)subject:(o)date:(o)message-id:\
-(o)to:(o)cc:(o)mime-version:(o)content-type:(o)content-transfer-encoding:\
-resent-to:resent-cc:resent-from:resent-sender:resent-message-id:\
-(o)in-reply-to:(o)references:list-id:list-owner:list-unsubscribe:\
-list-subscribe:list-post:(o)openpgp:(o)autocrypt';
-```
+For DKIM signing, Rspamd uses the following default list:
 
-As you can see, oversigned headers are prefixed with `(o)` string.
+    (o)from:(x)sender:(x)reply-to:(x)subject:(x)date:(x)message-id:
+		(o)to:(o)cc:(x)mime-version:(x)content-type:(x)content-transfer-encoding:
+		resent-to:resent-cc:resent-from:resent-sender:resent-message-id:
+		(x)in-reply-to:(x)references:list-id:list-help:list-owner:list-unsubscribe:
+		list-subscribe:list-post:(x)openpgp:(x)autocrypt
 
 ### Rules of headers sign
 
 `sign_headers` lists headers that are:
 
 - signed `n` times if they are present `n` times
-- for the `n = 0` case this would mean that headers are not signed if they are not present. Oversigned headers are still signed one time to prevent adding a header with this name.
+- for the `n = 0` case this would mean that headers are not signed if they are not present. Oversigned headers are still signed one time to prevent adding a header with this name. Optionally oversigned headers are excluded from that.
 - headers listed as oversigned are signed `n + 1` times
 
 ## Issues using Sendmail on DKIM signing and verification
