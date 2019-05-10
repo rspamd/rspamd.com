@@ -42,7 +42,7 @@ Content scan features are used to find certain patterns in messages, including t
 
 There are many resources that define policies for different objects in email transfer: for sender's IP address, for URLs in a message and even for a message itself. For example, a message could be signed by sender using <abbr title="Domain Key Identified Mail">DKIM</abbr> technology. Another example could be URL filtering: [phishing checks]({{ site.baseurl }}/doc/modules/phishing.html) or URL DNS blacklists - [SURBL]({{ site.baseurl }}/doc/modules/surbl.html). Rspamd supports various policy checks:
 
-* [**SPF**]({{ site.baseurl }}/doc/modules/spf.html) checks allow to validate a message's sender using the policy defined in the DNS record of sender's domain. You can read about <abbr title="Sender Policy Framework">SPF</abbr> policies [here](http://www.openspf.org/). A number of mail systems  support SPF, such as `Gmail` or `Yahoo Mail`.
+* [**SPF**]({{ site.baseurl }}/doc/modules/spf.html) checks allow to validate a message's sender using the policy defined in the DNS record of sender's domain. You can read about <abbr title="Sender Policy Framework">SPF</abbr> policies [here](https://tools.ietf.org/html/rfc7208). A number of mail systems  support SPF, such as `Gmail` or `Yahoo Mail`.
 
 * [**DKIM**]({{ site.baseurl }}/doc/modules/dkim.html) policy validates a message's cryptographic signature against a public key placed in the DNS record of sender's domain. This method allows to ensure that a message has been received from the specified domain without altering on the path. Rspamd also supports [**DKIM signing**]({{ site.baseurl }}/doc/modules/dkim_signing.html)
 
