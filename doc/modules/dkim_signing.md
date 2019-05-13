@@ -315,7 +315,7 @@ Oversigned headers are prefixed with `(o)` string. Optionally oversigned headers
 
 For DKIM signing, Rspamd uses the following default list:
 
-    (o)from:(x)sender:(x)reply-to:(x)subject:(x)date:(x)message-id:
+    (o)from:(x)sender:(o)reply-to:(o)subject:(x)date:(x)message-id:
 		(o)to:(o)cc:(x)mime-version:(x)content-type:(x)content-transfer-encoding:
 		resent-to:resent-cc:resent-from:resent-sender:resent-message-id:
 		(x)in-reply-to:(x)references:list-id:list-help:list-owner:list-unsubscribe:
