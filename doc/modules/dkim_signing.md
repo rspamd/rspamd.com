@@ -280,19 +280,27 @@ Rspamd also provides keys management tools using `rspamadm` command. It can do t
 
 * Create new keys:
 
-    rspamadm vault create example.com
+```
+rspamadm vault create example.com
+```
 
 * Create or add new ed25519 keys:
 
-    rspamadm vault create --algorithm eddsa example.com
+```
+rspamadm vault create --algorithm eddsa example.com
+```
     
 * Delete keys
 
-    rspamadm vault del example.com
+```
+rspamadm vault del example.com
+```
     
 * Perform safe keys rotation:
 
-    rspamadm vault rotate example.com
+```
+rspamadm vault rotate example.com
+```
     
 During rotation, Rspamd creates a new set of keys for each algorithm represented in the vault. New selectors are chosen according to the current date and key type, e.g. `rsa-20190501`. Old keys are preserved but their expire date is set to stop their usage over `ttl` grace time (1 day by default). During this grace period, Rspamd will sign using **both** selectors.
 
@@ -316,10 +324,41 @@ Oversigned headers are prefixed with `(o)` string. Optionally oversigned headers
 For DKIM signing, Rspamd uses the following default list:
 
     (o)from:(x)sender:(o)reply-to:(o)subject:(x)date:(x)message-id:
-		(o)to:(o)cc:(x)mime-version:(x)content-type:(x)content-transfer-encoding:
-		resent-to:resent-cc:resent-from:resent-sender:resent-message-id:
-		(x)in-reply-to:(x)references:list-id:list-help:list-owner:list-unsubscribe:
-		list-subscribe:list-post:(x)openpgp:(x)autocrypt
+    (o)to:(o)cc:(x)mime-version:(x)content-type:(x)content-transfer-encoding:
+    resent-to:resent-cc:resent-from:resent-sender:resent-message-id:
+    (x)in-reply-to:(x)references:list-id:list-help:list-owner:list-unsubscribe:
+    list-subscribe:list-post:(x)openpgp:(x)autocrypt
+		
+Here is the summary of the list above:
+
+| Header          | Sign type                         |
+| :-------------- | :-------------------------------- |
+| `From`      | Strictly oversign                |
+| `Sender`      | Conditionally oversign                |
+| `Reply-To`      | Strictly oversign                |
+| `Subject`      | Strictly oversign                |
+| `Date`      | Conditionally oversign                |
+| `Message-Id`      | Conditionally oversign                |
+| `To`      | Strictly oversign                |
+| `Cc`      | Strictly oversign                |
+| `Mime-Version`      | Conditionally oversign                |
+| `Content-Type`      | Conditionally oversign                |
+| `Content-Transfer-Encoding`      | Conditionally oversign                |
+| `Resent-To`      | Do not oversign                |
+| `Resent-Cc`      | Do not oversign                |
+| `Resent-From`      | Do not oversign                |
+| `Resent-Sender`      | Do not oversign                |
+| `Resent-Message-Id`      | Do not oversign                |
+| `In-Reply-To`      | Conditionally oversign                |
+| `References`      | Conditionally oversign                |
+| `List-Id`      | Do not oversign                |
+| `List-Help`      | Do not oversign                |
+| `List-Owner`      | Do not oversign                |
+| `List-Unsubscribe`      | Do not oversign                |
+| `List-Subscribe`      | Do not oversign                |
+| `List-Post`      | Do not oversign                |
+| `Openpgp`      | Conditionally oversign                |
+| `Autocrypt`      | Conditionally oversign                |
 
 ### Rules of headers sign
 
