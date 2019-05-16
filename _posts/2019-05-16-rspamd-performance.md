@@ -8,7 +8,7 @@ categories: misc
 
 Rspamd has always been oriented on the performance but it was always quite hard to measure as normally it runs *just fast enough*.
 
-However, I was recently offered to process [Abusix.io](https://www.abusix.ai/) feeds using Rspamd. These feeds are used to improve Rspamd [fuzzy storage]({{ site.baseurl }}/doc/modules/fuzzy_check.html) quality, to feed URLs and Emails to the DNS black lists provided by Rspamd project and used in [surbl module]({{ site.baseurl }}/doc/modules/surbl.html).
+However, I was recently offered to process [Abusix.ai](https://www.abusix.ai/) feeds using Rspamd. These feeds are used to improve Rspamd [fuzzy storage]({{ site.baseurl }}/doc/modules/fuzzy_check.html) quality, to feed URLs and Emails to the DNS black lists provided by Rspamd project and used in [SURBL module]({{ site.baseurl }}/doc/modules/surbl.html).
 
 ## Problem statement
 
@@ -30,7 +30,7 @@ $ rspamc stat | \
 </div>
 </pre>
 
-It means that over 10 seconds Rspamd has to process around 15 thousands of messages which gives us a rate of **1500** messages per second.
+It means that over 10 seconds Rspamd has to process around 15 thousands of messages which gives us a rate of **1500 messages per second**.
 
 ## Rspamd setup
 
@@ -91,7 +91,7 @@ MiB Swap:   4092.0 total,   3925.5 free,    166.5 used. 100018.6 avail Mem
 
 ## Results analytics
 
-As you can see, this machine runs also [Clickhouse](https://clickhouse.yandex), Redis, own recursive resolver - Unbound - and it still has **80% idle** processing these **1500 messages per second**.
+As you can see, this machine runs also [Clickhouse](https://clickhouse.yandex), Redis, own recursive resolver - Unbound - and it still has **~80% idle** processing these **1500 messages per second**.
 
 If we look at the performance counters by attaching to some of the worker processes, we would see the following picture:
 
@@ -140,8 +140,7 @@ If we look at the performance counters by attaching to some of the worker proces
 </div>
 </pre>
 
-The top consumers are Lua allocator and Garbadge collector. Since we are using [Rspamd experimental package](https://rspamd.com/downloads.html) on Debian Buster, then it is built with bundled [LuaJIT 2.1 beta3](https://luajit.org) and Jemalloc allocator, however, it seems that there is some issue with this allocator in Debian Buster, so I had to load it manually via the following command:
-
+The top consumers are Lua allocator and garbage collector. Since we are using [Rspamd experimental package](https://rspamd.com/downloads.html) on Debian Buster, then it is built with bundled [LuaJIT 2.1 beta3](https://luajit.org) and Jemalloc allocator, however, it seems that there is some issue with this allocator in Debian Buster, so I had to load it manually via the following command:
 
 <pre>
 <div class="term">
@@ -166,7 +165,7 @@ lua_gc_pause = 400;
 full_gc_iters = 10000;
 ~~~
 
-In this mode, we can also observe GC stats on workers that performs full GC loop each 10k messages being scanned:
+These options tell Rspamd to preserve Lua objects in memory for longer time, at the same time in this mode, we can also observe GC stats on workers that performs full GC loop each 10k messages being scanned:
 
 <pre>
 <div class="term">
@@ -176,7 +175,7 @@ perform full gc cycle; memory stats: 58.66MiB allocated, 62.01MiB active, 6.08Mi
 </div>
 </pre>
 
-As you can see, full GC iter takes quite a significant time. However, it still keeps Lua memory usage sane.
+As you can see, full GC iter takes quite a significant time. However, it still keeps Lua memory usage sane. The ideas behind this GC mode have been taken from the generational GC idea in [LuaJIT Wiki](http://wiki.luajit.org/New-Garbage-Collector#gc-algorithms_generational-gc).
 
 ## Resulting graphs
 

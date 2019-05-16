@@ -2,7 +2,7 @@
 layout: home
 title: Rspamd spam filtering system
 ---
-
+<!--
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
 				<h3 style="margin: 0px;">News: Rspamd 1.9.3 has been released</h3>
@@ -11,6 +11,18 @@ title: Rspamd spam filtering system
    </div>
    <div class="col-xs-12 col-sm-2 bottom-right">
 				<a class="btn btn-primary pull-right" href="https://rspamd.com/announce/2019/05/13/rspamd-1.9.3.html" style="margin-top: 10px;">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
+	</div>
+</div>
+-->
+
+<div class="row news_row" style="position: relative;">
+		<div class="col-xs-12 col-sm-10">
+				<h3 style="margin: 0px;">Case study: Rspamd performance</h3>
+				<span class="date"><small>2019-05-16</small></span>
+				<p style="margin-bottom: 0px; margin-top: 5px">An article that demonstrates Rspamd performance in the real life.</p>
+   </div>
+   <div class="col-xs-12 col-sm-2 bottom-right">
+				<a class="btn btn-primary pull-right" href="https://rspamd.com/misc/2019/05/16/rspamd-performance.html" style="margin-top: 10px;">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
 	</div>
 </div>
 

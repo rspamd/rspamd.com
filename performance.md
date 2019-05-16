@@ -7,15 +7,13 @@ title: Rspamd performance
 
 Rspamd has been started to handle mail flows that has grown over the last decade by more than ten times. From the very beginning of the project, Rspamd was oriented on highly loaded mail systems with development focus on performance and scan speed. Rspamd is written in plain C language and it uses a number of techniques to run fast especially on the modern hardware. On the other hand, it is possible to run Rspamd even on an embedded device with a very constrained environment.
 
-So far, Rspamd can filter hundreds of messages per second using a single 4 cores SandyBridge machine:
-
-<img class="img-responsive" src="{{ site.baseurl }}/img/graph1.png" width="75%">
+You can also check the recent [performance analyse article](https://rspamd.com/misc/2019/05/16/rspamd-performance.html) to have a better impression about how fast Rspamd could be.
 
 Rspamd can be treated as a faster replacement for [SpamAssassin](https://spamassassin.apache.org) mail filter with the ability to scan **ten times** more messages using the **same** rules (by means of [SpamAssassin plugin]({{ site.baseurl }}/doc/modules/spamassassin.html)). In the next graph, you can see how switch to Rspamd from <abbr title="SpamAssassin">SA</abbr> helped to reduce CPU load on scanner machines:
 
 <img class="img-responsive" src="{{ site.baseurl }}/img/graph2.png" width="50%">
 
-For faster email processing, Rspamd uses a set of global and local optimization techniques. You can learn more about these techniques from my FOSDEM-2016 [talk](https://www.youtube.com/watch?v=_fl9i-az_Q0) ([slides](http://www.slideshare.net/VsevolodStakhov/rspamdfosdem-57772063)).
+For faster email processing, Rspamd uses a set of global and local optimization techniques.
 
 ## Global optimizations
 

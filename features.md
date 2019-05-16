@@ -14,7 +14,9 @@ the MTA to apply to the message: for example, to pass, to reject or to add a hea
 Rspamd is designed to process hundreds of messages per second simultaneously and has a number of
 features available.
 
-You can watch the following [introduction video](https://www.youtube.com/watch?v=_fl9i-az_Q0) from the [FOSDEM-2016](http://fosdem.org) where I describe the main features of Rspamd and explain why Rspamd runs so fast.
+You can watch the following [video](https://chemnitzer.linux-tage.de/2019/en/programm/beitrag/212) from the [Linux Chemnitz Days 2019](https://chemnitzer.linux-tage.de).
+
+You can also check the recent [performance analyse article](https://rspamd.com/misc/2019/05/16/rspamd-performance.html) to have a better impression about how fast Rspamd could be.
 
 <div><h2><img src="img/features.jpg" class="" height="50" width="50" style="position: relative; bottom: 10px;"> Unique features</h2></div>
 
