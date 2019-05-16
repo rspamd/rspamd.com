@@ -8,7 +8,7 @@ categories: misc
 
 Rspamd has always been oriented on the performance but it was always quite hard to measure as normally it runs *just fast enough*.
 
-However, I was recently offered to process [Abusix.ai](https://www.abusix.ai/) feeds using Rspamd. These feeds are used to improve Rspamd [fuzzy storage]({{ site.baseurl }}/doc/modules/fuzzy_check.html) quality, to feed URLs and Emails to the DNS black lists provided by Rspamd project and used in [SURBL module]({{ site.baseurl }}/doc/modules/surbl.html).
+However, I was recently offered to process [Abusix Intelligence](https://www.abusix.ai/) feeds using Rspamd. These feeds are used to improve Rspamd [fuzzy storage]({{ site.baseurl }}/doc/modules/fuzzy_check.html) quality, to feed URLs and Emails to the DNS black lists provided by Rspamd project and used in [SURBL module]({{ site.baseurl }}/doc/modules/surbl.html).
 
 ## Problem statement
 
@@ -49,7 +49,11 @@ There is also some significant amount of home-crafted scripts written in Lua to 
 
 ## Hardware
 
-Now some words about hardware being used. It is now an [AX-160](https://www.hetzner.com/dedicated-rootserver/ax160-ssd) AMD server rented in [Hetzner](https://www.hetzner.com/). This is quite a powerful machine but the current load pictures look like this one:
+Now some words about hardware being used. 
+
+Previously, we have set the same setup on a small instance of [AX-60](https://www.hetzner.com/dedicated-rootserver/ax60-ssd) and it was loaded for around 80%. We have decided to move to a more powerful server to have some margin for processing more emails and doing some experiments.
+
+Hence we now have an [AX-160](https://www.hetzner.com/dedicated-rootserver/ax160-ssd) AMD server rented in [Hetzner](https://www.hetzner.com/). This is quite a powerful machine and the current load pictures look like this one:
 
 <pre>
 <div class="term">
