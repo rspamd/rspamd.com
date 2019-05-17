@@ -6,7 +6,7 @@ categories: misc
 
 ## Preface
 
-Rspamd has always been oriented on the performance but it was always quite hard to measure as normally it runs *just fast enough*.
+Rspamd has always been oriented on the performance but it was always quite hard to measure how fast it was as normally it runs *just fast enough*.
 
 However, I was recently offered to process [Abusix Intelligence](https://www.abusix.ai/) feeds using Rspamd. These feeds are used to improve Rspamd [fuzzy storage]({{ site.baseurl }}/doc/modules/fuzzy_check.html) quality, to feed URLs and Emails to the DNS black lists provided by Rspamd project and used in [SURBL module]({{ site.baseurl }}/doc/modules/surbl.html).
 
@@ -49,11 +49,11 @@ There is also some significant amount of home-crafted scripts written in Lua to 
 
 ## Hardware
 
-Now some words about hardware being used. 
+Now some words about hardware being used.
 
-Previously, we have set the same setup on a small instance of [AX-60](https://www.hetzner.com/dedicated-rootserver/ax60-ssd) and it was loaded for around 80%. We have decided to move to a more powerful server to have some margin for processing more emails and doing some experiments.
+Previously we have set the same setup on a small instance of [AX-60](https://www.hetzner.com/dedicated-rootserver/ax60-ssd) and it was loaded for around 80%. We have decided to move to a more powerful server to have some margin for processing more emails and doing some experiments.
 
-Hence we now have an [AX-160](https://www.hetzner.com/dedicated-rootserver/ax160-ssd) AMD server rented in [Hetzner](https://www.hetzner.com/). This is quite a powerful machine and the current load pictures look like this one:
+Hence, we now have an [AX-160](https://www.hetzner.com/dedicated-rootserver/ax160-ssd) AMD server rented in [Hetzner](https://www.hetzner.com/). This is quite a powerful machine and the current load pictures look like this one:
 
 <pre>
 <div class="term">
@@ -97,7 +97,7 @@ Rspamd is also being fed via [proxy worker](https://rspamd.com/doc/workers/rspam
 
 ## Results analytics
 
-As you can see, this machine runs also [Clickhouse](https://clickhouse.yandex), Redis, own recursive resolver - Unbound - and it still has **~80% idle** processing these **1500 messages per second**.
+As you can see, this machine runs also [Clickhouse](https://clickhouse.yandex), Redis, own recursive resolver (Unbound), and it still has **~80% idle** processing these **1500 messages per second**.
 
 If we look at the performance counters by attaching to some of the worker processes, we would see the following picture:
 
