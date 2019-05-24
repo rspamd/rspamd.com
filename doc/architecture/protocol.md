@@ -68,7 +68,7 @@ To avoid unnecessary work, Rspamd allows an MTA to pass pre-processed data about
 | `Rcpt`       | Defines SMTP recipient (there may be several `Rcpt` headers) |
 | `Pass`       | If this header has `all` value, all filters would be checked for this message. |
 | `Subject`    | Defines subject of message (is used for non-mime messages). |
-| `User`       | Defines SMTP user. |
+| `User`       | Defines username for authenticated SMTP client. |
 | `Message-Length` | Defines the length of message excluding the control block. |
 | `Settings-ID` | Defines [settings id](../configuration/settings.html) to apply. |
 | `Settings` | Defines list of rules ([settings](../configuration/settings.html) `apply` part) as raw json block to apply. |
