@@ -162,7 +162,7 @@ olefy communicates with Rspamd over TCP and calls olevba to get the report of an
 
 ### oletools default mode
 
-In order to send only office files to the olevba analyzer set mime_parts_filter_regex and mime_parts_filter_ext like shown below. (Maybe this list is still incomplete). Sometimes office files are sent with the generic content-type `application/octet-stream`. You can enable UNKNOWN to catch these, but this will also catch non-office file attachments like images, pdf etc. Sending non-office files to olevba will result in error messages.
+In order to send only office files to the olevba analyzer enable scan_mime_parts (needed for versions < 1.9.5) set mime_parts_filter_regex and mime_parts_filter_ext like shown below. (Maybe this list is still incomplete). Sometimes office files are sent with the generic content-type `application/octet-stream`. You can enable UNKNOWN to catch these, but this will also catch non-office file attachments like images, pdf etc. Sending non-office files to olevba will result in error messages.
 
 ~~~ucl
 # local.d/external_services.conf
@@ -171,6 +171,9 @@ oletools {
   ...
   # default olefy settings
   servers = "127.0.0.1:10050"
+
+  # needs to be set explicitly for Rspamd < 1.9.5
+  scan_mime_parts = true;
 
   # mime-part regex matching in content-type or filename
   mime_parts_filter_regex {
