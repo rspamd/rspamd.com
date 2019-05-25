@@ -130,3 +130,31 @@ phishtank_map = "https://rspamd.com/phishtank/online-valid.json.zst";
 ~~~
 
 Please note that compressed maps are **NOT** supported prior to Rspamd `1.4`.
+
+## Generic feed support
+
+If you need a custom phishing maps from a local file or online URL catalog, it is necessary that you allow the generic service support.
+
+First, you need to create a service definition and enable it. Is necessary a local file or URL (in the example below we use local map from the [CaUMa](https://cauma.pop-ba.rnp.br/about.html) URLs catalog.
+
+
+~~~ucl
+# local.d/phishing.conf
+generic_service_enabled = true;
+generic_service_name = 'CaUMa';
+generic_service_symbol = "PHISHED_CAUMA";
+generic_service_map = "file:///var/tmp/cauma-online-urls.txt";
+~~~
+
+The following definition is also necessary to define a weight value to the symbol.
+
+~~~ucl
+# local.d/phishing_group.conf
+symbols {
+    "PHISHED_CAUMA" {
+        weight = 5.0;
+        description = "Phished URL";
+        one_shot = true;
+    }
+}
+~~~
