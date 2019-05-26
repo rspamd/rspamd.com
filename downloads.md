@@ -129,7 +129,7 @@ Rspamd is also supported on the following Linux distributions:
 Rspamd is available in the [community repository](https://pkgs.alpinelinux.org/package/edge/community/x86_64/rspamd)
 
 ### Arch Linux
-Rspamd is available in the [AUR](https://aur.archlinux.org/packages/rspamd)
+Rspamd is available in the [community repository](https://www.archlinux.org/packages/community/x86_64/rspamd/)
 
 ### Gentoo Linux
 Ebuilds for Gentoo Linux users are available in the main [Gentoo Portage repository](https://packages.gentoo.org/packages/mail-filter/rspamd).
