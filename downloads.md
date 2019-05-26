@@ -219,11 +219,3 @@ Alternatively, you can create a distribution package and use it for build your o
         </div>
     </div>
 </div>
-
-## Further reading
-
-Please check the [quickstart guide]({{ site.baseurl }}/doc/quickstart.html) that describes the subsequent steps to keep rspamd up and running. The most frequently asked questions are listed in the [FAQ]({{ site.baseurl }}/doc/faq.html).
-
-## Reporting bugs and other issues
-
-Please check [the support page](support.html)
