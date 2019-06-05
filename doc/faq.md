@@ -447,7 +447,7 @@ Rspamd now also reports about this sort of nesting on configuration load and in 
 There are several variables defined in UCL configuration parser and they are also exported via `rspamd_paths` global table in Lua code (available everywhere). Here are the default meanings and values for those paths (by `${PREFIX}` we denote the default installation prefix, e.g. `/usr`):
 
   * `CONFDIR` = `${PREFIX}/etc/rspamd` - main path for the configuration
-  * `LOCAL_CONFDIR` = `${PREFIX}/etc/rspamd` - path for the user's defined configuration
+  * `LOCAL_CONFDIR` = `${PREFIX}/etc/rspamd` - path for the user-defined configuration
   * `RUNDIR` = OS specific (`/var/run/rspamd` on Linux) - used to store volatile runtime data (e.g. PIDs)
   * `DBDIR` = OS specific (`/var/lib/rspamd` on Linux) - used to store static runtime data (e.g. databases or cached files)
   * `SHAREDIR` = `${PREFIX}/share/rspamd` - used to store shared files
@@ -1067,6 +1067,49 @@ You can check the connection with this:
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
+
+### What data should be backed up?
+
+The following directories and files should be included in a backup:
+
+|Data|Location|
+|---|---|
+|Main configuration directory|`CONFDIR` = `${PREFIX}/etc/rspamd`|
+|User-defined configuration directory|`LOCAL_CONFDIR` = `${PREFIX}/etc/rspamd`|
+|Static runtime data (e.g. databases)<sup>[1](#Backup_fn1)</sup>|`DBDIR`<sup>[2](#Backup_fn2)</sup>: OS specific, `/var/lib/rspamd` or `/var/db/rspamd`|
+|Redis configuration|OS specific, `/etc/redis/redis.conf` or `/usr/local/etc/redis.conf`<sup>[3](#Backup_fn3)</sup>|
+|Redis database(s)|OS specific, `/var/lib/redis/dump.rdb` or `/var/db/redis/dump.rdb`.<sup>[3](#Backup_fn3),[4](#Backup_fn4)</sup>|
+
+<a name="Backup_fn1">1</a>: You don't need to backup cached files: Hyperscan cache files ( `*.hs`, `*.hsmp`) and Rspamd maps (`*.map`) as they will be recreated by Rspamd.
+
+<a name="Backup_fn2">2</a>: Some modules allow to set paths for their static data (e.g. ARC and DKIM keys locations) outside the `DBDIR`. Make sure you have included these custom directories in the backup.
+
+<a name="Backup_fn3">3</a>: For multi-instance Redis please consult your Redis configuration.
+
+<a name="Backup_fn4">4</a>: Copying RDB files is completely safe while the server is running. You don't have to stop `redis` or `rspamd`.
+
+### Why am I getting errors after moving Rspamd to a different platform (CPU type)?
+* Hyperscan cannot use cache files that was built for a different platform. You need to delete Hyperscan cache files ( `*.hs`, `*.hsmp`). Otherwise you will get errors like:
+~~~
+cannot open hyperscan cache file /var/lib/rspamd/{...}.hs: compiled for a different platform
+~~~
+
+* Unfortunately moving RRD files directly between different architectures is not possible. If you do it, you will get errors in the log:
+~~~
+...; csession; rspamd_controller_handle_graph: no rrd configured
+~~~
+and WebUI alerts:
+~~~
+Cannot receive throughput data: error 404 No rrd configured for graphs
+~~~
+To convert RRD, you need to dump the `rspamd.rrd` file on the server that created it to XML using `rrdtool`:
+~~~sh
+# rrdtool dump rspamd.rrd > rspamd.rrd.xml
+~~~
+Then transfer it to the new server and restore it to a binary RRD:
+~~~sh
+# rrdtool restore -f rspamd.rrd.xml rspamd.rrd
+~~~
 
 ## Plugin questions
 
