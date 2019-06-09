@@ -224,14 +224,6 @@ table.table{
   margin-bottom: 0 !important;
 }
 
-/* Offsetting anchors to adjust for fixed navbar */
-*[id]:not([id^=markdown-toc-]):before {
-  content: "";
-  display: block;
-  height: 60px;
-  margin-top: -60px;
-}
-
 /* Anchors for headings */
 .header-link {
   position: relative;
