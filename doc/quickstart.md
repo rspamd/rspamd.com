@@ -478,8 +478,11 @@ http {
         ssl_certificate_key /etc/letsencrypt/live/your.domain/privkey.pem;
 
         server_name example.com;
-
         location / {
+        	root /usr/share/rspamd/www/;
+        	try_files $uri @proxy;
+        }
+        location @proxy {
                 proxy_pass  http://127.0.0.1:11334;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header Host $http_host;
