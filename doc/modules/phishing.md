@@ -8,7 +8,7 @@ This module is designed to report about potentially phished URL's.
 
 ## Principles of phishing detection
 
-Rspamd tries to detect phished URL's merely in HTML text parts. First,
+Rspamd tries to detect phished URLs merely in HTML text parts. First,
 it get URL from `href` or `src` attribute and then tries to find the text enclosed
 within this link tag. If some url is also enclosed in the specific tag then
 rspamd decides to compare whether these two URL's are related, namely if they
