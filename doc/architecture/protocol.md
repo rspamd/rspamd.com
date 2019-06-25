@@ -258,31 +258,42 @@ To check a message without rspamc:
 
 The following endpoints are valid on the normal worker and accept `POST`:
 
-* `/checkv2` - Check message and return action
+* `/checkv2` - Checks message and return action
+
+The below endpoints all use `GET`:
+
+* `/ping` - Returns just a `pong` HTTP reply (could be used for monitoring)
 
 ## Controller HTTP endpoints
 
 The following endpoints are valid merely on the controller. All of these may require `Password` header to be sent depending on configuration (passing this as query string works too).
 
-* `/fuzzyadd` - Add message to fuzzy storage
-* `/fuzzydel` - Remove message from fuzzy storage
+* `/fuzzyadd` - Adds message to fuzzy storage
+* `/fuzzydel` - Removes message from fuzzy storage
 
 These accept `POST`. Headers which may be set are:
 
 - `Flag`: flag identifying fuzzy storage
 - `Weight`: weight to add to hashes
 
-* `/learnspam` - Train bayes classifier on spam message
-* `/learnham` - Train bayes classifier on ham message
+* `/learnspam` - Trains bayes classifier on spam message
+* `/learnham` - Trains bayes classifier on ham message
+* `/checkv2` - Checks message and return action (same as normal worker)
 
 These also accept `POST`. The below endpoints all use `GET`:
 
-* `/errors` - Return error messages from ring buffer
-* `/stat` - Return statistics
+* `/errors` - Returns error messages from ring buffer
+* `/stat` - Returns statistics
+* `/statreset` - Returns statistics and reset countes
 * `/graph?type=<hourly|daily|weekly|monthly>` - Plots throughput graph
 * `/history` - Returns rolling history
-* `/actions` - Return thresholds for actions
+* `/historyreset` - Returns rolling history and resets its elements afterwards
+* `/actions` - Returns thresholds for actions
 * `/symbols` - Returns symbols in metric & their scores
 * `/maps` - Returns list of maps
+* `/neighbours` - Returns list of known peers
+* `/errors` - Returns a content of erros ring buffer
 * `/getmap` - Fetches contents of map according to ID passed in `Map:` header
-* `/fuzzydelhash` - Delete entries from fuzzy according to content of `Hash:` header(s)
+* `/fuzzydelhash` - Deletes entries from fuzzy according to content of `Hash:` header(s)
+* `/plugins` - Returns list of plugins or plugin specific stuff
+* `/ping` - Returns just a `pong` HTTP reply (could be used for monitoring)
