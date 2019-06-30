@@ -14,7 +14,7 @@ Configuration settings for `bayes expiry` module should be added to the correspo
 `Bayes expiry` module requires new statistics schema. It should be enabled in the classifier configuration:
 
 ```ucl
-new_schema = true;
+new_schema = true;    # Enabled by default for classifier "bayes" in the stock statistic.conf since 2.0
 ```
 
 The following settings are valid:
@@ -22,13 +22,13 @@ The following settings are valid:
   * time in seconds (time unit suffixes are supported). The maximum possible TTL value in Redis is 2147483647 (int32);
   * `-1`: make tokens persistent;
   * `false`: disable `bayes expiry` for the classifier. Does not affect TTLs of existing tokens. This means tokens that already have TTLs will be expired by Redis. New learned tokens  will be persistent.
-- **lazy**: `true` - enable lazy expiration mode (disabled by default). See [expiration modes](#expiration-modes) for detail.
+- **lazy** (before 2.0): `true` - enable lazy expiration mode (disabled by default). See [expiration modes](#expiration-modes) for detail.
 
 Configuration example:
 ```ucl
-new_schema = true;
+new_schema = true;    # Enabled by default for classifier "bayes" in the stock statistic.conf since 2.0
 expire = 8640000;
-#lazy = true;
+#lazy = true;    # Before 2.0
 ```
 
 ## Principles of operation
@@ -45,7 +45,9 @@ Every minute `bayes expiry` module executes an expiry step. On each step it chec
 
 ## Expiration modes
 
-### Default expiration mode
+### Default expiration mode (before 2.0)
+`Default` mode has been removed in Rspamd 2.0 as it has no advantages over `lazy` mode.
+
 Operation:
 - Extend a `significant` token's lifetime: update token's TTL every time to `expire` value.
 - Do nothing with an `insignificant` or `infrequent` token.
@@ -56,6 +58,8 @@ Disadvantages:
 - Constant TTL updating of `significant` tokens is unnecessary if no eviction policy is configured in Redis that assumes `significant` tokens eviction.
 
 ### Lazy expiration mode (1.7.4+)
+`Lazy` mode is the only expiration mode since Rspamd 2.0.
+
 Operation:
 - Make a `significant` token persistent if it has TTL.
 - Set TTL of an `insignificant` or `infrequent` token to `expire` value if its current TTL is greater than `expire`.
@@ -65,9 +69,9 @@ Advantages:
 - Statistics can be kept off-line as long as necessary without the risk of `significant` tokens lose.
 - Avoids unnecessary TTL updates as much as possible.
 
-To enable lazy expiration mode add `lazy = true;` to the classifier configuration.
+To enable lazy expiration mode in Rspamd before 2.0 add `lazy = true;` to the classifier configuration.
 
-### Changing expiration mode
+### Changing expiration mode (before 2.0)
 
 The expiration mode for existing statistics database can be changed in the configuration at any time. Tokens' TTLs will be changed as necessary during the next expiry cycle.
 
@@ -87,12 +91,12 @@ To apply the memory limit and eviction policy only to the Bayesian statistics da
 `local.d/classifier-bayes.conf`:
 
 ```ucl
-backend = "redis";
+backend = "redis";    # Enabled by default for classifier "bayes" in the stock statistic.conf since 2.0 
 servers = "localhost:6378";
 
-new_schema = true;
+new_schema = true;    # Enabled by default for classifier "bayes" in the stock statistic.conf since 2.0
 expire = 2144448000;
-lazy = true;
+lazy = true;    # Before 2.0
 ```
 
 Where `expire = 2144448000;` sets very high TTL (68 years) as we do not need to actually expire keys.
