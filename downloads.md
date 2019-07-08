@@ -72,8 +72,8 @@ Rspamd supports the following .deb based distributives:
 
 - **Debian jessie** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Debian stretch** (only x86_64) Hyperscan and LuaJIT are enabled.
+- **Debian buster** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Debian sid** (only x86_64) Hyperscan and LuaJIT are enabled.
-- **Ubuntu trusty** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Ubuntu xenial** (only x86_64) Hyperscan and LuaJIT are enabled. 
 - **Ubuntu bionic** (only x86_64) Hyperscan and LuaJIT are enabled.
 
