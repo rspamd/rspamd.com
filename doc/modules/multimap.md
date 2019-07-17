@@ -54,49 +54,7 @@ You can define new rules in the file `/etc/rspamd/local.d/multimap.conf`.
 Mandatory attributes are:
 
 * `type` - map [type](#map-types)
-* `map` - path to the file with list, for example:
-  + `http://example.com/list` - HTTP map, reloaded using `If-Modified-Since`, can be signed
-  + `https://example.com/list` - HTTPS map - same as HTTP but with TLS enabled (with certificate check)
-  + `file:///path/to/list` - file map, reloaded on change, can be signed
-  + `/path/to/list` - shorter form of a file map
-  + `cdb://path/to/list.cdb` - [CDB](http://www.corpit.ru/mjt/tinycdb.html) map in file, cannot be signed
-  + `redis://<hashkey>` - Redis map, read field in the hash stored at key
-  + combination of files and http:
-  
-~~~ucl
-map = [
-  "https://maps.rspamd.com/rspamd/mime_types.inc.zst",
-  "${DBDIR}/mime_types.inc.local",
-  "fallback+file://${CONFDIR}/mime_types.inc"
-]
-~~~
-
-For header maps, you also need to specify the exact header using `header` option.
-
-Lists can contain keys:
-
-~~~
-key1
-key2
-~~~
-
-key-value pairs (for multi-symbols maps):
-
-~~~
-key1 value1
-key2 value2
-key3 value3:score
-~~~
-
-and comments:
-
-~~~
-key1
-# Single line comment
-key2 # Embedded comment
-~~~
-
-The last line of a map **must** have a newline symbol at the end.
+* `map` - [map data](#map-field-syntax]
 
 Optional map configuration attributes:
 
@@ -111,29 +69,116 @@ Optional map configuration attributes:
 * `require_symbols` - expression of symbols that have to match for a specific message: [learn more](#conditional-maps)
 * `filter` - match specific part of the input (for example, email domain): [here](#map-filters) is the complete definition of maps filters
 
+For header maps, you also need to specify the exact header using `header` option.
+
+**Important notice:** there is a common confusion between `type` and `filter` parameters for multimap module. The main rule of thumb is that `type` means *what information* is checked in the map, for example, urls, IPs, headers. `filter` attribute means *how this information is transformed* before checking, for example extracting domain.
+
+**Selector** maps are using [selectors](../configuration/selectors.html) framework which defines both extraction and transformation. Hence, this type of maps could be considered as the most basic and flexible map types. All other types of maps could be expressed by some selector map. Furthermore, it is possible to store [dependent maps](#dependent-maps) in Redis using selectors framework.
+
+### Map field syntax
+
+| Example          | Description                       |
+| :-------------- | :-------------------------------- |
+| `http://example.com/list` | HTTP map, reloaded using `If-Modified-Since`, can be signed
+| `https://example.com/list` | HTTPS map - same as HTTP but with TLS enabled (with certificate check)
+| `file:///path/to/list` | file map, reloaded on change, can be signed
+|  `/path/to/list` | shorter form of a file map
+| `cdb://path/to/list.cdb` | [CDB](http://www.corpit.ru/mjt/tinycdb.html) map in file, cannot be signed
+| `redis://<hashkey>` | Redis map, read field in the hash stored at key
+| `redis+selector://selector` | (from version 2.0) similar to the former one Redis map where a hash key is acquired by application of some [selector](../configuration/selectors.html) that allows to create dependent maps
+
+A combination of files and http where the resulting map is a joint list of its elements:
+  
+~~~ucl
+map = [
+  "https://maps.rspamd.com/rspamd/mime_types.inc.zst",
+  "${DBDIR}/mime_types.inc.local",
+  "fallback+file://${CONFDIR}/mime_types.inc"
+]
+~~~
+
+You cannot combine redis nor cdb maps with generic maps.
+
+### Maps flaws
+
+Maps content could be augmented by using of flaws, for example `map = regexp;/path/to/file.re`. This feature is available from the version 2.0.
+
+TODO
+
+~~~lua
+  local known_types = {
+    {'regexp;', 'regexp'},
+    {'re;', 'regexp'},
+    {'regexp_multi;', 'regexp_multi'},
+    {'re_multi;', 'regexp_multi'},
+    {'glob;', 'glob'},
+    {'glob_multi;', 'glob_multi'},
+    {'radix;', 'radix'},
+    {'ipnet;', 'radix'},
+    {'set;', 'set'},
+    {'hash;', 'hash'},
+    {'plain;', 'hash'}
+  }
+~~
+
+### Maps content
+
+Maps can contain keys:
+
+~~~
+key1
+key2
+~~~
+
+key-value pairs (for multi-symbols maps):
+
+~~~
+key1 value1
+key2 value2
+key3 value3:score
+~~~
+
+any comments:
+
+~~~
+key1
+# Single line comment
+key2 # Embedded comment
+~~~
+
+IP maps can also contain IPs or IP/network in CIDR notation
+
+~~~
+192.168.1.1
+10.0.0.0/8
+
+
+
 ## Map types
 
 Type attribute means what is matched with this map. The following types are supported:
 
-* `asn` - matches ASN number passed by [ASN module](asn.html)
-* `content` - matches specific content of a message (e.g. headers, body or even a full message) against some map, usually regular expressions map
-* `country` - matches country code of AS passed by [ASN module](asn.html)
-* `dnsbl` - matches IP of the host that performed message handoff against some DNS blacklist (consider using [RBL](rbl.html) module for this)
-* `filename` - matches attachment filename against map
-* `from` - matches envelope from (or header `From` if envelope from is absent)
-* `header` - matches any header specified (must have `header = "Header-Name"` configuration attribute)
-* `hostname` - matches reverse DNS name of the host that performed message handoff
-* `ip` - matches IP of the host that performed message handoff (against radix map)
-* `mempool` - matches contents of a mempool variable (specified with `variable` parameter)
-* `received` - (new in 1.5) matches elements of `Received` headers
-* `rcpt` - matches any of envelope rcpt or header `To` if envelope info is missing
-* `selector` - applies generic [selector](../configuration/selectors.html) and check data returned in the specific map. This type must have `selector` option and an optional `delimiter` option that defines how to join multiple selectors (an empty string by default). If a selector returns multiple values, e.g. `urls`, then all values are checked. Normal filter logic can also be applied to the selector's results.
-* `symbol_options` - (new in 1.6.3) match 'options' yielded by whichever symbol of interest (requires `target_symbol` parameter)
-* `url` - matches URLs in messages against maps
+| Type            | Description                       |
+| :-------------- | :-------------------------------- |
+| `asn` | matches ASN number passed by [ASN module](asn.html)
+| `content` | matches specific content of a message (e.g. headers, body or even a full message) against some map, usually regular expressions map
+| `country` | matches country code of AS passed by [ASN module](asn.html)
+| `dnsbl` | matches IP of the host that performed message handoff against some DNS blacklist (consider using [RBL](rbl.html) module for this)
+| `filename` | matches attachment filename against map
+| `from` | matches envelope from (or header `From` if envelope from is absent)
+| `header` | matches any header specified (must have `header = "Header-Name"` configuration attribute)
+| `hostname` | matches reverse DNS name of the host that performed message handoff
+| `ip` | matches IP of the host that performed message handoff (against radix map)
+| `mempool` | matches contents of a mempool variable (specified with `variable` parameter)
+| `received` | (new in 1.5) matches elements of `Received` headers
+| `rcpt` | matches any of envelope rcpt or header `To` if envelope info is missing
+| `selector` | applies generic [selector](../configuration/selectors.html) and check data returned in the specific map. This type must have `selector` option and an optional `delimiter` option that defines how to join multiple selectors (an empty string by default). If a selector returns multiple values, e.g. `urls`, then all values are checked. Normal filter logic can also be applied to the selector's results.
+| `symbol_options` | (new in 1.6.3) match 'options' yielded by whichever symbol of interest (requires `target_symbol` parameter)
+| `url` | matches URLs in messages against maps
 
 DNS maps are legacy and are not encouraged to use in new projects (use [rbl](rbl.html) for that).
 
-Maps can also be specified as [CDB](http://www.corpit.ru/mjt/tinycdb.html) databases which might be useful for large maps:
+Maps can also be specified as [CDB](http://www.corpit.ru/mjt/tinycdb.html) databases that might somehow be useful for large maps:
 
 ~~~ucl
 SOME_SYMBOL {
@@ -176,34 +221,44 @@ for `header` rules. Filters are specified with `filter` option. Rspamd supports 
 
 Content maps support the following filters:
 
-* `body` - raw undecoded body content (with the exceptions of headers)
-* `full` - raw undecoded content of a message (including headers)
-* `headers` - undecoded headers
-* `text` - decoded and converted text parts (without HTML tags but with newlines)
-* `rawtext` - decoded but not converted text parts (with HTML tags and newlines)
-* `oneline` - decoded and stripped text content (without HTML tags and newlines)
+| Content filter            | Description                       |
+| :-------------- | :-------------------------------- |
+| `body` | raw undecoded body content (with the exceptions of headers)
+| `full` | raw undecoded content of a message (including headers)
+| `headers` | undecoded headers
+| `text` | decoded and converted text parts (without HTML tags but with newlines)
+| `rawtext` | decoded but not converted text parts (with HTML tags and newlines)
+| `oneline` | decoded and stripped text content (without HTML tags and newlines)
 
 ### Filename filters
 
 Filename maps support this filters set:
 
-* `extension` - matches file extension
-* `regexp:/re/` - extract data from filename according to some regular expression
+| Filter            | Description                       |
+| :-------------- | :-------------------------------- |
+| `extension` | matches file extension
+| `regexp:/re/` | extract data from filename according to some regular expression
 
 ### From, rcpt and header filters
 
-* `email` or `email:addr` - parse header value and extract email address from it (`Somebody <user@example.com>` -> `user@example.com`)
-* `email:user` - parse header value as email address and extract user name from it (`Somebody <user@example.com>` -> `user`)
-*  `email:domain` - parse header value as email address and extract domain part from it (`Somebody <user@example.com>` -> `example.com`)
-*  `email:domain:tld` - parse header value as email address and extract effective second level domain from it (`Somebody <user@foo.example.com>` -> `example.com`)
-*  `email:name` - parse header value as email address and extract displayed name from it (`Somebody <user@example.com>` -> `Somebody`)
-* `regexp:/re/` - extracts generic information using the specified regular expression
+These are generic emails and headers filters:
+
+| Filter            | Description                       |
+| :-------------- | :-------------------------------- |
+| `email` or `email:addr` | parse header value and extract email address from it (`Somebody <user@example.com>` -> `user@example.com`)
+| `email:user` | parse header value as email address and extract user name from it (`Somebody <user@example.com>` -> `user`)
+|  `email:domain` | parse header value as email address and extract domain part from it (`Somebody <user@example.com>` -> `example.com`)
+|  `email:domain:tld` | parse header value as email address and extract effective second level domain from it (`Somebody <user@foo.example.com>` -> `example.com`)
+|  `email:name` | parse header value as email address and extract displayed name from it (`Somebody <user@example.com>` -> `Somebody`)
+| `regexp:/re/` | extracts generic information using the specified regular expression
 
 ### Hostname filters
 
-* `tld` - matches eSLD (effective second level domain - a second-level domain or something that's effectively so like `example.com` or `example.za.org`)
-* `tld:regexp:/re/` - extracts generic information using the specified regular expression from the eSLD part
-* `top` - matches TLD (top level domain) part of the hostname
+| Filter            | Description                       |
+| :-------------- | :-------------------------------- |
+| `tld` | matches eSLD (effective second level domain - a second-level domain or something that's effectively so like `example.com` or `example.za.org`)
+| `tld:regexp:/re/` | extracts generic information using the specified regular expression from the eSLD part
+| `top` | matches TLD (top level domain) part of the hostname
 
 ### Mempool filters
 
@@ -213,16 +268,18 @@ Filename maps support this filters set:
 
 If no filter is specified `real_ip` is used by default.
 
-* `from_hostname` - string that represents hostname provided by a peer
-* `from_ip` - IP address as provided by a peer
-* `real_hostname` - hostname as resolved by MTA
-* `real_ip` - IP as resolved by PTR request of MTA
-* `by_hostname` - MTA hostname
-* `proto` - protocol, e.g. ESMTP or ESMTPS
-* `timestamp` - received timestamp
-* `for` - for value (unparsed mailbox)
-* `tld:from_hostname` - extract eSLD part from peer-provided hostname
-* `tld:real_hostname` - extract eSLD part from MTA-verified hostname
+| Filter            | Description                       |
+| :-------------- | :-------------------------------- |
+| `from_hostname` | string that represents hostname provided by a peer
+| `from_ip` | IP address as provided by a peer
+| `real_hostname` | hostname as resolved by MTA
+| `real_ip` | IP as resolved by PTR request of MTA
+| `by_hostname` | MTA hostname
+| `proto` | protocol, e.g. ESMTP or ESMTPS
+| `timestamp` | received timestamp
+| `for` | for value (unparsed mailbox)
+| `tld:from_hostname` | extract eSLD part from peer-provided hostname
+| `tld:real_hostname` | extract eSLD part from MTA-verified hostname
 
 If `real_ip` or `from_ip` is specified radix maps are used rather than hash maps.
 
@@ -250,18 +307,20 @@ Currently available flags are `ssl` (hop used SSL) and `authenticated` (hop used
 
 URL maps allows another set of filters (by default, `url` maps are matched using hostname part):
 
-* `full` - matches the complete URL (not the hostname)
-* `full:regexp:/re/` - extracts generic information using the specified regular expression from the full URL text
-* `is_obscured` - matches obscured URLs
-* `is_phished` - matches hostname but if and only if the URL is phished (e.g. pretended to be from another domain)
-* `is_redirected` - matches redirected URLs
-* `path` - match path
-* `query` - match query string
-* `regexp:/re/` - extracts generic information using the specified regular expression from the hostname
-* `tag:name` - matches full hostnames that have URL tag with `name`
-* `tld` - matches eSLD (effective second level domain - a second-level domain or something that's effectively so like `example.com` or `example.za.org`)
-* `tld:regexp:/re/` - extracts generic information using the specified regular expression from the eSLD part
-* `top` - matches TLD (top level domain) part of the hostname
+| Filter            | Description                       |
+| :-------------- | :-------------------------------- |
+| `full` | matches the complete URL (not the hostname)
+| `full:regexp:/re/` | extracts generic information using the specified regular expression from the full URL text
+| `is_obscured` | matches obscured URLs
+| `is_phished` | matches hostname but if and only if the URL is phished (e.g. pretended to be from another domain)
+| `is_redirected` | matches redirected URLs
+| `path` | match path
+| `query` | match query string
+| `regexp:/re/` | extracts generic information using the specified regular expression from the hostname
+| `tag:name` | matches full hostnames that have URL tag with `name`
+| `tld` | matches eSLD (effective second level domain - a second-level domain or something that's effectively so like `example.com` or `example.za.org`)
+| `tld:regexp:/re/` | extracts generic information using the specified regular expression from the eSLD part
+| `top` | matches TLD (top level domain) part of the hostname
 
 ## Pre-filter maps
 
@@ -362,6 +421,19 @@ You can use any logic expression of other symbols within `require_symbols` defin
 ## Redis for maps
 
 From version 1.3.3, it is possible to work with maps which are stored in Redis backend. You can use any external application to put data into Redis database using HSET command (e.g HSET hashkey test@example.org 1). After you can define map as protocol `redis://` and specify hash key to read. Redis settings can be defined inside `multimap` module also.
+
+## Combined maps
+
+From version 2.0, you can create maps with multiple values to be checked.
+
+TODO: write more
+
+## Dependent maps
+
+Version 2.0 also allows to create dependent maps in Redis where map key depends on some other data extracted from the same message. For example, per user based whitelist.
+
+TODO: write more
+
 
 ## Examples
 
