@@ -5,9 +5,11 @@ title: IP Score module
 
 # IP Score
 
-IP Score stores records in Redis - [see here]({{ site.baseurl }}/doc/configuration/redis.html) for information about configuring Redis.
+# Deprecation warining!
 
-Since Rspamd 1.3.4, IP Score requires lookup information from [ASN module]({{ site.baseurl }}/doc/modules/asn.html).
+This module is deprecated and is removed from Rspamd 2.0 due to several serious design flaws, e.g. reputation tokens had no decay leading to a situation with a positive loopback link and thus incorrect reputation calculations. 
+The existing configuration could be automatically transferred to [reputation module](reputation.html).
+Unfortunately, the existing reputation built cannot be transferred for many reasons. One of the reasons is that it was simply wrong in many cases.
 
 ### Theory of operation
 
