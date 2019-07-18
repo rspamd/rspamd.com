@@ -33,7 +33,7 @@ You should also consider to setup your own [local  DNS resolver]({{ site.baseurl
 
 ### TLS Setup
 
-It is strongly recommended to setup TLS for your mail system. We suggest to use certificates issued by [Let’s&nbsp; Encrypt](https://letsencrypt.org){:target="&#95;blank"} as they are free to use and are convenient to manage. You can read more about this topic in one of the quides available in the Internet, for instance, [this one](https://www.upcloud.com/support/secure-postfix-using-lets-encrypt/){:target="&#95;blank"}.
+It is strongly recommended to setup TLS for your mail system. We suggest to use certificates issued by [Let’s&nbsp; Encrypt](https://letsencrypt.org){:target="&#95;blank"} as they are free to use and are convenient to manage. You can read more about this topic in one of the guides available in the Internet, for instance, [this one](https://www.upcloud.com/support/secure-postfix-using-lets-encrypt/){:target="&#95;blank"}.
 In this guide, we assume that all services have the same certificate which might not be desired if you want greater levels of security.
 
 ### Postfix setup
