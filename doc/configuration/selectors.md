@@ -4,6 +4,15 @@ title: Rspamd Selectors
 ---
 
 # Rspamd selectors settings
+{:.no_toc}
+
+Rspamd selectors is a Lua framework that allows functional extraction and processing of data from messages.
+
+<div id="toc" markdown="1">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 ## Introduction
 
@@ -151,32 +160,30 @@ rcpt:rcpt3:example3.com
 ### Data definition functions
 
 Data definition part defines what exactly needs to be extracted. Here is the list of methods supported by Rspamd so far:
-* `request_header` - Get specific HTTP request header. The first argument must be header name.
-* `id` - Return value from function's argument or an empty string, For example, `id('Something')` returns a string 'Something'
-* `pool_var` - Get specific pool var. The first argument must be variable name, the second argument is optional and defines the type (string by default)
-* `emails` - Get list of all emails. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_user`
-* `asn` - Get AS number (ASN module must be executed first)
-* `country` - Get country (ASN module must be executed first)
-* `ip` - Get source IP address
-* `time` - Get task timestamp. The first argument is type:
-  - `connect`: connection timestamp (default)
-  - `message`: timestamp as defined by `Date` header
 
-  The second argument is optional time format, see [os.date](http://pgl.yoyo.org/luai/i/os.date) description
-* `digest` - Get content digest
-* `helo` - Get helo value
-* `urls` - Get list of all urls. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_tld`
-* `user` - Get authenticated user name
-* `received` - Get list of received headers. If no arguments specified, returns list of tables. Otherwise, selects a specific element, e.g. `by_hostname`
-* `from` - Get MIME or SMTP from (e.g. `from('smtp')` or `from('mime')`, uses any type by default)
-* `attachments` - Get list of all attachments digests
-* `header` - Get header with the name that is expected as an argument. The optional second argument accepts list of flags:
-  - `full`: returns all headers with this name with all data (like task:get_header_full())
-  - `strong`: use case sensitive match when matching header's name
-* `rcpts` - Get MIME or SMTP rcpts (e.g. `rcpts('smtp')` or `rcpts('mime')`, uses any type by default)
-* `files` - Get all attachments files
-* `to` - Get principal recipient
-* `languages` - Get languages met in a message (from 1.9)
+| Extraction method          | Version  | Description                       |
+| :------------------------- | :------: | :-------------------------------- |
+| `request_header` | 1.8+ | Get specific HTTP request header. The first argument must be header name.
+| `id` | 1.8+ | Return value from function's argument or an empty string, For example, `id('Something')` returns a string 'Something'
+| `list` | 2.0+ | Returns a list of values from its arguments or an empty list
+| `pool_var` | 1.8+ | Get specific pool var. The first argument must be variable name, the second argument is optional and defines the type (string by default)
+| `emails` | 1.8+ | Get list of all emails. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_user`
+| `asn` | 1.8+ | Get AS number (ASN module must be executed first)
+| `country` | 1.8+ | Get country (ASN module must be executed first)
+| `ip` | 1.8+ | Get source IP address
+| `time` | 1.8+ | Get task timestamp. The first argument is type: <ul><li>`connect`: connection timestamp (default)</li><li>`message`: timestamp as defined by `Date` header</li></ul>The second argument is optional time format, see [os.date](http://pgl.yoyo.org/luai/i/os.date) description
+| `digest` | 1.8+ | Get content digest
+| `helo` | 1.8+ | Get helo value
+| `urls` | 1.8+ | Get list of all urls. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_tld`
+| `user` | 1.8+ | Get authenticated user name
+| `received` | 1.8+ | Get list of received headers. If no arguments specified, returns list of tables. Otherwise, selects a specific element, e.g. `by_hostname`
+| `from` | 1.8+ | Get MIME or SMTP from (e.g. `from('smtp')` or `from('mime')`, uses any type by default)
+| `attachments` | 1.8+ | Get list of all attachments digests
+| `header` | 1.8+ | Get header with the name that is expected as an argument. The optional second argument accepts list of flags:<ul><li>`full`: returns all headers with this name with all data (like task:get_header_full())</li><li>`strong`: use case sensitive match when matching header's name</li></ul>
+| `rcpts` | 1.8+ | Get MIME or SMTP rcpts (e.g. `rcpts('smtp')` or `rcpts('mime')`, uses any type by default)
+| `files` | 1.8+ | Get all attachments files
+| `to` | 1.8+ | Get principal recipient
+| `languages` | 1.9+ | Get languages met in a message
 
 ### Transformation functions
 
