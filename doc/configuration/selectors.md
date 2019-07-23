@@ -157,49 +157,98 @@ rcpt:rcpt2:example2.com
 rcpt:rcpt3:example3.com
 ```
 
-### Data definition functions
+## Data definition functions
 
 Data definition part defines what exactly needs to be extracted. Here is the list of methods supported by Rspamd so far:
 
 | Extraction method          | Version  | Description                       |
 | :------------------------- | :------: | :-------------------------------- |
-| `request_header` | 1.8+ | Get specific HTTP request header. The first argument must be header name.
+| `asn` | 1.8+ | Get AS number (ASN module must be executed first)
+| `attachments` | 1.8+ | Get list of all attachments digests
+| `country` | 1.8+ | Get country (ASN module must be executed first)
+| `digest` | 1.8+ | Get content digest
+| `emails` | 1.8+ | Get list of all emails. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_user`
+| `files` | 1.8+ | Get all attachments files
+| `from` | 1.8+ | Get MIME or SMTP from (e.g. `from('smtp')` or `from('mime')`, uses any type by default)
+| `header` | 1.8+ | Get header with the name that is expected as an argument. The optional second argument accepts list of flags:<ul><li>`full`: returns all headers with this name with all data (like task:get_header_full())</li><li>`strong`: use case sensitive match when matching header's name</li></ul>
+| `helo` | 1.8+ | Get helo value
 | `id` | 1.8+ | Return value from function's argument or an empty string, For example, `id('Something')` returns a string 'Something'
+| `ip` | 1.8+ | Get source IP address
+| `languages` | 1.9+ | Get languages met in a message
 | `list` | 2.0+ | Returns a list of values from its arguments or an empty list
 | `pool_var` | 1.8+ | Get specific pool var. The first argument must be variable name, the second argument is optional and defines the type (string by default)
-| `emails` | 1.8+ | Get list of all emails. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_user`
-| `asn` | 1.8+ | Get AS number (ASN module must be executed first)
-| `country` | 1.8+ | Get country (ASN module must be executed first)
-| `ip` | 1.8+ | Get source IP address
+| `rcpts` | 1.8+ | Get MIME or SMTP rcpts (e.g. `rcpts('smtp')` or `rcpts('mime')`, uses any type by default)
+| `received` | 1.8+ | Get list of received headers. If no arguments specified, returns list of tables. Otherwise, selects a specific element, e.g. `by_hostname`
+| `request_header` | 1.8+ | Get specific HTTP request header. The first argument must be header name.
 | `time` | 1.8+ | Get task timestamp. The first argument is type: <ul><li>`connect`: connection timestamp (default)</li><li>`message`: timestamp as defined by `Date` header</li></ul>The second argument is optional time format, see [os.date](http://pgl.yoyo.org/luai/i/os.date) description
-| `digest` | 1.8+ | Get content digest
-| `helo` | 1.8+ | Get helo value
+| `to` | 1.8+ | Get principal recipient
 | `urls` | 1.8+ | Get list of all urls. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_tld`
 | `user` | 1.8+ | Get authenticated user name
-| `received` | 1.8+ | Get list of received headers. If no arguments specified, returns list of tables. Otherwise, selects a specific element, e.g. `by_hostname`
-| `from` | 1.8+ | Get MIME or SMTP from (e.g. `from('smtp')` or `from('mime')`, uses any type by default)
-| `attachments` | 1.8+ | Get list of all attachments digests
-| `header` | 1.8+ | Get header with the name that is expected as an argument. The optional second argument accepts list of flags:<ul><li>`full`: returns all headers with this name with all data (like task:get_header_full())</li><li>`strong`: use case sensitive match when matching header's name</li></ul>
-| `rcpts` | 1.8+ | Get MIME or SMTP rcpts (e.g. `rcpts('smtp')` or `rcpts('mime')`, uses any type by default)
-| `files` | 1.8+ | Get all attachments files
-| `to` | 1.8+ | Get principal recipient
-| `languages` | 1.9+ | Get languages met in a message
 
-### Transformation functions
+## Transformation functions
 
-* `id` - Drops input value and return values from function's arguments or an empty string
-* `substring` - Extracts substring
-* `first` - Returns the first element
-* `lower` - Returns the lowercased string
-* `drop_n` - Returns list without the first n elements
-* `regexp` - Regexp matching
-* `not_in` - Boolean function not in. Returns either nil or its input if input is not in args list
-* `in` - Boolean function in. Returns either nil or its input if input is in args list
-* `take_n` - Returns the n first elements
-* `last` - Returns the last element
-* `nth` - Returns the nth element
-* `join` - Joins strings into a single string using separator in the argument
-* `digest` - Create a digest from a string. The first argument is encoding (`hex`, `base32`, `base64`), the second argument is optional hash type (`blake2`, `sha256`, `sha1`, `sha512`, `md5`)
+| Transform  method          | Version  | Description                       |
+| :------------------------- | :------: | :-------------------------------- |
+| `append` | 2.0+ | Appends a string or a strings list
+| `apply_map` | 2.0+ | Returns a value from some map corresponding to some key (or acts like a `map` function). Map name must be registered first!
+| `digest` | 1.8+ | Create a digest from a string. The first argument is encoding (`hex`, `base32`, `base64`), the second argument is optional hash type (`blake2`, `sha256`, `sha1`, `sha512`, `md5`)
+| `drop_n` | 1.8+ | Returns list without the first n elements
+| `equal` | 2.0+ | Boolean function equal. Returns either nil or its argument if input is equal to argument
+| `filter_map` | 2.0+ | Returns a value if it exists in some map (or acts like a `filter` function). Map name must be registered first!
+| `first` | 1.8+ | Returns the first element
+| `id` | 1.8+ | Drops input value and return values from function's arguments or an empty string
+| `in` | 1.8+ | Boolean function in. Returns either nil or its input if input is in args list
+| `inverse` | 2.0+ | Inverses input. Empty string comes the first argument or `true`, non-empty string comes `nil`
+| `ipmask` | 2.0+ | Applies mask to IP address. The first argument is the mask for IPv4 addresses, the second is the mask for IPv6 addresses.
+| `join` | 1.8+ | Joins strings into a single string using separator in the argument
+| `last` | 1.8+ | Returns the last element
+| `lower` | 1.8+ | Returns the lowercased string
+| `not_in` | 1.8+ | Boolean function not in. Returns either nil or its input if input is not in args list
+| `nth` | 1.8+ | Returns the `n`-th element
+| `prepend` | 2.0+ | Prepends a string or a strings list
+| `regexp` | 1.8+ | Regexp matching
+| `sort` | 2.0+ | Sort strings lexicographically
+| `substring` | 1.8+ | Extracts substring. Arguments are equal to lua [string.sub](http://pgl.yoyo.org/luai/i/string.sub)
+| `take_n` | 1.8+ | Returns the n first elements
+| `uniq` | 2.0+ | Returns a list of unique elements (using a hash table - no order preserved!)
+
+### Maps in transformations
+
+From the version 2.0, Rspamd supports using of maps within selectors. It is done by adding maps to a special `lua_selectors.maps` table. This table must have name-value pairs where `name` is a symbolic name of map that could be used in transformation/extraction functions and value is the return of `lua_maps.map_add_from_ucl`. Here is an example:
+
+~~~lua
+local lua_selectors = require "lua_selectors"
+local lua_maps = require "lua_maps"
+
+lua_selectors.maps.test_map = lua_maps.map_add_from_ucl({
+    'key value',
+    'key1 value1',
+    'key3 value1',
+  }, 'hash', 'test selectors maps')
+
+local samples = {
+    ["map filter"] = {
+      selector = "id('key').filter_map(test_map)",
+      expect = {'key'}
+    },
+    ["map apply"] = {
+      selector = "id('key').apply_map(test_map)",
+      expect = {'value'}
+    },
+    ["map filter list"] = {
+      selector = "list('key', 'key1', 'key2').filter_map(test_map)",
+      expect = {{'key', 'key1'}}
+    },
+    ["map apply list"] = {
+      selector = "list('key', 'key1', 'key2', 'key3').apply_map(test_map)",
+      expect = {{'value', 'value1', 'value1'}}
+    },
+    ["map apply list uniq"] = {
+      selector = "list('key', 'key1', 'key2', 'key3').apply_map(test_map).uniq",
+      expect = {{'value1', 'value'}}
+    },
+}
+~~~
 
 ## Type safety
 
