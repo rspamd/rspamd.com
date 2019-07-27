@@ -66,3 +66,5 @@ Each upstream is monitored by Rspamd for errors. If an error occur Rspamd places
 ## Name resolution
 
 Rspamd has a special treatment for upstreams defined with their names. During `dead_time`, Rspamd tries to re-resolve names and insert new IP addresses into upstream. If a name has multiple addresses, then Rspamd inserts all. Addresses are selected using round-robin rotation with error checking. Unlike upstreams configurations, errors are persistent and not cleared after successful attempts, so Rspamd always select an address with fewer errors count. This is done to turn off an IPv6 address, for example, if IPv6 is improperly configured in the system.
+
+From version 2.0 Rspamd also resolves all upstreams in the background each `lazy_resolve_time` + `jitter(0.1 * lazy_resolve_time)`. By default, this value is 1 hour but you can set this setting to a different value in the configuration (options -> upstreams section).
