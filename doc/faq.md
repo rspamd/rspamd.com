@@ -1421,8 +1421,8 @@ From version 1.7.0 onwards, proxy worker can pass a special header called `setti
 settings {
   outbound {
     priority = high;
-    id = "outbound";
-    apply "default" {
+    id = "outbound"; # Can be omitted as the rule itself is already called `outboud`
+    apply {
       actions {
         reject = 150.0;
         "add header" = 6.0;
@@ -1444,12 +1444,7 @@ Then, we can apply this setting ID on the outbound MTA using the proxy configura
 upstream "local" {
   default = yes;
   self_scan = yes; # Enable self-scan
-  settings_id = "2"; # Note that it is a string
-}
-mirror {
-  name = "test";
-  hosts = "example.com:11333";
-  settings_id = "3";
+  settings_id = "outbound";
 }
 ```
 
