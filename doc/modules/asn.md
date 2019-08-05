@@ -7,7 +7,7 @@ title: ASN module
 
 ASN module looks up ASN numbers and some related information: namely country code of ASN owner & subnet in which IP is announced and makes these available to other plugins as mempool variables.
 
-The module exports `asn`, `country` and `ipnet` as mempool variables.
+The module exports `asn`, `country` and `ipnet`<sup>[1](#fn)</sup> as mempool variables available from Lua after prefilters stage.
 
 ### Configuration
 
@@ -24,3 +24,5 @@ provider_info {
 # If defined, insert symbol with lookup results
 symbol = "ASN";
 ~~~
+
+<a name="fn"><sup>1:</sup></a> till version 2.0 as it is a dup of ASN
