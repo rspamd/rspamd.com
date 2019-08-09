@@ -158,19 +158,30 @@ ssl_key = </etc/letsencrypt/live/<your.domain>/privkey.pem
 
 ## Caching setup
 
-Rspamd uses [Redis](https://redis.io){:target="&#95;blank"} as a storage and caching system. In particular, Redis is used for the following purposes:
-
+Rspamd uses [Redis](https://redis.io){:target="&#95;blank"} as a storage for non-volatile data:
 - a backend for tokens storage and cache of learned messages by [statistical module](configuration/statistic.html) (BAYES classifier)
 - a fuzzy storage backend (optional)
+
+and as a cache for volatile data:
+
 - key-value cache storage by [many Rspamd modules](configuration/redis.html#introduction)
 - greylisting (delaying of suspicious emails)
 - rate-limiting
 - whitelisting of reply messages (storing reply message IDs to avoid certain checks for replies to our own sent messages)
 
-Installation of Redis is quite straightforward: install it using the preferred way for your OS (e.g. from packages), start redis-server with the default settings (it should listen on the local interface using port 6379) and you are done. You might also want to limit the memory used by Redis at some sane value:
+Installation of Redis is quite straightforward: install it using the preferred way for your OS (e.g. from packages), start redis-server with the default settings (it should listen on the local interface using port 6379) and you are done.
+
+We strongly recommend using a separate Redis **instance** for each module that stores non-volatile data, in particular for the statistical module (BAYES classifier) and fuzzy storage. A multi-instance Redis configuration simplifies some administration tasks (e.g. backup/restore) and makes possible to set memory limits and eviction policies, establish data replication between Rspamd installations. A detailed explanation of multi-instance Redis configuration can be found in the [Redis replication](tutorials/redis_replication.html) tutorial.
+
+You might also want to limit the memory used by Redis at some sane value:
 
     maxmemory 500mb
+
+and **for non-volatile data** Redis instances you might want to set `volatile-ttl` eviction policy:
+    
     maxmemory-policy volatile-ttl
+
+Eviction of volatile data keys can cause undesirable effects.
 
 Please bear in mind that Redis could listen for connections from all network interfaces. This is potentially dangerous and in most cases should be limited to the loopback interfaces, with the following configuration directive:
 
