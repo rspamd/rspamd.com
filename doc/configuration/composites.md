@@ -4,10 +4,20 @@ title: Rspamd Composites
 ---
 
 # Rspamd composite symbols
+{:.no_toc}
 
-## Introduction
+Rspamd composites are used to combine rules and create more complex rules. Composite rules are defined in the `composites` section of the configuration. 
 
-Rspamd composites are used to combine rules and create more complex rules. Composite rules are defined in the `composites` section of the configuration. You could use `local.d/composites.conf` (which effects changes **inside** the `composites` section) to define new composites or to change/override existing composites. Names of keys here define the name of the composite; the value of the key should be an object that defines the composite's properties & expression, which is a combination of rules.
+<div id="toc" markdown="1">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
+
+
+## Configuration
+
+You could use `local.d/composites.conf` (which effects changes **inside** the `composites` section) to define new composites or to change/override existing composites. Names of keys here define the name of the composite; the value of the key should be an object that defines the composite's properties & expression, which is a combination of rules.
 
 For example, you can define a composite that fires when two specific symbols are found and **replace** these symbols weights with its score:
 
@@ -160,3 +170,29 @@ DKIM_MIXED {
 ~~~
 
 You can also disable composites from the [users settings](settings.html) from Rspamd `1.9`.
+
+## Composites on symbol options
+
+From the version 2.0, it is also possible to augment composites conditions by adding required symbol options. For example, if a symbol `SYM` can insert options `opt1` and `opt2` one can create a composite expression that works merely if `opt2` option is presented:
+
+~~~ucl
+TEST2 {
+    expression = "SYM[opt2]";
+}
+~~~
+
+`[opt2]` syntax means a list of options allowed for a symbol to match. You can also add multiple options:
+
+`[opt1,opt2]` - it means that **both** `opt1` and `opt2` must be added by a symbol,
+
+or even regular expressions:
+
+`[/opt\d/i]` - this must not include comma, even escaped...
+
+or a mix of both:
+
+`[/opt\d/i, foo]`
+
+In all cases **all** matches is required (not in a single option but in an options list for a symbol).
+
+In future, this could be extended to a fully functional expressions if needed.
