@@ -5,7 +5,7 @@ title: Replies module
 
 # Replies module
 
-This module collects the `message-id` header of messages sent by authenticated users and stores corresponding hashes to Redis, which are set to expire after a configuable amount of time (by default 1 day). Furthermore, it hashes `in-reply-to` headers of all received messages & checks for matches (ie. messages sent in response to messages our system originated)- and yields a symbol which could be used to adjust scoring or forces an action (most likely "no action" to accept) according to configuration.
+This module collects the `message-id` header of messages sent by authenticated users and stores corresponding hashes to Redis, which are set to expire after a configurable amount of time (by default 1 day). Furthermore, it hashes `in-reply-to` headers of all received messages & checks for matches (ie. messages sent in response to messages our system originated)- and yields a symbol which could be used to adjust scoring or forces an action (most likely "no action" to accept) according to configuration.
 
 
 ## Configuration
