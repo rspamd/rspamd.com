@@ -113,9 +113,14 @@ When `send_mail` backend is used in conjunction with `email_alert` formatter, th
  - `smtp` (required): hostname of SMTP server
  - `mail_to` (required): recipient of e-mail alert
  - `mail_from`: Sender address (default empty)
+ - `email_alert_user` (1.7.0+, default false): Send a copy of the alert to the authenticated SMTP username
+ - `email_alert_sender` (1.7.0+, default false): Send a copy of the alert to the SMTP sender (NB: please ensure that it can be trusted)
+ - `email_alert_recipients` (1.7.0+, default false): Send a copy of the alert to SMTP recipients (NB: please ensure they can be trusted; don't use this?)
+ - `email_template`: template used for alert (default shown below)
  - `helo`: HELO to send (default 'rspamd')
  - `smtp_port`: SMTP port if not 25
- - `email_template`: template used for alert (default shown below):
+
+The default value for `email_template` is as follows:
 
 ~~~
 From: "Rspamd" <$mail_from>
