@@ -164,7 +164,7 @@ Type attribute means what is matched with this map. The following types are supp
 | `content` | matches specific content of a message (e.g. headers, body or even a full message) against some map, usually regular expressions map
 | `country` | matches country code of AS passed by [ASN module](asn.html)
 | `dnsbl` | matches IP of the host that performed message handoff against some DNS blacklist (consider using [RBL](rbl.html) module for this)
-| `filename` | matches attachment filename against map
+| `filename` | matches attachment filenames and filenames in archives against map. It also includes detected filename match from version 2.0. For example, if some attachment has `.png` extension but it has real type detected as `image/jpeg` then two checks would be performed: for the original attachment and for the detected one. This does not include files in archives as Rspamd does not extract them.
 | `from` | matches envelope from (or header `From` if envelope from is absent)
 | `header` | matches any header specified (must have `header = "Header-Name"` configuration attribute)
 | `hostname` | matches reverse DNS name of the host that performed message handoff
@@ -231,6 +231,8 @@ Content maps support the following filters:
 | `oneline` | decoded and stripped text content (without HTML tags and newlines)
 
 ### Filename filters
+
+Filename maps checks also include detected filename match from version 2.0. For example, if some attachment has `.png` extension but it has real type detected as `image/jpeg` then two checks would be performed: for the original attachment and for the detected one. This does not include files in archives as Rspamd does not extract them.
 
 Filename maps support this filters set:
 
