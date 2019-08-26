@@ -67,10 +67,10 @@ bind_socket = "*v4:11333"; # any ipv4 address
 bind_socket = "*v6:11333"; # any ipv6 address
 ~~~
 
-Moreover, you can specify systemd sockets if rspamd is invoked by systemd:
+It is possible to use systemd sockets (but not recommended- particularly if one uses official packages or requires use of multiple sockets):
 
 ~~~ucl
-bind_socket = "systemd:1"; # the first socket passed by systemd through environment
+bind_socket = "systemd:0"; # the first socket passed by systemd through environment (named sockets aren't supported)
 ~~~
 
 For UNIX sockets, it is also possible to specify owner and mode using this syntax:
