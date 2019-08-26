@@ -283,7 +283,7 @@ If no filter is specified `real_ip` is used by default.
 | `tld:from_hostname` | extract eSLD part from peer-provided hostname
 | `tld:real_hostname` | extract eSLD part from MTA-verified hostname
 
-If `real_ip` or `from_ip` is specified radix maps are used rather than hash maps.
+The `real_ip` and `from_ip` filters must be used in conjunction with IP maps.
 
 Additionally to these filters, Received maps support the following configuration settings:
 
