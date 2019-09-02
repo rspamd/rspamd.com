@@ -114,6 +114,18 @@ domain {
 }
 ~~~
 
+To disable DKIM signing (i.e. you use OpenDKIM, or signing is done elsewhere)
+~~~ucl
+# local.d/dkim_signing.conf
+path = "";
+~~~
+or
+~~~ucl
+# override.d/dkim_signing.conf
+path = "";
+~~~
+
+
 ## DKIM keys management
 
 Rspamd always use `relaxed/relaxed` encoding with `rsa-sha256` signature algorithm. This selection seems to be the most appropriate for all cases. Rspamd adds a special element called `DKIM-Signature` to the output when signing has been done.
