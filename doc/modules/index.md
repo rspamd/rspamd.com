@@ -29,7 +29,7 @@ Here is the list of available C modules:
 - [fuzzy_check](fuzzy_check.html): checks a message's fuzzy hashes against public blacklists.
 - [spf](spf.html): checks SPF records for messages processed.
 - [surbl](surbl.html): this module extracts URLs from messages and check them against
-public DNS black-lists to filter messages containing malicious URLs.
+public DNS black-lists to filter messages containing malicious URLs. Since Rspamd 2.0, this module has been removed and replaced by [rbl module](rbl.html). The existing configuration is automatically converted by Rspamd.
 - [regexp](regexp.html): the core module that allows to define regexp rules,
 rspamd internal functions and lua rules.
 
@@ -66,7 +66,7 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [force_actions](force_actions.html) - forces actions if selected symbols are detected (requires configuration)
 - [greylisting](greylisting.html) - allows to delay suspicious messages (requires Redis)
 - [history redis](history_redis.html) - stores history in Redis (requires Redis)
-- [ip_score](ip_score.html) - dynamically scores sender reputation (requires Redis)
+- [ip_score](ip_score.html) - dynamically scores sender reputation (requires Redis). This module is removed since Rspamd 2.0 and replaced by [reputation module](reputation.html). The existing configuration is automatically converted by Rspamd.
 - [maillist](maillist.html) - determines the common mailing list signatures in a message.
 - [metadata_exporter](metadata_exporter.html) - pushes message metadata to external systems (requires configuration)
 - [metric_exporter](metric_exporter.html) - pushes statistics to external monitoring systems (requires configuration)
@@ -79,13 +79,13 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [phishing](phishing.html) - detects messages with phished URLs.
 - [ratelimit](ratelimit.html) - implements leaked bucket algorithm for ratelimiting (requires Redis & configuration)
 - [replies](replies.html) - checks if an incoming message is a reply for our own message (requires Redis)
-- [rbl](rbl.html) - a plugin that checks sending IP addresses or information from `Received` headers against DNS blacklists.
+- [rbl](rbl.html) - a plugin that checks messages against DNS runtime blacklists.
 - [reputation](reputation.html) - a plugin that manages reputation evaluation based on various rules.
 - [rspamd_update](rspamd_update.html) - load dynamic rules and other rspamd updates (requires configuration)
 - [spamassassin](spamassassin.html) - load spamassassin rules (requires configuration)
 - [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages. (requires configuration)
 - [whitelist](whitelist.html) - provides a flexible way to whitelist (or blacklist) messages based on SPF/DKIM/DMARC combinations
-- [url_redirector](url_redirector.html) - dereferences redirects (requires Redis and SURBL module configuration)
+- [url_redirector](url_redirector.html) - dereferences redirects (requires Redis configuration)
 
 The following modules are explicitly disabled in the default configuration, set `enabled = true` in `local.d/${MODULE_NAME}.conf` to enable them:
 
@@ -93,9 +93,8 @@ The following modules are explicitly disabled in the default configuration, set 
 
 The following modules are explicitly disabled and are experimental, so you need to set `enabled = true` in `local.d/${MODULE_NAME}.conf` **AND** to set the global option `enable_experimental = true` in `local.d/options.inc`:
 
-- [reputation](reputation.html) - generic reputation plugin
-- [url_reputation](url_reputation.html) - assigns reputation to domains in URLs (requires Redis)
-- [url_tags](url_tags.html) - persists URL tags in Redis (requires Redis)
+- [url_reputation](url_reputation.html) - assigns reputation to domains in URLs (requires Redis). Removed in Rspamd 2.0.
+- [url_tags](url_tags.html) - persists URL tags in Redis (requires Redis). Removed in Rspamd 2.0.
 
 Experimental modules are not recommended for production usage!
 
