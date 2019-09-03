@@ -126,7 +126,7 @@ enabled = false;
 ~~~
 
 
-## DKIM keys management
+## DKIM key management
 
 Rspamd always uses `relaxed/relaxed` encoding with the `rsa-sha256` signature algorithm. This selection seems to be the most appropriate for all cases. Rspamd adds a special element called `DKIM-Signature` to the output when signing has been done.
 
@@ -148,19 +148,19 @@ For an RSA key of 2048 bits:
 ~~~
 rspamadm dkim_keygen -s 'woosh' -b 2048 -d example.com -k example.private > example.txt
 ~~~
-```> example.txt``` re-directs the DNS TXT record output to ```example.txt```
-```-k example.private``` saves your private key to the file ```example.private```
-```-d example.com ``` specifies the domain as ```example.com``` (currently meaningless)
-```-b 2048``` specifies a ```2048``` bit key size (the default, but standard 1024 bit size is weak).
-```-s 'woosh'``` names the selector ```woosh``` i.e. ```woosh._domainkey```
+* ```> example.txt``` re-directs the DNS TXT record output to ```example.txt```
+* ```-k example.private``` saves your private key to the file ```example.private```
+* ```-d example.com ``` specifies the domain as ```example.com``` (currently meaningless)
+* ```-b 2048``` specifies a ```2048``` bit key size (the default, but standard 1024 bit size is weak)
+* ```-s 'woosh'``` names the selector ```woosh``` i.e. ```woosh._domainkey```
 
 Or for an Ed25519 key:
 
 ~~~
 rspamadm dkim_keygen -s 'woosh' -d example.com -t ed25519 -k woosh-ed25519.private > woosh-ed25519.txt
 ~~~
-```-t ed25519``` specifies key type Ed25519
-Note: using ```-b``` together with Ed25519 has no effect. There is no variable key length with Ed25519. 
+* ```-t ed25519``` specifies key type Ed25519
+* Note: using ```-b``` together with Ed25519 has no effect. There is no variable key length with Ed25519. 
 
 Note that as of 2019-09, Ed25519 keys are not yet widely supported in software, so using this key-type exclusively in production is not yet recommended, and may result in mail being rejected. If you do use this key type, use it in combination with an RSA key also, in case a recipient domain is unable to parse Ed25519 keys/signatures - then it will have something to fall back to. 
 
