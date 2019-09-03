@@ -130,7 +130,7 @@ enabled = false;
 
 Rspamd always uses `relaxed/relaxed` encoding with the `rsa-sha256` signature algorithm. This selection seems to be the most appropriate for all cases. Rspamd adds a special element called `DKIM-Signature` to the output when signing has been done.
 
-You can generate DKIM keys for your domain using `rspamadm dkim_keygen` utility:
+You can generate DKIM keys for your domain using the included `rspamadm dkim_keygen` utility:
 
 ~~~
 rspamadm dkim_keygen -s 'test' -d example.com
