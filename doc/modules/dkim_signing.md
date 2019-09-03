@@ -117,12 +117,12 @@ domain {
 To disable DKIM signing (i.e. you use OpenDKIM, or signing is done elsewhere)
 ~~~ucl
 # local.d/dkim_signing.conf
-path = "";
+enabled = false;
 ~~~
 or
 ~~~ucl
 # override.d/dkim_signing.conf
-path = "";
+enabled = false;
 ~~~
 
 
