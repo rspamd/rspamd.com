@@ -151,7 +151,7 @@ rspamadm dkim_keygen -s 'woosh' -b 2048 -d example.com -k example.private > exam
 * ```> example.txt``` re-directs the DNS TXT record output to ```example.txt```
 * ```-k example.private``` saves your private key to the file ```example.private```
 * ```-d example.com ``` specifies the domain as ```example.com``` (currently meaningless)
-* ```-b 2048``` specifies a ```2048``` bit key size (the default, but standard 1024 bit size is weak)
+* ```-b 2048``` specifies a ```2048``` bit key size (the standard default 1024 bit size is weak)
 * ```-s 'woosh'``` names the selector ```woosh``` i.e. ```woosh._domainkey```
 
 Or for an Ed25519 key:
