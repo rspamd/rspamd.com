@@ -164,6 +164,23 @@ rspamadm dkim_keygen -s 'woosh' -d example.com -t ed25519 -k woosh-ed25519.priva
 
 Note that as of 2019-09, Ed25519 keys are not yet widely supported in software, so using this key-type exclusively in production is not yet recommended, and may result in mail being rejected. If you do use this key type, use it in combination with an RSA key also, in case a recipient domain is unable to parse Ed25519 keys/signatures - then it will have something to fall back to. 
 
+Example:
+
+~~~local.d/dkim_signing.conf
+domain {
+  alpha.example.org {
+    selectors = {
+      path: ".../configs/dkim.key";
+      selector: "dkim";
+    }
+    selectors = {
+      path: ".../configs/dkim-eddsa.key";
+      selector: "eddsa";
+   }
+ }
+}
+~~~
+
 
 ## Verifying your private keys
 
