@@ -22,12 +22,12 @@ The DKIM signing module chooses signing domains and selectors according to a pre
 
  * To be eligible for signing, a mail must be received from an authenticated user OR a reserved (local) IP address OR an address in the `sign_networks` map (if defined)
  * If envelope from address is not empty, the effective second level domain must match the MIME header From
- * If authenticated user is present, this should be suffixed with @domain where domain is what's seen is envelope/header From address
- * Selector and path to key are selected from domain-specific config if present, falling back to global config
+ * If authenticated user is present, this should be suffixed with @domain where domain is what's seen in the envelope/header From address
+ * Selector and path to key are selected from the domain-specific config if present, falling back to global config
 
 The default global config (fallback mode) searches for keys at the defined `path`. The path is constructed using the eSLD normalized domain name of header from and the default selector defined with `selector` (dkim). So the search path for user@test.example.com would be `/var/lib/rspamd/dkim/example.com.dkim.key`. If a key is found the message will be signed.
 
-If using DKIM private keys stored in files, you need to ensure that Rspamd scanner processes (e.g. normal worker, controller or a proxy in self-scan mode) can **open** signing keys, so they should be accessible for the user `_rspamd` in the most of the cases.
+When using file-based DKIM private keys, ensure that the Rspamd scanner processes (e.g. normal worker, controller or a proxy in self-scan mode) have at least **read** access to the signing keys, i.e. the keys should be accessible to the user/group `_rspamd`.
 
 ## Configuration
 
@@ -126,11 +126,11 @@ enabled = false;
 ~~~
 
 
-## DKIM keys management
+## DKIM key management
 
-Rspamd always use `relaxed/relaxed` encoding with `rsa-sha256` signature algorithm. This selection seems to be the most appropriate for all cases. Rspamd adds a special element called `DKIM-Signature` to the output when signing has been done.
+Rspamd always uses `relaxed/relaxed` encoding with the `rsa-sha256` signature algorithm. This selection seems to be the most appropriate for all cases. Rspamd adds a special element called `DKIM-Signature` to the output when signing has been done.
 
-You can generate DKIM keys for your domain using `rspamadm dkim_keygen` utility:
+You can generate DKIM keys for your domain using the included `rspamadm dkim_keygen` utility:
 
 ~~~
 rspamadm dkim_keygen -s 'test' -d example.com
@@ -142,7 +142,70 @@ test._domainkey IN TXT ( "v=DKIM1; k=rsa; "
   "p=MIGJAoGBALBrq9K6yxAXHwircsTnDTsd2Kg426z02AnoKTvyYNqwYT5Dxa02lyOiAXloXVIJsyfuGOOoSx543D7DGWw0plgElHXKStXy1TZ7fJfbEtuc5RASIKqOAT1iHGfGB1SZzjt3a3vJBhoStjvLulw4h8NC2jep96/QGuK8G/3b/SJNAgMBAAE=" ) ;
 ~~~
 
-The first part is DKIM private key (that should be saved to some file) and the second part is DNS record for the public part that you should place in your zone's file. This command can also save both private and public parts to files.
+Between ```-----BEGIN PRIVATE KEY-----``` and ```-----END PRIVATE KEY-----``` is your DKIM private key (use the ```-k``` switch to save to file). The second part is the public DNS TXT record that you should place in your DNS zone file. This command can also save both private and public parts to files. 
+
+For an RSA key of 2048 bits:
+~~~
+rspamadm dkim_keygen -s 'woosh' -b 2048 -d example.com -k example.private > example.txt
+~~~
+* ```> example.txt``` re-directs the DNS TXT record output to ```example.txt```
+* ```-k example.private``` saves your private key to the file ```example.private```
+* ```-d example.com ``` specifies the domain as ```example.com``` (currently meaningless)
+* ```-b 2048``` specifies a ```2048``` bit key size (the standard default 1024 bit size is weak)
+* ```-s 'woosh'``` names the selector ```woosh``` i.e. ```woosh._domainkey```
+
+Or for an Ed25519 key:
+
+~~~
+rspamadm dkim_keygen -s 'woosh' -d example.com -t ed25519 -k woosh-ed25519.private > woosh-ed25519.txt
+~~~
+* ```-t ed25519``` specifies key type Ed25519
+* Note: using ```-b``` together with Ed25519 has no effect. There is no variable key length with Ed25519. 
+
+Note that as of 2019-09, Ed25519 keys are not yet widely supported in software, so using this key-type exclusively in production is not yet recommended, and may result in mail being rejected. If you do use this key type, use it in combination with an RSA key also, in case a recipient domain is unable to parse Ed25519 keys/signatures - then it will have something to fall back to. 
+
+Example:
+
+~~~local.d/dkim_signing.conf
+domain {
+  alpha.example.org {
+    selectors = {
+      path: ".../configs/dkim.key";
+      selector: "dkim";
+    }
+    selectors = {
+      path: ".../configs/dkim-eddsa.key";
+      selector: "eddsa";
+   }
+ }
+}
+~~~
+
+
+## Verifying your private keys
+
+To verify any generated private RSA key with OpenSSL (and also Ed25519 keys if your OpenSSL >= 1.1.1):
+~~~
+openssl pkey -text -noout -in example.private
+Private-Key: (2048 bit)
+modulus:
+    00:...
+publicExponent: 65537 (0x10001)
+privateExponent:
+    00:...
+prime1:
+    00:...
+prime2:
+    00:...
+exponent1:
+    00:...
+exponent2:
+    00:...
+coefficient:
+    00:...
+~~~
+
+
 
 ## DKIM keys in Redis
 
@@ -181,7 +244,7 @@ The selector will be chosen as per usual (a domain-specific selector will be use
 
 ## Using maps
 
-Since Rspamd 1.5.3 one or both of `selector_map` or `path_map` can be used to look up selectors and paths to private keys respectively (using the DKIM signing domain as the key). If entries are found, these will override default settings.
+Since Rspamd 1.5.3, one or both of `selector_map` or `path_map` can be used to look up selectors and paths to private keys respectively (using the DKIM signing domain as the key). If entries are found, these will override default settings.
 
 In the following configuration we define a templatised path for the DKIM signing key, a default selector, and a map which could be used for overriding the default selector (and hence effective path to the signing key as well). Any eligible mail will be signed given there is a suitably-named key on disk.
 
