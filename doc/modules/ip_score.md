@@ -5,7 +5,7 @@ title: IP Score module
 
 # IP Score
 
-# Deprecation warining!
+# Deprecation warning!
 
 This module is deprecated and is removed from Rspamd 2.0 due to several serious design flaws, e.g. reputation tokens had no decay leading to a situation with a positive loopback link and thus incorrect reputation calculations. 
 The existing configuration could be automatically transferred to [reputation module](reputation.html).
