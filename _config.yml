@@ -3,24 +3,13 @@ highlighter: rouge
 plugins:
   - jekyll-sitemap
   - jekyll-paginate
+  - jekyll-seo-tag
 paginate: 3
 paginate_path: "blog/page:num"
 description: Rspamd home.
 url: http://rspamd.com
 future: true
-markdown: redcarpet
-redcarpet:
-  extension: [
-    "no_intra_emphasis",
-    "tables",
-    "autolink",
-    "strikethrough",
-    "with_toc_data",
-    "fenced_code_blocks",
-    "highlight",
-    "superscript",
-    "footnotes",
-  ]
+markdown: kramdown
 
 kramdown:
   input: GFM
