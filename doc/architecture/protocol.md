@@ -62,7 +62,7 @@ To avoid unnecessary work, Rspamd allows an MTA to pass pre-processed data about
 | `IP`         | Defines IP from which this message is received. |
 | `Helo`       | Defines SMTP helo |
 | `Hostname`   | Defines resolved hostname |
-| `Flags`      | Supported from version 2.0: Defines output flags as a commas separated list: <ul><li>`pass_all`: pass all filters</li><li>`groups`: return symbols groups</li><li>`zstd`: compressed input/output</li><li>`no_log`: do not log task</li><li>`milter`: apply milter protocol related hacks</li><li>`profile`: profile performance for this task</li><li>`body_block`: accept rewritten body as a separate part of reply</li><li>`ext_urls`: extended urls information</li></ul>
+| `Flags`      | Supported from version 2.0: Defines output flags as a commas separated list: {::nomarkdown}<ul><li><code>pass_all</code>: pass all filters</li><li><code>groups</code>: return symbols groups</li><li><code>zstd</code>: compressed input/output</li><li><code>no_log</code>: do not log task</li><li><code>milter</code>: apply milter protocol related hacks</li><li><code>profile</code>: profile performance for this task</li><li><code>body_block</code>: accept rewritten body as a separate part of reply</li><li><code>ext_urls</code>: extended urls information</li></ul>{:/}
 | `From`       | Defines SMTP mail from command data |
 | `Queue-Id`   | Defines SMTP queue id for message (can be used instead of message id in logging). |
 | `Raw`        | If set to `yes`, then Rspamd assumes that the content is not MIME and treat it as raw data. |
