@@ -12,6 +12,7 @@ Antivirus module (available from Rspamd 1.4) provides integration with virus sca
 * [Sophos](https://www.sophos.com/en-us/medialibrary/PDFs/partners/sophossavdidsna.pdf) (via SAVDI)
 * [Avira](https://www.avira.com/de/oem-antivirus) (via SAVAPI)
 * [Kaspersky antivirus](https://www.kaspersky.com/small-to-medium-business-security/linux-mail-server) (from 1.8.3)
+* [Kaspersky Scan Engine](https://www.kaspersky.com/scan-engine) (from 2.0)
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
@@ -141,7 +142,24 @@ kaspersky {
   symbol = "KAS_VIRUS";
   servers = "/var/run/klms/rds_av";
   max_size = 2048000;
-  attachments_only = true;
+  scan_mime_parts = true; # Scan just attachments
   tmpdir = "/tmp"; # Must be writable by `_rspamd` user and readable by `klusers` user/group
+}
+~~~
+
+##  Kaspersky Scan Engine details
+
+This engine uses HTTP [REST API version 1.0](https://help.kaspersky.com/ScanEngine/1.0/en-US/181038.htm). Rspamd can work in files and TCP stream mode. Files mode could be useful if you have fast `tmpfs` that relies in memory and want to reduce the amount of data transferred over a socket for the local machine, however, this is definitely not recommended for any type of real storage (even SSD). Here are possible settings for this engine:
+
+~~~ucl
+# local.d/antivirus.conf
+kaspersky_se {
+  symbol = "KAS_SE_VIRUS";
+  servers = "127.0.0.1:1234"; # Mandatory, supports Unix sockets as well
+  max_size = 2048000;
+  timeout = 5.0; # Allow 5 seconds for scan
+  scan_mime_parts = true; # Just attachments
+  use_files = false; # Or true if you want this mode
+  use_https = false; # Enable if you terminate SSL requests to Kaspersky SE using, for example, Nginx
 }
 ~~~
