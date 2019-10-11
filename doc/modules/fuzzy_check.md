@@ -11,9 +11,9 @@ is responsible for teaching fuzzy storage with message patterns.
 ## Fuzzy patterns
 
 Rspamd uses the `shingles` algorithm to perform a fuzzy match of messages. This algorithm
-is probabilistic and uses word chains to detect some common spam patterns, and thus filter
-as spam or ham messages. The `shingles` algorithm is described in the following 
-[research paper](http://dl.acm.org/citation.cfm?id=283370). We use 3-gramms (trigrams) for this
+is probabilistic and uses word chains as patterns (in the shingles algorithm), and thus filter 
+spam or ham messages. The `shingles` algorithm is described in the following 
+[research paper](http://dl.acm.org/citation.cfm?id=283370). We use 3-grams (trigrams) for this
 algorithm and a set of hash functions: siphash, mumhash and others. Currently,
 rspamd uses 32 hashes for shingles.
 
@@ -33,7 +33,7 @@ fuzzy_check
 	retransmits = ...; //int: Maximum number of retransmits for a single request
 	revive_time = ...; //float: Time (seconds?) to lapse before re-resolving faulty upstream
 	symbol = "default symbol"; //string: Default symbol for rule (if no flags defined or matched)
-	text_multiplier = ...;//float: Multiplier for bytes limit when checking for text parts
+	text_multiplier = ...; //float: Multiplier for bytes limit when checking for text parts
 	timeout = ...; //time: Timeout to wait for a reply from a fuzzy server, e.g. 1s, 2m, 5h
 	whitelist = "..."; //string: Whitelisted IPs map
 
@@ -41,7 +41,7 @@ fuzzy_check
 		algorithm = "..."; //string: rule hashing algo
 		encryption_key = "..."; //string: Base32 value for the protocol encryption public key
 		fuzzy_key = "..."; //string: Base32 value for the hashing key (for private storages)
-		fuzzy_map = {//object: Map of SYMBOL -> data for flags configuration
+		fuzzy_map = { //object: Map of SYMBOL -> data for flags configuration
 			max_score = ... ; //int: Maximum score for this flag
 			flag = ... ; //int: Flag number (ordinal)
 		}; 
@@ -104,13 +104,13 @@ Usable parameters include:
 - `fuzzy_key`: Base32 value for the hashing key (for private storages).
 - `learn_condition`: An Lua script that returns a boolean function to check whether this task
 	should be considered when training fuzzy storage
-- `max_score`: float value for this rule's max possible score
+- `max_score`: float value: score threshold for this rule's activation/trigger
 - `mime_types`: array or list of acceptable mime-type regexs for this rule. Can be: `["*"]` to match anything
 - `read_only`: set to `no` to enable training, set to `yes` for no training
 - `servers`: list of servers to check or train
-- `short_text_direct_hash`: ?
+- `short_text_direct_hash`: whether to check the exact hash match for short texts where fuzzy algorithm is not applicable.
 - `skip_unknown`: whether or not to ignore unmatched content; if `true` or `yes` then ignore unknown flags and 
-	dooes not add the default fuzzy symbol
+	does not add the default fuzzy symbol
 - `symbol`: the default symbol applied for a rule. 
 
 
