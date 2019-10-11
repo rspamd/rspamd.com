@@ -37,8 +37,9 @@ title: Downloads
 <div markdown="1">
 Supported distributions:
 
-- **CentOS 6** (x86_64), requires EPEL
+- **CentOS 6** (x86_64), requires EPEL (till 1.9.4, 2.0+ are not supported)
 - **CentOS 7** (x86_64), requires EPEL. Hyperscan and LuaJIT are enabled.
+- **CentOS 8** (x86_64), requires EPEL. Hyperscan and LuaJIT are enabled.
 
 Please note that `CentOS` rpm packages **requires** [EPEL](https://fedoraproject.org/wiki/EPEL) to be installed in your system as many dependencies are missing from the base CentOS repositories. You can learn how to install EPEL from their site: <https://fedoraproject.org/wiki/EPEL>.
 `Fedora` packages do not require EPEL or any other third-party repository.

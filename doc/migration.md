@@ -13,6 +13,24 @@ This document describes incompatible changes introduced in recent Rspamd version
   {:toc}
 </div>
 
+## Migration to Rspamd 2.0
+
+RBL module has replaced both `emails` and `surbl` module unifying all Runtime Black Lists checks in a single place. The existing rules are normally automatically converted to `rbl` syntax which also includes even your `local.d` defines. `override.d` defines act as `local.d` overrides unfortunately. If you need to use overrides then please consider converting them to `override.d/rbl.conf` rules.
+
+`Emails` rules with maps instead of DNS RBLs are **NO LONGER SUPPORTED**. Please use `multimap` with selectors instead.
+
+Default Bayes backend is also changed to Redis now whilst Sqlite backend is now marked as deprecated and is not recommended for use. Hence, if you have `sqlite` backend that was default before 2.0, you'd need to specify its' type manually or convert it to Redis (or even, relearn Redis backend from the scratch).
+
+`ip_score` module has been replaced by `reputation` module. The existing rules should be automatically converted to `reputation` rules. The name of symbol has also been changed to two symbols: `SENDER_REP_SPAM` and `SENDER_REP_HAM`. The scores of `IP_SCORE` should be automatically applied to new symbols. The data collected from `ip_score` plugin will be **LOST** unevitably. The main reason behind it was the significant flaw of the old plugin that caused reputation never expire.
+
+`neural` module has received a major update. No config incompatibilities have been introduced to our best knowledge, however, the existing network data will be **LOST** unevitably.
+
+If you build Rspamd from the sources, you now need **C++11** capable compiler as there are now bundled dependencies written in C++ (specifically, replxx library). You also need `libsodium` library. Rspamd now supports merely `clang` and `gcc` compilers. Other compilers might work as well but it is not guaranteed any longer.
+
+Bayes expiry now always wotk in `lazy` mode and the default mode has been changed to `lazy` only.
+
+Log helper worker has been removed (but probably nobody have used it anyway).
+
 ## Migration to Rspamd 1.9.1
 
 {% raw %}
