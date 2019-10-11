@@ -17,6 +17,7 @@ spamassassin module:
 ~~~ucl
 spamassassin {
 	ruleset = "/path/to/file";
+	base_ruleset = "/var/db/spamassassin/3.004002/updates_spamassassin_org/*.cf";
 	# Limit search size to 100 kilobytes for all regular expressions
 	match_limit = 100k;
 	# Those regexp atoms will not be passed through hyperscan:
@@ -24,8 +25,8 @@ spamassassin {
 }
 ~~~
 
-Rspamd can read multiple files containing SA rules, however it doesn't support
-glob patterns so far. All rules are parsed to the same structure, so individual
+Rspamd can read multiple files containing SA rules, and it supports
+glob patterns. All rules are parsed to the same structure, so individual
 rules might be overwritten if they occurs in multiple times.
 
 ## Limitations and principles of work
@@ -41,6 +42,9 @@ to be treated as normal rule:
 
 With this setting in `spamassassin` section, all rules whose scores are higher than
 `0.1` are treated not as atoms but as the complete rules and evaluated accordingly.
+(Note that the spamassassin module uses a score of 0 for rules with no score specified
+in the file; this behavior is different from SpamAssassin, which has a default score
+of 1 for some types of rules.)
 
 Currently, rspamd supports the following functions:
 
