@@ -96,6 +96,15 @@ The `servers` parameter can have the round-robin parameter to alternately try ea
         servers = "round-robin:fuzzy1.rspamd.com:11335,fuzzy2.rspamd.com:11335";
 ```
 
+Available keywords for use in the `servers` parameter include: 
+- `hash:`: use a stable hashing algorithm to distribute values
+- `master-slave:`: always prefer upstream with a higher priority unless it is unavailable
+- `round-robin:`: balance upstreams one by one, by selecting according to their weight
+- `random:`: choose each entry in a list randomly
+- `sequential:`: use each entry in a list sequentially
+
+
+
 Usable parameters include:
 
 - `algorithm`: rule hashing algo; one of: `fasthash` (or just `fast`), `mumhash`, `siphash` (or `old`) or `xxhash`
