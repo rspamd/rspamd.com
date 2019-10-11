@@ -42,9 +42,8 @@ to be treated as normal rule:
 
 With this setting in `spamassassin` section, all rules whose scores are higher than
 `0.1` are treated not as atoms but as the complete rules and evaluated accordingly.
-(Note that the spamassassin module uses a score of 0 for rules with no score specified
-in the file; this behavior is different from SpamAssassin, which has a default score
-of 1 for some types of rules.)
+(Note that `alpha` will not apply to rules that have no `score` line in the file,
+though.)
 
 Currently, rspamd supports the following functions:
 
