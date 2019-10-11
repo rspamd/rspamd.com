@@ -30,7 +30,7 @@ fuzzy_check
 	min_height = ...; //int: Minimum pixel height of embedded images to check using fuzzy storage
 	min_length = ...; //int: Minimum number of *words* to check a text part
 	min_width = ...; //int: Minimum pixel width of embedded images to check using fuzzy storage
-	retransmits = ...; //int: Maximum number of retransmits for a single request
+	retransmits = ...; //int: Maximum number of retransmissions for a single request
 	revive_time = ...; //float: Time (seconds?) to lapse before re-resolving faulty upstream
 	symbol = "default symbol"; //string: Default symbol for rule (if no flags defined or matched)
 	text_multiplier = ...; //float: Multiplier for bytes limit when checking for text parts
