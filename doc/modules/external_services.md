@@ -126,6 +126,9 @@ This module was tested with these icap implementations:
 *   Sophos (via SAVDI)
 *   Symantec Protection Engine for Cloud Services
 *   Kaspersky Web Traffic Security 6.0
+*   Trend Micro InterScan Web Security Virtual Appliance (IWSVA) (Rspamd 2.0)
+*   F-Secure Internet Gatekeeper (Rspamd 2.0)
+*   ESET File Security for Linux 7.0
 
 Please report other working or non-working icap implementations.
 
@@ -312,6 +315,26 @@ DCC identifies bulky mails by creating hash and therefor DCC needs the complete 
 
 Any messages that DCC returns a *reject* result for (based on the configured `DCCM_REJECT_AT`
 value) will cause the symbol `DCC_REJECT` to fire. `DCC_BULK` will be calculated from the body, fuz1, fuz2 return values and has a dynamic score.
+
+## Razor specific details
+
+Vipul's Razor is a spam detection using  method using hashes of spam emails checked against a distributed database.
+
+To use razor with Rspamd you have to install a wrapper daemon: [razor](https://github.com/HeinleinSupport/razorfy).
+
+razor communicates with Rspamd over TCP and calls razor to get the report of a scanned mail. Until now we are just detecting the spam or ham decision and not evaluating the detailed reports
+
+~~~ucl
+# local.d/external_services.conf
+
+razor {
+  ...
+  # default razor settings
+  servers = "127.0.0.1:11342"
+  ...
+}
+
+~~~
 
 ## VadeSecure specific details
 

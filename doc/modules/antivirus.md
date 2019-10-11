@@ -26,7 +26,9 @@ The configuration for an antivirus setup is done by defining rules. If the antiv
 
 When there is an error during the connection or the antivirus reports failures the fail symbol (e.g. CLAM_VIRUS_FAIL) will be set with the error message as description. It is possible to make a `soft reject` by using the [force_actions]({{ site.baseurl }}/doc/configuration/force_actions.html) plugin if the antivirus has failed to scan the email (for example during a database reloading)
 
-For both symbols you can use patterns to set a dedicated symbol for any virus name or error message:
+Next to the `SYMBOLNAME` and `SYMBOLNAME_FAIL` symbols there are currently 2 special symbols indicating the scanner reports encrypted parts or parts with Office macros: `SYMBOLNAME_ENCRYPTED` and `SYMBOLNAME_MACRO`
+
+For virus, encrypted and macro symbols you can use patterns to set a dedicated symbol for any virus name or error message. For the fail symbol you have to use patterns_fail:
 
 ~~~ucl
 ...
@@ -98,7 +100,7 @@ Sophos SAVDI is a little daemon which extends Sophos Anti-Virus for Linux to be 
 Rspamd is using the SSSP protocol to communicate with SAVDI. For a SAVDI config example - maybe have a look here:
 [https://gist.github.com/c-rosenberg/671b0a5d8b1b5a937e3e161f8515c666](https://gist.github.com/c-rosenberg/671b0a5d8b1b5a937e3e161f8515c666)
 
-Note: Since 1.9.0 SAVDI errors  will be reported in the fail symbol (e.g. SOPHOS_VIRUS_FAIL). So the following configuration is obsolete. 
+Note: Since 1.9.0 SAVDI errors  will be reported in the fail symbol (e.g. SOPHOS_VIRUS_FAIL). So the following configuration is obsolete.
 
 From the version 1.7.2 up to 1.8.3, there are 2 special configuration parameters for handling SAVDI warnings / error messages
 in the sophos section: `savdi_report_encrypted` and `savdi_report_oversized`.
@@ -163,3 +165,17 @@ kaspersky_se {
   use_https = false; # Enable if you terminate SSL requests to Kaspersky SE using, for example, Nginx
 }
 ~~~
+
+## Generic Anti-Virus support via ICAP protocol
+
+The ICAP protocol is implemented in [external_services]({{ site.baseurl }}/doc/modules/external_services.html#icap-protocol-specific-details).
+
+Currently these products are tested with Rspamd (please report others):
+
+*   ClamAV (using c-icap server and squidclamav)
+*   Sophos (via SAVDI)
+*   Symantec Protection Engine for Cloud Services
+*   Kaspersky Web Traffic Security 6.0
+*   Trend Micro InterScan Web Security Virtual Appliance (IWSVA)
+*   F-Secure Internet Gatekeeper
+*   ESET File Security for Linux 7.0
