@@ -89,7 +89,7 @@ fuzzy_check {
 
 
 A fuzzy `rule` is defined as a set of `rule` definitions. Each `rule` must have a `servers`
-list to check or learn, and a set of flags and optional parameters. 
+list to check or train (teach), and a set of flags and optional parameters. 
 
 The `servers` parameter can have the round-robin parameter to alternately try each entry, e.g. using a list:
 ```
