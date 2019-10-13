@@ -2,17 +2,30 @@
 layout: doc
 title: Rspamd Logging
 ---
+
 # Rspamd logging settings
+{:.no_toc}
+
+Here is the description of Rspamd logging settings.
+
+<div id="toc" markdown="1">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 ## Introduction
-Rspamd has a number of logging options. Firstly, there are three types of log output that are supported: console logging (just output log messages to console), file logging (output log messages to file) and logging via syslog. It is also possible to restrict logging to a specific level:
 
-* `error` - log only critical errors
-* `warning` - log errors and warnings
-* `notice` - log only important notices
-* `info` - log all non-debug messages
-* `debug` - log all including debug messages (huge amount of logging)
-* `silent` - log at `info` level on start and then reduce to `notice` level when forking worker processes
+Rspamd has a number of logging options. Firstly, there are three types of log output that are supported: **console** logging - just output log messages to console, **file** logging - output log messages to a file and logging via **syslog** daemon. It is also possible to restrict logging to a specific level:
+
+| Level          | Description                       |
+| :-------------- | :-------------------------------- |
+| `error` | log only critical errors
+| `warning` | log errors and warnings
+| `notice` | log only important notices
+| `info` | log all non-debug messages
+| `silent` | log at `info` level on start and then reduce to `notice` level when forking worker processes
+| `debug` | log all including debug messages (huge amount of logging)
 
 It is possible to turn on debug messages for specific IP addresses. This can be useful for testing. For each logging type there are special mandatory parameters: log facility for syslog (read `syslog(3)` man page for details about facilities), log file for file logging. Also, file logging may be buffered for performance. To reduce logging noise, Rspamd detects sequential matching log messages and replaces them with a total number of repeats:
 
@@ -30,41 +43,48 @@ So the tag is `ed2abb` in this case. All subsequent processing related to this t
 
 ## Configuration parameters
 
-Here is summary of logging parameters:
+Here is the summary of logging parameters, each of those can be redefined or defined in `local.d/logging.inc` file:
 
-- `type` - Defines logging type (file, console or syslog). For some types mandatory attributes may be required:
-- `filename` - path to log file for file logging
-- `facility` - logging facility for syslog
-- `level` - Defines logging level (error, warning, info or debug).
-- `log_buffer` - For file and console logging defines buffer size that will be used for logging output.
-- `log_urls` - Flag that defines whether all URLs in message should be logged. Useful for testing.
-- `debug_ip` - List that contains IP addresses for which debugging should be turned on.
-- `log_color` - Turn on coloring for log messages. Default: `no`.
-- `systemd` - If `true` timestamps aren't prepended to log messages. Default: `false`.
-- `debug_modules` - A list of modules that are enabled for debugging. The following modules are available here:
-    + `task` - task messages
-    + `cfg` - configuration messages
-    + `protocol` - debug protocol details
-    + `milter` - debug milter interface
-    + `symcache` - messages from symbols cache
-    + `fuzzy_backend` - messages from fuzzy backend
-    + `lua` - messages from Lua code
-    + `spf` - messages from spf module
-    + `dkim` - messages from dkim module
-    + `langdet` - messages from language detector
-    + `proxy` - messages from proxy
-    + `lua_tcp` - messages from `lua_tcp` module
-    + `composites` - debug composite symbols
-    + `dkim_signing` - messages from dkim signing module
-    + `main` - messages from the main process
-    + `dns` - messages from DNS resolver
-    + `map` - messages from maps in Rspamd
-    + `neural` - messages from neural network module
-    + `ratelimit` - messages from ratelimit network module
-    + `stat_redis` - messages from redis statistics
-    + `logger` - messages from the logger itself
+| Parameter          | Description                       |
+| :-------------- | :-------------------------------- |
+| `type` | Defines logging type (file, console or syslog). For some types mandatory attributes may be required.
+| `filename` | Path to log file for file logging (required for **file** type)
+| `facility` | Logging facility for **syslog** type (required if this type is used)
+| `level` | Defines logging level (error, warning, info or debug).
+| `log_buffer` | For file and console logging defines buffer size that will be used for logging output.
+| `log_urls` | Flag that defines whether all URLs in message should be logged. Useful for testing.
+| `debug_ip` | List that contains IP addresses for which debugging should be turned on.
+| `color` | Turn on coloring for log messages. Default: `no`.
+| `systemd` | If `true` timestamps aren't prepended to log messages. Default: `false`.
+| `debug_modules` | A list of modules that are enabled for debugging.
 
-### Log format
+### Defined debug modules
+
+Here is a list of C debug modules defined in Rspamd (this list is usually incomplete):
+
+| Module          | Description                       |
+| :-------------- | :-------------------------------- |
+| `bayes` | messages from Bayes classifier
+| `cfg` | configuration messages
+| `composites` | debug composite symbols
+| `dkim` | messages from dkim module
+| `dns` | messages from DNS resolver
+| `fuzzy_backend` | messages from fuzzy backend
+| `langdet` | messages from language detector
+| `logger` | messages from the logger itself
+| `main` | messages from the main process
+| `map` | messages from maps in Rspamd
+| `milter` | debug milter interface
+| `protocol` | debug protocol details
+| `proxy` | messages from proxy
+| `spf` | messages from spf module
+| `stat_redis` | messages from redis statistics
+| `symcache` | messages from symbols cache
+| `task` | task messages
+ 
+ Any Lua module can also be added to `debug_modules` as they are using somehow a similar naming semantics. E.g. you can use `dkim_signing` or `multimap` or `lua_tcp` to debug the corresponding modules.
+
+## Log format
 
 Rspamd supports a custom log format when writing information about a message to the log. (This feature is supported since version 1.1.) The format string looks as follows:
 
@@ -78,38 +98,50 @@ Rspamd supports a custom log format when writing information about a message to 
 
 Newlines are replaced with spaces. Both text and variables are supported in the log format line. Each variable can have an optional `if_` prefix, which will log only if it is triggered. Moreover, each variable can have an optional body value, where `$` is replaced with the variable value (as many times as it is found in the body, e.g. `$if_var{$$$$}` will be replaced with the variable's name repeated 4 times).
 
-Rspamd supports the following variables:
 
-- `mid` - message ID
-- `qid` - queue ID
-- `ip` - from IP
-- `user` - authenticated user
-- `smtp_from` - envelope from (or MIME from if SMTP from is absent)
-- `mime_from` - MIME from
-- `smtp_rcpt` - envelope rcpt (or MIME from if SMTP from is absent) - the first recipient
-- `mime_rcpt` - MIME rcpt - the first recipient
-- `smtp_rcpts` - envelope rcpts - all recipients
-- `mime_rcpts` - MIME rcpts - all recipients
-- `len` - length of message
-- `is_spam` - a one-letter rating of spammyness: `T` for spam, `F` for ham and `S` for skipped messages
-- `action` - default metric action
-- `scores` - summary of scores
-- `symbols` - list of all symbols
-- `symbols_scores` - list of all symbols and their scores
-- `symbols_params` - list of all symbols and their options
-- `symbols_scores_params` - list of all symbols, their scores and options
-- `time_real` - real time of task processing
-- `time_virtual` - CPU time of task processing
-- `dns_req` - number of DNS requests
-- `digest` - cryptographic digest of a message's content (stripped to 16 bytes or 32 hex symbols)
-- `lua` - custom Lua script, e.g:
+### Log variables
+
+Rspamd supports the following log variables:
+
+| Variable          | Description                       |
+| :-------------- | :-------------------------------- |
+| `action` | default metric action
+| `digest` | cryptographic digest of a message's content (stripped to 16 bytes or 32 hex symbols)
+| `dns_req` | number of DNS requests
+| `filename` (from 1.8.0) | name of file if HTTP agent (e.g. rspamc) passes it
+| `forced_action` (from 1.8.2) | forced action if form `<action> "<message>"; score=<score> (set by <module>)`
+| `groups` (from 2.0) | symbols groups list for a task
+| `ip` | from IP
+| `is_spam` | a one-letter rating of spammyness: `T` for spam, `F` for ham and `S` for skipped messages
+| `len` | length of message
+| `lua` | custom Lua script (see below)
+| `mid` | message ID
+| `mime_from` | MIME from
+| `mime_rcpt` | MIME rcpt - the first recipient
+| `mime_rcpts` | MIME rcpts - all recipients
+| `public_groups` (from 2.0) | public groups only (similar to groups but more restricted)
+| `qid` | queue ID
+| `scores` | summary of scores
+| `settings_id` (from 2.0) | settings id for a message
+| `smtp_from` | envelope from (or MIME from if SMTP from is absent)
+| `smtp_rcpt` | envelope rcpt (or MIME from if SMTP from is absent) - the first recipient
+| `smtp_rcpts` | envelope rcpts - all recipients
+| `symbols_params` | list of all symbols and their options
+| `symbols_scores_params` | list of all symbols, their scores and options
+| `symbols_scores` | list of all symbols and their scores
+| `symbols` | list of all symbols
+| `time_real` | real time of task processing
+| `time_virtual` (till 2.0) | CPU time of task processing
+| `user` | authenticated user
+
+Custom logging scripts could look like the following:
 
 ~~~lua
-	$lua{
-		return function(task) 
-			return 'text parts: ' .. tostring(#task:get_text_parts()) end
-	}
+$lua{
+  return function(task) 
+    return 'text parts: ' .. tostring(#task:get_text_parts()) 
+  end
+}
 ~~~
 
-- `filename` (from 1.8.0) - name of file if HTTP agent (e.g. rspamc) passes it
-- `forced_action` (from 1.8.2) - forced action if form `<action> "<message>"; score=<score> (set by <module>)`
+this script will log number of text part in messages.
