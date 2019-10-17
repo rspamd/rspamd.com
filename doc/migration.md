@@ -27,7 +27,7 @@ Default Bayes backend is also changed to Redis now whilst Sqlite backend is now 
 
 If you build Rspamd from the sources, you now need **C++11** capable compiler as there are now bundled dependencies written in C++ (specifically, replxx library). You also need `libsodium` library. Rspamd now supports merely `clang` and `gcc` compilers. Other compilers might work as well but it is not guaranteed any longer.
 
-Bayes expiry now always wotk in `lazy` mode and the default mode has been changed to `lazy` only.
+Bayes expiry now always work in `lazy` mode and the default mode has been changed to `lazy` only.
 
 Log helper worker has been removed (but probably nobody have used it anyway).
 
