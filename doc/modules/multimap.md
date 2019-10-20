@@ -103,7 +103,6 @@ You cannot combine redis nor cdb maps with generic maps.
 
 Maps content could be augmented by using of flaws, for example `map = regexp;/path/to/file.re`. This feature is available from the version 2.0.
 
-TODO
 
 ~~~lua
   local known_types = {
@@ -119,7 +118,7 @@ TODO
     {'hash;', 'hash'},
     {'plain;', 'hash'}
   }
-~~
+~~~
 
 ### Maps content
 
@@ -151,7 +150,7 @@ IP maps can also contain IPs or IP/network in CIDR notation
 ~~~
 192.168.1.1
 10.0.0.0/8
-
+~~~
 
 
 ## Map types
@@ -426,9 +425,41 @@ From version 1.3.3, it is possible to work with maps which are stored in Redis b
 
 ## Combined maps
 
-From version 2.0, you can create maps with multiple values to be checked.
+From version 2.0, you can create maps with multiple values to be checked and joint via expression:
 
-TODO: write more
+~~~ucl
+COMBINED_MAP_AND {
+  type = "combined";
+  rules {
+    ip = {
+      type = "radix";
+      map = "${TESTDIR}/configs/maps/ip.list";
+      selector = "ip";
+    }
+    from {
+      map = "${TESTDIR}/configs/maps/domains.list";
+      selector = "from:domain";
+    }
+  }
+  expression = "from & ip"
+}
+COMBINED_MAP_OR {
+  type = "combined";
+  rules {
+    ip = {
+      type = "radix";
+      map = "${TESTDIR}/configs/maps/ip.list";
+      selector = "ip";
+    }
+    from {
+      map = "${TESTDIR}/configs/maps/domains.list";
+      selector = "from:domain";
+    }
+  }
+  expression = "from || ip"
+}
+~~~
+
 
 ## Dependent maps
 
