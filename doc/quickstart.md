@@ -596,25 +596,25 @@ There is a special module called `multimap` that allows you to define your maps 
 
 Though Rspamd is free to use for any purpose many of the RBLs used in the default configuration aren't & care should be taken to see that your use cases are not infringing. Notes about specific RBLs follow below (please follow the links for details):
 
-[Spamhaus](https://www.spamhaus.org/organization/dnsblusage/){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 300k queries or 100k SMTP connections per day
-
-[URIBL](http://uribl.com/about.shtml){:target="&#95;blank"} - Requires a commercial subscription if 'excessive queries' are sent (numbers unclear).
-
-[SURBL](http://www.surbl.org/usage-policy){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
+[Abusix Mail Intelligence](http://www.abusix.ai){:target="&#95;blank"} - Free for home/non-commercial use up to 100k queries per day (requires registration), commercial use requires a subscription
 
 [DNSWL](https://www.dnswl.org/?page_id=9){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 100k queries per day
 
-[SpamEatingMonkey](http://spameatingmonkey.com/faq.html#query-limits){:target="&#95;blank"} - Limit of 100k queries per day or more than 5 queries per second for more than a few minutes
+[Mailspike](http://mailspike.net/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
+
+[Rspamd URIBL](http://www.rspamd.com/feed-policies.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
 
 [SORBS](http://www.sorbs.net/general/using.shtml#largesites){:target="&#95;blank"} - Limit of 100k users or more than 5 messages per second sustained
 
-[Mailspike](http://mailspike.net/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
+[SpamEatingMonkey](http://spameatingmonkey.com/faq.html#query-limits){:target="&#95;blank"} - Limit of 100k queries per day or more than 5 queries per second for more than a few minutes
 
-[UCEProtect](http://www.uceprotect.net/en/index.php?m=6&s=11){:target="&#95;blank"} - If you're sending 100k queries or more per day you should use the (free) Rsync service.
+[Spamhaus](https://www.spamhaus.org/organization/dnsblusage/){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 300k queries or 100k SMTP connections per day
 
 [SURBL](http://www.surbl.org/usage-policy){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
 
-[Rspamd URIBL](http://www.rspamd.com/feed-policies.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
+[UCEProtect](http://www.uceprotect.net/en/index.php?m=6&s=11){:target="&#95;blank"} - If you're sending 100k queries or more per day you should use the (free) Rsync service.
+
+[URIBL](http://uribl.com/about.shtml){:target="&#95;blank"} - Requires a commercial subscription if 'excessive queries' are sent (numbers unclear).
 
 Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) and [SURBL]({{ site.url }}{{ site.baseurl }}/doc/modules/surbl.html) module documentation for information about disabling RBLs/SURBLs.
 
