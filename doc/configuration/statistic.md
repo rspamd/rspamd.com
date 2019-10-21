@@ -30,7 +30,7 @@ Statistical tokens are stored in statfiles which, in turn, are mapped to specifi
 
 ## Statistics Configuration
 
-Starting from Rspamd 2.0, we propose to use `redis` as backed and `osb` as tokenizer and that are the default settings. Here are the default settings placed in `$CONFDIR/settings.conf`
+Starting from Rspamd 2.0, we propose to use `redis` as backed and `osb` as tokenizer and that are the default settings. Here are the default settings placed in `$CONFDIR/statistic.conf`
 
 ~~~ucl
 classifier "bayes" {
