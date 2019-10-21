@@ -34,16 +34,15 @@ enabled = true; # Required as default is to disable DCC plugin
 
 servers = "/var/dcc/dccifd"; # Unix socket
 #servers = "127.0.0.1:10045" # OR TCP upstreams
-timeout = 2s; # Timeout to wait for checks
 body_max = 999999; # Bulkness threshold for body
 fuz1_max = 999999; # Bulkness threshold for fuz1
 fuz2_max = 999999; # Bulkness threshold for fuz2
 symbol_fail = 'DCC_FAIL';
 symbol = 'DCC_REJECT';
 symbol_bulk = 'DCC_BULK';
-timeout = 5.0,
-log_clean = false,
-retransmits = 2,
+timeout = 5.0; # Timeout to wait for checks
+log_clean = false;
+retransmits = 2;
 ~~~
 
 Alternatively you can configure DCC to listen to a TCP Socket on localhost or any remote server.
