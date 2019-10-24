@@ -992,6 +992,12 @@ The DMARC module also uses multiple keys to store cumulative reports: a separate
 
 It is recommended to set a limit for dynamic Rspamd data stored in Redis ratelimits, ip reputation, and DMARC reports. You could use a separate Redis instance for statistical tokens and set different limits or use separate databases (by specifying `db` when setting up the redis backend).
 
+### How to delete multiple Redis keys matching a glob-style pattern
+
+```sh
+redis-cli [-p 6379] --scan --pattern 'rn_SHORT_*' | xargs redis-cli unlink
+```
+
 ### How to run Rspamd using Unix sockets
 
 From https://github.com/vstakhov/rspamd/issues/1905
