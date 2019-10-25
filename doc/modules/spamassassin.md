@@ -17,7 +17,6 @@ spamassassin module:
 ~~~ucl
 spamassassin {
 	ruleset = "/path/to/file";
-	base_ruleset = "/var/db/spamassassin/3.004002/updates_spamassassin_org/*.cf";
 	# Limit search size to 100 kilobytes for all regular expressions
 	match_limit = 100k;
 	# Those regexp atoms will not be passed through hyperscan:
