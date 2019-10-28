@@ -17,12 +17,12 @@ title: Rspamd spam filtering system
 
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;">News: Rspamd 2.0 has been released</h3>
-				<span class="date"><small>2019-10-11</small></span>
-				<p style="margin-bottom: 0px; margin-top: 5px">New major release is now available.</p>
+				<h3 style="margin: 0px;">News: Rspamd 2.1 has been released</h3>
+				<span class="date"><small>2019-10-28</small></span>
+				<p style="margin-bottom: 0px; margin-top: 5px">New stable release is now available.</p>
    </div>
    <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://rspamd.com/announce/2019/10/11/rspamd-2.0.html" style="margin-top: 10px;">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
+				<a class="btn btn-primary pull-right" href="https://rspamd.com/announce/2019/10/28/rspamd-2.1.html" style="margin-top: 10px;">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
 	</div>
 </div>
 
