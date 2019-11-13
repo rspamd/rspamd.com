@@ -957,11 +957,9 @@ Currently, we recommend using `redis` for the statistics and fuzzy storage backe
 You can convert existing statistics in `sqlite` by using `rspamadm statconvert` routine:
 
 ```
-# rspamadm statconvert -d bayes.spam.sqlite -h 127.0.0.1:6379 -s BAYES_SPAM
-# rspamadm statconvert -d bayes.ham.sqlite -h 127.0.0.1:6379 -s BAYES_HAM \
--c learn_cache.sqlite
+# rspamadm statconvert --spam-db /var/lib/rspamd/bayes.spam.sqlite --symbol-spam BAYES_SPAM --ham-db /var/lib/rspamd/bayes.ham.sqlite --symbol-ham BAYES_HAM -h localhost
 ```
-You should import learn cache just once with either ham or spam statistics.
+You should import learn cache just once.
 
 The only limitation of the redis backend is that it doesn't support per language statistics. This feature, however, is not needed in the majority of cases. Per user statistics in redis works in a different way than in sqlite. Please read the [corresponding documentation]({{ site.url }}{{ site.baseurl }}/doc/configuration/statistic.html) for further details.
 
