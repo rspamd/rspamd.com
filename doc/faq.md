@@ -187,7 +187,7 @@ sudo rm /cores/core.*
 
 #### ASAN builds
 
-You should also consider using of the ASAN packages if possible. In some cases, it is the only way to debug and fix your issue. In some cases, you'd also need ASAN log in case of crash. Since they are dumped to `stderr` by default, you might need to set a special environment variable on start:
+You should also consider using of the [ASAN packages](https://rspamd.com/downloads.html) if those are available for your system (or rebuild Rspamd from the sources with ASAN support, but this is significantly more complicated). In some cases, it is the only way to debug and fix your issue. In some cases, you'd also need ASAN log in case of crash. Since they are dumped to `stderr` by default, you might need to set a special environment variable on start:
 
 ```
 export ASAN_OPTIONS="log_path=/tmp/rspamd-asan"
