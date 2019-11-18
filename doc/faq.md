@@ -56,6 +56,8 @@ Some of these options are not available on some older platforms (Debian wheezy, 
 
 All packages are signed and should also be downloaded using `https`. Debugging packages are also available (`rspamd-debuginfo` for RPM packages and `rspamd-dbg` for DEB ones).
 
+ASAN packages are built with minimum optimizations and include [Address Sanitizer](https://en.wikipedia.org/wiki/AddressSanitizer) to allow debugging issues. These packages are significanlty slower and are not recommended for normal production usage (however, they **could** be) but they might be essential to debug Rspamd issues.
+
 ### Resolver setup
 
 DNS resolving is a very important part of the spam filtering since a lot of information is obtained from DNS lists, e.g. IP and URL blacklists, whitelists, reputation data and so on and so forth. Hence, Rspamd will be **totally** broken in case: it might even refuse to start. Furthermore, if you are using your provider's resolver or some public resolver you might be affected by blocking from the vast majority of DNS lists providers or even corrupted results. It is known that Rspamd is broken when your provider's DNS returns some IP address to redirect your browser to instead of the real response.
@@ -80,9 +82,18 @@ dns {
 }
 ~~~
 
+If you use large scale DNS system you might want to set up `hash` rotation algorithm. It will significantly increase cache hit rate and reduce number of recursed requests if you have more than one upstream resolver:
+
+~~~ucl
+ # local.d/options.inc
+dns {
+	 nameserver = "hash:10.0.0.1,10.1.0.1,10.3.0.1";
+}
+~~~
+
 ### How to figure out why Rspamd process crashed
 
-Like other programs written in `C` language, the best way to debug these problems is to obtain `core` dump. Unfortunately, there is no universal solution suitable for all platforms, however, for FreeBSD and Linux you could do the following:
+Like other programs written in `C` language, the best way to debug these problems is to obtain `core` dump. Unfortunately, there is no universal solution suitable for all platforms, however, for FreeBSD (probably also other BSD like systems), Linux or macOS you can do the following:
 
 First of all, you need to create a special directory for core files that will be writeable by all users on the system:
 
@@ -173,6 +184,22 @@ Delete core dumps on macOS:
 sudo chown root /cores/core.*
 sudo rm /cores/core.*
 ```
+
+#### ASAN builds
+
+You should also consider using of the ASAN packages if possible. In some cases, it is the only way to debug and fix your issue. In some cases, you'd also need ASAN log in case of crash. Since they are dumped to `stderr` by default, you might need to set a special environment variable on start:
+
+```
+export ASAN_OPTIONS="log_path=/tmp/rspamd-asan"
+```
+
+Or add this to `systemctl edit rspamd` if using systemd:
+
+```
+ASAN_OPTIONS="log_path=/tmp/rspamd-asan"
+```
+
+Then, if you find out that Rspamd has crashed, you might want to use both core file (backtrace from it) and `/tmp/rspamd-asan.<pid>` file (where `<pid>` is the PID of the crashed process) to report your issue.
 
 #### Setting system limits
 
