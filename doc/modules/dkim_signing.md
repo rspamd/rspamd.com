@@ -169,14 +169,16 @@ Example:
 ~~~local.d/dkim_signing.conf
 domain {
   alpha.example.org {
-    selectors = {
-      path: ".../configs/dkim.key";
-      selector: "dkim";
-    }
-    selectors = {
-      path: ".../configs/dkim-eddsa.key";
-      selector: "eddsa";
-   }
+    selectors [
+     {
+       path: ".../configs/dkim.key";
+       selector: "dkim";
+     },
+     {
+       path: ".../configs/dkim-eddsa.key";
+       selector: "eddsa";
+     }
+   ]
  }
 }
 ~~~
