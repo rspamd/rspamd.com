@@ -60,10 +60,26 @@ For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> bra
     yum update
     yum install rspamd
 
+
+For <a class="undecor" href="#asanSys1">asan<sup>2</sup></a> branch packages, download `rpm-experimental-asan` repofile as following:
+
+    curl https://rspamd.com/rpm-asan/${YOUR_DISTRO}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd-experimental-asan.repo
+    rpm --import https://rspamd.com/rpm/gpg.key
+    yum update
+    yum install rspamd
+
+Or the same for the stable+asan:
+
+    curl https://rspamd.com/rpm-asan/${YOUR_DISTRO}/rspamd.repo > /etc/yum.repos.d/rspamd-asan.repo
+    rpm --import https://rspamd.com/rpm/gpg.key
+    yum update
+    yum install rspamd
+
 </div>
 <hr>
 <p class="myFootnote" id="stableSys1">1. Use STABLE branch of packages: those packages are the official rspamd releases which are recommended for production usage.</p>
 <p class="myFootnote" id="experimentalSys1">2. Use EXPERIMENTAL branch of packages: these packages are less stable and they are generated frequently from the current development branch. Experimental packages usually have more features but might be SOMETIMES broken in some points (nevertheless, bugs are usually quickly fixed after detection).</p>
+<p class="myFootnote" id="asanSys1">3. Use ASAN branch of packages: these are packages (both stable and experimental) designed to debug Rspamd issues, especially core files, using advanced debugging tools. Use these packages if you encounter an issue in Rspamd and you want it to be fixed.</p>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="system2">
             <h3>Debian and Ubuntu Linux</h3>
@@ -77,6 +93,7 @@ Rspamd supports the following .deb based distributives:
 - **Debian sid** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Ubuntu xenial** (only x86_64) Hyperscan and LuaJIT are enabled. 
 - **Ubuntu bionic** (only x86_64) Hyperscan and LuaJIT are enabled.
+
 
 To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
 
@@ -102,18 +119,35 @@ For <a class="undecor" href="#experimentalSys2">experimental<sup>2</sup></a> bra
     apt-get update
     apt-get --no-install-recommends install rspamd
 
+For <a class="undecor" href="#asanSys2">ASAN<sup>2</sup></a> branch replace `apt-stable` or `apt` with `apt-stable-asan` and `apt-asan` correspondingly:
+
+    apt-get install -y lsb-release wget # optional
+    CODENAME=`lsb_release -c -s`
+    wget -O- https://rspamd.com/apt/gpg.key | apt-key add -
+    echo "deb [arch=amd64] http://rspamd.com/apt-asan/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
+    echo "deb-src [arch=amd64] http://rspamd.com/apt-asan/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
+    apt-get update
+    apt-get --no-install-recommends install rspamd
+
+
 Check [quick start]({{ site.baseurl }}/doc/quickstart.html#rspamd-installation) for further steps.
 
-### Debian `official` repos
+### Debian `standard` repos notes
 
-Rspamd is also available in some versions of Debian and Ubuntu. However, we are looking for an active maintainer for rspamd in these 'official' repos, as now rspamd is terribly outdated there.
+Please **DO NOT** use those packages.
 
-Please **DO NOT** use those packages, as they are no longer supported.
+Please **DO NOT** use those packages!!
+
+Please **DO NOT** use those packages!!!
+
+Rspamd is also available in some versions of Debian and Ubuntu.
+Please **DO NOT** use those packages, as they are not supported in any way. Any issues or feature requests related to the packages from Debian provided distros will be closed with no feedback (or even rage feedback). Just don't do it, you are warned! 
 
 </div>
 <hr>
 <p class="myFootnote" id="stableSys2">1. Use STABLE branch of packages: those packages are the official rspamd releases which are recommended for production usage.</p>
 <p class="myFootnote" id="experimentalSys2">2. Use EXPERIMENTAL branch of packages: these packages are less stable and they are generated frequently from the current development branch. Experimental packages usually have more features but might be SOMETIMES broken in some points (nevertheless, bugs are usually quickly fixed after detection).</p>
+<p class="myFootnote" id="asanSys2">3. Use ASAN branch of packages: these are packages (both stable and experimental) designed to debug Rspamd issues, especially core files, using advanced debugging tools. Use these packages if you encounter an issue in Rspamd and you want it to be fixed.</p>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="system3">
             <h3>Other Linux</h3>
