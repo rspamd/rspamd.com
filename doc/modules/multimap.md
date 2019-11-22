@@ -166,6 +166,7 @@ Type attribute means what is matched with this map. The following types are supp
 | `filename` | matches attachment filenames and filenames in archives against map. It also includes detected filename match from version 2.0. For example, if some attachment has `.png` extension but it has real type detected as `image/jpeg` then two checks would be performed: for the original attachment and for the detected one. This does not include files in archives as Rspamd does not extract them.
 | `from` | matches envelope from (or header `From` if envelope from is absent)
 | `header` | matches any header specified (must have `header = "Header-Name"` configuration attribute)
+| `helo` | matches HELO of the message handoff session
 | `hostname` | matches reverse DNS name of the host that performed message handoff
 | `ip` | matches IP of the host that performed message handoff (against radix map)
 | `mempool` | matches contents of a mempool variable (specified with `variable` parameter)
@@ -174,6 +175,7 @@ Type attribute means what is matched with this map. The following types are supp
 | `selector` | applies generic [selector](../configuration/selectors.html) and check data returned in the specific map. This type must have `selector` option and an optional `delimiter` option that defines how to join multiple selectors (an empty string by default). If a selector returns multiple values, e.g. `urls`, then all values are checked. Normal filter logic can also be applied to the selector's results.
 | `symbol_options` | (new in 1.6.3) match 'options' yielded by whichever symbol of interest (requires `target_symbol` parameter)
 | `url` | matches URLs in messages against maps
+| `user` | matches authenticated username against maps
 
 DNS maps are legacy and are not encouraged to use in new projects (use [rbl](rbl.html) for that).
 
@@ -253,13 +255,13 @@ These are generic emails and headers filters:
 |  `email:name` | parse header value as email address and extract displayed name from it (`Somebody <user@example.com>` -> `Somebody`)
 | `regexp:/re/` | extracts generic information using the specified regular expression
 
-### Hostname filters
+### Helo, hostname filters
 
 | Filter            | Description                       |
 | :-------------- | :-------------------------------- |
 | `tld` | matches eSLD (effective second level domain - a second-level domain or something that's effectively so like `example.com` or `example.za.org`)
 | `tld:regexp:/re/` | extracts generic information using the specified regular expression from the eSLD part
-| `top` | matches TLD (top level domain) part of the hostname
+| `top` | matches TLD (top level domain) part of the helo/hostname
 
 ### Mempool filters
 
