@@ -9,9 +9,35 @@ The MX Check module checks if the domain in a message's SMTP FROM addresses (or 
 
 To enable this module, set `enabled = true` in `/etc/rspamd/local.d/mx_check.conf` and configure [redis]({{ site.baseurl }}/doc/configuration/redis.html) either globally or for this specific module.
 
+Module configuration example `local.d/mx_check.conf`:
+
 ~~~ucl
 # Set this to enable the module
 enabled = true;
+# Module-specific redis-server configuration
+#servers = "localhost";
+
+# Increase timeout to avoid "MX_MISSING" false positives caused by tarpitting
+# (not recommended for heavily loaded server)
+#timeout = 10.0;
+
+# A map of specific domains that should be excluded from MX check
+exclude_domains = [
+    "https://rspamd.com/freemail/disposable.txt.zst",
+    "https://rspamd.com/freemail/free.txt.zst",
+    "${CONFDIR}/maps.d/maillist.inc",
+    "${CONFDIR}/maps.d/redirectors.inc",
+    "${CONFDIR}/maps.d/dmarc_whitelist.inc",
+    "${CONFDIR}/maps.d/surbl-whitelist.inc",
+    "${CONFDIR}/maps.d/spf_dkim_whitelist.inc",
+];
+~~~
+
+Module default settings:
+
+~~~ucl
+# This module is *DISABLED* by default
+enabled = false;
 # connection timeout in seconds
 timeout = 1.0;
 # symbol yielded if no MX is connectable
@@ -22,42 +48,19 @@ symbol_no_mx = "MX_MISSING";
 symbol_good_mx = "MX_GOOD";
 # lifetime of redis cache - 1 day by default
 expire = 86400;
-# lifetime of redis cache for no valid mxes - 2 hours by default
+# lifetime of redis cache for no valid MXes - 2 hours by default
 expire_novalid = 7200;
 # greylist first message with invalid MX (require greylist plugin)
-greylist_invalid = false;
+greylist_invalid = true;
 # prefix used for redis key
 key_prefix = "rmx";
-# module-specific redis-server configuration
-#servers = "localhost";
-# a map of specific domains that should be excluded from MX check
-exclude_domains = [
-	"https://rspamd.com/freemail/disposable.txt.zst",
-	"https://rspamd.com/freemail/free.txt.zst",
-	"${CONFDIR}/maillist.inc",
-	"${CONFDIR}/redirectors.inc",
-	"${CONFDIR}/dmarc_whitelist.inc",
-	"${CONFDIR}/surbl-whitelist.inc"
-];
-
 ~~~
 
-Symbols indicated by configuration should be added to metric to provide non-zero scoring. For example you could add the following configuration to `/etc/rspamd/local.d/metrics.conf`:
+Symbols that are registered by the module:
 
-~~~ucl
-symbol "MX_INVALID" {
-  score = 1.0;
-  description = "No connectable MX";
-  one_shot = true;
-}
-symbol "MX_MISSING" {
-  score = 2.0;
-  description = "No MX record";
-  one_shot = true;
-}
-symbol "MX_GOOD" {
-  score = -0.5;
-  description = "MX was ok";
-  one_shot = true;
-}
-~~~
+|Group|Symbol     |Description                        |Score|
+|---  |---        |---                                |---  |
+|MX   |MX_MISSING |Domain has no resolvable MX        | 3.5 |
+|MX   |MX_INVALID |Domain has no working MX           | 0.5 |
+|MX   |MX_GOOD    |Domain has working MX              |-0.01|
+|MX   |MX_WHITE   |Domain is whitelisted from MX check| 0.0 |
