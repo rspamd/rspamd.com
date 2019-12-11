@@ -27,7 +27,7 @@ This cache operates on principle of `least recently used` expiration. All cached
 lifetimes are accordingly limited by the matching DNS record time to live.
 
 You can manually specify the size and max expire of this cache by configuring SPF module.
-In addition, you can to assign some parametres such as maximum number of recursive DNS subrequests (e.g. includes chanin
+In addition, you can to assign some parameters such as maximum number of recursive DNS subrequests (e.g. includes chain
 length), maximum count of DNS requests per record, minimum TTL enforced for all elements in SPF records, disable all IPv6
 lookups and specify an IP addresses for which the SPF check will not be used.
 
