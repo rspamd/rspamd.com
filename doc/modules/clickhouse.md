@@ -86,6 +86,12 @@ subject_privacy_length = 16;
 #  # how often run the cleanup process
 #  run_every = 7d;
 #}
+# This section defines how often Rspamd will send data to Clickhouse (from 2.1)
+#limits {
+#  max_rows = 1000; # How many rows are allowed (0 for disable this)
+#  max_memory = 50mb; # How many memory should be occupied before sending collection
+#  max_interval = 60s; # Maximum collection interval
+#}
 ~~~
 
 ### Clickhouse retention
@@ -217,55 +223,3 @@ LIMIT 10
 └──────────────────────────────────────┴─────────────────┴────────┘
 ~~~
 
-## Clickhouse tables schema
-
-Before using of this module, Rspamd needs to create certain tables in Clickhouse. This operation, as well as schema version upgrade (if needed), are performed automatically by Rspamd using `on_load` scripts. Here is the desired schema for Rspamd tables:
-
-~~~
-CREATE TABLE rspamd
-(
-    Date Date,
-    TS DateTime,
-    From String,
-    MimeFrom String,
-    IP String,
-    Score Float64,
-    NRcpt UInt8,
-    Size UInt32,
-    IsWhitelist Enum8('blacklist' = 0, 'whitelist' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('blacklist' = 0, 'whitelist' = 1, 'unknown' = 2)),
-    IsBayes Enum8('ham' = 0, 'spam' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('ham' = 0, 'spam' = 1, 'unknown' = 2)),
-    IsFuzzy Enum8('whitelist' = 0, 'deny' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('whitelist' = 0, 'deny' = 1, 'unknown' = 2)),
-    IsFann Enum8('ham' = 0, 'spam' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('ham' = 0, 'spam' = 1, 'unknown' = 2)),
-    IsDkim Enum8('reject' = 0, 'allow' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('reject' = 0, 'allow' = 1, 'unknown' = 2)),
-    IsDmarc Enum8('reject' = 0, 'allow' = 1, 'unknown' = 2) DEFAULT CAST('unknown' AS Enum8('reject' = 0, 'allow' = 1, 'unknown' = 2)),
-    NUrls Int32,
-    Action Enum8('reject' = 0, 'rewrite subject' = 1, 'add header' = 2, 'greylist' = 3, 'no action' = 4, 'soft reject' = 5) DEFAULT CAST('no action' AS Enum8('reject' = 0, 'rewrite subject' = 1, 'add header' = 2, 'greylist' = 3, 'no action' = 4, 'soft reject' = 5)),
-    FromUser String,
-    MimeUser String,
-    RcptUser String,
-    RcptDomain String,
-    Subject String,
-    ListId String,
-    `Attachments.FileName` Array(String),
-    `Attachments.ContentType` Array(String),
-    `Attachments.Length` Array(UInt32),
-    `Attachments.Digest` Array(FixedString(16)),
-    `Urls.Tld` Array(String),
-    `Urls.Url` Array(String),
-    Emails Array(String),
-    ASN String,
-    Country FixedString(2),
-    IPNet String,
-    `Symbols.Names` Array(String),
-    `Symbols.Scores` Array(Float64),
-    `Symbols.Options` Array(String),
-    Digest FixedString(32)
-) ENGINE = MergeTree(Date, (TS, From), 8192);
-
-CREATE TABLE rspamd_version
-(
-  Version UInt32
-) ENGINE = TinyLog;
-
-INSERT INTO rspamd_version (Version) Values (3);
-~~~
