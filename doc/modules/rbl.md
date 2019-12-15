@@ -39,8 +39,8 @@ Defaults may be set for the following parameters (default values used if these a
 - `default_exclude_local`: if `true`, hosts listed in `local_exclude_ip_map` should not be checked in this RBL (see also `local_exclude_ip_map` setting) (`true` by default).
 - `default_is_whitelist`: if `true` matches on this list should neutralise any listings where this setting is false and ignore_whitelists is not true (`false` by default).
 - `default_ignore_whitelists`: if `true` this list should not be neutralised by whitelists (`false` by default).
-- `default_no_ip`: if `true`, IP addresses in urls, like http://10.0.0.1/example.exe, should not be checked (`false` by default).
-- `default_images`: if `true`, use this RBL to check urls in images (`false` by default).
+- `default_no_ip`: if `true`, IP addresses in URLs, like http://10.0.0.1/example.exe, should not be checked (`false` by default).
+- `default_images`: if `true`, use this RBL to check URLs in images (`false` by default).
 - `default_replyto`: if `true`, use this RBL to check header "Reply-to" (`false` by default).
 - `default_dkim_match_from`: if `true`, use this RBL to check only aligned DKIM domains (`false` by default).
 
