@@ -39,6 +39,10 @@ Defaults may be set for the following parameters (default values used if these a
 - `default_exclude_local`: if `true`, hosts listed in `local_exclude_ip_map` should not be checked in this RBL (see also `local_exclude_ip_map` setting) (`true` by default).
 - `default_is_whitelist`: if `true` matches on this list should neutralise any listings where this setting is false and ignore_whitelists is not true (`false` by default).
 - `default_ignore_whitelists`: if `true` this list should not be neutralised by whitelists (`false` by default).
+- `default_no_ip`: if `true`, IP addresses in urls, like http://10.0.0.1/example.exe, should not be checked (`false` by default).
+- `default_images`: if `true`, use this RBL to check urls in images (`false` by default).
+- `default_replyto`: if `true`, use this RBL to check header "Reply-to" (`false` by default).
+- `default_dkim_match_from`: if `true`, use this RBL to check only aligned DKIM domains (`false` by default).
 
 Other parameters which can be set here are:
 
@@ -67,6 +71,57 @@ an_rbl {
 		EXAMPLE_TWO = "127.0.0.2";
 	}
 }
+~~~
+
+You can also use Spamhaus DQS (https://github.com/spamhaus/rspamd-dqs) in your RBL config. DQS (acronym for Data Query Service) is a set of DNSBLs with real time updates operated by Spamhaus Technology (https://www.spamhaustech.com).
+
+Some examples of using RBL:
+
+~~~ucl
+rbls {
+
+    blocklist {
+      symbol = "BLOCKLIST";
+      rbl = "blocklist.bl";
+      ipv6 = true;
+      received = true;
+      from = true;
+    }
+    
+    WHITELIST_BASE {
+      from = true;
+      ipv4 = true;
+      ipv6 = true;
+      received = true;
+      is_whitelist = true;
+      rbl = "whitelist.wl";
+      symbol = "WL_RBL_UNKNOWN";
+      unknown = true;
+      returncodes = {
+        "WL_RBL_CODE_2" = "127.0.0.2";
+        "WL_RBL_CODE_3" = "127.0.0.3";
+      }
+    }
+      
+      DNS_WL {
+      symbol = "DNS_WL";
+      rbl = "dnswl.test";
+      dkim = true;
+      dkim_domainonly = false;
+      dkim_match_from = true;
+      ignore_whitelist = true;
+      unknown = false;
+
+      returncodes {
+        DNS_WL_NONE = "127.0.%d+.0";
+        DNS_WL_LOW = "127.0.%d+.1";
+        DNS_WL_MED = "127.0.%d+.2";
+        DNS_WL_HI = "127.0.%d+.3";
+        DNS_WL_BLOCKED = "127.0.0.255";
+      }
+    }
+  }
+  
 ~~~
 
 The following extra settings are valid in the RBL subsection:
