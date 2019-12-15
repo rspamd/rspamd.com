@@ -2,6 +2,7 @@
 layout: home
 title: Rspamd spam filtering system
 ---
+
 <!--
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
@@ -88,12 +89,12 @@ title: Rspamd spam filtering system
 										<div class="item">
 												<div class="carousel-content"><div>
 														<div class="col-sm-3 col-xs-12">
-																<a href="http://www.rambler.ru/" target="_blank"><img src="img/Rambler_logo.png" class="img-responsive"></a>
+																<a href="https://mailcow.email/" target="_blank"><img src="https://mailcow.email/img/cow_mailcow.svg" class="img-responsive"></a>
 														</div>
 														<div class="col-sm-9 col-xs-12">
 																<blockquote>
-																		<p>We use both Rspamd to filter spam for our users processing about 100M of messages per day on a couple of scanners. Rspamd provides an excellent opportunities to build custom rules for better spam and phishing protection.</p>
-																		<footer>Alexander Rayushkin <cite title="Source Title">Manager of the Email department</cite></footer>
+																		<p>Following its fast development and truly innovative ideas, mailcows migration to Rspamd was only a matter of time. The concept of Rspamd is to be expandable. If it is within the scope of a mail filter, Rspamd is able to handle it.</p> <p>Rspamd is an important enrichment for the open source community.</p>
+																		<footer>André Peters <cite title="Source Title">The author of the Mailcow project</cite></footer>
 																		<div class="placeholder"></div>
 																</blockquote>
 														</div>
