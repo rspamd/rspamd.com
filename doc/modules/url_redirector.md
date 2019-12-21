@@ -5,11 +5,11 @@ title: URL redirector module
 
 # URL redirector module
 
-This module provides a hook for [SURBL]({{ site.baseurl }}/doc/modules/surbl.html) module to dereference redirects.
+This module provides a hook for [RBL]({{ site.baseurl }}/doc/modules/rbl.html) module to dereference redirects.
 
-For it to be enabled, `redirector_hosts_map` must be set in SURBL configuration, for example by adding the following to `/etc/rspamd/local.d/surbl.conf`:
+For it to be enabled, `redirector_hosts_map` must be set in RBL configuration, for example by adding the following to `/etc/rspamd/local.d/rbl.conf`:
 ~~~ucl
-redirector_hosts_map = "/etc/rspamd/redirectors.inc";
+redirector_hosts_map = "/etc/rspamd/conf/maps.d/redirectors.inc"; 
 ~~~
 
 This file/URL should contain a list of domains that should be checked by URL redirector.
