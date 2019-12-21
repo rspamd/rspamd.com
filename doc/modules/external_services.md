@@ -497,3 +497,23 @@ spamassassin {
   ...
 }
 ~~~
+
+## Virustotal details
+
+Rspamd uses [`file/report`](https://developers.virustotal.com/reference#file-report) endpoint to receive results. Since Virustotal policies are quite strict, you need to ensure that you have set your own key in the plugin configuration:
+
+~~~ucl
+# local.d/antivirus.conf
+virustotal {
+  # Obtained from Virustotal
+  apikey = "xxx";
+  # Change if you use private mirror or another API
+  #url = 'https://www.virustotal.com/vtapi/v2/file';
+  # Minimum required to get scored
+  #minimum_engines = 3; 
+  # After this number we set max score
+  #full_score_engines = 7;
+}
+~~~
+
+Rspamd will also not return the full result by the same reasons: merely number of engine matched and the md5 hash that you can use to view the full report on the Virustotal site.
