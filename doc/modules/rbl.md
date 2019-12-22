@@ -150,7 +150,7 @@ rbls {
 From version 2.0, both `EMAILS` and `SURBL` modules are deprecated in honor of the rules for RBL module. Old rules are
 automatically converted by Rspamd on start. If you have your custom rules in either `SURBL` or `EMAILS` module then they are
 converted in a way to have priority over RBL modules to allow smooth migration. However, the new rules should be written for
-RBL module only as `SURBL` and `Emails` modules transition phase will not last forever.
+RBL module only as `SURBL` and `EMAILS` modules transition phase will not last forever.
 `SURBL` performs scanning of URL's found in messages against a list of known DNS lists. It can add different symbols depending
 on the DNS replies from a specific DNS URL list.
 
