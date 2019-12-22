@@ -79,7 +79,7 @@ an_rbl {
 }
 ~~~
 
-You can also use Spamhaus DQS (<https://github.com/spamhaus/rspamd-dqs>) in your RBL config. DQS (acronym for Data Query Service) is a set of DNSBLs with real time updates operated by Spamhaus Technology (<https://www.spamhaustech.com>).
+You can also use [Spamhaus DQS](https://github.com/spamhaus/rspamd-dqs) in your RBL config. DQS (acronym for Data Query Service) is a set of DNSBLs with real time updates operated by [Spamhaus Technology](https://www.spamhaustech.com).
 
 Some examples of using RBL:
 
