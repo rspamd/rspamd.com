@@ -170,7 +170,7 @@ surbl {
 # List of domains that are not checked by surbl
 whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
 
-rules {
+  rules {
     "SURBL_MULTI" {
       ignore_defaults = true;
       rbl = "multi.surbl.org";
@@ -273,7 +273,7 @@ rules {
         SEM_URIBL = 2;
       }
     }
-}
+  }
 ~~~
 
 In general, the configuration of `SURBL` module is definition of DNS lists. Each
