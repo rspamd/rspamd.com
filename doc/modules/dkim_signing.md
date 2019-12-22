@@ -500,3 +500,18 @@ and deserve consideration.
   so that the version that arrives at the signing instance is already
   in the rewritten form, guaranteeing the input and output are the same
   and thus the signature matches the payload. You can do such a split using [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html).
+
+## Optimize signing only mode
+
+If you intend to run Rspamd for DKIM signing only in certain conditions, then please use the [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html) as following:
+
+~~~ucl
+# local.d/settings.conf
+dkim_signing {
+  ... # Add conditions to match this setting
+  apply {
+    symbols_enabled = ["DKIM_SIGNED"];
+    flags = ["skip_process"]; # Disable expensive MIME processing
+  }
+}
+~~~
