@@ -410,7 +410,7 @@ This encoding can save DNS requests to query multiple lists one at a time.
 Some other lists use direct encoding of lists by some specific addresses. In this
 case you should define results decoding principle in `ips` section not `bits` since
 bitwise rules are not applicable to these lists. In `ips` section you explicitly
-match the ip returned by a list and its meaning.
+match the IP returned by a list and its meaning.
 
 ## IP lists
 
