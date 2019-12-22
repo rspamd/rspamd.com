@@ -93,7 +93,7 @@ key_prefix = "DKIM_KEYS";
 
 # If `true` get pubkey from DNS record and check if it matches private key
 check_pubkey = false;
-# Set to `false` if you want to skip signing if publick and private keys mismatches
+# Set to `false` if you want to skip signing if public and private keys mismatch
 allow_pubkey_mismatch = true;
 
 
