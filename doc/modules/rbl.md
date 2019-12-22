@@ -147,10 +147,12 @@ rbls {
 
 # SURBL module
 
-This module became a part of `RBL` module in Rspamd 2.0.
-`SURBL` performs scanning of URL's found in messages against a list of known
-DNS lists. It can add different symbols depending on the DNS replies from a 
-specific DNS URL list.
+From version 2.0, both `EMAILS` and `SURBL` modules are deprecated in honor of the rules for RBL module. Old rules are
+automatically converted by Rspamd on start. If you have your custom rules in either `SURBL` or `EMAILS` module then they are
+converted in a way to have priority over RBL modules to allow smooth migration. However, the new rules should be written for
+RBL module only as `SURBL` and `Emails` modules transition phase will not last forever.
+`SURBL` performs scanning of URL's found in messages against a list of known DNS lists. It can add different symbols depending
+on the DNS replies from a specific DNS URL list.
 
 ## Module configuration
 
@@ -170,61 +172,111 @@ whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
 
 rules {
     "SURBL_MULTI" {
-        rbl = "multi.surbl.org";
-        bits {
-            # List of bits ORed when reply is given
-            JP_SURBL_MULTI = 64;
-            AB_SURBL_MULTI = 32;
-            MW_SURBL_MULTI = 16;
-            PH_SURBL_MULTI = 8;
-            WS_SURBL_MULTI = 4;
-            SC_SURBL_MULTI = 2;
-        }
+      ignore_defaults = true;
+      rbl = "multi.surbl.org";
+      dkim = true;
+      emails = true;
+      emails_domainonly = true;
+      urls = true;
+
+      returnbits = {
+        CRACKED_SURBL = 128; # From February 2016
+        ABUSE_SURBL = 64;
+        MW_SURBL_MULTI = 16;
+        PH_SURBL_MULTI = 8;
+        SURBL_BLOCKED = 1;
+      }
     }
+    
     "URIBL_MULTI" {
-        rbl = "multi.uribl.com";
-        bits {
-            URIBL_BLACK = 2;
-            URIBL_GREY = 4;
-            URIBL_RED = 8;
-        }
+      ignore_defaults = true;
+      rbl = "multi.uribl.com";
+      dkim = true;
+      emails = true;
+      emails_domainonly = true;
+      urls = true;
+
+      returnbits {
+        URIBL_BLOCKED = 1;
+        URIBL_BLACK = 2;
+        URIBL_GREY = 4;
+        URIBL_RED = 8;
+      }
     }
+    
     "RSPAMD_URIBL" {
-        rbl = "uribl.rspamd.com";
-        # Also check images
-        images = true;
-	# Сheck emails for URLs
-	check_emails = true;
-	returncodes = {
+      ignore_defaults = true;
+      rbl = "uribl.rspamd.com";
+      dkim = true;
+      # Also check images
+      images = true;
+      # Сheck emails for URLs
+      emails = true;
+      emails_domainonly = true;
+      urls = true;
+      hash = 'blake2';
+      hash_len = 32;
+      hash_format = 'base32';
+
+      returncodes = {
         RSPAMD_URIBL = [
           "127.0.0.2",
         ];
       }
     }
+    
     "DBL" {
-        rbl = "dbl.spamhaus.org";
-        # Do not check numeric URL's
-        noip = true;
+      ignore_defaults = true;
+      rbl = "dbl.spamhaus.org";
+      no_ip = true;
+      dkim = true;
+      emails = true;
+      emails_domainonly = true;
+      urls = true;
+
+      returncodes = {
+        # spam domain
+        DBL_SPAM = "127.0.1.2";
+        # phish domain
+        DBL_PHISH = "127.0.1.4";
+        # malware domain
+        DBL_MALWARE = "127.0.1.5";
+        # botnet C&C domain
+        DBL_BOTNET = "127.0.1.6";
+        # abused legit spam
+        DBL_ABUSE = "127.0.1.102";
+        # abused spammed redirector domain
+        DBL_ABUSE_REDIR = "127.0.1.103";
+        # abused legit phish
+        DBL_ABUSE_PHISH = "127.0.1.104";
+        # abused legit malware
+        DBL_ABUSE_MALWARE = "127.0.1.105";
+        # abused legit botnet C&C
+        DBL_ABUSE_BOTNET = "127.0.1.106";
+        # error - IP queries prohibited!
+        DBL_PROHIBIT = "127.0.1.255";
+        # issue #3074
+        DBL_BLOCKED_OPENRESOLVER = "127.255.255.254";
+        DBL_BLOCKED = "127.255.255.255";
+      }
     }
+    
     "SEM_URIBL_UNKNOWN" {
-        rbl = "uribl.spameatingmonkey.net";
-        bits {
-            SEM_URIBL = 2;
-        }
-        noip = true;
+      ignore_defaults = true;
+      rbl = "uribl.spameatingmonkey.net";
+      no_ip = true;
+      dkim = true;
+      emails = true;
+      emails_domainonly = true;
+      urls = true;
+      returnbits {
+        SEM_URIBL = 2;
+      }
     }
-    "SEM_URIBL_FRESH15_UNKNOWN" {
-        suffix = "fresh15.spameatingmonkey.net";
-        bits {
-            SEM_URIBL_FRESH15 = 2;
-        }
-        noip = true;
-    }
-  }
 }
 ~~~
 
-In general, the configuration of `surbl` module is definition of DNS lists. Each
+In general, the configuration of `SURBL` module is definition of DNS lists. Each
 list must have suffix that defines the list itself and optionally for some lists
 it is possible to specify either `bit` or `ips` sections.
 
@@ -241,23 +293,37 @@ Since some URL lists do not accept `IP` addresses, it is also possible to disabl
 It is also possible to check HTML images URLs and email addresses (domain part) in mail's body part for URLs by using URL blacklists. Just specify `images = true` and `check_emails = true` for such list and you are done:
 
 ~~~ucl
-"RAMBLER_URIBL" {
-    rbl = "uribl.rambler.ru";
-    # Also check images
-    images = true;
-    # Сheck emails for URLs
-    check_emails = true;
-}
+    "RSPAMD_URIBL" {
+      ignore_defaults = true;
+      rbl = "uribl.rspamd.com";
+      dkim = true;
+      # Also check images
+      images = true;
+      # Сheck emails for URLs
+      emails = true;
+      emails_domainonly = true;
+      urls = true;
+      hash = 'blake2';
+      hash_len = 32;
+      hash_format = 'base32';
+
+      returncodes = {
+        RSPAMD_URIBL = [
+          "127.0.0.2",
+        ];
+      }
+    }
 ~~~
 
 By default, Rspamd checks each SURBL `sanity` by queriyng of `facebook.com` domain. URL black list must NOT reply by some positive result (other than NXDOMAIN) to such a query. However, sometimes you might need to change that to another domain (e.g. to `INVALID`), so you can use `monitored_domain` option from Rspamd 1.6:
 
 ~~~ucl
-"HOSTKARMA_URIBL" {
-    rbl = "hostkarma.junkemailfilter.com";
-    noip = true;
-    enabled = false;
-    ips = {
+    "HOSTKARMA_URIBL" {
+      rbl = "hostkarma.junkemailfilter.com";
+      noip = true;
+      enabled = false;
+      
+      returncodes = {
         URIBL_HOSTKARMA_WHITE = "127.0.0.1";
         URIBL_HOSTKARMA_BLACK = "127.0.0.2";
         URIBL_HOSTKARMA_YELLOW = "127.0.0.3";
@@ -271,25 +337,27 @@ By default, Rspamd checks each SURBL `sanity` by queriyng of `facebook.com` doma
 }
 ~~~
 
-It is also possible to check `Reply-to` header by using URL blacklists. Just specify `replyto = true`. You can also specify checking only domain part by option `domain_only = true`:
+It is also possible to check `Reply-to` header by using URL blacklists. Just specify `replyto = true`. You can also specify checking only domain part by option `emails_domainonly = true`:
 
 ~~~ucl
-emails {
-  rules {
-  "RSPAMD_EMAILBL" {
-        rbl = "email.rspamd.com";
-	# Check Reply-to header
-	replyto = true;
-	# Check only domain part
-        domain_only = true;
+    RSPAMD_EMAILBL {
+      ignore_defaults = true;
+      emails_delimiter = ".";
+      hash_format = "base32";
+      hash_len = 32;
+      rbl = "email.rspamd.com";
+      emails_domainonly = true
+      replyto = true;
+      hash = "blake2";
+      returncodes = {
+        RSPAMD_EMAILBL = "127.0.0.2";
       }
-  }
-}
+    }
 ~~~
 
 ## Principles of operation
 
-In this section, we define how `surbl` module performs its checks.
+In this section, we define how `SURBL` module performs its checks.
 
 ### TLD composition
 
@@ -355,19 +423,6 @@ In general this procedure could be represented as following:
 
 * Check `A` or `AAAA` records for `example.com`
 * For each ip address resolve it using reverse octets composition: so if IP address of `example.com` is `1.2.3.4`, then checks would be for `4.3.2.1.uribl.tld`
-
-For example, [SBL list](https://www.spamhaus.org/sbl/) of `spamhaus` project provides such functions using `ZEN` multi list. This is included in rspamd default configuration:
-
-~~~ucl
-    rule {
-        suffix = "zen.spamhaus.org";
-        symbol = "ZEN_URIBL";
-        resolve_ip = true;
-        ips {
-            URIBL_SBL = "127.0.0.2";
-        }
-    }
-~~~
 
 ## Disabling SURBLs
 
