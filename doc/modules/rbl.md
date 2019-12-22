@@ -422,7 +422,7 @@ From rspamd 1.1 it is also possible to do two step checks:
 In general this procedure could be represented as following:
 
 * Check `A` or `AAAA` records for `example.com`
-* For each ip address resolve it using reverse octets composition: so if IP address of `example.com` is `1.2.3.4`, then checks would be for `4.3.2.1.uribl.tld`
+* For each IP address resolve it using reverse octets composition: so if IP address of `example.com` is `1.2.3.4`, then checks would be for `4.3.2.1.uribl.tld`
 
 ## Disabling SURBLs
 
