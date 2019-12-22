@@ -5,11 +5,10 @@ title: URL redirector module
 
 # URL redirector module
 
-This module provides a hook for [SURBL]({{ site.baseurl }}/doc/modules/surbl.html) module to dereference redirects.
-
-For it to be enabled, `redirector_hosts_map` must be set in SURBL configuration, for example by adding the following to `/etc/rspamd/local.d/surbl.conf`:
+This module provides a hook for [RBL]({{ site.baseurl }}/doc/modules/rbl.html) module to resolve redirects.
+To enable this module one should add a `redirector_hosts_map` option to the RBL module's configuration, for example by adding the following to `local.d/rbl.conf`:
 ~~~ucl
-redirector_hosts_map = "/etc/rspamd/redirectors.inc";
+redirector_hosts_map = "${LOCAL_CONFDIR}/local.d/maps.d/redirectors.inc";
 ~~~
 
 This file/URL should contain a list of domains that should be checked by URL redirector.
@@ -18,7 +17,7 @@ Dereferenced links are cached in Redis (see [here]({{ site.baseurl }}/doc/config
 
 # Configuration
 
-The following settings could be set in `/etc/rspamd/local.d/url_redirector.conf` to control behaviour of the URL redirector module.
+The following settings could be set in `local.d/url_redirector.conf` to control behaviour of the URL redirector module.
 
 ~~~ucl
 # How long to cache dereferenced links in Redis (default 1 day)
