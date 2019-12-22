@@ -501,17 +501,17 @@ and deserve consideration.
   in the rewritten form, guaranteeing the input and output are the same
   and thus the signature matches the payload. You can do such a split using [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html).
 
-## Running Rspamd with only DKIM-Signing module
+## Optimize signing only mode
 
-If you want to use Rspamd with only DKIM-Signing module with disabled other modules with excluded full parsing of the HTML body of the mail, you should add in [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html) next strings:
+If you intend to run Rspamd for DKIM signing only in certain conditions, then please use the [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html) as following:
 
 ~~~ucl
-settings {
-   foo {
-     apply {
-       symbols_enabled = ["DKIM_SIGNED"];
-       flags = ["skip_process"];
-     }
-   }
+# local.d/settings.conf
+dkim_signing {
+  ... # Add conditions to match this setting
+  apply {
+    symbols_enabled = ["DKIM_SIGNED"];
+    flags = ["skip_process"]; # Disable expensive MIME processing
+  }
 }
 ~~~
