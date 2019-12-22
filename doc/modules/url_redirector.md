@@ -8,7 +8,7 @@ title: URL redirector module
 This module provides a hook for [RBL]({{ site.baseurl }}/doc/modules/rbl.html) module to resolve redirects.
 To enable this module one should add a `redirector_hosts_map` option to the RBL module's configuration, for example by adding the following to `local.d/rbl.conf`:
 ~~~ucl
-redirector_hosts_map = "local.d/maps.d/redirectors.inc"; 
+redirector_hosts_map = "local.d/maps.d/redirectors.inc";
 ~~~
 
 This file/URL should contain a list of domains that should be checked by URL redirector.
