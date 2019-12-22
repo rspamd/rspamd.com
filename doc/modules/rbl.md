@@ -285,7 +285,7 @@ Since some URL lists do not accept `IP` addresses, it is also possible to disabl
 ~~~ucl
 "DBL" {
     rbl = "dbl.spamhaus.org";
-    # Do not check numeric URL's
+    # Do not check numeric URLs
     noip = true;
 }
 ~~~
