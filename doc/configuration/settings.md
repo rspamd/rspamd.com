@@ -124,8 +124,10 @@ So each setting has the following attributes:
 - `name` - section name that identifies this specific setting (e.g. `some_users`)
 - `priority` - `high` (3), `medium` (2), `low` (1) or any positive integer value (default priority is `low`). Rules with greater priorities are matched first. From version 1.4 Rspamd checks rules with equal priorities in **alphabetical** order. Once a rule matches only that rule is applied and the rest are ignored.
 - `match list` - list of rules which this rule matches:
-	+ `from` - match SMTP from
-	+ `rcpt` - match RCPT
+	+ `from` - match SMTP sender
+	+ `mime_from` - match MIME sender
+	+ `rcpt` - match SMTP recipient
+	+ `mime_rcpt` - match MIME recipient
 	+ `ip` - match source IP address
 	+ `hostname` - match the source hostname (regexp supported)
 	+ `user` - matches authenticated user ID of message sender if any
