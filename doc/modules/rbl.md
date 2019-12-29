@@ -3,6 +3,13 @@ layout: doc
 title: RBL module
 ---
 # RBL module
+{:.no_toc}
+
+The RBL module provides support for checking various messages elements, such as senders IP addresses, URLs, Emails, Received headers chains, SMTP data (such as HELO domain) and so on, against the set of Runtime Black Lists (RBL) usually provided by means of dedicated DNS zones.
+
+By default, Rspamd comes with a set of RBL rules configured to the popular resources that are usually free for non-profit usage (including fair usage policies). Should you require a different level of support and access then please contact the relevant vendors.
+
+For example, you can use [Abusix Mail Intelligence](https://docs.abusix.ai/en/articles/2965246-rspamd-configuration) or [Spamhaus DQS](https://github.com/spamhaus/rspamd-dqs) or any other RBL provider that suits your needs. 
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
@@ -10,19 +17,22 @@ title: RBL module
   {:toc}
 </div>
 
-The RBL module provides support for checking the IPv4/IPv6 source address of a message's sender against a set of RBLs as well as various less conventional methods of using RBLs: against addresses in Received headers; against the reverse DNS name of the sender and against the parameter used for HELO/EHLO at SMTP time.
-
-Configuration is structured as follows:
+Configuration for this module is structured as following:
 
 ~~~ucl
 # local.d/rbl.conf
 # default settings defined here
+default_from = true;
+default_received = false;
+default_exclude_users = true;
+default_unknown = true;
+
 rbls {
-# 'rbls' subsection under which the RBL definitions are nested
-	an_rbl {
-			# rbl-specific subsection 
-	}
-	# ...
+  # 'rbls' subsection under which the RBL definitions are nested
+  an_rbl {
+    # rbl-specific subsection 
+  }
+  # ...
 }
 ~~~
 
@@ -57,7 +67,7 @@ Other parameters which can be set here are:
 - `disable_monitoring`: (new in Rspamd 1.6) boolean value that disables monitoring completely. It should be placed in the **global [options]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html)** file. 
 - `monitored_address`: (new in Rspamd 1.6) fixed address to check for absence (`1.0.0.127` by default).
 
-RBL-specific subsection is structured as follows:
+RBL-specific subsection is structured as following:
 
 ~~~ucl
 # Descriptive name of RBL or symbol if symbol is not defined.
@@ -78,8 +88,6 @@ an_rbl {
 	}
 }
 ~~~
-
-You can also use [Spamhaus DQS](https://github.com/spamhaus/rspamd-dqs) in your RBL config. DQS (acronym for Data Query Service) is a set of DNSBLs with real time updates operated by [Spamhaus Technology](https://www.spamhaustech.com).
 
 Some examples of using RBL:
 
@@ -145,23 +153,25 @@ rbls {
 - `whitelist_exception`: (for whitelists) - symbols named as parameters for this setting will not be used for neutralising blacklists (set this multiple times to add multiple exceptions).
 
 
-# SURBL module
+## URL rules
 
-From version 2.0, both `EMAILS` and `SURBL` modules are deprecated in honor of the rules for RBL module. Old rules are
-automatically converted by Rspamd on start. If you have your custom rules in either `SURBL` or `EMAILS` module then they are
+From version 2.0, both `Emails` and `SURBL` modules are deprecated in honor of the rules for RBL module. Old rules are
+automatically converted by Rspamd on start. If you have your custom rules in either `SURBL` or `Emails` module then they are
 converted in a way to have priority over RBL modules to allow smooth migration. However, the new rules should be written for
-RBL module only as `SURBL` and `EMAILS` modules transition phase will not last forever.
-`SURBL` performs scanning of URLs found in messages against a list of known DNS lists. It can add different symbols depending
-on the DNS replies from a specific DNS URL list.
+RBL module only as `SURBL` and `Emails` modules transition phase will not last forever.
 
-## Module configuration
+`SURBL` module was previously responsible for scanning of URLs found in messages against a list of known RBLs. However, these functions are now transferred to this module.
 
-The default configuration defines several public URL lists. However, their terms
+## URL rules configuration
+
+By default, Rspamd defines a set of URL lists in the configuration. However, their terms
 of usage normally disallows commercial or very extensive usage without purchasing
 a specific sort of license.
 
 Nonetheless, they can be used by personal services or low volume requests free
 of charge.
+
+Here are the default lists specified:
 
 ~~~ucl
 # local.d/rbl.conf
@@ -276,9 +286,8 @@ whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
   }
 ~~~
 
-In general, the configuration of `SURBL` module is definition of DNS lists. Each
-list must have suffix that defines the list itself and optionally for some lists
-it is possible to specify either `bit` or `ips` sections.
+Each list should have a `suffix` parameter that defines the list itself and optionally for some replies processing logic
+either by `returnbits` or `returncodes` sections.
 
 Since some URL lists do not accept `IP` addresses, it is also possible to disable sending of URLs with IP address in the host to such lists. That could be done by specifying `noip = true` option:
 
@@ -290,7 +299,7 @@ Since some URL lists do not accept `IP` addresses, it is also possible to disabl
 }
 ~~~
 
-It is also possible to check HTML images URLs and email addresses (domain part) in mail's body part for URLs by using URL blacklists. Just specify `images = true` and `check_emails = true` for such list and you are done:
+It is also possible to check DKIM signatures domains, HTML images URLs and email addresses (domain part) in mail's body part for URLs by using URL blacklists:
 
 ~~~ucl
     "RSPAMD_URIBL" {
@@ -315,7 +324,11 @@ It is also possible to check HTML images URLs and email addresses (domain part) 
     }
 ~~~
 
-By default, Rspamd checks each SURBL `sanity` by querying of `facebook.com` domain. URL black list must NOT reply by some positive result (other than NXDOMAIN) to such a query. However, sometimes you might need to change that to another domain (e.g. to `INVALID`), so you can use `monitored_domain` option from Rspamd 1.6:
+In this example, we also enable privacy for requests by hashing all elements before sending. It is supported by a limited number of RBLs (e.g. Rspamd URL blacklist or by MSBL EBL).
+
+## Monitoring
+
+By default, Rspamd checks each rule sanity by querying of `facebook.com` domain. URL black list must NOT reply by some positive result (other than NXDOMAIN) to such a query. However, sometimes you might need to change that to another domain (e.g. to `INVALID`), so you can use `monitored_domain` option from Rspamd 1.6:
 
 ~~~ucl
     "HOSTKARMA_URIBL" {
@@ -357,7 +370,7 @@ It is also possible to check `Reply-to` header by using URL blacklists. Just spe
 
 ## Principles of operation
 
-In this section, we define how `SURBL` module performs its checks.
+In this section, we define how `RBL` module performs its checks.
 
 ### TLD composition
 
@@ -424,7 +437,7 @@ In general this procedure could be represented as following:
 * Check `A` or `AAAA` records for `example.com`
 * For each IP address resolve it using reverse octets composition: so if IP address of `example.com` is `1.2.3.4`, then checks would be for `4.3.2.1.uribl.tld`
 
-## Disabling SURBLs
+## Disabling rules
 
 Rules can be disabled by setting the `enabled` setting to `false`. This allows for easily disabling SURBLs without overriding the full default configuration. The example below could be added to `/etc/rspamd/local.d/surbl.conf` to disable the `RAMBLER_URIBL` URIBL.
 
