@@ -15,7 +15,7 @@ pigeonhole `v0.4.14` or later
 
 ## Folders
 
-Create `report_ham` and `report_spam` folders in the `spam@example.com` mailbox.
+Create `report_ham`, `report_spam` and `report_spam_reply` folders in the `spam@example.com` mailbox.
 
 ## Dovecot configuration
 
