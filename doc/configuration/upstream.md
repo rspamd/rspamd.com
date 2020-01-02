@@ -9,7 +9,7 @@ This document describes **upstreams**: list of servers that are selected by Rspa
 
 ## Introduction
 
-List of upstreams is a common structure used in various Rspamd configuration options when you need to setup some remote servers. For example, upstreams are used to connect to a Redis server, to select a DNS server and to establish a connection by Rspamd proxy. Servers in upstream list can be defined by IP addresses (IPv6 addresses should be enclosed in brackets):
+List of upstreams is a common structure used in various Rspamd configuration options when you need to setup some remote servers. For example, upstreams are used to connect to a Redis server, to select a DNS server and to establish a connection by Rspamd proxy. Servers in upstream list can be defined by IP addresses (IPv6 addresses should be enclosed in brackets) or Unix domain sockets:
 
     127.0.0.1,[::1]
 
@@ -24,6 +24,10 @@ You can also specify custom ports if they differ from the default ones (e.g. `53
 It is also possible to define upstreams priorities (described later), but in this case you must also specify a port number:
 
     127.0.0.1:53:10,8.8.8.8:53:1
+
+Unix sockets (starting with `/` or `.`) can also be specified, but priorities are not supported:
+
+    /tmp/rspamd.sock,fallback.example.com
 
 Upstreams line can be separated by commas or by semicolons in any combination. You can prepend rotation algorithm to the upstreams line to override the default rotation method (specific for each upstream list definition):
 
