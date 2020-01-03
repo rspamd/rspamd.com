@@ -8,7 +8,7 @@ Controller worker is used to manage rspamd stats, to learn rspamd and to serve W
 
 Internally, the controller worker is just a web server that accepts requests and sends replies using JSON serialization.
 Each command is defined by URL. Some commands are read only and are considered as `unprivileged` whilst other commands, such as
-maps modification, config modifications and learning requires higher level of privileges: `enable` level. The differece between levels is specified
+maps modification, config modifications and learning requires higher level of privileges: `enable` level. The difference between levels is specified
 by password. If only one password is specified in the configuration, it is used for both type of commands.
 
 ## Controller configuration

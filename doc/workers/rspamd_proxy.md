@@ -15,6 +15,11 @@ This worker provides different functionality to build multiple layers systems an
 * Compare results of mirrored request
 * Perform messages scan by own (self-scan mode)
 
+The `hosts` option for the `upstream` and `mirror` can specify IP addresses or
+Unix domain sockets as described in the
+[upstreams documentation]({{ site.baseurl }}/doc/configuration/upstream.html).
+If the port number is omitted, port 11333 is assumed.
+
 ## Milter support
 
 From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introducing of this feature also finally obsoletes the [Rmilter](https://rspamd.com/rmilter/) project in honor of the new integration method. Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
