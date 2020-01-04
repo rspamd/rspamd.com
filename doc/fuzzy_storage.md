@@ -282,7 +282,7 @@ rule "local" {
     # Default symbol for unknown flags
     symbol = "LOCAL_FUZZY_UNKNOWN";
     # Additional mime types to store/check
-    mime_types = ["application/*"];
+    mime_types = ["*"];
     # Hash weight threshold for all maps
     max_score = 20.0;
     # Whether we can learn this storage
@@ -291,6 +291,8 @@ rule "local" {
     skip_unknown = yes;
     # Hash generation algorithm
     algorithm = "mumhash";
+    # Use direct hash for short texts
+    short_text_direct_hash = true;
 
     # Map flags to symbols
     fuzzy_map = {
@@ -312,24 +314,24 @@ rule "local" {
 }
 ~~~
 
-local.d/metrics.conf example:
+local.d/fuzzy_group.conf example:
 
 ~~~ucl
-group "fuzzy" {
-    max_score = 12.0;
-    symbol "LOCAL_FUZZY_UNKNOWN" {
+max_score = 12.0;
+symbols = {
+    "LOCAL_FUZZY_UNKNOWN" {
         weight = 5.0;
         description = "Generic fuzzy hash match";
     }
-    symbol "LOCAL_FUZZY_DENIED" {
+    "LOCAL_FUZZY_DENIED" {
         weight = 12.0;
         description = "Denied fuzzy hash";
     }
-    symbol "LOCAL_FUZZY_PROB" {
+    "LOCAL_FUZZY_PROB" {
         weight = 5.0;
         description = "Probable fuzzy hash";
     }
-    symbol "LOCAL_FUZZY_WHITE" {
+    "LOCAL_FUZZY_WHITE" {
         weight = -2.1;
         description = "Whitelisted fuzzy hash";
     }
