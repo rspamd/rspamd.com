@@ -50,7 +50,7 @@ Rspamd packages are provided for many [platforms]({{ site.url }}{{ site.baseurl 
 2. Bundle [LuaJIT](https://luajit.org) using 2.1 beta versions from the vendor. In some experiments, this proved to provide up to 30% improvement over the stable LuaJIT.
 3. Enable jemalloc
 4. Enable neural networks support (libfann before 1. 7, torch after 1.7)
-5. Support [Hyperscan](https://01.org/hyperscan)
+5. Support [Hyperscan](https://www.hyperscan.io/)
 
 Some of these options are not available on some older platforms (Debian wheezy, Ubuntu Precise or CentOS 6) due to limitations of software provided.
 
@@ -1251,7 +1251,7 @@ Please check the [following document]({{ site.url }}{{ site.baseurl }}/doc/confi
 
 ### What is faster between custom Lua rules and regular expressions
 
-Switching from C to Lua might be expensive. Hence, you should use regular expressions for simple checks where possible. If Rspamd is compiled with [Hyperscan](https://01.org/hyperscan) the cost of adding another regular expression is usually very cheap. In this case, you should avoid constructions that are not supported by Hyperscan: backtracking, lookbehind and some [others](http://01org.github.io/hyperscan/dev-reference/compilation.html#unsupported-constructs). On the other hand, Lua provides some unique functions that are not available by using of regular expressions. In this case, you should use Lua.
+Switching from C to Lua might be expensive. Hence, you should use regular expressions for simple checks where possible. If Rspamd is compiled with [Hyperscan](https://www.hyperscan.io/) the cost of adding another regular expression is usually very cheap. In this case, you should avoid constructions that are not supported by Hyperscan: backtracking, lookbehind and some [others](http://intel.github.io/hyperscan/dev-reference/compilation.html#unsupported-constructs). On the other hand, Lua provides some unique functions that are not available by using of regular expressions. In this case, you should use Lua.
 
 ## WebUI questions
 

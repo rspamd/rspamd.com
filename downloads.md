@@ -107,7 +107,7 @@ To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></
 
 To obtain your distributive's codename, you could use the command `lsb_release -s -c` from the package called `lsb-release`.
 
-For [Hyperscan](https://01.org/hyperscan/) and [LuaJIT](https://luajit.org) information see the [FAQ]({{ site.url }}{{ site.baseurl }}/doc/faq.html).
+For [Hyperscan](https://www.hyperscan.io/) and [LuaJIT](https://luajit.org) information see the [FAQ]({{ site.url }}{{ site.baseurl }}/doc/faq.html).
 
 For <a class="undecor" href="#experimentalSys2">experimental<sup>2</sup></a> branch replace `apt-stable` with just `apt`:
 
