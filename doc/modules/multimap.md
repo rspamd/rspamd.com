@@ -200,7 +200,7 @@ All maps with the exception of `ip` and `dnsbl` maps support `regexp` mode. In t
 # Comments are still enabled
 ```
 
-For performance considerations, use only expressions supported by [Hyperscan](http://01org.github.io/hyperscan/dev-reference/compilation.html#pattern-support) as this engine provides blazing performance at no additional cost. Currently, there is no way to distinguish what particular regexp was matched in case if multiple regexp were matched.
+For performance considerations, use only expressions supported by [Hyperscan](http://intel.github.io/hyperscan/dev-reference/compilation.html#pattern-support) as this engine provides blazing performance at no additional cost. Currently, there is no way to distinguish what particular regexp was matched in case if multiple regexp were matched.
 
 To enable regexp mode, you should set `regexp` option to `true`:
 
