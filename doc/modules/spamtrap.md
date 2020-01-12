@@ -51,7 +51,7 @@ action = "no action";
 score = 1.0;
 learn_fuzzy = true;
 learn_spam = true;
-map = file://$LOCAL_CONFDIR/maps.d/spamtrap.map;
+map = file://$LOCAL_CONFDIR/local.d/maps.d/spamtrap.map;
 
 enabled = true;
 ~~~
