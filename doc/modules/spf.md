@@ -43,11 +43,17 @@ spf {
 }
 ~~~
 
-Also, you can specify the IP addresses of external relays for checking the SPF Policy of the real sender.
+Also, you can specify the IP addresses of external relays for checking the SPF Policy of the real sender. You can do it by adding IP addresses to conf file (necessarily use an array) or by adding to `map`.
 
 ~~~ucl
 spf {
 	external_relay = "192.168.1.1"; # use IP address from a received header produced by this relay (using by attribute)
+}
+~~~
+
+~~~ucl
+spf {
+	external_relay = "/path/to/ip.map";
 }
 ~~~
 
