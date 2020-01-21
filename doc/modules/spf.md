@@ -32,7 +32,8 @@ length), maximum count of DNS requests per record, minimum TTL enforced for all 
 lookups and specify an IP addresses for which the SPF check will not be used.
 
 ~~~ucl
-spf {
+# local.d/spf.conf
+
 	spf_cache_size = 1k; # cache up to 1000 of the most recent SPF records
 	spf_cache_expire = 1d; # default max expire for an element in this cache
 	max_dns_nesting = 10; # maximum number of recursive DNS subrequests
@@ -40,15 +41,23 @@ spf {
 	min_cache_ttl = 5m; # minimum TTL enforced for all elements in SPF records
 	disable_ipv6 = false; # disable all IPv6 lookups
 	whitelist = "/path/to/some/file"; # whitelist IPs from checks
-}
 ~~~
 
-Also, you can specify the IP addresses of external relays for checking the SPF Policy of the real sender.
+You can do it by adding an IP address (or multiple addresses) to the configuration file directly or using an external map.
+Should you place the IP address or addresses in the configuration file directly then please remember to use an array of string
+representing the desired addresses even if you add a single IP address, e.g. ['192.168.1.1']. You can use networks in CIDR
+notation instead of IP addresses as well.
 
 ~~~ucl
-spf {
+# local.d/spf.conf
+
 	external_relay = "192.168.1.1"; # use IP address from a received header produced by this relay (using by attribute)
-}
+~~~
+
+~~~ucl
+# local.d/spf.conf
+
+	external_relay = "/path/to/ip.map";
 ~~~
 
 For example, in mail's header below, Rspamd will check SPF policy for IP 77.77.77.77, provided that IP 192.168.1.1 was
