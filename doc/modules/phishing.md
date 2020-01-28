@@ -95,41 +95,12 @@ phishing {
 
 There is also [phishtank](https://phishtank.com) support in rspamd since 1.3. Since 1.8 phishtank is enabled in stock configuration and queries phishtank.rspamd.com via DNS.
 
-On previous versions, you have to set up `phishtank_map`. This feed is quite large (about 50Mb) so you might want to setup some reverse proxy (e.g. nginx) to cache that data among rspamd instances:
-
-~~~nginx
-proxy_cache_path /data/nginx/cache levels=1:2 keys_zone=phish:10m;
-
-server {
-    listen 8080;
-    location / {
-        proxy_pass http://data.phishtank.com:80;
-        proxy_cache phish;
-        proxy_cache_lock on;
-        proxy_cache_valid 200 302 10m;
-    }
-}
-~~~
-
-
-To enable phishtank feed, you can edit `local.d/phishing.conf` file and add the following lines there:
-
-~~~ucl
-# Enable phishtank (default disabled)
-phishtank_enabled = true;
-# Where nginx is installed
-phishtank_map = "http://localhost:8080/data/online-valid.json";
-~~~
-
-Rspamd also provides local mirror of phishtank updated hourly. This mirror is compressed using `zstd` which is supported since 1.4. Compression helps to save both memory and bandwidth while it doesn't significantly affect the loading time. To use Rspamd local mirror, you can use the default configuration for 1.4:
+To disable phishtank feed, you can edit `local.d/phishing.conf` file and add the following lines there:
 
 ~~~ucl
 # local.d/phishing.conf
-phishtank_enabled = true;
-phishtank_map = "https://rspamd.com/phishtank/online-valid.json.zst";
+phishtank_enabled = false
 ~~~
-
-Please note that compressed maps are **NOT** supported prior to Rspamd `1.4`.
 
 ## Generic feed support
 
