@@ -68,6 +68,7 @@ You can use that line as `password` and `enable_password` values.
 * `/savemap` (priv)
 * `/scan`
 * `/check`
+* `/checkv2`
 * `/stat`
 * `/statreset` (priv)
 * `/counters`
