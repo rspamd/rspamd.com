@@ -873,7 +873,7 @@ settings {
 Just disable `greylisting` module by adding the following configuration:
 
 ~~~ucl
-# local.d/greylisting.conf
+# local.d/greylist.conf
 enabled = false;
 ~~~
 
