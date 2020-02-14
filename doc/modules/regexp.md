@@ -80,8 +80,9 @@ It can be either a single letter or a long type in curly braces (from Rspamd 1.3
 | `Q`  | `{raw_mime}`    | Text MIME part raw content (unmodified by Rspamd) |
 | `C`  | `{sa_body}`     | SpamAssassin `body` analogue (see body pattern test description in [SpamAssassin documentation](https://spamassassin.apache.org/full/3.4.x/doc/Mail_SpamAssassin_Conf.html#RULE-DEFINITIONS-AND-PRIVILEGED-SETTINGS)); if charset is not utf-8 Rspamd tries to convert text to utf-8 |
 | `D`  | `{sa_raw_body}` | SpamAssassin `rawbody` analogue (raw data inside text parts, base64/quoted-printable is decoded, but HTML tags and line breaks are preserved) |
-| `U`  | `{url}`         | URLs and email addresses extracted from the message body (in the same form as returned by [url:tostring()](../lua/rspamd_url.html#m6b648), i. e. email is represented as `mailto://user@domain`) |
+| `U`  | `{url}`         | URLs (before 2.4 also email addresses extracted from the message body, in the same form as returned by [url:tostring()](../lua/rspamd_url.html#m6b648)) |
 | `$`  | `{selector}`    | Strings returned by a [selector](../configuration/selectors.html#regular-expressions-selectors) (from 1.8) |
+|      | `{email}`       | Emails extracted from the message body (from 2.4) |
 |      | `{words}`       | Unicode normalized (to [NFKC](http://www.unicode.org/reports/tr15/#Norm_Forms)) and lowercased words extracted from the text (excluding URLs), subject and From displayed name |
 |      | `{raw_words}`   | The same words, but without normalization (converted to utf8 however) |
 |      | `{stem_words}`  | Unicode normalized, lowercased and [stemmed](https://en.wikipedia.org/wiki/Stemming) words extracted from the text (excluding URLs), subject and From displayed name |
