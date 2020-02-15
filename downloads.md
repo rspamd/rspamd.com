@@ -87,11 +87,10 @@ Or the same for the stable+asan:
 
 Rspamd supports the following .deb based distributives:
 
-- **Debian jessie** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Debian stretch** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Debian buster** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Debian sid** (only x86_64) Hyperscan and LuaJIT are enabled.
-- **Ubuntu xenial** (only x86_64) Hyperscan and LuaJIT are enabled. 
+- **Ubuntu xenial** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Ubuntu bionic** (only x86_64) Hyperscan and LuaJIT are enabled.
 
 
@@ -187,11 +186,11 @@ Rspamd has been ported to the following BSD like operating systems:
 - **OpenBSD**
 - **macOS** (using MacPorts)
 
-FreeBSD users can install Rspamd from [ports](http://www.freshports.org/mail/rspamd/) or use the experimental line of packages by [rspamd-devel](http://www.freshports.org/mail/rspamd-devel/) port.
+FreeBSD users can install Rspamd from [ports](https://www.freshports.org/mail/rspamd/) or use the experimental line of packages by [rspamd-devel](https://www.freshports.org/mail/rspamd-devel/) port.
 
-Users of NetBSD (and other systems with pkgsrc) can use [pkgsrc](http://pkgsrc.se/mail/rspamd).
+Users of NetBSD (and other systems with pkgsrc) can use [pkgsrc](https://pkgsrc.se/mail/rspamd).
 
-OpenBSD users can use [ports](http://openports.se/mail/rspamd).
+OpenBSD users can use [ports](https://openports.se/mail/rspamd).
 
 macOS users can install from [MacPorts](https://github.com/macports/macports-ports/blob/master/mail/rspamd/Portfile):
 ```
@@ -216,13 +215,13 @@ There is also a mirror of rspamd repository: <https://git.rspamd.com/vstakhov/rs
 Rspamd requires several 3-rd party software to build and run:
 
 * [openssl](https://www.openssl.org/) - cryptography and SSL/TLS Toolkit
-* [libevent](http://libevent.org/) - asynchronous event library
-* [glib2](http://library.gnome.org/devel/glib/) - common purposes library
-* [ragel](http://www.colm.net/open-source/ragel/) - state machine compiler. **Please be aware** that the experimental version of Ragel (namely, `7.0`) is **NOT compatible** with Rspamd. Since it is shipped with CentOS 7.0, there is no way to use Ragel from the packages and you need to build compatible Ragel (e.g. 6.8) manually from the source packages or from source code. Ragel is required to **build** Rspamd not to run it.
-* [LuaJIT](http://www.luajit.org/) - jit compiler for [lua](http://lua.org) programming language. Plain lua will work as well.
-* [cmake](http://www.cmake.org/) - build system used to configure rspamd
-* [sqlite3](http://sqlite.org) - embedded database used to store some data by rspamd
-* [libmagic](http://www.darwinsys.com/file/) - common library for detecting file types
+* [libevent](https://libevent.org/) - asynchronous event library
+* [glib2](https://developer.gnome.org/glib/) - common purposes library
+* [ragel](https://www.colm.net/open-source/ragel/) - state machine compiler. **Please be aware** that the experimental version of Ragel (namely, `7.0`) is **NOT compatible** with Rspamd. Since it is shipped with CentOS 7.0, there is no way to use Ragel from the packages and you need to build compatible Ragel (e.g. 6.8) manually from the source packages or from source code. Ragel is required to **build** Rspamd not to run it.
+* [LuaJIT](https://luajit.org/) - jit compiler for [lua](https://www.lua.org/) programming language. Plain lua will work as well.
+* [cmake](https://cmake.org/) - build system used to configure rspamd
+* [sqlite3](https://sqlite.org/) - embedded database used to store some data by rspamd
+* [libmagic](https://www.darwinsys.com/file/) - common library for detecting file types
 
 You can either install them from sources or (recommended) install using package manager of your system.
 
@@ -241,12 +240,11 @@ To build rspamd we recommend to create a separate build directory:
 	# make install
 
 Alternatively, you can create a distribution package and use it for build your own packages. Here is an example for
-[debian](http://debian.org) GNU Linux OS:
+[Debian](https://debian.org/) GNU Linux OS:
 
 	$ mkdir rspamd.build
 	$ cd rspamd.build
-	$ cmake ../rspamd
-	$ make dist
+	$ ./dist.sh
 	$ tar xvf rspamd-<rspamd_version>.tar.xz
 	$ cd rspamd-<rspamd_version>
 	$ debuild
