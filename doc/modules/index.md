@@ -19,7 +19,7 @@ configuration. If no `filters` attribute is defined, then all modules are disabl
 The default configuration enables all modules explicitly:
 
 ~~~ucl
-filters = "chartable,dkim,spf,surbl,regexp,fuzzy_check";
+filters = "chartable,dkim,surbl,regexp,fuzzy_check";
 ~~~
 
 Here is the list of available C modules:
@@ -27,7 +27,7 @@ Here is the list of available C modules:
 - [chartable](chartable.html): checks character sets of text parts in messages.
 - [dkim](dkim.html): performs DKIM signatures checks.
 - [fuzzy_check](fuzzy_check.html): checks a message's fuzzy hashes against public blacklists.
-- [spf](spf.html): checks SPF records for messages processed.
+- [spf](spf.html): checks SPF records for messages processed. Since rspamd 2.3, this C module has been removed and replaced by an equivalent Lua module.
 - [surbl](surbl.html): this module extracts URLs from messages and check them against
 public DNS black-lists to filter messages containing malicious URLs. Since Rspamd 2.0, this module has been removed and replaced by [rbl module](rbl.html). The existing configuration is automatically converted by Rspamd.
 - [regexp](regexp.html): the core module that allows to define regexp rules,
@@ -83,6 +83,7 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [reputation](reputation.html) - a plugin that manages reputation evaluation based on various rules.
 - [rspamd_update](rspamd_update.html) - load dynamic rules and other rspamd updates (requires configuration)
 - [spamassassin](spamassassin.html) - load spamassassin rules (requires configuration)
+- [spf.html](spf.html) - perform SPF checks
 - [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages. (requires configuration)
 - [whitelist](whitelist.html) - provides a flexible way to whitelist (or blacklist) messages based on SPF/DKIM/DMARC combinations
 - [url_redirector](url_redirector.html) - dereferences redirects (requires Redis configuration)
