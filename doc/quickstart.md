@@ -47,7 +47,7 @@ We assume that you are installing Postfix with your OS's package manager (e.g. `
     </a>
 <div id="main_cf" class="collapse collapse-block">
 <pre><code>
-# SSL setup (we assume the same certs for IMAP and SMTP here)
+# TLS setup (we assume the same certs for IMAP and SMTP here)
 smtpd_tls_cert_file = /etc/letsencrypt/live/your.domain/fullchain.pem
 smtpd_tls_key_file = /etc/letsencrypt/live/your.domain/privkey.pem
 smtpd_use_tls = yes
@@ -197,7 +197,7 @@ The download process is described in the [downloads page]({{ site.baseurl }}/dow
 
 ## Running Rspamd
 
-### Platforms with systemd (Arch, CentOS 7, Debian Jessie, Fedora, Ubuntu Xenial)
+### Platforms with systemd (Arch, CentOS 7, Debian, Fedora, Ubuntu)
 
 Packaging should start rspamd and configure it to run on startup on installation.
 
@@ -206,16 +206,6 @@ You can verify it's running as follows:
 ```
 systemctl status rspamd
 ```
-
-### Old Debian based systems (Ubuntu before xenial, Debian before Jessie)
-
-To enable run on startup:
-
-    update-rc.d rspamd defaults
-
-To start once:
-
-    /etc/init.d/rspamd start
 
 ### CentOS/RHEL 6
 
@@ -499,19 +489,15 @@ http {
                 proxy_set_header Host $http_host;
         }
         ssl on;
-        ssl_protocols TLSv1.2 TLSv1.1 TLSv1;
+        ssl_protocols TLSv1.2 TLSv1.3;
 
-        ssl_ciphers "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EDH+aRSA+AESGCM:EDH+aRSA+SHA256:EDH+aRSA:EECDH:!aNULL:!eNULL:!MEDIUM:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED";
+        ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305;
         ssl_prefer_server_ciphers on;
-        ssl_session_cache builtin;
-        ssl_session_timeout 1m;
+        ssl_session_cache shared:TLS:10m;
+        ssl_session_timeout 1d;
         ssl_stapling on;
         ssl_stapling_verify on;
         server_tokens off;
-        # Do not forget to generate custom dhparam using
-        # openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
-        ssl_dhparam /etc/nginx/dhparam.pem;
-        ssl_ecdh_curve prime256v1;
     }
 }
 {% endhighlight %}
@@ -600,7 +586,7 @@ Though Rspamd is free to use for any purpose many of the RBLs used in the defaul
 
 [DNSWL](https://www.dnswl.org/?page_id=9){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 100k queries per day
 
-[Mailspike](http://mailspike.net/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
+[Mailspike](http://mailspike.org/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
 
 [Rspamd URIBL](http://www.rspamd.com/feed-policies.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
 
