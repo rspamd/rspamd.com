@@ -56,7 +56,7 @@ Some of these options are not available on some older platforms (Debian wheezy, 
 
 All packages are signed and should also be downloaded using `https`. Debugging packages are also available (`rspamd-debuginfo` for RPM packages and `rspamd-dbg` for DEB ones).
 
-ASAN packages are built with minimum optimizations and include [Address Sanitizer](https://en.wikipedia.org/wiki/AddressSanitizer) to allow debugging issues. These packages are significanlty slower and are not recommended for normal production usage (however, they **could** be) but they might be essential to debug Rspamd issues.
+ASAN packages are built with minimum optimizations and include [Address Sanitizer](https://en.wikipedia.org/wiki/AddressSanitizer) to allow debugging issues. These packages are significantly slower and are not recommended for normal production usage (however, they **could** be) but they might be essential to debug Rspamd issues.
 
 ### Resolver setup
 
@@ -82,7 +82,7 @@ dns {
 }
 ~~~
 
-If you use large scale DNS system you might want to set up `hash` rotation algorithm. It will significantly increase cache hit rate and reduce number of recursed requests if you have more than one upstream resolver:
+If you use large scale DNS system you might want to set up `hash` rotation algorithm. It will significantly increase cache hit rate and reduce number of recursive queries if you have more than one upstream resolver:
 
 ~~~ucl
  # local.d/options.inc
@@ -196,7 +196,8 @@ export ASAN_OPTIONS="log_path=/tmp/rspamd-asan"
 Or add this to `systemctl edit rspamd` if using systemd:
 
 ```
-ASAN_OPTIONS="log_path=/tmp/rspamd-asan"
+[Service]
+Environment="ASAN_OPTIONS=log_path=/tmp/rspamd-asan"
 ```
 
 Then, if you find out that Rspamd has crashed, you might want to use both core file (backtrace from it) and `/tmp/rspamd-asan.<pid>` file (where `<pid>` is the PID of the crashed process) to report your issue.
