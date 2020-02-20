@@ -135,7 +135,7 @@ You can use obfuscated subjects to group messages with a same subject for exampl
 
 ### Extra columns
 
-You can also diversify the received data by adding an extra columns that differ from default.
+You can also extract additional data and add it to a set of extra columns. This feature is available from the version Rspamd 2.4 and Clickhouse 19.3.
 
 ~~~ucl
 # local.d/clickhouse.conf
