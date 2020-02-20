@@ -67,10 +67,14 @@ bind_socket = "*v4:11333"; # any ipv4 address
 bind_socket = "*v6:11333"; # any ipv6 address
 ~~~
 
-It is possible to use systemd sockets (but not recommended- particularly if one uses official packages or requires use of multiple sockets):
+It is possible to use systemd sockets as configured via a [socket unit file](https://www.freedesktop.org/software/systemd/man/systemd.socket.html) (but not recommended- particularly if one uses official packages or requires use of multiple sockets):
 
 ~~~ucl
-bind_socket = "systemd:0"; # the first socket passed by systemd through environment (named sockets aren't supported)
+# Use the first socket passed through a systemd .socket file.
+bind_socket = "systemd:0";
+# Starting with Rspamd 2.4, one can use named socket files too. If the systemd
+# FileDescriptorName= option is not specified, the socket unit name can be used.
+bind_socket = "systemd:rspamd.socket";
 ~~~
 
 For UNIX sockets, it is also possible to specify owner and mode using this syntax:
