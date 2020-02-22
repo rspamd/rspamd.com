@@ -249,11 +249,12 @@ Adds a header containing the scan results [if the message is NOT originated from
 
 ### x-rspamd-server (1.5.8+)
 
-Adds a header containing the name of the Rspamd server that checked out the message [if it is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention).
+Adds a header containing the local computer host name of the Rspamd server that checked out the message [if it is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention). Since Rspamd 2.4 the host name can be replaced with a user-defined string specified in the `hostname` setting.
 
 ~~~ucl
   header = 'X-Rspamd-Server';
   remove = 0;
+  hostname = nil; -- Get the local computer host name (2.4+)
 ~~~
 
 ### x-spamd-bar
