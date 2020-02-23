@@ -132,6 +132,29 @@ subject_privacy_length = 16;
 
 You can use obfuscated subjects to group messages with a same subject for example.
 
+
+### Extra columns
+
+You can also extract additional data and add it to a set of extra columns. This feature is available from the version Rspamd 2.4 and Clickhouse 19.3.
+
+~~~ucl
+# local.d/clickhouse.conf
+
+extra_columns = {
+        Mime_From = {
+                selector = "from('mime'):addr";
+                type = "String";
+                # this is the returning answer if the value is null 
+                default_value = "none";
+                comment = "Mime from column";
+        }
+        Mime_Rcpt = {
+                selector = "rcpts('mime'):addr";
+                type = "Array(String)";
+        }
+}
+~~~
+
 ## Clickhouse usage examples
 
 Clickhouse module is extremely useful to perform statistical researches for mail flows. For example, to find top sending domains for spam and ham:
@@ -223,3 +246,22 @@ LIMIT 10
 └──────────────────────────────────────┴─────────────────┴────────┘
 ~~~
 
+Using extra columns (see [Confuguration](https://rspamd.com/doc/modules/clickhouse.html#extra-columns))
+
+~~~
+SELECT
+    From,
+    Mime_From,
+    Mime_Rcpt
+FROM rspamd
+WHERE (Date = today())
+GROUP BY From
+ORDER BY TS From
+LIMIT 10
+
+┌─From─────────────────┬─Mime_From─────────────┬─────Mime_Rcpt─────────────┐
+│ example@example.com  │ example@example.com   │ ['test@example.com']      │
+│ test@test.com        │ hello@test.com        │ ['no@simple.test.com']    │
+...
+└──────────────────────┴───────────────────────┴───────────────────────────┘
+~~~
