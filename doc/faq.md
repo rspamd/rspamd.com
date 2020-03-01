@@ -340,6 +340,7 @@ Finally, we always prefer patches/pull requests to plain bug reports.
 To report bugs or suggest something about the documentation or the web site, please take a look at [this Github repo](https://github.com/vstakhov/rspamd.com).
 
 ### What is the difference between `rspamc` and `rspamadm`
+
 rspamadm is an administration tool that works with the **local** Rspamd daemon via a unix socket and performs management tasks. You can get help for this tool, and its options, by typing:
 
 ```
@@ -420,6 +421,10 @@ rspamadm configdump classifier
 
 Configuration snippets are usually asked if you want to report some issue found in Rspamd in case if you use non-standard configuration.
 
+### How to get the list of the enabled plugins
+
+You can use `rspamadm configdump -m` to check or `rspamadm configwizard` to check and probably configure some of the plugins.
+
 ### How to change score for some symbol
 
 Unfortunately, it is not an easy question. If you use [WebUI](../webui/) then it redefines all scores and actions thresholds. Once you set some symbol's score in WebUI it is almost impossible to change it by other ways (you can do it by changing/removing the file `$DBDIR/rspamd_dynamic` which is usually `/var/lib/rspamd_dynamic` or `/var/db/rspamd_dynamic` depending on your OS).
@@ -451,6 +456,8 @@ group "mygroup" {
 ~~~
 
 To redefine symbols for the existing groups, it is recommended to use a specific `local.d` or `override.d` file, for example, `local.d/rbl_group.conf` to add your custom RBLs. To get the full list of such files, you can take a look over the `groups.conf` file in the main Rspamd configuration directory (e.g. `/etc/rspamd/groups.conf`).
+
+You can check your new scores by using `rspamadm configdump -g` from version 2.5: this command shows all Rspamd groups, symbols and their scores. You can add flag `-j` for JSON output and use `jq` tool to operate with the output.
 
 ### Rspamd configuration nesting
 
@@ -577,6 +584,7 @@ metric "default" {
 and add this to the `rspamd.conf.local` (but not override).
 
 ### What are the local.d and override.d directories
+
 From Rspamd version 1.2 onwards, the default configuration provides two more ways to extend or redefine each configuration file shipped with Rspamd. Each section definition includes two files with different priorities:
 
 - `/etc/rspamd/local.d/<conf_file>` - included with priority `1` that allows you to redefine and extend the default rules; but `dynamic updates` or items redefined via the WebUI will have higher priority and can redefine the values included
@@ -821,6 +829,8 @@ group "test" {
 ```
 
 In this case, if `test1` and `test2` both match, their joint score won't be more than `15`.
+
+You can check your groups configuration by using `rspamadm configdump -g` from version 2.5: this command shows all Rspamd groups, symbols and their scores. You can add flag `-j` for JSON output and use `jq` tool to operate with the output.
 
 ### Why are some symbols missing in the metric configuration
 
