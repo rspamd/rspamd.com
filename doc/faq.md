@@ -49,8 +49,7 @@ Rspamd packages are provided for many [platforms]({{ site.url }}{{ site.baseurl 
 1. Enable `link time optimizations` where possible to improve the overall performance
 2. Bundle [LuaJIT](https://luajit.org) using 2.1 beta versions from the vendor. In some experiments, this proved to provide up to 30% improvement over the stable LuaJIT.
 3. Enable jemalloc
-4. Enable neural networks support (libfann before 1. 7, torch after 1.7)
-5. Support [Hyperscan](https://www.hyperscan.io/)
+4. Support [Hyperscan](https://www.hyperscan.io/)
 
 Some of these options are not available on some older platforms (Debian wheezy, Ubuntu Precise or CentOS 6) due to limitations of software provided.
 
@@ -60,7 +59,11 @@ ASAN packages are built with minimum optimizations and include [Address Sanitize
 
 ### Resolver setup
 
-DNS resolving is a very important part of the spam filtering since a lot of information is obtained from DNS lists, e.g. IP and URL blacklists, whitelists, reputation data and so on and so forth. Hence, Rspamd will be **totally** broken in case: it might even refuse to start. Furthermore, if you are using your provider's resolver or some public resolver you might be affected by blocking from the vast majority of DNS lists providers or even corrupted results. It is known that Rspamd is broken when your provider's DNS returns some IP address to redirect your browser to instead of the real response.
+DNS resolving is a very important part of the spam filtering since a lot of information is obtained from DNS lists, e.g. IP and URL blacklists, whitelists, reputation data and so on and so forth. Hence, Rspamd will be **totally** broken in case: it might even refuse to start. Furthermore, if you are using your provider's resolver or some public resolver you might be affected by blocking from the vast majority of DNS lists providers or even corrupted results. 
+
+Please bear in mind that Rspamd does NOT use the standard resolver libraries for performace and sanity considerations, so all resolvers configuration must be either static (in the normal `/etc/resolv.conf` or in `local.d/options.inc` for Rspamd specific resolvers) or Rspamd should be reloaded (or restarted) on any DNS resolvers change. Rspamd currently does not read `/etc/hosts` file as well.
+
+It is known that Rspamd is broken when your provider's DNS returns some IP address to redirect your browser to instead of the real response.
 
 Hence, it is **strongly** recommended to have your own recursive resolver when using Rspamd (or any other email related technology in fact). Our own recommended choice is to set up Unbound or, for the most advanced setups, the [Knot Resolver](https://www.knot-resolver.cz/). You can read about Unbound basic setup [here](https://wiki.archlinux.org/index.php/unbound).
 
@@ -69,7 +72,7 @@ Then you can either set your local resolver globally via `/etc/resolv.conf` or s
 ~~~ucl
  # local.d/options.inc
 dns {
-	 nameserver = ["127.0.0.1"];
+  nameserver = ["127.0.0.1"];
 }
 ~~~
 
@@ -78,7 +81,7 @@ or, if you want some backup as a last resort, you can use `master-slave` [rotati
 ~~~ucl
  # local.d/options.inc
 dns {
-	 nameserver = "master-slave:127.0.0.1,8.8.8.8";
+  nameserver = "master-slave:127.0.0.1,8.8.8.8";
 }
 ~~~
 
@@ -87,9 +90,12 @@ If you use large scale DNS system you might want to set up `hash` rotation algor
 ~~~ucl
  # local.d/options.inc
 dns {
-	 nameserver = "hash:10.0.0.1,10.1.0.1,10.3.0.1";
+  nameserver = "hash:10.0.0.1,10.1.0.1,10.3.0.1";
 }
 ~~~
+
+Rspamd uses consistent hashing and has some tolerance to the configuration changes.
+
 
 ### How to figure out why Rspamd process crashed
 
