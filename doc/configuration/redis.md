@@ -62,6 +62,8 @@ read_servers = "127.0.0.1,10.0.0.1";
 write_servers = "127.0.0.1";
 ~~~
 
+Please bear in mind that you should either use `servers` for both `read_servers` and `write_servers` or define `read_servers` and `write_servers` separately. So it is **either** `servers` or `read_servers`+`write_servers` **together**.
+
 It is also possible to redefine Redis options inside `redis` section for the specific module or modules:
 
 ~~~ucl
