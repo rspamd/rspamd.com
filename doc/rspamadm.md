@@ -10,23 +10,30 @@ The `rspamadm` command is a container for various utility functions.
 To see available commands we could invoke `rspamadm -l`:
 
 ~~~
-Rspamadm 1.5.1
+Rspamadm 2.5
 Usage: rspamadm [global_options] command [command_options]
 
 Available commands:
-  pw                 Manage rspamd passwords
-  keypair            Create encryption key pairs
-  configtest         Perform configuration file test
-  fuzzy_merge        Merge fuzzy databases
   configdump         Perform configuration file dump
-  control            Manage rspamd main control interface
+  configgraph        Produces graph of Rspamd includes
   confighelp         Shows help for configuration options
-  statconvert        Convert statistics from sqlite3 to redis
+  configtest         Perform configuration file test
+  configwizard       Perform guided configuration for Rspamd daemon
+  control            Manage rspamd main control interface
+  cookie             Produces cookies or message ids
+  corpustest         Create logs files from email corpus
+  dkim_keygen        Create dkim key pairs
+  dnstool            DNS tools provided by Rspamd
   fuzzyconvert       Convert fuzzy hashes from sqlite3 to redis
   grep               Search for patterns in rspamd logs
-  signtool           Sign and verify files tool
+  keypair            Manages keypairs for Rspamd
   lua                Run LUA interpreter
-  dkim_keygen        Create dkim key pairs
+  mime               Mime manipulations provided by Rspamd
+  pw                 Manage rspamd passwords
+  signtool           Sign and verify files tool
+  statconvert        Convert statistics from sqlite3 to redis
+  template           Apply jinja templates for strings/files
+  vault              Perform Hashicorp Vault management
 ~~~
 
 To see the help text for a command we can run `rspamadm [command-name] --help`.
@@ -49,10 +56,17 @@ Application Options:
 This command shows available options & configuration hints for core configuration options. Run simply as `rspamadm confighelp` it shows all options, run as `rspamadm confighelp [modulename]` or `rspamadm confighelp [modulename].[option]` it shows configuration options beneath that object, for example `rspamadm confighelp surbl.rule`.
 
 ~~~
-Application Options:
-  -j, --json        Output json
-  -c, --compact     Output compacted
-  -k, --keyword     Search by keyword
+Perform configuration file dump
+
+Usage: rspamadm configdump [-c <config_name> [-j --compact -m] [<path1> [<path2> ...]]]
+Where options are:
+
+-j: output plain json
+--compact: output compacted json
+-c: config file to test
+-m: show state of modules only
+-h: show help for dumped options
+--help: shows available options and commands
 ~~~
 
 ## Rspamadm configtest
