@@ -98,7 +98,7 @@ Supported parameters for the redis backend are:
 - `autolearn` (optional): see below for details
 - `per_user` (optional): enable per users statistics. See above
 - `statfile`: Define keys for spam and ham mails.
-- `learn_condition` (optional): Lua function for autoleraning as described below.
+- `learn_condition` (optional): Lua function for autolearning as described below.
  
 You are also recommended to use [`bayes_expiry` module](https://rspamd.com/doc/modules/bayes_expiry.html) to maintain your statistics database.
 
