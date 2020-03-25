@@ -542,11 +542,11 @@ WHITELIST_HELO_RCPT {
   action = "accept";
   rules {
     helo {
-      map = "file://etc/rspamd/maps.d/helo_smtp.map";
+      map = "${LOCAL_CONFDIR}/helo_smtp.map";
       selector = "helo";
     }
     rcpt = {
-      map = "file://etc/rspamd/maps.d/rcpt_internal_subdomains.map";
+      map = "${LOCAL_CONFDIR}/rcpt_internal_subdomains.map";
       selector = "rcpts:domain";
     }
   }
