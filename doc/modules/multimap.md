@@ -536,6 +536,22 @@ SYMBOL_OPTIONS_DBL {
   symbols = ["INTERESTING_DOMAIN"];
   map = "${LOCAL_CONFDIR}/dbl_redir_symbols.map";
 }
+WHITELIST_HELO_RCPT {
+  type = "combined";
+  prefilter = true;
+  action = "accept";
+  rules {
+    helo {
+      map = "file://etc/rspamd/maps.d/helo_smtp.map";
+      selector = "helo";
+    }
+    rcpt = {
+      map = "file://etc/rspamd/maps.d/rcpt_internal_subdomains.map";
+      selector = "rcpts:domain";
+    }
+  }
+  expression = "helo & rcpt"
+}
 ~~~
 
 Example adopted from [@kvaps](https://gist.github.com/kvaps/25507a87dc287e6a620e1eec2d60ebc1):
