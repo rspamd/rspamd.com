@@ -1,13 +1,13 @@
 ---
 layout: doc
-title: Feeds usage policy
+title: Data usage policy
 ---
 
-# Rspamd fuzzy feed and DNSBL usage policies
+# Rspamd fuzzy feed, DNSBL and site usage policies
 
 If you use Rspamd [fuzzy feeds](https://rspamd.com/doc/modules/fuzzy_check.html) and/or Rspamd URLs/Emails black lists then you need to understand the existing limits and whether you are qualifying for the free usage terms.
 
-We cover here both fuzzy storage feeds and DNS lists, specifically URLs and Emails black lists. In future that could be extended to other intelligence resources provided by `rspamd.com`.
+We cover here fuzzy storage feeds, DNS lists (specifically URLs and Emails black lists) and `rspamd.com` site usage for maps distribution. In future that could be extended to other intelligence resources provided by `rspamd.com`.
 
 ## Free usage policy
 
@@ -15,13 +15,21 @@ We provide infrastructure to collect spam messages data and algorithms to conver
 
 To qualify for free usage of the feeds you must satisfy the following conditions:
 
-1. Your use of the feeds data is **non-commercial**
+1. Your use of the data is **non-commercial**
 
-    **or**
+    **and**
 
 2. Your query volume is less than **500,000 queries per day**
 
-If you qualify (1) but still got blocked then please contact us by using our email address: <mailto:support@rspamd.com>
+If you qualify (1) and (2) but still got blocked then please contact us by using our email address: <mailto:support@rspamd.com>
+
+## Vendors policies
+
+Rspamd maps check are typically running quietly in the background. When servers are chosen they will typically remain in the configuration "forever". If the client traffic causes trouble for the server it is extremely difficult to mitigate if not carefully planned for in advance.
+
+For example, there was an [incident](https://www.reddit.com/r/synology/comments/f5jczp/mailplus_server_and_rspamdcom/) that caused troubles for both Rspamd project and the vendor's users.
+
+Hence, we are kindly asking to [contact us](mailto:support@rspamd.com) before embedding Rspamd in any sort of commercial or open source project. In this way, we could decide about the strategy to avoid issues with the embedded solution in future.
 
 ## Premium service
 
