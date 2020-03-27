@@ -22,7 +22,7 @@ Since Rspamd ships with its own rules it is a good idea to store your custom rul
 
 - Local rules in Lua should be stored in the file named `${CONFDIR}/rspamd.local.lua` where `${CONFDIR}` is the directory where your configuration files are placed (e.g. `/etc/rspamd`, or `/usr/local/etc/rspamd` for some systems)
 
-Lua local configuration can be used to both override and extend:
+Lua local configuration can be used to both override and extend, for example if the main lua file has the following line:
 
 `rspamd.lua`:
 
@@ -30,81 +30,11 @@ Lua local configuration can be used to both override and extend:
 config['regexp']['symbol'] = '/some_re/'
 ~~~
 
-`rspamd.local.lua`:
+then you can define additional rules in `rspamd.local.lua`:
 
 ~~~lua
 config['regexp']['symbol1'] = '/other_re/' -- add 'symbol1' key to the table
 config['regexp']['symbol'] = '/override_re/' -- replace regexp for 'symbol'
-~~~
-
-For configuration rules you can take a look at the following examples:
-
-`rspamd.conf`:
-
-~~~ucl
-var1 = "value1";
-
-section "name" {
-	var2 = "value2";
-}
-~~~
-
-`rspamd.conf.local`:
-
-~~~ucl
-var1 = "value2";
-
-section "name" {
-	var3 = "value3";
-}
-~~~
-
-Resulting config:
-
-~~~ucl
-var1 = "value1";
-var1 = "value2";
-
-section "name" {
-	var2 = "value2";
-}
-section "name" {
-	var3 = "value3";
-}
-~~~
-
-Override example:
-
-`rspamd.conf`:
-
-~~~ucl
-var1 = "value1";
-
-section "name" {
-	var2 = "value2";
-}
-~~~
-
-`rspamd.conf.override`:
-
-~~~ucl
-var1 = "value2";
-
-section "name" {
-	var3 = "value3";
-}
-~~~
-
-Resulting config:
-
-~~~ucl
-var1 = "value2";
-
-# Note that var2 is removed completely
-
-section "name" {
-	var3 = "value3";
-}
 ~~~
 
 For each individual configuration file shipped with Rspamd, there are two special includes:
@@ -200,6 +130,8 @@ rspamd_config.MY_LUA_SYMBOL = {
 }
 ~~~
 
+Please bear in mind that the scores you define directly from Lua have lower priority and are overriden by scores defined in the `groups.conf` file. WebUI defined scores have even higher priority.
+
 ## Regexp rules
 
 Regexp rules are executed by the `regexp` module of Rspamd. You can find a detailed description of the syntax in [the regexp module documentation]({{ site.url }}{{ site.baseurl }}/doc/modules/regexp.html)
@@ -209,7 +141,7 @@ Here are some hints to maximise performance of your regexp rules:
 * Prefer lightweight regexps, such as header or URL, to heavy ones, such as mime or body regexps (unless you are using Hyperscan)
 * If you need to match text in a message's content, prefer `mime` regexps as they are executed on text content only
 * If you need to match the whole messages, then you might want to use [hyperscan](https://hyperscan.io). It is normally included in the Rspamd packages, however, your OS might provide own packages without Hyperscan. Please consider reading [pattern support](http://intel.github.io/hyperscan/dev-reference/compilation.html#pattern-support) to avoid expensive PCRE fallback.
-* Avoid complex regexps, avoid backtracing, avoid negative groups `(?!)`, avoid capturing patterns (replace with `(?:)`), avoid potentially empty patterns, e.g. `/^.*$/`, especially when using hyperscan
+* Avoid complex regexps, avoid backtracing, avoid negative groups `(?!)`, avoid capturing patterns (replace with `(?:)`), avoid potentially empty patterns, e.g. `/^.*$/`, especially when using Hyperscan - all these constructions have to fallback to pcre increasing scan complexity
 
 Following these rules allows you to create fast and efficient rules. To add regexp rules you should use the `config` global table that is defined in any Lua file used by Rspamd:
 
@@ -236,7 +168,19 @@ Lua rules are more powerful than regexp ones but they are not as heavily optimiz
 
 ### Return values
 
-Each Lua rule can return `0`, or `false`, meaning that the rule has not matched, or true if the symbol should be inserted. In fact, you can return any positive or negative number which would be multiplied by the rule's static score, e.g. if the rule score is `1.2`, then when your function returns `1` the symbol will have a  score of `1.2`, and when your function returns `0.5` then the symbol will have a score of `0.6`. The common convention of the return values is to return **confidence factor** varying from `0` to `1.0`.
+Each Lua rule can return `0`, or `false`, meaning that the rule has not matched, or true if the symbol should be inserted. In fact, you can return any positive or negative number which would be multiplied by the rule's static score, e.g. if the rule score is `1.2`, then when your function returns `1` the symbol will have a  score of `1.2`, and when your function returns `0.5` then the symbol will have a score of `0.6`. The common convention of the return values is to return **confidence factor** varying from `0` to `1.0`. The remaining return values are treated as symbol's options. They can be either in a single table:
+
+~~~lua
+return true,1.0,{'option1', 'option2'}
+~~~
+
+or as a list of return values:
+
+~~~lua
+return true,1.0,'option1','option2'
+~~~
+
+There is no difference in these notations. Tables are usually more convenient if you form list of options during the rule progressing.
 
 ### Rule conditions
 
@@ -363,6 +307,7 @@ Rspamd rules fall under three categories:
 1. Pre-filters - run before other rules
 2. Filters - run normally
 3. Post-filters - run after all checks
+4. Idempotent filters - performs statistical checks and are NOT allowed to change scan result in any way
 
 The most common type of rules are generic filters. Each filter is basically a callback that is executed by Rspamd at some time, along with an optional symbol name associated with this callback. In general, there are three options to register symbols:
 
@@ -385,8 +330,6 @@ rspamd_config:register_symbol{
   --priority = 2, -- useful for postfilters and prefilters to define order of execution
 }
 ~~~
-
-`nominal_weight` is used to define priority and the initial score multiplier. It should usually be `1.0` for normal symbols and `-1.0` for symbols with negative scores that should be executed before other symbols. Here is an example of registering one callback and a couple of virtual symbols used in the [DMARC]({{ site.url }}{{ site.baseurl }}/doc/modules/dmarc.html) module:
 
 ~~~lua
 local id = rspamd_config:register_symbol({
