@@ -3,27 +3,14 @@ layout: home
 title: Rspamd spam filtering system
 ---
 
-<!--
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;">News: Rspamd 1.9.3 has been released</h3>
-				<span class="date"><small>2019-05-13</small></span>
-				<p style="margin-bottom: 0px; margin-top: 5px">The next stable release with some new features and fixes.</p>
-   </div>
-   <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://rspamd.com/announce/2019/05/13/rspamd-1.9.3.html" style="margin-top: 10px;">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
-	</div>
-</div>
--->
-
-<div class="row news_row" style="position: relative;">
-		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;">News: Rspamd 2.4 has been released</h3>
-				<span class="date"><small>2020-02-26</small></span>
+				<h3 style="margin: 0px;">News: Rspamd 2.5 has been released</h3>
+				<span class="date"><small>2020-04-01</small></span>
 				<p style="margin-bottom: 0px; margin-top: 5px">New stable release is now available.</p>
    </div>
    <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://rspamd.com/announce/2020/02/26/rspamd-2.4.html" style="margin-top: 10px;">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
+				<a class="btn btn-primary pull-right" href="https://rspamd.com/announce/2020/04/01/rspamd-2.5.html" style="margin-top: 10px;">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
 	</div>
 </div>
 
