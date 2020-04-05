@@ -21,13 +21,13 @@ This guide describes the main steps to get and start working with Rspamd. In par
 
 ## Alternative guides (3rd party)
 
-* [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/){:target="&#95;blank"} - a good example of all-in-one tutorial about how to setup your own mail server
-* [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://www.c0ffee.net/blog/mail-server-guide){:target="&#95;blank"} - similar to the previous guide but uses a different technologies stack
+* [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/){:target="&#95;blank"} - a good example of all-in-one tutorial about how to setup your own mail server. Please bear in mind that the advice of adding `level = error` to /etc/rspamd/local.d/logging.inc is not correct. You should use the default `info` in the most of the cases or `silent` if you merely want important information to be logged.
+* [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://www.c0ffee.net/blog/mail-server-guide){:target="&#95;blank"} - similar to the previous guide but uses a different technologies stack. Here, you should ignore an advice about `url_tag` module.
 * [An alternative introduction to rspamd configuration](https://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/){:target="&#95;blank"}
 
 ## Preparation steps
 
-First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. In this guide, we describe the setup of the [Postfix MTA](http://www.postfix.org/){:target="&#95;blank"}. However, Rspamd can work with other MTA software - you can find details in the [integration document]({{ site.baseurl }}/doc/integration.html).
+First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. In this guide, we describe the setup of the [Postfix MTA](http://www.postfix.org/){:target="&#95;blank"}. However, Rspamd can work with other MTA software - you can find details in the [integration document]({{ site.baseurl }}/doc/integration.html). Exim MTA has a very limited support of Rspamd so it is not recommended to run Exim in conjunction with Rspamd.
 
 You should also consider to setup your own [local  DNS resolver]({{ site.baseurl }}/doc/faq.html#resolver-setup).
 
@@ -644,23 +644,30 @@ Rspamadm is a new utility that is intended to manage rspamd directly. It comes w
 
 ~~~
 % rspamadm help
-Rspamadm 1.5.0
+Rspamadm 2.6
 Usage: rspamadm [global_options] command [command_options]
 
 Available commands:
-pw                 Manage rspamd passwords
-keypair            Create encryption key pairs
-configtest         Perform configuration file test
-fuzzy_merge        Merge fuzzy databases
-configdump         Perform configuration file dump
-control            Manage rspamd main control interface
-confighelp         Shows help for configuration options
-statconvert        Convert statistics from sqlite3 to redis
-fuzzyconvert       Convert statistics from sqlite3 to redis
-grep               Search for patterns in rspamd logs
-signtool           Sign and verify files tool
-lua                Run LUA interpreter
-dkim_keygen        Create dkim key pairs
+  configdump         Perform configuration file dump
+  configgraph        Produces graph of Rspamd includes
+  confighelp         Shows help for configuration options
+  configtest         Perform configuration file test
+  configwizard       Perform guided configuration for Rspamd daemon
+  control            Manage rspamd main control interface
+  cookie             Produces cookies or message ids
+  corpustest         Create logs files from email corpus
+  dkim_keygen        Create dkim key pairs
+  dnstool            DNS tools provided by Rspamd
+  fuzzyconvert       Convert fuzzy hashes from sqlite3 to redis
+  grep               Search for patterns in rspamd logs
+  keypair            Manages keypairs for Rspamd
+  lua                Run LUA interpreter
+  mime               Mime manipulations provided by Rspamd
+  pw                 Manage rspamd passwords
+  signtool           Sign and verify files tool
+  statconvert        Convert statistics from sqlite3 to redis
+  template           Apply jinja templates for strings/files
+  vault              Perform Hashicorp Vault management
 ~~~
 
 For example, it is possible to get help for a specific configuration option by typing something like
