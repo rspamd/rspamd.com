@@ -16,3 +16,9 @@ chartable {
   threshold = 0.3;
 }
 ~~~
+
+If you see too many false-positives for the R_MIXED_CHARSET symbol (eg. for multilingual or Slavic emails) you can disable it in `/etc/rspamd/local.d/chartable.conf`:
+
+~~~ucl
+enabled = false;
+~~~
