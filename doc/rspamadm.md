@@ -191,12 +191,7 @@ Application Options:
 
 ## Rspamadm statconvert
 
-This is a command for converting statistics from SQLite to Redis. Typical invocation to convert spam/ham databases and learn cache is shown below:
-
-~~~
-rspamadm statconvert -d /var/lib/rspamd/bayes.spam.sqlite -h 127.0.0.1 -s BAYES_SPAM
-rspamadm statconvert -d /var/lib/rspamd/bayes.ham.sqlite -h 127.0.0.1 -s BAYES_HAM -c /var/lib/rspamd/learn_cache.sqlite
-~~~
+This is a command for converting statistics from SQLite to Redis. A typical invocation to convert spam/ham databases and learn cache can be found in the [FAQ](https://rspamd.com/doc/faq.html#which-backend-should-i-use-for-statistics).
 
 ~~~
 Application Options:
