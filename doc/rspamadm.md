@@ -40,7 +40,7 @@ To see the help text for a command we can run `rspamadm [command-name] --help`.
 
 ## Rspamadm configdump
 
-This command shows the effective configuration of rspamd after configuration files are merged. Usually you would just run `rspamadm configdump` or `rspamadm configdump [modulename]` or `rspamadm configdump [modulename].[option]` to show part of configuration.
+This command shows the effective configuration of rspamd after configuration files are merged. Usually you would just run `rspamadm configdump` or `rspamadm configdump [modulename]` or `rspamadm configdump [options] [modulename]` to show part of configuration.
 
 ~~~
 Application Options:
@@ -49,25 +49,14 @@ Application Options:
   -c, --config            Config file to test
   -h, --show-help         Show help as comments for each option
   -s, --show-comments     Show saved comments from the configuration file
+  -m, --modules-state     Show modules state only
+  -g, --groups            Show symbols groups only
+  -T, --skip-template     Do not apply Jinja templates
 ~~~
 
 ## Rspamadm confighelp
 
 This command shows available options & configuration hints for core configuration options. Run simply as `rspamadm confighelp` it shows all options, run as `rspamadm confighelp [modulename]` or `rspamadm confighelp [modulename].[option]` it shows configuration options beneath that object, for example `rspamadm confighelp surbl.rule`.
-
-~~~
-Perform configuration file dump
-
-Usage: rspamadm configdump [-c <config_name> [-j --compact -m] [<path1> [<path2> ...]]]
-Where options are:
-
--j: output plain json
---compact: output compacted json
--c: config file to test
--m: show state of modules only
--h: show help for dumped options
---help: shows available options and commands
-~~~
 
 ## Rspamadm configtest
 
@@ -75,9 +64,10 @@ This command tests that the configuration file is syntactically valid and can be
 
 ~~~
 Application Options:
-  -q, --quiet      Suppress output
-  -c, --config     Config file to test
-  -s, --strict     Stop on any error in config
+  -q, --quiet             Suppress output
+  -c, --config            Config file to test
+  -s, --strict            Stop on any error in config
+  -T, --skip-template     Do not apply Jinja templates
 ~~~
 
 ## Rspamadm control
@@ -114,6 +104,7 @@ Application Options:
   -s, --selector     Use the specified selector
   -k, --privkey      Save private key in the specified file
   -b, --bits         Set key length to N bits (1024 by default)
+  -t, --type         Key type: rsa or ed25519 (rsa by default)
 ~~~
 
 ## Rspamadm fuzzyconvert
@@ -127,17 +118,6 @@ Application Options:
   -h, --host         Output redis ip (in format ip:port)
   -D, --dbname       Database in redis (should be numeric)
   -p, --password     Password to connect to redis
-~~~
-
-## Rspamadm fuzzy_merge
-
-Merges fuzzy databases in SQLite format. Typical invocation would be `rspamadm fuzzy_merge -s [source.db.file] -d [destination.db.file]`.
-
-~~~
-Application Options:
-  -s, --source          Source for merge (can be repeated)
-  -d, --destination     Destination db
-  -q, --quiet           Suppress output
 ~~~
 
 ## Rspamadm grep
@@ -166,11 +146,12 @@ The `rspamadm lua` command provides a Lua REPL and interpreter with access to th
 ~~~
 Application Options:
   -s, --script           Load specified scripts
-  -p, --path             Add specified paths to lua paths
+  -P, --path             Add specified paths to lua paths
   -H, --history-file     Load history from the specified file
   -m, --max-history      Store this number of history entries
   -S, --serve            Serve http lua server
   -b, --batch            Batch execution mode
+  -e, --exec             Execute specified script
   -a, --args             Arguments to pass to Lua
 ~~~
 
@@ -219,11 +200,15 @@ rspamadm statconvert -d /var/lib/rspamd/bayes.ham.sqlite -h 127.0.0.1 -s BAYES_H
 
 ~~~
 Application Options:
-  -d, --database     Input sqlite
-  -c, --cache        Input learn cache
-  -h, --host         Output redis ip (in format ip:port)
-  -s, --symbol       Symbol in redis (e.g. BAYES_SPAM)
-  -D, --dbname       Database in redis (should be numeric)
-  -p, --password     Password to connect to redis
-  -r, --reset        Reset previous data instead of appending values
+  -c, --config             Config file to read data from
+  -r, --reset              Reset previous data instead of appending values
+  -e, --expire             Set expiration in seconds (can be fractional)
+  --symbol-spam            Symbol for spam (e.g. BAYES_SPAM)
+  --symbol-ham             Symbol for ham (e.g. BAYES_HAM)
+  --spam-db                Input spam file (sqlite3)
+  --ham-db                 Input ham file (sqlite3)
+  --cache                  Input learn cache
+  -h, --redis-host         Output redis ip (in format ip:port)
+  -p, --redis-password     Password to connect to redis
+  -d, --redis-db           Redis database (should be numeric)
 ~~~
