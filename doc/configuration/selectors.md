@@ -182,7 +182,7 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 | `rcpts` | 1.8+ | Get MIME or SMTP rcpts (e.g. `rcpts('smtp')` or `rcpts('mime')`, uses any type by default)
 | `received` | 1.8+ | Get list of received headers. If no arguments specified, returns list of tables. Otherwise, selects a specific element, e.g. `by_hostname`
 | `request_header` | 1.8+ | Get specific HTTP request header. The first argument must be header name.
-| `symbol` | 2.6+ | Get symbol with the name that is expected as first argument. Returns the symbol table (like task:get_header())
+| `symbol` | 2.6+ | Get symbol with the name that is expected as first argument. Returns the symbol table (like task:get_symbol())
 | `time` | 1.8+ | Get task timestamp. The first argument is type: <ul><li>`connect`: connection timestamp (default)</li><li>`message`: timestamp as defined by `Date` header</li></ul>The second argument is optional time format, see [os.date](http://pgl.yoyo.org/luai/i/os.date) description
 | `to` | 1.8+ | Get principal recipient
 | `uid` | 2.6+ | Get ID of the task being processed
