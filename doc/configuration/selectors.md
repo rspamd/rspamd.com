@@ -176,12 +176,16 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 | `ip` | 1.8+ | Get source IP address
 | `languages` | 1.9+ | Get languages met in a message
 | `list` | 2.0+ | Returns a list of values from its arguments or an empty list
+| `messageid` | 2.6+ | Get message ID
 | `pool_var` | 1.8+ | Get specific pool var. The first argument must be variable name, the second argument is optional and defines the type (string by default)
+| `queueid` | 2.6+ | Get queue ID
 | `rcpts` | 1.8+ | Get MIME or SMTP rcpts (e.g. `rcpts('smtp')` or `rcpts('mime')`, uses any type by default)
 | `received` | 1.8+ | Get list of received headers. If no arguments specified, returns list of tables. Otherwise, selects a specific element, e.g. `by_hostname`
 | `request_header` | 1.8+ | Get specific HTTP request header. The first argument must be header name.
+| `symbol` | 2.6+ | Get symbol with the name that is expected as first argument. Returns the symbol table (like task:get_header())
 | `time` | 1.8+ | Get task timestamp. The first argument is type: <ul><li>`connect`: connection timestamp (default)</li><li>`message`: timestamp as defined by `Date` header</li></ul>The second argument is optional time format, see [os.date](http://pgl.yoyo.org/luai/i/os.date) description
 | `to` | 1.8+ | Get principal recipient
+| `uid` | 2.6+ | Get ID of the task being processed
 | `urls` | 1.8+ | Get list of all urls. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_tld`
 | `user` | 1.8+ | Get authenticated user name
 
@@ -210,6 +214,7 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 | `sort` | 2.0+ | Sort strings lexicographically
 | `substring` | 1.8+ | Extracts substring. Arguments are equal to lua [string.sub](http://pgl.yoyo.org/luai/i/string.sub)
 | `take_n` | 1.8+ | Returns the n first elements
+| `to_ascii` | 2.6+ | Returns the string with all non-ascii bytes replaced with the character given as second argument or `?`
 | `uniq` | 2.0+ | Returns a list of unique elements (using a hash table - no order preserved!)
 
 ### Maps in transformations

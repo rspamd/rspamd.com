@@ -24,6 +24,8 @@ Only one of `honor_action` or `require_action` should be set on a given rule.
 
 [Composite expressions]({{ site.url }}{{ site.baseurl }}/doc/configuration/composites.html#composite-expressions) can be used for `expression`.
 
+[Selectors](../configuration/selectors.html) can be used to generate dynamic `message`. The selector expression must be enclosed in `${}`.
+
 ~~~ucl
 # Rules are defined in the rules {} block
 rules {
@@ -44,6 +46,13 @@ rules {
     # message setting sets SMTP message returned by mailer
     message = "Rejected due to suspicion of virus";
   }
+
+  REJECT_MIME_BAD { 
+    action = "reject";
+    expression = "MIME_BAD";
+    # message can contain selector expressions enclosed in ${}
+    message = "(support-id: ${queueid}) Your mail was rejected because it contains BANNED ATTACHMENTS. Please check https://www.example.com/${languages.first}/allowed-attachments.html for further details!"
+  } 
 
   DCC_BULK {
     action = "rewrite subject";
