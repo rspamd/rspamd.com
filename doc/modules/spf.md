@@ -4,7 +4,7 @@ title: SPF module
 ---
 # SPF module
 
-SPF module performs checks of the sender's [SPF](http://www.openspf.org/) policy.
+SPF module performs checks of the sender's [SPF](http://www.open-spf.org/) policy.
 Many mail providers uses SPF records to define which hosts are eligible to send email
 for this specific domain. In fact, there are many possibilities to create and use
 SPF records, however, all they check merely the sender's domain and the sender's IP.
