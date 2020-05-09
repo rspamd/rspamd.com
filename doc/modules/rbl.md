@@ -393,6 +393,59 @@ Here are new composition rules:
 
     sub.example.com -> [.example.com] -> sub.example.com
     sub1.sub2.example.co.uk -> [.example.co.uk] -> sub2.example.co.uk
+    
+### Specific URL composition rules
+
+From Rspamd 2.5, there is also support for a custom composition rules per RBL rules. This is provided by `lua_urls_compose` library. Here is a basic explanation of the composition rules used:
+
+```lua
+-- First one is the input hostname, the second is the expected results
+cases = {
+	{'example.com', 'example.com'},
+	{'baz.example.com', 'baz.example.com'},
+	{'3.baz.example.com', 'baz.example.com'},
+	{'bar.example.com', 'example.com'},
+	{'foo.example.com', 'foo.example.com'},
+	{'3.foo.example.com', '3.foo.example.com'},
+}
+-- Just a domain means domain + 1 level
+-- *.domain means the full hostname if the last part matches
+-- !domain means exclusion
+-- !*.domain means the same in fact :)
+-- More rules can be added easily...
+local excl_rules1 = {
+	'example.com',
+	'*.foo.example.com',
+	'!bar.example.com'
+}
+```
+
+To define a specific map for these rules one can use the following syntax
+
+~~~ucl
+# local.d/rbl.conf
+rules {
+  EXAMPLE_RBL = {
+      suffix = "example.url.bl.com";
+      url_compose_map = "${CONFDIR}/maps.d/url_compose_map.list";
+      dkim = true;
+      emails = true;
+      emails_domainonly = true;
+      urls = true;
+      ignore_defaults = true;
+  }
+}
+~~~
+
+Where in maps you can use something like this:
+
+```
+*.dirty.sanchez.com
+!not.dirty.sanchez.com
+41.black.sanchez.com
+```
+
+So it will check 5 hostname components for all urls in `dirty.sanchez.com` (e.g. `sub.some.dirty.sanchez.com` will be transformed to just `some.dirty.sanchez.com`) but not for `not.dirty.sanchez.com` where the normal tld rules will apply (e.g. `some.not.dirty.sanchez.com` -> `sanchez.com`), and for `41.black.sanchez.com` all 5 components will be checked, e.g. `something.41.black.sanchez.com`.
 
 ### DNS composition
 
