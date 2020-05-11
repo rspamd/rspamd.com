@@ -119,7 +119,7 @@ For further information please refer to the [Exim specification](http://www.exim
 
 Sendmail can use rspamd via milter and configuration is just like for postfix. sendmail configuration could be like:
 
-	MAIL_FILTER(`rspamd', `S=inet:localhost:11332, F=T')
+	MAIL_FILTER(`rspamd', `S=inet:11332@localhost, F=T')
 	define(`confINPUT_MAIL_FILTERS', `rspamd')
 
 Then compile m4 to cf in the usual way.
