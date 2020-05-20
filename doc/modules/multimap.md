@@ -60,7 +60,7 @@ Optional map configuration attributes:
 * `prefilter` - defines if the map is used in [prefilter mode](#pre-filter-maps)
 * `action` - for prefilter maps defines action set by map match
 * `regexp` - set to `true` if your map contain [regular expressions](#regexp-maps)
-* `symbols` - array of symbols that this map can insert (for key-value pairs), [learn more](#multiple-symbols-maps). Please bear in mind, that if you define this attribute, your map must have entries in form `key<spaces>value` to match a specific symbol.
+* `symbols` - array of symbols that this map can insert (for key-value pairs), [learn more](#multiple-symbol-maps). Please bear in mind, that if you define this attribute, your map must have entries in form `key<spaces>value` to match a specific symbol.
 * `score` - score of the symbol (can be redefined in the `metric` section)
 * `description` - map description
 * `message` - message returned to MTA on prefilter reject action being triggered
