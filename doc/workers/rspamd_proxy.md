@@ -20,9 +20,23 @@ Unix domain sockets as described in the
 [upstreams documentation]({{ site.baseurl }}/doc/configuration/upstream.html).
 If the port number is omitted, port 11333 is assumed.
 
+Refer to `rspamadm confighelp workers.rspamd_proxy` for a full list of options.
+
+## Default configuration
+
+The most widely useful feature of the proxy worker is its ability to speak Milter protocol and the default configuration was built with this in mind. By default, the proxy worker is enabled & listening on `localhost:11332` in `milter` mode with `localhost` configured as an upstream (refer to `$CONFDIR/worker-proxy.inc`).
+
+Hence users who require Milter protocol support in their installations are provided with such out-the-box.
+
+Users who do not require Milter support can generally use normal workers directly & [disable]({{ site.baseurl }}/doc/workers/#common-worker-options) the proxy worker to save resources.
+
 ## Milter support
 
-From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introducing of this feature also finally obsoletes the [Rmilter](https://rspamd.com/rmilter/) project in honor of the new integration method. Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
+From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introduction of this feature also finally obsoletes the [Rmilter](https://rspamd.com/rmilter/) project in honor of the new integration method.
+
+Milter mode is enabled by the `milter` boolean worker option - when enabled, proxy speaks milter protocol only. If it is disabled, the proxy is usable with Rspamd's native [HTTP protocol]({{ site.baseurl }}/doc/architecture/protocol.html) and the legacy protocol used by Exim.
+
+Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
 
 * Proxy mode (for large instances) with a dedicated scan layer
 * Self-scan mode (for small instances)
