@@ -17,7 +17,7 @@ Rspamd controller worker supports the following options:
 
 * `password`: password for read-only commands
 * `enable_password`: password for write commands
-* `secure_ip`: list or map with IP addresses that are treated as `secure` so **all** commands are allowed from these IPs **without** passwords
+* `secure_ip`: list or map with IP addresses that are treated as `secure` so **all** commands are allowed from these IPs **without** passwords (if a reverse proxy sets an `X-Forwarded-For` header, both the proxy and actual client IP must be contained in `secure_ip`)
 * `static_dir`: directory where interface static files are placed (usually `${WWWDIR}`)
 * `stats_path`: path where controller save persistent stats about rspamd (such as scanned messages count)
 
