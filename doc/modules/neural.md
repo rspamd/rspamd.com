@@ -85,7 +85,7 @@ From version 1.7, Rspamd supports multiple neural networks defined in the config
 rules {
   "LONG" {
     train {
-      max_trains = 5000;
+      max_train = 5000;
       max_usages = 200;
       max_iterations = 25;
       learning_rate = 0.01,
@@ -96,7 +96,7 @@ rules {
   }
   "SHORT" {
     train {
-      max_trains = 100;
+      max_train = 100;
       max_usages = 2;
       max_iterations = 25;
       learning_rate = 0.01,
