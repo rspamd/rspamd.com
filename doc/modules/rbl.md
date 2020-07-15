@@ -38,7 +38,7 @@ rbls {
 
 The default settings define the ways in which the RBLs are used unless overridden in an RBL-specific subsection.
 
-Defaults may be set for the following parameters (default values used if these are not set are shown in brackets - note that these may be redefined in the default config):
+Defaults may be set for the following parameters (default values used if these are not set are shown in brackets - note that these may be redefined in the default config; if `ignore_defaults` is set for a specific RBL then *everything* will be default `false` for that RBL):
 
 - `default_ipv4`: use this RBL to test IPv4 addresses (`true` by default).
 - `default_ipv6`: use this RBL to test IPv6 addresses (`false` by default).
