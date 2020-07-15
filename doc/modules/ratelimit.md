@@ -34,8 +34,6 @@ the value of this option is 'postmaster, mailer-daemon'. Supported entries are:
 - `whitelisted_ip` - a map of ip addresses or networks whitelisted
 - `whitelisted_user` - a map of usernames which are excluded from user ratelimits
 - `expiry` - maximum lifetime for any limit bucket (2 days by default)
-- `max_rcpt` - do not apply ratelimit if it contains more than this value of recipients (5 by default). This
-option allows to avoid too many work for setting buckets if there are a lot of recipients in a message).
 - `ham_factor_rate` - multiplier for rate when a ham message arrives (default: 1.01) 
 - `spam_factor_rate` - multiplier for rate when a spam message arrives (default: 0.99)
 - `ham_factor_burst` - multiplier for burst when a ham message arrives (default: 1.02)
