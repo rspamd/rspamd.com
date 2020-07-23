@@ -37,12 +37,11 @@ title: Downloads
 <div markdown="1">
 Supported distributions:
 
-- **CentOS 6** (x86_64), requires EPEL (till 1.9.4, 2.0+ are not supported)
 - **CentOS 7** (x86_64), requires EPEL. Hyperscan and LuaJIT are enabled.
 - **CentOS 8** (x86_64), requires EPEL. Hyperscan and LuaJIT are enabled.
 
 Please note that `CentOS` rpm packages **requires** [EPEL](https://fedoraproject.org/wiki/EPEL) to be installed in your system as many dependencies are missing from the base CentOS repositories. You can learn how to install EPEL from their site: <https://fedoraproject.org/wiki/EPEL>.
-`Fedora` packages do not require EPEL or any other third-party repository.
+`Fedora` packages do not require EPEL or any other third-party repository. Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-debug` package and could be safely installed even in the production environment.
 
 To install rspamd repo, please download the corresponding repository file and the signing key (both repo and all packages are signed with my GPG key). You could use the following commands to install rspamd <a class="undecor" href="#stableSys1">stable<sup>1</sup></a> RPM repository:
 
@@ -92,6 +91,7 @@ Rspamd supports the following .deb based distributives:
 - **Debian sid** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Ubuntu xenial** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Ubuntu bionic** (only x86_64) Hyperscan and LuaJIT are enabled.
+- **Ubuntu focal** (since 2.5) Same as above.
 
 
 To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
@@ -129,6 +129,7 @@ For <a class="undecor" href="#asanSys2">ASAN<sup>2</sup></a> branch replace `apt
     apt-get --no-install-recommends install rspamd
 
 
+Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-dbg` package and could be safely installed even in the production environment.
 Check [quick start]({{ site.baseurl }}/doc/quickstart.html#rspamd-installation) for further steps.
 
 ### Debian `standard` repos notes
@@ -215,13 +216,16 @@ There is also a mirror of rspamd repository: <https://git.rspamd.com/vstakhov/rs
 Rspamd requires several 3-rd party software to build and run:
 
 * [openssl](https://www.openssl.org/) - cryptography and SSL/TLS Toolkit
-* [libevent](https://libevent.org/) - asynchronous event library
 * [glib2](https://developer.gnome.org/glib/) - common purposes library
 * [ragel](https://www.colm.net/open-source/ragel/) - state machine compiler. **Please be aware** that the experimental version of Ragel (namely, `7.0`) is **NOT compatible** with Rspamd. Since it is shipped with CentOS 7.0, there is no way to use Ragel from the packages and you need to build compatible Ragel (e.g. 6.8) manually from the source packages or from source code. Ragel is required to **build** Rspamd not to run it.
 * [LuaJIT](https://luajit.org/) - jit compiler for [lua](https://www.lua.org/) programming language. Plain lua will work as well.
 * [cmake](https://cmake.org/) - build system used to configure rspamd
 * [sqlite3](https://sqlite.org/) - embedded database used to store some data by rspamd
 * [libmagic](https://www.darwinsys.com/file/) - common library for detecting file types
+* [libicu](http://site.icu-project.org/) - unicode library
+* [PCRE](https://www.pcre.org/) - regular expressions library
+* [Hyperscan](https://hyperscan.io) - optional regexp performance boost library
+* [zlib](https://zlib.net/) - compression library
 
 You can either install them from sources or (recommended) install using package manager of your system.
 
@@ -235,7 +239,7 @@ To build rspamd we recommend to create a separate build directory:
 
 	$ mkdir rspamd.build
 	$ cd rspamd.build
-	$ cmake ../rspamd
+	$ cmake ../rspamd -DENABLE_HYPERSCAN=ON -DENABLE_LUAJIT=ON -DCMAKE_BUILD_TYPE=RelWithDebuginfo
 	$ make
 	# make install
 
