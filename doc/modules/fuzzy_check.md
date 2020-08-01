@@ -91,24 +91,12 @@ fuzzy_check {
 A fuzzy `rule` is defined as a set of `rule` definitions. Each `rule` must have a `servers`
 list to check or train (teach), and a set of flags and optional parameters. 
 
-The `servers` parameter can have the round-robin parameter to alternately try each entry, e.g. using a list:
-```
-        servers = "round-robin:fuzzy1.rspamd.com:11335,fuzzy2.rspamd.com:11335";
-```
-
-Available keywords for use in the `servers` parameter include: 
-- `hash:`: use a stable hashing algorithm to distribute values
-- `master-slave:`: always prefer upstream with a higher priority unless it is unavailable
-- `round-robin:`: balance upstreams one by one, by selecting according to their weight
-- `random:`: choose each entry in a list randomly
-- `sequential:`: use each entry in a list sequentially
-
-
+The `servers` parameter defines [upstream](https://rspamd.com/doc/configuration/upstream.html) object and can be flexibly tuned to the desired rotation/sharding algorighm. Sharding is perfomed based on the hash value itself.
 
 Usable parameters include:
 
-- `algorithm`: rule hashing algo; one of: `fasthash` (or just `fast`), `mumhash`, `siphash` (or `old`) or `xxhash`
-- `encryption_key`: Base32 value public key to access this rule
+- `algorithm`: rule hashing algo; one of: `fasthash` (or just `fast`), `mumhash`, `siphash` (or `old`) or `xxhash`. The default value is `mumhash` currently.
+- `encryption_key`: Base32 value public key to perform wire encryption
 - `fuzzy_map`: Map of SYMBOL -> data for flags configuration
 - `fuzzy_key`: Base32 value for the hashing key (for private storages).
 - `learn_condition`: An Lua script that returns a boolean function to check whether this task
@@ -190,7 +178,6 @@ score 1.0 (that will then be multiplied by the `metric` value's weight).
 For example, if the `weight` of the hash is `100` and the `max_score` is set to `20`,
 then the rule will be added with the weight of `1`. If `max_score` is set to `200`,
 then the rule will be added with the weight likely `0.2` (calculated via hyperbolic tangent).
-
 
 
 
