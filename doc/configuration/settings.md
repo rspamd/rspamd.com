@@ -55,7 +55,7 @@ Let's assume that we have the following settings in the configuration that have 
 dkim {
 	id = "dkim";
 	apply {
-		enable_groups = ["dkim"];
+		groups_enabled = ["dkim"];
 	}
 }
 ~~~
