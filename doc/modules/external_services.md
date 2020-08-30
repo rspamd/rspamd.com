@@ -252,6 +252,9 @@ With having the flags and all functions exposed as individual threats you can no
 
 oletools {
   ...
+
+  extended = true;
+
   patterns {
     # catch Macro, AutoExec, Suspicious and Hex Strings
     BAD_MACRO_MYFLAGS = '^MAS.H...$';
@@ -510,7 +513,7 @@ virustotal {
   # Change if you use private mirror or another API
   #url = 'https://www.virustotal.com/vtapi/v2/file';
   # Minimum required to get scored
-  #minimum_engines = 3; 
+  #minimum_engines = 3;
   # After this number we set max score
   #full_score_engines = 7;
 }
