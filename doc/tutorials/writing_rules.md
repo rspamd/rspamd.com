@@ -5,7 +5,7 @@ title: Writing rules for Rspamd
 
 # Writing Rspamd rules
 
-In this tutorial, we describe how to create new rules for Rspamd - both Lua and regexp rules.
+In this tutorial, we describe how to create new rules for Rspamd - both using Lua and regular expressions.
 
 <div id="toc" markdown="1">
   * this unordered seed list will be replaced by toc as unordered list
@@ -20,53 +20,33 @@ Rules are the essential part of a spam filtering system and Rspamd ships with so
 
 Since Rspamd ships with its own rules it is a good idea to store your custom rules and configuration in separate files to avoid clashing with the default rules which might change from version to version. There are some possibilities to achieve this:
 
-- Local rules in Lua should be stored in the file named `${CONFDIR}/rspamd.local.lua` where `${CONFDIR}` is the directory where your configuration files are placed (e.g. `/etc/rspamd`, or `/usr/local/etc/rspamd` for some systems)
+- Local rules, both Lua and regular expressions, should be stored in the file named `${CONFDIR}/rspamd.local.lua` where `${CONFDIR}` is the directory where your configuration files are placed (e.g. `/etc/rspamd`, or `/usr/local/etc/rspamd` for some systems)
 
 Lua local configuration can be used to both override and extend, for example if the main lua file has the following line:
 
 `rspamd.lua`:
 
 ~~~lua
+-- Regular expression rule defined in the main Rspamd configuration
 config['regexp']['symbol'] = '/some_re/'
 ~~~
 
 then you can define additional rules in `rspamd.local.lua`:
 
 ~~~lua
+-- Regular expression rules defined in a local configuration
 config['regexp']['symbol1'] = '/other_re/' -- add 'symbol1' key to the table
 config['regexp']['symbol'] = '/override_re/' -- replace regexp for 'symbol'
 ~~~
 
-For each individual configuration file shipped with Rspamd, there are two special includes:
+Please bear in mind that this method is different comparing to the ordinary configuration files that use a different (UCL based) syntax and usually have two special includes:
 
     .include(try=true,priority=1) "$CONFDIR/local.d/config.conf"
     .include(try=true,priority=1) "$CONFDIR/override.d/config.conf"
 
-Therefore, you can either extend (using local.d) or ultimately override (using override.d) any settings in the Rspamd configuration.
+In this case you can either enrich/rewrite (using local.d) or ultimately override (using override.d) settings in the Rspamd configuration.
 
-For example, let's override some default symbols shipped with Rspamd. To do that we can create and edit `etc/rspamd/local.d/metrics.conf`:
-
-    symbol "BLAH" {
-        score = 20.0;
-    }
-
-We can also use an override file. For example, let's redefine actions and set a more restrictive `reject` score. To do this, we create `/etc/rspamd/override.d/actions.conf` with the following content:
-
-~~~ucl
-# override.d/actions.conf
-reject = 150;
-add_header = 6;
-greylist = 4;
-~~~
-
-You can also disable some action completely:
-
-~~~ucl
-# override.d/actions.conf
-reject = null;
-~~~
-
-This will set the other actions (e.g. `add_header` and `greylist`) to their default values.
+For example, we can override some default symbols shipped with Rspamd. To do that we can create and edit `etc/rspamd/local.d/metrics.conf`:
 
 ## Writing rules
 
@@ -76,6 +56,8 @@ There are two types of rules that are normally defined by Rspamd:
 - `Regexp` rules: regular expressions and combinations of regular expressions to match specific patterns
 
 Lua rules are useful for some complex tasks: check DNS, query Redis or HTTP, examine some task-specific details. Regexp rules are useful since they are heavily optimized by Rspamd (especially when `Hyperscan` is enabled) and allow matching custom patterns in headers, URLs, text parts and even the entire message body.
+
+There is another option called [selectors](https://rspamd.com/doc/configuration/selectors.html) that allows to combine data extraction and data transformation routines to skip custom Lua code writing. Selectors framework is also useful to reuse custom extraction/transformation routines in different plugins and even in the regular expressions constructions.
 
 ### Rule weights
 
@@ -138,10 +120,8 @@ Regexp rules are executed by the `regexp` module of Rspamd. You can find a detai
 
 Here are some hints to maximise performance of your regexp rules:
 
-* Prefer lightweight regexps, such as header or URL, to heavy ones, such as mime or body regexps (unless you are using Hyperscan)
-* If you need to match text in a message's content, prefer `mime` regexps as they are executed on text content only
-* If you need to match the whole messages, then you might want to use [hyperscan](https://hyperscan.io). It is normally included in the Rspamd packages, however, your OS might provide own packages without Hyperscan. Please consider reading [pattern support](http://intel.github.io/hyperscan/dev-reference/compilation.html#pattern-support) to avoid expensive PCRE fallback.
-* Avoid complex regexps, avoid backtracing, avoid negative groups `(?!)`, avoid capturing patterns (replace with `(?:)`), avoid potentially empty patterns, e.g. `/^.*$/`, especially when using Hyperscan - all these constructions have to fallback to pcre increasing scan complexity
+* Prefer lightweight regexps, such as header or URL, to heavy ones, such as mime or body regexps (unless you are using Hyperscan, which is default for all Intel based platforms)
+* Avoid complex regexps, avoid backtracing (e.g. `/*+a?`), avoid lookahead/lookbehind, avoid potentially empty patterns, avoid large boundary constraints `a{1000,100000}`, especially when using Hyperscan - all these constructions have to fallback to PCRE increasing scan complexity, but even PCRE can have exponential grow for some of the listed cases
 
 Following these rules allows you to create fast and efficient rules. To add regexp rules you should use the `config` global table that is defined in any Lua file used by Rspamd:
 
