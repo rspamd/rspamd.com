@@ -183,3 +183,36 @@ config.regexp.BLA = {
 ~~~
 
 Please bear in mind that you **cannot** use asynchronous functions (including those with [coroutines](../lua/sync_async.html)) in these Lua snippets as Rspamd will not wait for them to be finished. The only way to use such functions in Regexp expressions is to create a dedicated rule that performs async stuff and then register dependency for regexp symbol: `rspamd_config:register_dependency('RE_SYMBOL', 'ASYNC_SYMBOL')` and then call `task:has_symbol('ASYNC_SYMBOL')` in Lua function defined in Regexp expression.
+
+## Regexp prefilters
+
+Rspamd supports lua filters for regular expressions from version 2.6. The idea is to allow fast pre-filter with regular expressions and slow Lua postprocessing for the cases where this processing is needed. Here is how it's used in bitcoin library:
+
+~~~lua
+config.regexp['RE_POSTPROCESS'] = {
+  description = 'Example of postprocessing for regular expressions',
+  re = string.format('(%s) || (%s)', re1, re2),
+  re_conditions = {
+    [re1] = function(task, txt, s, e)
+      if e - s <= 2 then
+        return false
+      end
+
+      if check_re1(task, txt:sub(s + 1, e)) then
+        return true
+      end
+    end,
+    [re2] = function(task, txt, s, e)
+      if e - s <= 2 then
+        return false
+      end
+
+      if check_re2(task, txt:sub(s + 1, e)) then
+        return true
+      end
+    end,
+  },
+}
+~~~
+
+This allows to add accelerated rules that are enabled merely if some relatively rare regular expression matches. In this particular case this feature is used to do BTC wallet verification and validation.
