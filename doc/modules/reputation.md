@@ -69,6 +69,33 @@ rules {
 }
 ~~~
 
+You also need to **define the scores** for symbols added by this module:
+
+~~~ucl
+# local.d/groups.conf
+group "reputation" {
+    symbols = {
+        "IP_REPUTATION_HAM" {
+        weight = 1.0;
+        }
+        "IP_REPUTATION_SPAM" {
+            weight = 4.0;
+        }
+
+        "DKIM_REPUTATION" {
+            weight = 1.0;
+        }
+
+        "SPF_REPUTATION_HAM" {
+            weight = 1.0;
+        }
+        "SPF_REPUTATION_SPAM" {
+            weight = 2.0;
+        }
+    }
+}
+~~~
+
 The picture below demonstrates how reputation tokens are being processed:
 
 <center><img class="img-responsive" src="{{ site.baseurl }}/img/reputation1.png" width="50%"></center>
