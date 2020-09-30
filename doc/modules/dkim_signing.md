@@ -404,7 +404,7 @@ For DKIM signing, Rspamd uses the following default list:
     (o)to:(o)cc:(x)mime-version:(x)content-type:(x)content-transfer-encoding:
     resent-to:resent-cc:resent-from:resent-sender:resent-message-id:
     (x)in-reply-to:(x)references:list-id:list-help:list-owner:list-unsubscribe:
-    list-subscribe:list-post:(x)openpgp:(x)autocrypt
+    list-unsubscribe-post:list-subscribe:list-post:(x)openpgp:(x)autocrypt
 		
 Here is the summary of the list above:
 
@@ -432,6 +432,7 @@ Here is the summary of the list above:
 | `List-Help`      | Do not oversign                |
 | `List-Owner`      | Do not oversign                |
 | `List-Unsubscribe`      | Do not oversign                |
+| `List-Unsubscribe-Post`      | Do not oversign                |
 | `List-Subscribe`      | Do not oversign                |
 | `List-Post`      | Do not oversign                |
 | `Openpgp`      | Conditionally oversign                |
