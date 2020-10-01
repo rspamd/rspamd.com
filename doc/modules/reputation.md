@@ -76,7 +76,7 @@ You also need to **define the scores** for symbols added by this module:
 group "reputation" {
     symbols = {
         "IP_REPUTATION_HAM" {
-        weight = 1.0;
+            weight = 1.0;
         }
         "IP_REPUTATION_SPAM" {
             weight = 4.0;
