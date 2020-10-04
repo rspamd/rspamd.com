@@ -734,7 +734,7 @@ You might also want to enable the following modules:
  servers = "redis:6384";
 timeout = 25s; # Sometimes ANNs are very large
 train {
-  max_train = 1k; # Number ham/spam samples needed to start train
+  max_trains = 1k; # Number ham/spam samples needed to start train
   max_usages = 20; # Number of learn iterations while ANN data is valid
   spam_score = 8; # Score to learn spam
   ham_score = -2; # Score to learn ham

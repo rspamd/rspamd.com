@@ -59,7 +59,7 @@ By default, you can use the old configuration style, e.g.
 servers = "127.0.0.1:6379";
 
 train {
-  max_train = 1k; # Number ham/spam samples needed to start train
+  max_trains = 1k; # Number ham/spam samples needed to start train
   max_usages = 20; # Number of learn iterations while ANN data is valid
   learning_rate = 0.01; # Rate of learning
   max_iterations = 25; # Maximum iterations of learning (better preciseness but also lower speed of learning)
@@ -68,7 +68,7 @@ train {
 ann_expire = 2d; # For how long ANN should be preserved in Redis
 ~~~
 
-In this snippet, we define a simple network that automatically learns ham and spam on messages with corresponding actions. Upon creation, it is allowed to do additional trains for 20 more times. Rspamd trains a neural network when `(ham_samples + spam_samples) >= max_train`. It also automatically maintains equal proportions of spam and ham samples to provide fair training. If you run somehow small email system, then you can increase `max_usages` to preserve trained networks for longer time (you might also adjust `ann_expire` accordingly).
+In this snippet, we define a simple network that automatically learns ham and spam on messages with corresponding actions. Upon creation, it is allowed to do additional trains for 20 more times. Rspamd trains a neural network when `(ham_samples + spam_samples) >= max_trains`. It also automatically maintains equal proportions of spam and ham samples to provide fair training. If you run somehow small email system, then you can increase `max_usages` to preserve trained networks for longer time (you might also adjust `ann_expire` accordingly).
 
 Rspamd can use the same neural network from multiple processes that could run on multiple hosts across the network. It is guaranteed that processes with different configuration symbols enabled will use different neural networks (each network has a hash of all symbols defined as a suffix for Redis keys). Furthermore, there is a guarantee that all learning will be done in a single process that atomically updates neural network data after learning.
 
@@ -78,7 +78,7 @@ Rspamd also automatically uses settings id to select different networks for diff
 
 ### Multiple networks
 
-From version 1.7, Rspamd supports multiple neural networks defined in the configuration. It could be useful for long/short neural networks setup where one network has a lot of `max_usages` and quite large `max_train`, while short one reacts quickly to newly detected patterns. However, in practice, this setup is usually not really more effective so it is recommended just to use a single network.
+From version 1.7, Rspamd supports multiple neural networks defined in the configuration. It could be useful for long/short neural networks setup where one network has a lot of `max_usages` and quite large `max_trains`, while short one reacts quickly to newly detected patterns. However, in practice, this setup is usually not really more effective so it is recommended just to use a single network.
 
 ~~~ucl
 # local.d/neural.conf
