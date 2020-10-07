@@ -15,7 +15,9 @@ This document describes incompatible changes introduced in recent Rspamd version
 
 ## Migration to Rspamd 2.6
 
-It is necessary to clear the browser cache and restart the browser for the GUI to work properly after upgrading to 2.6
+It is necessary to clear the browser cache and restart the browser for the GUI to work properly after upgrading to 2.6.
+
+`Neural networks` plugin training data will also be lost as the internal structure of the NN has been reworked in an incompatible way. Further training should continue as usually.
 
 
 ## Migration to Rspamd 2.0
