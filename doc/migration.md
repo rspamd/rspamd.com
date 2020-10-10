@@ -19,6 +19,8 @@ It is necessary to clear the browser cache and restart the browser for the GUI t
 
 `Neural networks` plugin training data will also be lost as the internal structure of the NN has been reworked in an incompatible way. Further training should continue as usually.
 
+If you observe complains about `SENDER_REP_HAM` and `SENDER_REP_SPAM` symbols in Rspamd logs, then you might need to define the corresponding scores for these symbols (see more in the documentation: https://rspamd.com/doc/modules/reputation.html). This issue will be fixed in future Rspamd releases.
+
 
 ## Migration to Rspamd 2.0
 
