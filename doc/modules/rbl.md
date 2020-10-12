@@ -41,9 +41,9 @@ The default settings define the ways in which the RBLs are used unless overridde
 Defaults may be set for the following parameters (default values used if these are not set are shown in brackets - note that these may be redefined in the default config; if `ignore_defaults` is set for a specific RBL then *everything* will be default `false` for that RBL):
 
 - `default_ipv4`: use this RBL to test IPv4 addresses (`true` by default).
-- `default_ipv6`: use this RBL to test IPv6 addresses (`false` by default).
-- `default_received`: use this RBL to test IPv4/IPv6 addresses found in `Received` headers. The RBL should also be configured to check one/both of IPv4/IPv6 addresses (`true` by default).
-- `default_from`: use this RBL to test IPv4/IPv6 addresses of message senders. The RBL should also be configured to check one/both of IPv4/IPv6 addresses (`false` by default).
+- `default_ipv6`: use this RBL to test IPv6 addresses (`true` by default).
+- `default_received`: use this RBL to test IPv4/IPv6 addresses found in `Received` headers. The RBL should also be configured to check one/both of IPv4/IPv6 addresses (`false` by default).
+- `default_from`: use this RBL to test IPv4/IPv6 addresses of message senders. The RBL should also be configured to check one/both of IPv4/IPv6 addresses (`true` by default).
 - `default_rdns`: use this RBL to test reverse DNS names of message senders (hostnames passed to Rspamd should have been validated with a forward lookup, particularly if this is to be used to provide whitelisting) (`false` by default).
 - `default_helo`: use this RBL to test parameters sent for HELO/EHLO at SMTP time (`false` by default).
 - `default_dkim`: use this RBL to test domains found in validated DKIM signatures (`false` by default).
