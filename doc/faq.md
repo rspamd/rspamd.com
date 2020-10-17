@@ -1042,7 +1042,7 @@ redis-cli [-p 6379] --scan --pattern 'rn_SHORT_*' | xargs redis-cli unlink
 
 ### How to run Rspamd using Unix sockets
 
-From https://github.com/vstakhov/rspamd/issues/1905
+From [https://github.com/vstakhov/rspamd/issues/1905](https://github.com/vstakhov/rspamd/issues/1905)
 
 
 **Redis**
