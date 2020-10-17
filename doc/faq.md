@@ -729,6 +729,12 @@ In the example above `fallback+file://${CONFDIR}/2tld.inc` will be used when the
 Bear in mind that (1) and (3) can only be distinguished by making an array like `map = ["192.168.1.1/24"]`
 Historically just for radix map (ipnetwork ones) you could also use `map = "192.168.1.1/24"` but it is not recommended.
 
+### How is maps.rspamd.com maintained
+
+The Rspamd source code refers to some online maps from `maps.rspamd.com`.
+
+These are maintained in [https://github.com/rspamd/maps](https://github.com/rspamd/maps).
+
 ### What can be in the maps
 
 Maps can have the following objects:
@@ -1042,7 +1048,7 @@ redis-cli [-p 6379] --scan --pattern 'rn_SHORT_*' | xargs redis-cli unlink
 
 ### How to run Rspamd using Unix sockets
 
-From https://github.com/vstakhov/rspamd/issues/1905
+From [https://github.com/vstakhov/rspamd/issues/1905](https://github.com/vstakhov/rspamd/issues/1905)
 
 
 **Redis**
