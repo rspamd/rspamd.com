@@ -328,7 +328,7 @@ To use razor with Rspamd you have to install a wrapper daemon: [razor](https://g
 razor communicates with Rspamd over TCP and calls razor to get the report of a scanned mail. Until now we are just detecting the spam or ham decision and not evaluating the detailed reports
 
 ~~~ucl
-# local.d/external_services.confF
+# local.d/external_services.conf
 
 razor {
   ...
