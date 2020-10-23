@@ -128,7 +128,7 @@ This module was tested with these icap implementations:
 *   Kaspersky Web Traffic Security 6.0
 *   Trend Micro InterScan Web Security Virtual Appliance (IWSVA) (Rspamd 2.0)
 *   F-Secure Internet Gatekeeper (Rspamd 2.0)
-*   ESET File Security for Linux 7.0
+*   ESET File Security for Linux 7.0 (starting from version 7.2 the product blocks rspamd's user agent, more about this [here](https://github.com/rspamd/rspamd/issues/3495))
 
 Please report other working or non-working icap implementations.
 
@@ -328,7 +328,7 @@ To use razor with Rspamd you have to install a wrapper daemon: [razor](https://g
 razor communicates with Rspamd over TCP and calls razor to get the report of a scanned mail. Until now we are just detecting the spam or ham decision and not evaluating the detailed reports
 
 ~~~ucl
-# local.d/external_services.conf
+# local.d/external_services.confF
 
 razor {
   ...
