@@ -128,7 +128,7 @@ This module was tested with these icap implementations:
 *   Kaspersky Web Traffic Security 6.0
 *   Trend Micro InterScan Web Security Virtual Appliance (IWSVA) (Rspamd 2.0)
 *   F-Secure Internet Gatekeeper (Rspamd 2.0)
-*   ESET File Security for Linux 7.0
+*   ESET File Security for Linux 7.0 (starting from version 7.2 the product blocks rspamd's user agent, more about this [here](https://github.com/rspamd/rspamd/issues/3495))
 
 Please report other working or non-working icap implementations.
 
