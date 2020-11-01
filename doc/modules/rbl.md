@@ -289,13 +289,13 @@ whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
 Each list should have a `suffix` parameter that defines the list itself and optionally for some replies processing logic
 either by `returnbits` or `returncodes` sections.
 
-Since some URL lists do not accept `IP` addresses, it is also possible to disable sending of URLs with IP address in the host to such lists. That could be done by specifying `noip = true` option:
+Since some URL lists do not accept `IP` addresses, it is also possible to disable sending of URLs with IP address in the host to such lists. That could be done by specifying `no_ip = true` option:
 
 ~~~ucl
 "DBL" {
     rbl = "dbl.spamhaus.org";
     # Do not check numeric URLs
-    noip = true;
+    no_ip = true;
 }
 ~~~
 
@@ -333,7 +333,7 @@ By default, Rspamd checks each rule sanity by querying of `facebook.com` domain.
 ~~~ucl
     "HOSTKARMA_URIBL" {
       rbl = "hostkarma.junkemailfilter.com";
-      noip = true;
+      no_ip = true;
       enabled = false;
       
       returncodes = {
