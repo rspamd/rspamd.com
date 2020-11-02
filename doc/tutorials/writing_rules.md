@@ -542,7 +542,7 @@ Rules in Rspamd are checked in the following order:
 
 1. **Connection filters** (from 2.7): are executed just after a connection has been established (should not rely on any body content)
 2. **Message processing**: a stage where Rspamd performs text extraction, htm parsing, language detection etc
-1. **Pre-filters**: are checked before all normal filters and are executed in order from high priority to low priority ones (e.g. a prefilter with priority 10 is executed before a postfilter with priority 1)
+1. **Pre-filters**: are checked before all normal filters and are executed in order from high priority to low priority ones (e.g. a prefilter with priority 10 is executed before a prefilter with priority 1)
 2. **All symbols***: normal rules that form dependency graph on each other by calling `rspamd_config:add_dependency(from, to)`, otherwise the order of execution is not defined
 3. **Statistics**: checked only when all normal symbols are checked
 4. **Composites**: combine symbols to adjust the final results; pass 1
