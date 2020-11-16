@@ -1171,7 +1171,7 @@ Then transfer it to the new server and restore it to a binary RRD:
 
 You have multiple options here. First of all, if you need to define a whitelist based on `SPF`, `DKIM` or `DMARC` policies, then you should look at the [whitelist module]({{ site.url }}{{ site.baseurl }}/doc/modules/whitelist.html). Otherwise, there is a [multimap module]({{ site.url }}{{ site.baseurl }}/doc/modules/multimap.html) that implements different types of checks to add symbols according to list matches or to set pre-actions which allow you to reject or permit certain messages.
 
-Another option is to disable spam filtering for some senders or recipients based on [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html). You can specify `want_spam = yes` and Rspamd will skip messages that satisfy a particular rule's conditions.
+Another option is to disable spam filtering for some senders or recipients based on [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html). You can specify `symbols_enabled = [];` and Rspamd will skip all filtering rules that satisfy a particular settings conditions. Using of a more powerful `want_spam = yes` can be [confusing](https://github.com/rspamd/rspamd/issues/3552).
 
 ### How to blacklist messages based on extension
 
@@ -1193,6 +1193,7 @@ filename_blacklist {
   map = "/${LOCAL_CONFDIR}/filename.map";
   symbol = "FILENAME_BLACKLISTED";
   action = "reject";
+  # skip_archives = true; # Uncomment if filenames in archives should be excluded from this check
 }
 ```
 
