@@ -96,6 +96,8 @@ Each regexp also supports the following modifiers:
 * `s` - dotall regexp - treat string as single line. That is, change `.` to match any character whatsoever, even a newline, which normally it would not match. Used together, as `/ms`, they let the `.` match any character whatsoever, while still allowing `^` and `$` to match, respectively, just after and just before newlines within the string.
 * `O` - do not optimize regexp (rspamd optimizes regexps by default)
 * `r` - use non-utf8 regular expressions (raw bytes). This is default `true` if `raw_mode` is set to `true` in the options section.
+* `A` - return and process all matches (useful for Lua prefilters)
+* `L` - match left part of regexp (useful for Lua prefilters in conjunction with Hyperscan)
 
 ## Internal functions
 
