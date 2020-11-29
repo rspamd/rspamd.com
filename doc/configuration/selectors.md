@@ -42,7 +42,35 @@ Afterwards, these values can be used in various plugins:
 * [`ratelimit`](../modules/ratelimit.html) - rate bucket description with `selector` field
 * [`reputation`](../modules/reputation.html) - generic selector rules
 * [`regexp`](../modules/regexp.html) - regular expressions based on selector's data
+* [`rbl`](../modules/rbl.html) - allows selectors in data queries
 * [`clustering`] - TBD
+
+Here is an example of Rspamd multimap rule that uses selectors to block bad Sendgrid senders using [Invaluement SPBL](https://www.invaluement.com/serviceproviderdnsbl/):
+
+~~~ucl
+# local.d/multimap.conf
+SENDGRID_INVALUEMENT_BAD_SENDER {
+  type = "combined";
+  rules {
+    sendgrid_cust_tld {
+      map = "https://www.invaluement.com/spdata/sendgrid-envelopefromdomain-dnsbl.txt";
+      selector = 'from("smtp","orig"):domain.get_tld';
+    }
+    sendgrid_static_tld {
+      map = ["sendgrid.net"];
+      selector = 'from("smtp","orig"):domain.get_tld';
+    }
+    abused_id {
+      map = "https://www.invaluement.com/spdata/sendgrid-id-dnsbl.txt";
+      selector = 'from("smtp","orig").regexp("/^<?bounces\+(\d+)\-[^@]+@/i").last';
+    }
+  }
+  expression = "(sendgrid_cust_tld | sendgrid_static_tld) & abused_id";
+  score = 8.0;
+}
+~~~
+
+As you can see, this rule uses both maps expressions and selectors to get and transform data for querying in maps.
 
 ## Selectors syntax
 
@@ -75,7 +103,7 @@ Some data extractors return complex objects (or list of such a complex objects):
 
 There are two possibilities to convert these complex objects to a simple ones (strings or list of strings): implicit conversion and using of the method/table key extraction. 
 
-1. For objects, implicit conversion is just calling of `tostring` while method is a plain method call. The following are equal: `ip:to_string.lower` and `ip.lower`. However, you can call different methods of the objects: `urls:get_tld` will return a list of strings with all eSLD parts of urls in the message.
+1. For objects, implicit conversion is just calling of `tostring` while method is a plain method call. The following are equal: `ip:to_string.lower` and `ip.lower`. However, you can call different methods of the objects: `urls:get_tld` will return a list of strings with all eSLD parts of urls in the message. The only exception from this rule (from 2.7) is `rspamd_text` which can be traversed over the selectors pipeline without any conversation. This is done to preserve large strings to avoid Lua strings interning and allocation.
 
 2. For tables, explicit conversion just extracts the specific key, for example, `from:addr` or `from('mime'):name`. Implicit conversion is a bit more complicated:
 
@@ -216,6 +244,8 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 | `take_n` | 1.8+ | Returns the n first elements
 | `to_ascii` | 2.6+ | Returns the string with all non-ascii bytes replaced with the character given as second argument or `?`
 | `uniq` | 2.0+ | Returns a list of unique elements (using a hash table - no order preserved!)
+
+You can get the most recent list of all selector functions and the ability to test Rspamd selectors pipelines using the embedded Web Interface.
 
 ### Maps in transformations
 
