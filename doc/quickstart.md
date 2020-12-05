@@ -21,9 +21,9 @@ This guide describes the main steps to get and start working with Rspamd. In par
 
 ## Alternative guides (3rd party)
 
+* [An alternative introduction to rspamd configuration](https://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/){:target="&#95;blank"} - a detailed information about Rspamd configuration files and their purposes from the sysadmin point of view: concentrating on two main questions “What is there to configure?” and “How do I configure things?”.
 * [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/){:target="&#95;blank"} - a good example of all-in-one tutorial about how to setup your own mail server. Please bear in mind that the advice of adding `level = error` to /etc/rspamd/local.d/logging.inc is not correct. You should use the default `info` in the most of the cases or `silent` if you merely want important information to be logged.
 * [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://www.c0ffee.net/blog/mail-server-guide){:target="&#95;blank"} - similar to the previous guide but uses a different technologies stack. Here, you should ignore an advice about `url_tag` module.
-* [An alternative introduction to rspamd configuration](https://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/){:target="&#95;blank"}
 
 ## Preparation steps
 
@@ -206,16 +206,6 @@ You can verify it's running as follows:
 ```
 systemctl status rspamd
 ```
-
-### CentOS/RHEL 6
-
-To enable run on startup:
-
-    chkconfig rspamd on
-
-To start once:
-
-    /etc/init.d/rspamd start
 
 ## Configuring Rspamd
 
@@ -435,9 +425,7 @@ enable_password = "$2$qda98oexjhcf6na4mfujqjwf4qmbi545$ijkrmjx96iyj56an9jfzbba6m
 
 From version 1.7, the setting of passwords is also suggested by `rspamadm configwizard`.
 
-**Important information**: the default passwords (namely, `q1` and `q2`) are **BANNED**, so you cannot use them in your installation. Please set the appropriate passwords before using the controller.
-
-Then you can copy this string and store it in the configuration file.
+**Important information**: the default passwords (namely, `q1` and `q2`) are **BANNED**, so you cannot use them in your installation. Please set the appropriate passwords before using the controller. This is done to prevent an occasional data leak caused by misconfiguration.
 
 ### Setting up the WebUI
 
@@ -602,7 +590,7 @@ Though Rspamd is free to use for any purpose many of the RBLs used in the defaul
 
 [URIBL](http://uribl.com/about.shtml){:target="&#95;blank"} - Requires a commercial subscription if 'excessive queries' are sent (numbers unclear).
 
-Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) and [SURBL]({{ site.url }}{{ site.baseurl }}/doc/modules/surbl.html) module documentation for information about disabling RBLs/SURBLs.
+Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) module documentation for information about disabling RBLs/SURBLs.
 
 ## Using Rspamd
 
