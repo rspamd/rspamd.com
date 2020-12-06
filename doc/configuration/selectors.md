@@ -49,24 +49,18 @@ Here is an example of Rspamd multimap rule that uses selectors to block bad Send
 
 ~~~ucl
 # local.d/multimap.conf
-SENDGRID_INVALUEMENT_BAD_SENDER {
-  type = "combined";
-  rules {
-    sendgrid_cust_tld {
-      map = "https://www.invaluement.com/spdata/sendgrid-envelopefromdomain-dnsbl.txt";
-      selector = 'from("smtp","orig"):domain.get_tld';
-    }
-    sendgrid_static_tld {
-      map = ["sendgrid.net"];
-      selector = 'from("smtp","orig"):domain.get_tld';
-    }
-    abused_id {
-      map = "https://www.invaluement.com/spdata/sendgrid-id-dnsbl.txt";
-      selector = 'from("smtp","orig").regexp("/^<?bounces\+(\d+)\-[^@]+@/i").last';
-    }
-  }
-  expression = "(sendgrid_cust_tld | sendgrid_static_tld) & abused_id";
-  score = 8.0;
+INVALUEMENT_SENDGRID_ID {
+  type = "selector";
+  selector = 'header("X-SG-EID").id;from("smtp","orig").regexp("/^<?bounces\+(\d+)\-[^@]+@/i").last';
+  map = "https://www.invaluement.com/spdata/sendgrid-id-dnsbl.txt";
+  score = 6.0;
+}
+
+INVALUEMENT_SENDGRID_DOMAIN {
+  type = "selector";
+  map = "https://www.invaluement.com/spdata/sendgrid-envelopefromdomain-dnsbl.txt";
+  selector = 'header("X-SG-EID").id;from("smtp","orig"):domain.get_tld';
+  score = 6.0;
 }
 ~~~
 
