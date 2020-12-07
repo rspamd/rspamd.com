@@ -774,6 +774,24 @@ IP maps:
 192.168.0.1/19
 ```
 
+### How HTTP maps are loaded
+
+There is a difference between hot and cold start:
+
+* on hot start Rspamd reuses cached maps for HTTP maps (and their `Cache-Control/ETag` attributes as well) so it starts using them just after the start
+* on cold start (when new maps are added or when `/var/lib/rspamd` is cleaned) Rspamd fetches maps merely after workers are started so there could be a gap that might be covered in turn by `file+fallback` backend option if map downtime is unacceptable:
+
+```
+map = [
+  "https://maps.rspamd.com/rspamd/spf_dkim_whitelist.inc.zst",
+  "$LOCAL_CONFDIR/local.d/maps.d/spf_dkim_whitelist.inc.local",
+  "${DBDIR}/spf_dkim_whitelist.inc.local",
+  "fallback+file://${CONFDIR}/maps.d/spf_dkim_whitelist.inc"
+];
+```
+
+In this case, the first three backends will be used when HTTP map is available (and the data will be joined all together). The final location defines cold startup fallback which will be replaced when/if HTTP map is downloaded.
+
 ### How to sign maps
 
 From Rspamd version 1.2 onwards, each map can have a digital signature using the `EdDSA` algorithm. To sign a map you can use `rspamadm signtool` and to generate a signing keypair - `rspamadm keypair -s -u`:
