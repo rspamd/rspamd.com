@@ -368,37 +368,6 @@ local_addrs = "192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, fd00::/8, 169.254.0.0/
 
 Please review the [global options documentation]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html) for other global settings you may want to use.
 
-## Using of Milter protocol (for Rspamd >= 1.6)
-
-From Rspamd 1.6, rspamd proxy worker supports the `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introducing of this feature also finally obsoletes the `rmilter` project in honor of the new integration method. Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
-
-* Proxy mode (for large instances) with a dedicated scan layer
-* Self-scan mode (for small instances)
-
-Here, we describe the simplest `self-scan` option:
-
-<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
-
-In this mode, `rspamd_proxy` scans messages itself and talks to MTA directly using the Milter protocol. The advantage of this approach is its simplicity. Here is a sample configuration for this mode:
-
-~~~ucl
-# local.d/worker-proxy.inc
-milter = yes; # Enable milter mode
-timeout = 120s; # Needed for Milter usually
-upstream "local" {
-  default = yes; # Self-scan upstreams are always default
-  self_scan = yes; # Enable self-scan
-}
-count = 4; # Spawn more processes in self-scan mode
-max_retries = 5; # How many times master is queried in case of failure
-discard_on_reject = false; # Discard message instead of rejection
-quarantine_on_reject = false; # Tell MTA to quarantine rejected messages
-spam_header = "X-Spam"; # Use the specific spam header
-reject_message = "Spam message rejected"; # Use custom rejection message
-~~~
-
-For more advanced proxy usage, please see the corresponding [documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html).
-
 ### Setting the controller password
 
 Rspamd requires a password when queried from non-trusted IPs, except for scanning messages which are unrestricted (the default config trusts the loopback interface). This is configured in the file `/etc/rspamd/local.d/worker-controller.inc`.
@@ -512,6 +481,37 @@ location /rspamd/ {
 </div>
 
 Alternatively, you could set up HTTP authentication in Nginx itself.
+
+## Using of Milter protocol (for Rspamd >= 1.6)
+
+From Rspamd 1.6, rspamd proxy worker supports the `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introducing of this feature also finally obsoletes the `rmilter` project in honor of the new integration method. Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
+
+* Proxy mode (for large instances) with a dedicated scan layer
+* Self-scan mode (for small instances)
+
+Here, we describe the simplest `self-scan` option:
+
+<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
+
+In this mode, `rspamd_proxy` scans messages itself and talks to MTA directly using the Milter protocol. The advantage of this approach is its simplicity. Here is a sample configuration for this mode:
+
+~~~ucl
+# local.d/worker-proxy.inc
+milter = yes; # Enable milter mode
+timeout = 120s; # Needed for Milter usually
+upstream "local" {
+  default = yes; # Self-scan upstreams are always default
+  self_scan = yes; # Enable self-scan
+}
+count = 4; # Spawn more processes in self-scan mode
+max_retries = 5; # How many times master is queried in case of failure
+discard_on_reject = false; # Discard message instead of rejection
+quarantine_on_reject = false; # Tell MTA to quarantine rejected messages
+spam_header = "X-Spam"; # Use the specific spam header
+reject_message = "Spam message rejected"; # Use custom rejection message
+~~~
+
+For more advanced proxy usage, please see the corresponding [documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html).
 
 ## Setup Redis statistics
 
