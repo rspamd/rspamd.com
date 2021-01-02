@@ -245,6 +245,7 @@ You can get the most recent list of all selector functions and the ability to te
 
 From the version 2.0, Rspamd supports using of maps within selectors. It is done by adding maps to a special `lua_selectors.maps` table. This table must have name-value pairs where `name` is a symbolic name of map that could be used in transformation/extraction functions and value is the return of `lua_maps.map_add_from_ucl`. Here is an example:
 
+{% raw %}
 ~~~lua
 local lua_selectors = require "lua_selectors"
 local lua_maps = require "lua_maps"
@@ -278,6 +279,7 @@ local samples = {
     },
 }
 ~~~
+{% endraw %}
 
 ## Type safety
 
