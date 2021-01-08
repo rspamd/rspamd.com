@@ -505,3 +505,32 @@ rules {
 ## Use of URL redirectors
 
 SURBL module is designed to work with [url_redirector module](./url_redirector.html) which can help to resolve some known redirectors and extract the real URL to check with this module. Please refer to the module's documentation about how to work with it. SURBL module will automatically use that results.
+
+## Selectors
+
+Selectors can be used to look up arbitrary values in RBLs.
+
+The `selector` field could be configured as a string in the rule settings if only one selector is needed:
+
+~~~
+	selector = "from('mime'):addr";
+	replyto = true;
+	hash = "sha1";
+	symbols_prefixes {
+		replyto = "REPLYTO";
+		selector = "FROM";
+	}
+~~~
+
+Or they could be specified as a map of user-specified names to selectors if more than one is needed:
+
+~~~
+	selector = {
+		mime_domain = "from('mime'):domain";
+		subject_digest = "header('subject').lower.digest('hex')";
+	}
+	symbols_prefixes {
+		mime_domain = "MIME_DOMAIN";
+		subject_digest = "SUBJECT_DIGEST"
+	}
+~~~
