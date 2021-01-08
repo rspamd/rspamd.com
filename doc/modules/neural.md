@@ -130,3 +130,33 @@ symbols = {
   }
 }
 ~~~
+
+
+### Manual learning
+
+*This is a work-in-progress*.
+
+If `store_pool_only = true` is set in `train` options, instead of doing online learning, neural module will store training vectors in messagepack format & a profile digest in the task cache. These could then be stored to Clickhouse for example & used later.
+
+The config snippet below demonstrates how to save these to Clickhouse:
+
+~~~
+# local.d/clickhouse.conf
+extra_columns = {
+	Neural_Vec = {
+		selector = "task_cache('neural_vec_mpack')";
+		type = "String";
+		comment = "Training vector for neural";
+        }
+	Neural_Digest = {
+		selector = "task_cache('neural_profile_digest')";
+		type = "String";
+		comment = "Digest of neural profile";
+        }
+}
+~~~
+
+The controller endpoint `/plugins/neural/learn` facilitates manual training of neural networks & accepts a JSON POST with the following keys:
+
+ * `spam_vec` and `ham_vec`: are lists of lists of numbers containing training information
+ * `rule` is an optional name of the rule to perform training for
