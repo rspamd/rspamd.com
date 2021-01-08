@@ -14,6 +14,7 @@ Rspamadm 2.5
 Usage: rspamadm [global_options] command [command_options]
 
 Available commands:
+  clickhouse         Retrieve information from Clickhouse
   configdump         Perform configuration file dump
   configgraph        Produces graph of Rspamd includes
   confighelp         Shows help for configuration options
@@ -37,6 +38,57 @@ Available commands:
 ~~~
 
 To see the help text for a command we can run `rspamadm [command-name] --help`.
+
+## Rspamadm clickhouse
+
+*This is a work-in-progress*.
+
+This command fetches information from Clickhouse - so far it is intended to generate profiles of symbols to be used for neural networks.
+
+It will try fetch Clickhouse details from configuration if not specified.
+
+~~~
+Options:
+   -h, --help                 Show this help message and exit.
+         -c config_file,      Path to config file (default: /etc/rspamd/rspamd.conf)
+   --config config_file
+           -d database,       Name of Clickhouse database to use (default: default)
+   --database database
+   --no-ssl-verify            Disable SSL verification
+           -p password,       Password to use for Clickhouse
+   --password password
+   -a, --ask-password         Ask password from the terminal
+         -s server,           Address[:port] to connect to Clickhouse with
+   --server server
+       -u user,               Username to use for Clickhouse
+   --user user
+   --use-gzip use_gzip        Use Gzip with Clickhouse
+   --use-https                Use HTTPS with Clickhouse
+
+Commands:
+   neural_profile             Generate symbols profile using data from Clickhouse
+~~~
+
+### Rspamadm clickhouse neural_profile
+
+~~~
+Usage: rspamadm clickhouse neural_profile [-h] [-w where] [-j]
+       [--days days] [--limit limit] [--settings-id settings_id]
+
+Generate symbols profile using data from Clickhouse
+
+Options:
+   -h, --help                 Show this help message and exit.
+        -w where,             WHERE clause for Clickhouse query
+   --where where
+   -j, --json                 Write output as JSON
+   --days days                Number of days to collect stats for (default: 7)
+   --limit limit,             Maximum rows to fetch per day
+        -l limit
+   --settings-id settings_id  Settings ID to query (default: )
+~~~
+
+The neural_profile subcommand deals with generating profiles of symbols to be used for neural networks. User-specified conditions can be added to the `WHERE` clause using the `-w` flag to filter the data which is queried. 
 
 ## Rspamadm configdump
 
