@@ -207,6 +207,124 @@ Application Options:
   -a, --args             Arguments to pass to Lua
 ~~~
 
+## Rspamadm mime
+
+This command is used to extract or modify mime messages. It supports multiple subcommands:
+
+| command          | purpose     |
+| ---------------- | ------------ |
+| extract, ex, e   |          Extracts data from MIME messages
+| stat, st, s      |          Extracts statistical data from MIME messages
+| urls, url, u     |          Extracts URLs from MIME messages
+| modify, mod, m   |          Modifies MIME message
+| sign             |          Performs DKIM signing
+
+### Rspamadm mime extract
+
+Extracts stuff from a mime message:
+
+~~~
+Arguments:
+   file                       File to process
+
+Options:
+   -h, --help                 Show this help message and exit.
+   -t, --text                 Extracts plain text data from a message
+   -H, --html                 Extracts htm data from a message
+         -o <type>,           Output format ('raw', 'content', 'oneline', 'decoded', 'decoded_utf') (default: content)
+   --output <type>
+   -w, --words                Extracts words
+   -p, --part                 Show part info
+   -s, --structure            Show structure info (e.g. HTML tags)
+               -F <type>,     Words format ('stem', 'norm', 'raw', 'full') (default: stem)
+   --words-format <type>
+~~~
+
+### Rspamadm mime stat
+
+Extracts statistical data from MIME messages
+
+~~~
+Arguments:
+   file                       File to process
+
+Options:
+   -h, --help                 Show this help message and exit.
+   -m, --meta                 Lua metatokens
+   -b, --bayes                Bayes tokens
+   -F, --fuzzy                Fuzzy hashes
+   -s, --shingles             Show shingles for fuzzy hashes
+~~~
+
+### Rspamadm mime urls
+
+Extracts urls data from MIME messages
+
+~~~
+Arguments:
+   file                       File to process
+
+Options:
+   -h, --help                 Show this help message and exit.
+   -t, --tld                  Get TLDs only
+   -H, --host                 Get hosts only
+   -f, --full                 Show piecewise urls as processed by Rspamd
+   -u, --unique               Print only unique urls
+   -s, --sort                 Sort output
+   --count                    Print count of each printed element
+   -r, --reverse              Reverse sort order
+~~~
+
+### Rspamadm mime modify
+
+Modifies mime message and write data to stdout. Currently supported features are:
+
+* headers alteration
+* adding footer to text parts preserving message structure (and skipping signed parts)
+
+~~~
+Arguments:
+   file                       File to process
+
+Options:
+   -h, --help                 Show this help message and exit.
+             -a <header=value>,
+   --add-header <header=value>
+                              Adds specific header
+                -r <header>,  Removes specific header (all occurrences)
+   --remove-header <header>
+                 -R <header=pattern>,
+   --rewrite-header <header=pattern>
+                              Rewrites specific header, uses Lua string.format pattern
+              -t <file>,      Adds footer to text/plain parts from a specific file
+   --text-footer <file>
+              -H <file>,      Adds footer to text/html parts from a specific file
+   --html-footer <file>
+~~~
+
+### Rspamadm mime sign
+
+Performs messages signing for DKIM/ARC.
+
+~~~
+Arguments:
+   file                       File to process
+
+Options:
+   -h, --help                 Show this help message and exit.
+         -d <domain>,         Use specific domain
+   --domain <domain>
+           -s <selector>,     Use specific selector
+   --selector <selector>
+      -k <key>,               Use specific key of file
+   --key <key>
+     -t <arc|dkim>,           ARC or DKIM signing (default: dkim)
+   type <arc|dkim>
+         -o <message|signature>,
+   --output <message|signature>
+                              Output format (default: message)
+~~~
+
 ## Rspamadm pw
 
 This command is a tool for generating password hashes. Typical invocation would be `rspamadm pw` to interactively generate a password hash in the default format.
