@@ -42,7 +42,7 @@ title: Compare Rspamd with other spam filters
           <td>Web interface</td>
           <td><span class="glyphicon glyphicon-ok icon-green"></span> embedded</td>
           <td><span class="fa fa-lg fa-question-circle"></span> 3rd party</td>
-          <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
+          <td><span class="glyphicon glyphicon-ok icon-green"></span></td>
         </tr>
         <tr>
           <td>Languages support</td>
@@ -123,7 +123,7 @@ title: Compare Rspamd with other spam filters
         <tr>
           <td>DMARC</td>
           <td><span class="glyphicon glyphicon-ok icon-green"></span> with reports support</td>
-          <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
+          <td><span class="fa fa-lg fa-question-circle"></span> 3rd party</td>
           <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
         </tr>
         <tr>
@@ -157,8 +157,14 @@ title: Compare Rspamd with other spam filters
           <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
         </tr>
         <tr>
-          <td>Pyzor/Razor</td>
+          <td>Pyzor</td>
           <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
+          <td><span class="glyphicon glyphicon-ok icon-green"></span></td>
+          <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
+        </tr>
+        <tr>
+          <td>Razor</td>
+          <td><span class="glyphicon glyphicon-ok icon-green"></span></td>
           <td><span class="glyphicon glyphicon-ok icon-green"></span></td>
           <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
         </tr>
@@ -182,7 +188,7 @@ title: Compare Rspamd with other spam filters
         </tr>
         <tr>
           <td>PDF filtering</td>
-          <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
+          <td><span class="glyphicon glyphicon-ok icon-green"></span></td>
           <td><span class="glyphicon glyphicon-ok icon-green"></span></td>
           <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
         </tr>
@@ -235,7 +241,7 @@ title: Compare Rspamd with other spam filters
         </tr>
         <tr>
           <td>Neural networks support</td>
-          <td><span class="glyphicon glyphicon-ok icon-green"></span> via libfann</td>
+          <td><span class="glyphicon glyphicon-ok icon-green"></span> via kann</td>
           <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
           <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
         </tr>
