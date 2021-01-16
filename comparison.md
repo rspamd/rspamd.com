@@ -22,7 +22,7 @@ title: Compare Rspamd with other spam filters
         </tr>
         <tr>
           <td>Written in</td>
-          <td>C</td>
+          <td>C/Lua</td>
           <td>Perl</td>
           <td>C</td>
         </tr>
@@ -46,7 +46,7 @@ title: Compare Rspamd with other spam filters
         </tr>
         <tr>
           <td>Languages support</td>
-          <td><span class="glyphicon glyphicon-ok icon-green"></span> full, UTF-8 conversion, lemmatization</td>
+          <td><span class="glyphicon glyphicon-ok icon-green"></span> full, UTF-8 conversion/normalisation, lemmatization</td>
           <td><span class="glyphicon glyphicon-remove icon-red"></span> naïve (ASCII lowercase)</td>
           <td><span class="glyphicon glyphicon-remove icon-red"></span> naïve</td>
         </tr>
@@ -127,6 +127,12 @@ title: Compare Rspamd with other spam filters
           <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
         </tr>
         <tr>
+          <td>ARC</td>
+          <td><span class="glyphicon glyphicon-ok icon-green"></span></td>
+          <td><span class="fa fa-lg fa-question-circle"></span></td>
+          <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
+        </tr>
+        <tr>
           <td>Policies white and blacklists</td>
           <td><span class="glyphicon glyphicon-ok icon-green"></span></td>
           <td><span class="glyphicon glyphicon-ok icon-green"></span></td>
@@ -188,7 +194,7 @@ title: Compare Rspamd with other spam filters
         </tr>
         <tr>
           <td>PDF filtering</td>
-          <td><span class="glyphicon glyphicon-ok icon-green"></span></td>
+          <td><span class="glyphicon glyphicon-ok icon-green"></span> own parser</td>
           <td><span class="glyphicon glyphicon-ok icon-green"></span></td>
           <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
         </tr>
@@ -205,7 +211,7 @@ title: Compare Rspamd with other spam filters
         </tr>
         <tr>
           <td>Bayes autolearn</td>
-          <td><span class="glyphicon glyphicon-ok icon-green"></span> with custom Lua rules</td>
+          <td><span class="glyphicon glyphicon-ok icon-green"></span> with custom Lua rules + expiry</td>
           <td><span class="glyphicon glyphicon-ok icon-green"></span> by threshold</td>
           <td><span class="glyphicon glyphicon-remove icon-red"></span></td>
         </tr>
