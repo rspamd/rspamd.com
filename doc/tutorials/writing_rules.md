@@ -284,6 +284,7 @@ rspamd_config.SUBJ_ALL_CAPS = {
 
 Rspamd rules fall under three categories:
 
+0. Connection filters - are executed before a message has been processed (e.g. on a connection stage)
 1. Pre-filters - run before other rules
 2. Filters - run normally
 3. Post-filters - run after all checks
@@ -292,8 +293,8 @@ Rspamd rules fall under three categories:
 The most common type of rules are generic filters. Each filter is basically a callback that is executed by Rspamd at some time, along with an optional symbol name associated with this callback. In general, there are three options to register symbols:
 
 * register callback and associated symbol
-* register just a plain callback
-* register symbol with no callback (*virtual* symbol)
+* register just a plain callback (symbol is not expected to be inserted to result)
+* register symbol with no callback (*virtual* symbol) and an associated callback rule
 
 The last option is useful when you have a single callback but with different possible results; for example `SYMBOL_ALLOW` or `SYMBOL_DENY`. Filters are registered using the following method:
 
@@ -306,7 +307,7 @@ rspamd_config:register_symbol{
   score = 1.0, -- Metric score
   group = 'some group', -- Metric group
   description = 'My super symbol',
-  flags = 'fine', -- fine: symbol is always checked, skip: symbol is always skipped, empty: symbol work for checks with no message
+  flags = 'fine', -- fine: symbol is always checked, skip: symbol is always skipped, empty: symbol allows to be executed with no message
   --priority = 2, -- useful for postfilters and prefilters to define order of execution
 }
 ~~~
