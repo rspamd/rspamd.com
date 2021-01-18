@@ -99,6 +99,14 @@ Set false to always add headers for local IPs (default `true`).
 skip_local = true;
 ~~~
 
+### skip_all (2.8.0+)
+    
+Do not add extended headers for any messages (except those matching extended_headers_rcpt) (default `false`)
+
+~~~ucl
+skip_all = true;
+~~~
+
 ### skip_authenticated (1.6.0+)
     
 Set false to always add headers for authenticated users (default `true`)
@@ -117,7 +125,8 @@ When [`extended_spam_headers`](#extended_spam_headers) is enabled, also add exte
 extended_headers_rcpt = ["user1", "@example1.com", "user2@example2.com"];
 ~~~
 
-`extended_headers_rcpt` has higher precedence than `skip_local` and `skip_authenticated`. 
+`extended_headers_rcpt` has higher precedence than `skip_local`, `skip_authenticated` and `skip_all`.  
+`extended_headers_rcpt` paired with `skip_all = true` can be used to only add extended headers to a map of specific recipients. 
 
 ### use
 
