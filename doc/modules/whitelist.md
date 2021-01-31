@@ -2,16 +2,17 @@
 layout: doc
 title: Whitelist module
 ---
+
 # Whitelist module
 
-Whitelist module is intended to negate or increase scores for some messages that are known to
-be from the trusted sources. Due to `SMTP` protocol design flaws, it is quite easy to
-forge sender. Therefore, rspamd tries to validate sender based on the following additional
-properties:
+Whitelist module is intended to decrease or increase scores for some messages that are known to
+be from the trusted sources **based on DKIM/SPF/DMARC policies** (for generic lists please use [multimap module](multimap.html)). 
 
-- `DKIM`: a message has a valid DKIM signature for this domain
+The reasoning for this module is that due to `SMTP` protocol design flaws, it is quite easy to forge sender. Therefore, rspamd tries to validate sender based on the following additional policies:
+
+- `DKIM`: a message has a valid DKIM signature for this domain (similar to DMARC alignment but for DKIM only)
 - `SPF`: a message matches SPF record for the domain
-- `DMARC`: a message satisfies domain's DMARC policy (implies SPF or DKIM)
+- `DMARC`: a message satisfies domain's DMARC policy (implies *aligned* SPF **or** DKIM according to the DMARC standard)
 
 ## Whitelist setup
 
@@ -40,6 +41,21 @@ If you do not define any constraints, then all both `strict` and `whitelist` rul
 These options are combined using `AND` operator for `whitelist` and using `OR` for `blacklist` and `strict` rules. Therefore, if `valid_dkim = true` and
 `valid_spf = true` would require both DKIM and SPF validation to whitelist domains from
 the list. On the contrary, for blacklist and strict rules any violation would cause positive score symbol being inserted.
+
+### Whitelist values
+
+Each whitelist entry in a map can also have a value override to override the default rule policy and even the score multiplier. For example, you can have a whitelist for DMARC but want some entries to act as `strict` policy adding spam symbol in case of DMARC policy failure. You can use the following values in your map to achieve that:
+
+```
+example.com # normal whitelist entry: whitelisting on hit, nothing on no hit
+bank.com both:1.0 # strict whitelist entry: spam symbol on policy failure and ham symbol on policy success
+foo.com both:2.0 # same as previous but with 2.0 multiplier for score
+bar.com bl:1.0 # add spam symbol on failure but do not enable ham symbol on success
+baz.com wl:2.0 # vice-versa - return to the normal behaviour but with 2.0 multiplier for policy success
+```
+
+You can also check maps shipped with Rspamd in the following repo: https://github.com/rspamd/maps/
+Reasonable pull requests are very wellcome.
 
 ### Optional settings
 
