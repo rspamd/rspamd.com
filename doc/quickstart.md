@@ -570,7 +570,7 @@ There is a special module called `multimap` that allows you to define your maps 
 
 Though Rspamd is free to use for any purpose many of the RBLs used in the default configuration aren't & care should be taken to see that your use cases are not infringing. Notes about specific RBLs follow below (please follow the links for details):
 
-[Abusix Mail Intelligence](http://www.abusix.ai){:target="&#95;blank"} - Free for home/non-commercial use up to 100k queries per day (requires registration), commercial use requires a subscription
+[Abusix Mail Intelligence](https://abusix.com/products/abusix-mail-intelligence/){:target="&#95;blank"} - Free for home/non-commercial use up to 100k queries per day (requires registration), commercial use requires a subscription
 
 [DNSWL](https://www.dnswl.org/?page_id=9){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 100k queries per day
 
