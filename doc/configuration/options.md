@@ -58,6 +58,7 @@ control_socket = "$DBDIR/rspamd.sock mode=0600";
 * `local_addrs` or `local_networks`: map or list of IP networks used as local, so certain checks are skipped for them (e.g. SPF checks)
 * `neighbours`: list of servers in Rspamd cluster
 * `disable_monitoring`: if this flag is set to `true` then [RBL](../modules/rbl.html) monitoring is disabled completely
+* `monitoring_watch_interval`: monitoring watch interval for the periodic checks of [RBL](../modules/rbl.html) and some other resources, 60 seconds by default
 
 ## DNS options
 
