@@ -113,47 +113,6 @@ control_socket = "$DBDIR/rspamd.sock mode=0600";
 |`words_decay`| start skipping words at this amount
 |`zstd_input_dictionary`| dictionary for zstd inbound protocol compression
 |`zstd_output_dictionary`| dictionary for outbound zstd compression
-|`images_cache`| size of DCT data cache for images (256 elements by default)
-|`local_addrs` or `local_networks`| map or list of IP networks used as local, so certain checks are skipped for them (e.g. SPF checks)
-|`lua_gc_pause`| lua garbage-collector pause (default: 200)
-|`lua_gc_step`| lua garbage-collector step (default: 200)
-|`map_file_watch_multiplier`| multiplier for map watch interval when map is file
-|`map_watch_interval`| interval between map scanning; the actual check interval is jittered to avoid simultaneous checking, so the real interval is from this value up to 2x this value
-|`maps_cache_dir`| directory to save maps cached data (default: $DBDIR)
-|`max_blas_threads`| maximum number of Blas threads for learning neural networks (default: 1)
-|`max_cores_count`| maximum number of files in `cores_dir`
-|`max_cores_size`| maximum total size of core files that are placed in `cores_dir`
-|`max_lua_urls`| maximum count of URLs to pass to Lua to avoid DoS (default: 1024)
-|`max_message`| maximum size of the message to be scanned (50Mb by default)
-|`max_opts_len`| maximum size of all options for a single symbol (default: 4096)
-|`max_pic`| maximum size of the picture to be normalized (1Mb by default)
-|`max_recipients`| maximum count of recipients to process to avoid DoS (default: 1024)
-|`max_sessions_cache`| maximum number of sessions in cache before warning (default: 100)
-|`max_shots`| maximum number of hits per a single symbol (default: 100)
-|`max_urls`| maximum count of URLs to process to avoid DoS (default: 10240)
-|`max_word_len`| maximum length of the word to be considered in statistics/fuzzy
-|`min_word_len`| minimum size in letters (valid for utf-8 as well) for a sequence of characters to be treated as a word; normally Rspamd skips sequences if they are shorter or equal to three symbols
-|`monitoring_watch_interval`| monitoring watch interval for the periodic checks of [RBL](../modules/rbl.html) and some other resources, 60 seconds by default
-|`neighbours`| list of servers in Rspamd cluster
-|`one_shot`| if this flag is set to `true` then multiple rule triggers do not increase the total score of messages (however, this option can also be individually configured in the `metric` section for each symbol)
-|`pid_file`| file used to store PID of the Rspamd main process (not used with syst.html)
-|`public_groups_only`| output merely public groups everywhere
-|`raw_mode`| don't try to convert all messages to utf8
-|`rrd`| path to RRD file
-|`sessions_cache`| enable sessions cache to debug dangling sessions
-|`soft_reject_on_timeout`| emit soft reject if task timeout takes place
-|`ssl_ca_path`| path to ssl CA file
-|`ssl_ciphers`| list of ssl ciphers (e.g. HIGH:!aNULL:!kRSA:!PSK:!SRP:!MD5:!RC4)
-|`stats_file`| path to stats file
-|`task_timeout`| maximum time for checking a message
-|`temp_dir`| a directory for temporary files (can also be set via the environment variable `TMPDIR`).
-|`tld`| path to the TLD file for urls detector
-|`trusted_keys`| list of trusted public keys used for signatures in base32 encoding
-|`url_tld`| path to file with top level domain suffixes used by Rspamd to find URLs in messages; by default this file is shipped with Rspamd and should not be touched manually
-|`vectorized_hyperscan`| use hyperscan in vectorized mode (experimental)
-|`words_decay`| start skipping words at this amount
-|`zstd_input_dictionary`| dictionary for zstd inbound protocol compression
-|`zstd_output_dictionary`| dictionary for outbound zstd compression
 
 ## DNS options
 
