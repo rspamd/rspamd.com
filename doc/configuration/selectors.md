@@ -42,7 +42,29 @@ Afterwards, these values can be used in various plugins:
 * [`ratelimit`](../modules/ratelimit.html) - rate bucket description with `selector` field
 * [`reputation`](../modules/reputation.html) - generic selector rules
 * [`regexp`](../modules/regexp.html) - regular expressions based on selector's data
+* [`rbl`](../modules/rbl.html) - allows selectors in data queries
 * [`clustering`] - TBD
+
+Here is an example of Rspamd multimap rule that uses selectors to block bad Sendgrid senders using [Invaluement SPBL](https://www.invaluement.com/serviceproviderdnsbl/):
+
+~~~ucl
+# local.d/multimap.conf
+INVALUEMENT_SENDGRID_ID {
+  type = "selector";
+  selector = 'header("X-SG-EID").id;from("smtp","orig").regexp("/^<?bounces\+(\d+)\-[^@]+@/i").last';
+  map = "https://www.invaluement.com/spdata/sendgrid-id-dnsbl.txt";
+  score = 6.0;
+}
+
+INVALUEMENT_SENDGRID_DOMAIN {
+  type = "selector";
+  map = "https://www.invaluement.com/spdata/sendgrid-envelopefromdomain-dnsbl.txt";
+  selector = 'header("X-SG-EID").id;from("smtp","orig"):domain.get_tld';
+  score = 6.0;
+}
+~~~
+
+As you can see, this rule uses both maps expressions and selectors to get and transform data for querying in maps.
 
 ## Selectors syntax
 
@@ -75,7 +97,7 @@ Some data extractors return complex objects (or list of such a complex objects):
 
 There are two possibilities to convert these complex objects to a simple ones (strings or list of strings): implicit conversion and using of the method/table key extraction. 
 
-1. For objects, implicit conversion is just calling of `tostring` while method is a plain method call. The following are equal: `ip:to_string.lower` and `ip.lower`. However, you can call different methods of the objects: `urls:get_tld` will return a list of strings with all eSLD parts of urls in the message.
+1. For objects, implicit conversion is just calling of `tostring` while method is a plain method call. The following are equal: `ip:to_string.lower` and `ip.lower`. However, you can call different methods of the objects: `urls:get_tld` will return a list of strings with all eSLD parts of urls in the message. The only exception from this rule (from 2.7) is `rspamd_text` which can be traversed over the selectors pipeline without any conversation. This is done to preserve large strings to avoid Lua strings interning and allocation.
 
 2. For tables, explicit conversion just extracts the specific key, for example, `from:addr` or `from('mime'):name`. Implicit conversion is a bit more complicated:
 
@@ -176,12 +198,16 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 | `ip` | 1.8+ | Get source IP address
 | `languages` | 1.9+ | Get languages met in a message
 | `list` | 2.0+ | Returns a list of values from its arguments or an empty list
+| `messageid` | 2.6+ | Get message ID
 | `pool_var` | 1.8+ | Get specific pool var. The first argument must be variable name, the second argument is optional and defines the type (string by default)
+| `queueid` | 2.6+ | Get queue ID
 | `rcpts` | 1.8+ | Get MIME or SMTP rcpts (e.g. `rcpts('smtp')` or `rcpts('mime')`, uses any type by default)
 | `received` | 1.8+ | Get list of received headers. If no arguments specified, returns list of tables. Otherwise, selects a specific element, e.g. `by_hostname`
 | `request_header` | 1.8+ | Get specific HTTP request header. The first argument must be header name.
+| `symbol` | 2.6+ | Get symbol with the name that is expected as first argument. Returns the symbol table (like task:get_symbol())
 | `time` | 1.8+ | Get task timestamp. The first argument is type: <ul><li>`connect`: connection timestamp (default)</li><li>`message`: timestamp as defined by `Date` header</li></ul>The second argument is optional time format, see [os.date](http://pgl.yoyo.org/luai/i/os.date) description
 | `to` | 1.8+ | Get principal recipient
+| `uid` | 2.6+ | Get ID of the task being processed
 | `urls` | 1.8+ | Get list of all urls. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_tld`
 | `user` | 1.8+ | Get authenticated user name
 
@@ -210,12 +236,16 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 | `sort` | 2.0+ | Sort strings lexicographically
 | `substring` | 1.8+ | Extracts substring. Arguments are equal to lua [string.sub](http://pgl.yoyo.org/luai/i/string.sub)
 | `take_n` | 1.8+ | Returns the n first elements
+| `to_ascii` | 2.6+ | Returns the string with all non-ascii bytes replaced with the character given as second argument or `?`
 | `uniq` | 2.0+ | Returns a list of unique elements (using a hash table - no order preserved!)
+
+You can get the most recent list of all selector functions and the ability to test Rspamd selectors pipelines using the embedded Web Interface.
 
 ### Maps in transformations
 
 From the version 2.0, Rspamd supports using of maps within selectors. It is done by adding maps to a special `lua_selectors.maps` table. This table must have name-value pairs where `name` is a symbolic name of map that could be used in transformation/extraction functions and value is the return of `lua_maps.map_add_from_ucl`. Here is an example:
 
+{% raw %}
 ~~~lua
 local lua_selectors = require "lua_selectors"
 local lua_maps = require "lua_maps"
@@ -249,6 +279,7 @@ local samples = {
     },
 }
 ~~~
+{% endraw %}
 
 ## Type safety
 

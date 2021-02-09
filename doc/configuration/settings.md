@@ -36,17 +36,19 @@ settings = "http://host/url"
 Alternatively, settings apply part (see later) could be passed to Rspamd by a client by query parameter:
 
 ~~~
-GET /symbols?settings="{symbol1 = 10.0}" HTTP/1.0
+POST /scanv2?settings="{symbol1 = 10.0}" HTTP/1.0
 ~~~
 
 or HTTP header
 
 ~~~
-GET /symbols HTTP/1.0
+POST /scanv2 HTTP/1.0
 Settings: {symbol1 = 10.0}
 ~~~
 
 Settings could also be indexed by ID, allowing to select a specific setting without checking for its conditions. For example, this feature could be used to split inbound and outbound mail flows by specifying different rules set from the MTA side. Another use case of settings id option is to create a dedicated lightweight checks for certain conditions, for example DKIM checks.
+
+**Important note**: using settings ID is optimal from the terms of performance.
 
 Let's assume that we have the following settings in the configuration that have id `dkim`:
 
@@ -55,7 +57,7 @@ Let's assume that we have the following settings in the configuration that have 
 dkim {
 	id = "dkim";
 	apply {
-		enable_groups = ["dkim"];
+		groups_enabled = ["dkim"];
 	}
 }
 ~~~
@@ -63,7 +65,7 @@ dkim {
 Afterwards, if we send a request with this settings id using HTTP protocol:
 
 ~~~
-GET /symbols HTTP/1.0
+POST /scanv2 HTTP/1.0
 Settings-ID: dkim
 ~~~
 
@@ -124,8 +126,10 @@ So each setting has the following attributes:
 - `name` - section name that identifies this specific setting (e.g. `some_users`)
 - `priority` - `high` (3), `medium` (2), `low` (1) or any positive integer value (default priority is `low`). Rules with greater priorities are matched first. From version 1.4 Rspamd checks rules with equal priorities in **alphabetical** order. Once a rule matches only that rule is applied and the rest are ignored.
 - `match list` - list of rules which this rule matches:
-	+ `from` - match SMTP from
-	+ `rcpt` - match RCPT
+	+ `from` - match SMTP sender
+	+ `mime_from` - match MIME sender
+	+ `rcpt` - match SMTP recipient
+	+ `mime_rcpt` - match MIME recipient
 	+ `ip` - match source IP address
 	+ `hostname` - match the source hostname (regexp supported)
 	+ `user` - matches authenticated user ID of message sender if any
@@ -151,7 +155,9 @@ If `symbols_enabled` or `groups_enabled` are found in `apply` element, then Rspa
 2. Enable symbols from `symbols_enabled` and `groups_enabled`
 3. Disable symbols from `symbols_disabled` and `groups_disabled`
 
-Currently, you cannot mix several settings for a single message.
+Some rules, such as `metadata exporter`, `history redis` or `clickhouse` are marked as `explicit_disable`. It means that even if you set some specific symbols in `symbols_enabled` these rules will still be executed. This is normally what is expected: enabling specific checks should not interfere with the data exporting/history.
+
+**Important notice**: This is **NOT** applicable to `want_spam` option. This option disable **ALL** Rspamd rules, even history or data exporting. Actually, it is a full bypass of all Rspamd processing.
 
 ### Settings match
 

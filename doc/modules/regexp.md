@@ -57,46 +57,37 @@ Rspamd support the following components within expressions:
 
 ## Regular expressions
 
-In rspamd, regular expressions could match different parts of messages:
+In Rspamd, regular expressions can be used to examine different parts of the message:
 
-* Headers (should be `Header-Name=/regexp/flags`), mime headers
+* Headers (should be `Header-Name=/regexp/iumxs{header}`), mime part headers
 * Full headers string
 * Textual mime parts
 * Raw messages
 * URLs
+* Strings returned by a selector (`re_selector_name=/regexp/iumxs{selector}`)
 
-The match type is defined by special flags after the last `/` symbol:
+The match type is defined by a special flag (after the last `/` symbol).
+It can be either a single letter or a long type in curly braces (from Rspamd 1.3):
 
-* `H` - header regexp
-* `X` - undecoded header regexp (e.g. without quoted-printable decoding)
-* `B` - MIME header regexp (applied for headers in MIME parts only)
-* `R` - full headers content (applied for all headers undecoded and for the message only - **not** including MIME headers)
-* `M` - raw message regexp
-* `P` - part regexp without HTML tags b64/qp decoded
-* `Q` - raw part regexp with HTML tags unencoded
-* `C` - spamassassin `BODY` regexp analogue(see http://spamassassin.apache.org/full/3.4.x/doc/Mail_SpamAssassin_Conf.txt)
-* `D` - spamassassin `RAWBODY` regexp analogue (raw part regexp with HTML tags b64/qp decoded)
-* `U` - URL regexp
-* `$` - from 1.8: [selectors](../configuration/selectors.html) regular expression (must include name of the registered selector)
+| Type | Long type       | Tested content |
+| ---- | --------------- | -------------- |
+| `H`  | `{header}`      | Header value; if the header contains [encoded words](https://tools.ietf.org/html/rfc2047) they are decoded and converted to utf-8, all invalid utf-8 bytes are replaced by a `?` |
+| `X`  | `{raw_header}`  | Raw header value (encoded words are not decoded, but [folding](https://tools.ietf.org/html/rfc5322#section-2.2.3) is removed) |
+| `B`  | `{mime_header}` | Raw MIME header value (applied for headers in MIME parts only) |
+| `R`  | `{all_headers}` | Full headers content (applied for all headers in their original form and for the message only - **not** including MIME headers) |
+| `M`  | `{body}`        | Full message (with all *headers*) as it was send to Rspamd |
+| `P`  | `{mime}`        | Text MIME part content; base64/quoted-printable is decoded, HTML tags are stripped; if charset is not utf-8 Rspamd tries to convert it to utf-8, but if conversion fails the original text is examined |
+| `Q`  | `{raw_mime}`    | Text MIME part raw content (unmodified by Rspamd) |
+| `C`  | `{sa_body}`     | SpamAssassin `body` analogue (see body pattern test description in [SpamAssassin documentation](https://spamassassin.apache.org/full/3.4.x/doc/Mail_SpamAssassin_Conf.html#RULE-DEFINITIONS-AND-PRIVILEGED-SETTINGS)); if charset is not utf-8 Rspamd tries to convert text to utf-8 |
+| `D`  | `{sa_raw_body}` | SpamAssassin `rawbody` analogue (raw data inside text parts, base64/quoted-printable is decoded, but HTML tags and line breaks are preserved) |
+| `U`  | `{url}`         | URLs (before 2.4 also email addresses extracted from the message body, in the same form as returned by [url:tostring()](../lua/rspamd_url.html#m6b648)) |
+| `$`  | `{selector}`    | Strings returned by a [selector](../configuration/selectors.html#regular-expressions-selectors) (from 1.8) |
+|      | `{email}`       | Emails extracted from the message body (from 2.4) |
+|      | `{words}`       | Unicode normalized (to [NFKC](http://www.unicode.org/reports/tr15/#Norm_Forms)) and lowercased words extracted from the text (excluding URLs), subject and From displayed name |
+|      | `{raw_words}`   | The same words, but without normalization (converted to utf8 however) |
+|      | `{stem_words}`  | Unicode normalized, lowercased and [stemmed](https://en.wikipedia.org/wiki/Stemming) words extracted from the text (excluding URLs), subject and From displayed name |
 
-From 1.3, it is also possible to specify long regexp types for convenience in curly braces:
-
-* `{header}` - header regexp
-* `{raw_header}` - undecoded header regexp (e.g. without quoted-printable decoding)
-* `{mime_header}` - MIME header regexp (applied for headers in MIME parts only)
-* `{all_header}` - full headers content (applied for all headers undecoded and for the message only - **not** including MIME headers)
-* `{body}` - raw message regexp
-* `{mime}` - part regexp without HTML tags
-* `{raw_mime}` - part regexp with HTML tags
-* `{sa_body}` - spamassassin `BODY` regexp analogue(see http://spamassassin.apache.org/full/3.4.x/doc/Mail_SpamAssassin_Conf.txt)
-* `{sa_raw_body}` - spamassassin `RAWBODY` regexp analogue
-* `{url}` - URL regexp
-* `{selector}` - from 1.8: [selectors](../configuration/selectors.html) regular expression (must include name of the registered selector)
-* `{words}` - unicode normalized and lowercased words extracted from the text (excluding URLs), subject and From displayed name
-* `{raw_words}` - same but with no normalization (converted to utf8 however)
-* `{stem_words}` - unicode normalized, lowercased and [stemmed](https://en.wikipedia.org/wiki/Stemming) words extracted from the text (excluding URLs), subject and From displayed name
-
-Each regexp also supports the following flags:
+Each regexp also supports the following modifiers:
 
 * `i` - ignore case
 * `u` - use utf8 regexp
@@ -105,6 +96,8 @@ Each regexp also supports the following flags:
 * `s` - dotall regexp - treat string as single line. That is, change `.` to match any character whatsoever, even a newline, which normally it would not match. Used together, as `/ms`, they let the `.` match any character whatsoever, while still allowing `^` and `$` to match, respectively, just after and just before newlines within the string.
 * `O` - do not optimize regexp (rspamd optimizes regexps by default)
 * `r` - use non-utf8 regular expressions (raw bytes). This is default `true` if `raw_mode` is set to `true` in the options section.
+* `A` - return and process all matches (useful for Lua prefilters)
+* `L` - match left part of regexp (useful for Lua prefilters in conjunction with Hyperscan)
 
 ## Internal functions
 
@@ -192,3 +185,36 @@ config.regexp.BLA = {
 ~~~
 
 Please bear in mind that you **cannot** use asynchronous functions (including those with [coroutines](../lua/sync_async.html)) in these Lua snippets as Rspamd will not wait for them to be finished. The only way to use such functions in Regexp expressions is to create a dedicated rule that performs async stuff and then register dependency for regexp symbol: `rspamd_config:register_dependency('RE_SYMBOL', 'ASYNC_SYMBOL')` and then call `task:has_symbol('ASYNC_SYMBOL')` in Lua function defined in Regexp expression.
+
+## Regexp prefilters
+
+Rspamd supports lua filters for regular expressions from version 2.6. The idea is to allow fast pre-filter with regular expressions and slow Lua postprocessing for the cases where this processing is needed. Here is how it's used in bitcoin library:
+
+~~~lua
+config.regexp['RE_POSTPROCESS'] = {
+  description = 'Example of postprocessing for regular expressions',
+  re = string.format('(%s) || (%s)', re1, re2),
+  re_conditions = {
+    [re1] = function(task, txt, s, e)
+      if e - s <= 2 then
+        return false
+      end
+
+      if check_re1(task, txt:sub(s + 1, e)) then
+        return true
+      end
+    end,
+    [re2] = function(task, txt, s, e)
+      if e - s <= 2 then
+        return false
+      end
+
+      if check_re2(task, txt:sub(s + 1, e)) then
+        return true
+      end
+    end,
+  },
+}
+~~~
+
+This allows to add accelerated rules that are enabled merely if some relatively rare regular expression matches. In this particular case this feature is used to do BTC wallet verification and validation.

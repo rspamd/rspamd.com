@@ -5,7 +5,7 @@ title: Writing rules for Rspamd
 
 # Writing Rspamd rules
 
-In this tutorial, we describe how to create new rules for Rspamd - both Lua and regexp rules.
+In this tutorial, we describe how to create new rules for Rspamd - both using Lua and regular expressions.
 
 <div id="toc" markdown="1">
   * this unordered seed list will be replaced by toc as unordered list
@@ -20,123 +20,33 @@ Rules are the essential part of a spam filtering system and Rspamd ships with so
 
 Since Rspamd ships with its own rules it is a good idea to store your custom rules and configuration in separate files to avoid clashing with the default rules which might change from version to version. There are some possibilities to achieve this:
 
-- Local rules in Lua should be stored in the file named `${CONFDIR}/rspamd.local.lua` where `${CONFDIR}` is the directory where your configuration files are placed (e.g. `/etc/rspamd`, or `/usr/local/etc/rspamd` for some systems)
+- Local rules, both Lua and regular expressions, should be stored in the file named `${CONFDIR}/rspamd.local.lua` where `${CONFDIR}` is the directory where your configuration files are placed (e.g. `/etc/rspamd`, or `/usr/local/etc/rspamd` for some systems)
 
-Lua local configuration can be used to both override and extend:
+Lua local configuration can be used to both override and extend, for example if the main lua file has the following line:
 
 `rspamd.lua`:
 
 ~~~lua
+-- Regular expression rule defined in the main Rspamd configuration
 config['regexp']['symbol'] = '/some_re/'
 ~~~
 
-`rspamd.local.lua`:
+then you can define additional rules in `rspamd.local.lua`:
 
 ~~~lua
+-- Regular expression rules defined in a local configuration
 config['regexp']['symbol1'] = '/other_re/' -- add 'symbol1' key to the table
 config['regexp']['symbol'] = '/override_re/' -- replace regexp for 'symbol'
 ~~~
 
-For configuration rules you can take a look at the following examples:
-
-`rspamd.conf`:
-
-~~~ucl
-var1 = "value1";
-
-section "name" {
-	var2 = "value2";
-}
-~~~
-
-`rspamd.conf.local`:
-
-~~~ucl
-var1 = "value2";
-
-section "name" {
-	var3 = "value3";
-}
-~~~
-
-Resulting config:
-
-~~~ucl
-var1 = "value1";
-var1 = "value2";
-
-section "name" {
-	var2 = "value2";
-}
-section "name" {
-	var3 = "value3";
-}
-~~~
-
-Override example:
-
-`rspamd.conf`:
-
-~~~ucl
-var1 = "value1";
-
-section "name" {
-	var2 = "value2";
-}
-~~~
-
-`rspamd.conf.override`:
-
-~~~ucl
-var1 = "value2";
-
-section "name" {
-	var3 = "value3";
-}
-~~~
-
-Resulting config:
-
-~~~ucl
-var1 = "value2";
-
-# Note that var2 is removed completely
-
-section "name" {
-	var3 = "value3";
-}
-~~~
-
-For each individual configuration file shipped with Rspamd, there are two special includes:
+Please bear in mind that this method is different comparing to the ordinary configuration files that use a different (UCL based) syntax and usually have two special includes:
 
     .include(try=true,priority=1) "$CONFDIR/local.d/config.conf"
     .include(try=true,priority=1) "$CONFDIR/override.d/config.conf"
 
-Therefore, you can either extend (using local.d) or ultimately override (using override.d) any settings in the Rspamd configuration.
+In this case you can either enrich/rewrite (using local.d) or ultimately override (using override.d) settings in the Rspamd configuration.
 
-For example, let's override some default symbols shipped with Rspamd. To do that we can create and edit `etc/rspamd/local.d/metrics.conf`:
-
-    symbol "BLAH" {
-        score = 20.0;
-    }
-
-We can also use an override file. For example, let's redefine actions and set a more restrictive `reject` score. To do this, we create `/etc/rspamd/override.d/actions.conf` with the following content:
-
-~~~ucl
-# override.d/actions.conf
-reject = 150;
-add_header = 6;
-greylist = 4;
-~~~
-
-You can also disable some action completely:
-
-~~~ucl
-# override.d/actions.conf
-reject = null;
-~~~
-
-This will set the other actions (e.g. `add_header` and `greylist`) to their default values.
+For example, we can override some default symbols shipped with Rspamd. To do that we can create and edit `etc/rspamd/local.d/metrics.conf`:
 
 ## Writing rules
 
@@ -146,6 +56,8 @@ There are two types of rules that are normally defined by Rspamd:
 - `Regexp` rules: regular expressions and combinations of regular expressions to match specific patterns
 
 Lua rules are useful for some complex tasks: check DNS, query Redis or HTTP, examine some task-specific details. Regexp rules are useful since they are heavily optimized by Rspamd (especially when `Hyperscan` is enabled) and allow matching custom patterns in headers, URLs, text parts and even the entire message body.
+
+There is another option called [selectors](https://rspamd.com/doc/configuration/selectors.html) that allows to combine data extraction and data transformation routines to skip custom Lua code writing. Selectors framework is also useful to reuse custom extraction/transformation routines in different plugins and even in the regular expressions constructions.
 
 ### Rule weights
 
@@ -200,16 +112,16 @@ rspamd_config.MY_LUA_SYMBOL = {
 }
 ~~~
 
+Please bear in mind that the scores you define directly from Lua have lower priority and are overriden by scores defined in the `groups.conf` file. WebUI defined scores have even higher priority.
+
 ## Regexp rules
 
 Regexp rules are executed by the `regexp` module of Rspamd. You can find a detailed description of the syntax in [the regexp module documentation]({{ site.url }}{{ site.baseurl }}/doc/modules/regexp.html)
 
 Here are some hints to maximise performance of your regexp rules:
 
-* Prefer lightweight regexps, such as header or URL, to heavy ones, such as mime or body regexps (unless you are using Hyperscan)
-* If you need to match text in a message's content, prefer `mime` regexps as they are executed on text content only
-* If you need to match the whole messages, then you might want to use [hyperscan](https://hyperscan.io). It is normally included in the Rspamd packages, however, your OS might provide own packages without Hyperscan. Please consider reading [pattern support](http://intel.github.io/hyperscan/dev-reference/compilation.html#pattern-support) to avoid expensive PCRE fallback.
-* Avoid complex regexps, avoid backtracing, avoid negative groups `(?!)`, avoid capturing patterns (replace with `(?:)`), avoid potentially empty patterns, e.g. `/^.*$/`, especially when using hyperscan
+* Prefer lightweight regexps, such as header or URL, to heavy ones, such as mime or body regexps (unless you are using Hyperscan, which is default for all Intel based platforms)
+* Avoid complex regexps, avoid backtracing (e.g. `/*+a?`), avoid lookahead/lookbehind, avoid potentially empty patterns, avoid large boundary constraints `a{1000,100000}`, especially when using Hyperscan - all these constructions have to fallback to PCRE increasing scan complexity, but even PCRE can have exponential grow for some of the listed cases
 
 Following these rules allows you to create fast and efficient rules. To add regexp rules you should use the `config` global table that is defined in any Lua file used by Rspamd:
 
@@ -236,7 +148,19 @@ Lua rules are more powerful than regexp ones but they are not as heavily optimiz
 
 ### Return values
 
-Each Lua rule can return `0`, or `false`, meaning that the rule has not matched, or true if the symbol should be inserted. In fact, you can return any positive or negative number which would be multiplied by the rule's static score, e.g. if the rule score is `1.2`, then when your function returns `1` the symbol will have a  score of `1.2`, and when your function returns `0.5` then the symbol will have a score of `0.6`. The common convention of the return values is to return **confidence factor** varying from `0` to `1.0`.
+Each Lua rule can return `0`, or `false`, meaning that the rule has not matched, or true if the symbol should be inserted. In fact, you can return any positive or negative number which would be multiplied by the rule's static score, e.g. if the rule score is `1.2`, then when your function returns `1` the symbol will have a  score of `1.2`, and when your function returns `0.5` then the symbol will have a score of `0.6`. The common convention of the return values is to return **confidence factor** varying from `0` to `1.0`. The remaining return values are treated as symbol's options. They can be either in a single table:
+
+~~~lua
+return true,1.0,{'option1', 'option2'}
+~~~
+
+or as a list of return values:
+
+~~~lua
+return true,1.0,'option1','option2'
+~~~
+
+There is no difference in these notations. Tables are usually more convenient if you form list of options during the rule progressing.
 
 ### Rule conditions
 
@@ -360,15 +284,17 @@ rspamd_config.SUBJ_ALL_CAPS = {
 
 Rspamd rules fall under three categories:
 
+0. Connection filters - are executed before a message has been processed (e.g. on a connection stage)
 1. Pre-filters - run before other rules
 2. Filters - run normally
 3. Post-filters - run after all checks
+4. Idempotent filters - performs statistical checks and are NOT allowed to change scan result in any way
 
 The most common type of rules are generic filters. Each filter is basically a callback that is executed by Rspamd at some time, along with an optional symbol name associated with this callback. In general, there are three options to register symbols:
 
 * register callback and associated symbol
-* register just a plain callback
-* register symbol with no callback (*virtual* symbol)
+* register just a plain callback (symbol is not expected to be inserted to result)
+* register symbol with no callback (*virtual* symbol) and an associated callback rule
 
 The last option is useful when you have a single callback but with different possible results; for example `SYMBOL_ALLOW` or `SYMBOL_DENY`. Filters are registered using the following method:
 
@@ -381,12 +307,10 @@ rspamd_config:register_symbol{
   score = 1.0, -- Metric score
   group = 'some group', -- Metric group
   description = 'My super symbol',
-  flags = 'fine', -- fine: symbol is always checked, skip: symbol is always skipped, empty: symbol work for checks with no message
+  flags = 'fine', -- fine: symbol is always checked, skip: symbol is always skipped, empty: symbol allows to be executed with no message
   --priority = 2, -- useful for postfilters and prefilters to define order of execution
 }
 ~~~
-
-`nominal_weight` is used to define priority and the initial score multiplier. It should usually be `1.0` for normal symbols and `-1.0` for symbols with negative scores that should be executed before other symbols. Here is an example of registering one callback and a couple of virtual symbols used in the [DMARC]({{ site.url }}{{ site.baseurl }}/doc/modules/dmarc.html) module:
 
 ~~~lua
 local id = rspamd_config:register_symbol({
@@ -617,10 +541,14 @@ There is a strict order of configuration application:
 
 Rules in Rspamd are checked in the following order:
 
-1. **Pre-filters**: checked every time and can stop all further processing by calling `task:set_pre_result()`
-2. **All symbols***: can depend on each other by calling `rspamd_config:add_dependency(from, to)`
-3. **Statistics**: is checked only when all symbols are checked
-4. **Composites**: combine symbols to adjust the final results; pass 1
-5. **Post-filters**: are executed even if a message is already rejected and symbols processing has been stopped
-6. **Composites**: combine symbols to adjust the final results; pass 2
-7. **Idempotent**: execute rules that cannot change result (e.g. data exporters)
+| Stage | Description |
+:- | :-----------
+| **Connection filters** (from 2.7) | initial stage just after a connection has been established (these rules should not rely on any body content)
+| **Message processing** | a stage where Rspamd performs text extraction, htm parsing, language detection etc
+| **Pre-filters** | checked before all normal filters and are executed in order from high priority to low priority ones (e.g. a prefilter with priority 10 is executed before a prefilter with priority 1)
+| **Normal filters** | normal rules that form dependency graph on each other by calling `rspamd_config:add_dependency(from, to)`, otherwise the order of execution is not defined
+| **Statistics** | checked only when all normal symbols are checked
+| **Composites** | combined symbols to adjust the final results; pass 1
+| **Post-filters** | rules that are called after normal filters and composites pass, the order of execution is from low priority to high priority (e.g. a postfilter with priority 10 is executed after a postfilter with priority 1)
+| **Composites** | combined symbols to adjust the final results (including postfilter results); pass 2
+| **Idempotent filters** | rules that cannot change result in any way (so adding symbols or changing scores are not allowed on this stage), the order of execution is from low priority to high priority, same as postfilters

@@ -107,6 +107,8 @@ report_settings {
   # override_address = "postmaster@example.net";
   # Send DMARC reports here in addition to domain owners
   # additional_address = "postmaster@example.net";
+  # DMARC Reports send to addition will be send as BCC
+  # additional_address_bcc = false;
   # Number of records to request with HSCAN
   # hscan_count = 200
 }

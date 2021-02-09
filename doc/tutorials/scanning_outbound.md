@@ -27,9 +27,15 @@ Rspamd tries to be suitable for outbound scanning with no or little configuratio
 
 Additionally, it is possible to disable/enable checks selectively and/or rescore checks for your authenticated users or relay IPs using [settings module]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html).
 
-### Rmilter
+### MTA with milter support (e.g. Postfix or Sendmail)
 
-To enable scanning of outbound mail you should set `strict_auth = true`, see [here]({{ site.baseurl }}/rmilter/configuration.html) for more information (deprecated since Rspamd 1.6).
+You might want to add `non_smtpd_milters` setting to point Rspamd proxy worker for scanning of the emails that are sent directly via `sendmail` or other local delivery agent. Here is an example for Postfix MTA:
+
+~~~
+# postfix/main.cf
+smtpd_milters=inet:127.0.0.1:11332 # For inbound scan or outbound scan via SMTP
+non_smtpd_milters=inet:127.0.0.1:11332 # For invocation via LDA
+~~~
 
 ### Exim
 
@@ -83,6 +89,7 @@ authenticated=true
 ~~~
 
 If you wish to honor `reject` action for authenticated users set the following:
+
 ~~~
 [reject]
 authenticated=true

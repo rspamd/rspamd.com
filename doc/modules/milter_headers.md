@@ -99,6 +99,14 @@ Set false to always add headers for local IPs (default `true`).
 skip_local = true;
 ~~~
 
+### skip_all (2.8.0+)
+    
+Do not add extended headers for any messages (except those matching extended_headers_rcpt) (default `false`)
+
+~~~ucl
+skip_all = true;
+~~~
+
 ### skip_authenticated (1.6.0+)
     
 Set false to always add headers for authenticated users (default `true`)
@@ -117,7 +125,8 @@ When [`extended_spam_headers`](#extended_spam_headers) is enabled, also add exte
 extended_headers_rcpt = ["user1", "@example1.com", "user2@example2.com"];
 ~~~
 
-`extended_headers_rcpt` has higher precedence than `skip_local` and `skip_authenticated`. 
+`extended_headers_rcpt` has higher precedence than `skip_local`, `skip_authenticated` and `skip_all`.  
+`extended_headers_rcpt` paired with `skip_all = true` can be used to only add extended headers to a map of specific recipients. 
 
 ### use
 
@@ -249,11 +258,12 @@ Adds a header containing the scan results [if the message is NOT originated from
 
 ### x-rspamd-server (1.5.8+)
 
-Adds a header containing the name of the Rspamd server that checked out the message [if it is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention).
+Adds a header containing the local computer host name of the Rspamd server that checked out the message [if it is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention). Since Rspamd 2.4 the host name can be replaced with a user-defined string specified in the `hostname` setting.
 
 ~~~ucl
   header = 'X-Rspamd-Server';
   remove = 0;
+  hostname = nil; -- Get the local computer host name (2.4+)
 ~~~
 
 ### x-spamd-bar

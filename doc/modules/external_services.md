@@ -128,9 +128,10 @@ This module was tested with these icap implementations:
 *   Kaspersky Web Traffic Security 6.0
 *   Trend Micro InterScan Web Security Virtual Appliance (IWSVA) (Rspamd 2.0)
 *   F-Secure Internet Gatekeeper (Rspamd 2.0)
-*   ESET File Security for Linux 7.0
 
-Please report other working or non-working icap implementations.
+If using a proprietary ICAP service **please check** with your vendor if it is suitable for your intended use- do not assume any proprietary software above to be fit for use.
+
+Please use the `Edit Page` button on this article to add software which was tested as working or remove software which is unfit for use.
 
 ~~~ucl
 # local.d/external_services.conf
@@ -252,6 +253,9 @@ With having the flags and all functions exposed as individual threats you can no
 
 oletools {
   ...
+
+  extended = true;
+
   patterns {
     # catch Macro, AutoExec, Suspicious and Hex Strings
     BAD_MACRO_MYFLAGS = '^MAS.H...$';
@@ -497,3 +501,23 @@ spamassassin {
   ...
 }
 ~~~
+
+## Virustotal details
+
+Rspamd uses [`file/report`](https://developers.virustotal.com/reference#file-report) endpoint to receive results. Since Virustotal policies are quite strict, you need to ensure that you have set your own key in the plugin configuration:
+
+~~~ucl
+# local.d/antivirus.conf
+virustotal {
+  # Obtained from Virustotal
+  apikey = "xxx";
+  # Change if you use private mirror or another API
+  #url = 'https://www.virustotal.com/vtapi/v2/file';
+  # Minimum required to get scored
+  #minimum_engines = 3;
+  # After this number we set max score
+  #full_score_engines = 7;
+}
+~~~
+
+Rspamd will also not return the full result by the same reasons: merely number of engine matched and the md5 hash that you can use to view the full report on the Virustotal site.

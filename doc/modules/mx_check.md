@@ -23,8 +23,8 @@ enabled = true;
 
 # A map of specific domains that should be excluded from MX check
 exclude_domains = [
-    "https://rspamd.com/freemail/disposable.txt.zst",
-    "https://rspamd.com/freemail/free.txt.zst",
+    "https://maps.rspamd.com/freemail/disposable.txt.zst",
+    "https://maps.rspamd.com/freemail/free.txt.zst",
     "${CONFDIR}/maps.d/maillist.inc",
     "${CONFDIR}/maps.d/redirectors.inc",
     "${CONFDIR}/maps.d/dmarc_whitelist.inc",

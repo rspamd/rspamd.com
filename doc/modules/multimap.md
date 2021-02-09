@@ -18,29 +18,26 @@ Multimap module is designed to handle rules that are based on different types of
 Maps in Rspamd are files or HTTP links that are automatically monitored and reloaded
 if changed. For example, maps can be defined as following:
 
-	"http://example.com/file"
-	"file:///etc/rspamd/file.map"
-	"/etc/rspamd/file.map"
+	map = "http://example.com/file";
+	map = "file:///etc/rspamd/file.map";
+	map = "/etc/rspamd/file.map";
 
-Rspamd respects `304 Not Modified` reply from HTTP server allowing to save traffic
-when a map has not been actually changed since last load. For file maps, Rspamd uses normal
-`mtime` file attribute (time modified). The global map watching settings are defined in the
-`options` section of the configuration file:
 
-* `map_watch_interval`: defines time when all maps are rescanned; the actual check interval is jittered to avoid simultaneous checking (hence, the real interval is from this value up to the this interval doubled).
+Rspamd allows to save traffic for HTTP maps using cached maps and respecting `304 Not modified` responce as well as Cache-Control headers and ETag. Maps data is shared between workers and the only worker that is allowed to fetch remote maps is the first controller worker.
 
+The default configuration of this module actively uses `compound maps` where a map is defined as an array of sources (+ local fallback location). For user defined maps this redundancy is typically unnecessary details. However, that is described in the following [FAQ section](https://rspamd.com/doc/faq.html#what-are-maps).
 
 ## Configuration
 
 The module itself contains a set of rules in form:
 
 ~~~ucl
-symbol { 
+MAP_SYMBOL1 { 
   type = "type"; 
   map = "url"; 
   # [optional params...] 
 }
-symbol1 { 
+MAP_SYMBOL2 { 
   type = "type"; 
   map = "from"; 
   # [optional params...] 
@@ -49,7 +46,9 @@ symbol1 {
 ...
 ~~~
 
-You can define new rules in the file `/etc/rspamd/local.d/multimap.conf`. 
+You should normally define your own rules in the file `/etc/rspamd/local.d/multimap.conf`. 
+
+### Map attributes
 
 Mandatory attributes are:
 
@@ -61,7 +60,7 @@ Optional map configuration attributes:
 * `prefilter` - defines if the map is used in [prefilter mode](#pre-filter-maps)
 * `action` - for prefilter maps defines action set by map match
 * `regexp` - set to `true` if your map contain [regular expressions](#regexp-maps)
-* `symbols` - array of symbols that this map can insert (for key-value pairs), [learn more](#multiple-symbols-maps)
+* `symbols` - array of symbols that this map can insert (for key-value pairs), [learn more](#multiple-symbol-maps). Please bear in mind, that if you define this attribute, your map must have entries in form `key<spaces>value` to match a specific symbol.
 * `score` - score of the symbol (can be redefined in the `metric` section)
 * `description` - map description
 * `message` - message returned to MTA on prefilter reject action being triggered
@@ -200,7 +199,7 @@ All maps with the exception of `ip` and `dnsbl` maps support `regexp` mode. In t
 # Comments are still enabled
 ```
 
-For performance considerations, use only expressions supported by [Hyperscan](http://01org.github.io/hyperscan/dev-reference/compilation.html#pattern-support) as this engine provides blazing performance at no additional cost. Currently, there is no way to distinguish what particular regexp was matched in case if multiple regexp were matched.
+For performance considerations, use only expressions supported by [Hyperscan](http://intel.github.io/hyperscan/dev-reference/compilation.html#pattern-support) as this engine provides blazing performance at no additional cost. Currently, there is no way to distinguish what particular regexp was matched in case if multiple regexp were matched.
 
 To enable regexp mode, you should set `regexp` option to `true`:
 
@@ -462,6 +461,7 @@ COMBINED_MAP_OR {
 }
 ~~~
 
+Combined maps support merely **selectors** syntax, not general multimap rules.
 
 ## Dependent maps
 
@@ -535,6 +535,22 @@ SYMBOL_OPTIONS_DBL {
   target_symbol = "DBL_ABUSE_REDIR";
   symbols = ["INTERESTING_DOMAIN"];
   map = "${LOCAL_CONFDIR}/dbl_redir_symbols.map";
+}
+WHITELIST_HELO_RCPT {
+  type = "combined";
+  prefilter = true;
+  action = "accept";
+  rules {
+    helo {
+      map = "${LOCAL_CONFDIR}/helo_smtp.map";
+      selector = "helo";
+    }
+    rcpt = {
+      map = "${LOCAL_CONFDIR}/rcpt_internal_subdomains.map";
+      selector = "rcpts:domain";
+    }
+  }
+  expression = "helo & rcpt"
 }
 ~~~
 

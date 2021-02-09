@@ -49,18 +49,21 @@ Rspamd packages are provided for many [platforms]({{ site.url }}{{ site.baseurl 
 1. Enable `link time optimizations` where possible to improve the overall performance
 2. Bundle [LuaJIT](https://luajit.org) using 2.1 beta versions from the vendor. In some experiments, this proved to provide up to 30% improvement over the stable LuaJIT.
 3. Enable jemalloc
-4. Enable neural networks support (libfann before 1. 7, torch after 1.7)
-5. Support [Hyperscan](https://01.org/hyperscan)
+4. Support [Hyperscan](https://www.hyperscan.io/)
 
 Some of these options are not available on some older platforms (Debian wheezy, Ubuntu Precise or CentOS 6) due to limitations of software provided.
 
 All packages are signed and should also be downloaded using `https`. Debugging packages are also available (`rspamd-debuginfo` for RPM packages and `rspamd-dbg` for DEB ones).
 
-ASAN packages are built with minimum optimizations and include [Address Sanitizer](https://en.wikipedia.org/wiki/AddressSanitizer) to allow debugging issues. These packages are significanlty slower and are not recommended for normal production usage (however, they **could** be) but they might be essential to debug Rspamd issues.
+ASAN packages are built with minimum optimizations and include [Address Sanitizer](https://en.wikipedia.org/wiki/AddressSanitizer) to allow debugging issues. These packages are significantly slower and are not recommended for normal production usage (however, they **could** be) but they might be essential to debug Rspamd issues.
 
 ### Resolver setup
 
-DNS resolving is a very important part of the spam filtering since a lot of information is obtained from DNS lists, e.g. IP and URL blacklists, whitelists, reputation data and so on and so forth. Hence, Rspamd will be **totally** broken in case: it might even refuse to start. Furthermore, if you are using your provider's resolver or some public resolver you might be affected by blocking from the vast majority of DNS lists providers or even corrupted results. It is known that Rspamd is broken when your provider's DNS returns some IP address to redirect your browser to instead of the real response.
+DNS resolving is a very important part of the spam filtering since a lot of information is obtained from DNS lists, e.g. IP and URL blacklists, whitelists, reputation data and so on and so forth. Hence, Rspamd will be **totally** broken in case: it might even refuse to start. Furthermore, if you are using your provider's resolver or some public resolver you might be affected by blocking from the vast majority of DNS lists providers or even corrupted results. 
+
+Please bear in mind that Rspamd does NOT use the standard resolver libraries for performace and sanity considerations, so all resolvers configuration must be either static (in the normal `/etc/resolv.conf` or in `local.d/options.inc` for Rspamd specific resolvers) or Rspamd should be reloaded (or restarted) on any DNS resolvers change. Rspamd currently does not read `/etc/hosts` file as well.
+
+It is known that Rspamd is broken when your provider's DNS returns some IP address to redirect your browser to instead of the real response.
 
 Hence, it is **strongly** recommended to have your own recursive resolver when using Rspamd (or any other email related technology in fact). Our own recommended choice is to set up Unbound or, for the most advanced setups, the [Knot Resolver](https://www.knot-resolver.cz/). You can read about Unbound basic setup [here](https://wiki.archlinux.org/index.php/unbound).
 
@@ -69,7 +72,7 @@ Then you can either set your local resolver globally via `/etc/resolv.conf` or s
 ~~~ucl
  # local.d/options.inc
 dns {
-	 nameserver = ["127.0.0.1"];
+  nameserver = ["127.0.0.1"];
 }
 ~~~
 
@@ -78,18 +81,21 @@ or, if you want some backup as a last resort, you can use `master-slave` [rotati
 ~~~ucl
  # local.d/options.inc
 dns {
-	 nameserver = "master-slave:127.0.0.1,8.8.8.8";
+  nameserver = "master-slave:127.0.0.1,8.8.8.8";
 }
 ~~~
 
-If you use large scale DNS system you might want to set up `hash` rotation algorithm. It will significantly increase cache hit rate and reduce number of recursed requests if you have more than one upstream resolver:
+If you use large scale DNS system you might want to set up `hash` rotation algorithm. It will significantly increase cache hit rate and reduce number of recursive queries if you have more than one upstream resolver:
 
 ~~~ucl
  # local.d/options.inc
 dns {
-	 nameserver = "hash:10.0.0.1,10.1.0.1,10.3.0.1";
+  nameserver = "hash:10.0.0.1,10.1.0.1,10.3.0.1";
 }
 ~~~
+
+Rspamd uses consistent hashing and has some tolerance to the configuration changes.
+
 
 ### How to figure out why Rspamd process crashed
 
@@ -196,7 +202,8 @@ export ASAN_OPTIONS="log_path=/tmp/rspamd-asan"
 Or add this to `systemctl edit rspamd` if using systemd:
 
 ```
-ASAN_OPTIONS="log_path=/tmp/rspamd-asan"
+[Service]
+Environment="ASAN_OPTIONS=log_path=/tmp/rspamd-asan"
 ```
 
 Then, if you find out that Rspamd has crashed, you might want to use both core file (backtrace from it) and `/tmp/rspamd-asan.<pid>` file (where `<pid>` is the PID of the crashed process) to report your issue.
@@ -333,6 +340,7 @@ Finally, we always prefer patches/pull requests to plain bug reports.
 To report bugs or suggest something about the documentation or the web site, please take a look at [this Github repo](https://github.com/vstakhov/rspamd.com).
 
 ### What is the difference between `rspamc` and `rspamadm`
+
 rspamadm is an administration tool that works with the **local** Rspamd daemon via a unix socket and performs management tasks. You can get help for this tool, and its options, by typing:
 
 ```
@@ -413,6 +421,10 @@ rspamadm configdump classifier
 
 Configuration snippets are usually asked if you want to report some issue found in Rspamd in case if you use non-standard configuration.
 
+### How to get the list of the enabled plugins
+
+You can use `rspamadm configdump -m` to check or `rspamadm configwizard` to check and probably configure some of the plugins.
+
 ### How to change score for some symbol
 
 Unfortunately, it is not an easy question. If you use [WebUI](../webui/) then it redefines all scores and actions thresholds. Once you set some symbol's score in WebUI it is almost impossible to change it by other ways (you can do it by changing/removing the file `$DBDIR/rspamd_dynamic` which is usually `/var/lib/rspamd_dynamic` or `/var/db/rspamd_dynamic` depending on your OS).
@@ -444,6 +456,8 @@ group "mygroup" {
 ~~~
 
 To redefine symbols for the existing groups, it is recommended to use a specific `local.d` or `override.d` file, for example, `local.d/rbl_group.conf` to add your custom RBLs. To get the full list of such files, you can take a look over the `groups.conf` file in the main Rspamd configuration directory (e.g. `/etc/rspamd/groups.conf`).
+
+You can check your new scores by using `rspamadm configdump -g` from version 2.5: this command shows all Rspamd groups, symbols and their scores. You can add flag `-j` for JSON output and use `jq` tool to operate with the output.
 
 ### Rspamd configuration nesting
 
@@ -570,6 +584,7 @@ metric "default" {
 and add this to the `rspamd.conf.local` (but not override).
 
 ### What are the local.d and override.d directories
+
 From Rspamd version 1.2 onwards, the default configuration provides two more ways to extend or redefine each configuration file shipped with Rspamd. Each section definition includes two files with different priorities:
 
 - `/etc/rspamd/local.d/<conf_file>` - included with priority `1` that allows you to redefine and extend the default rules; but `dynamic updates` or items redefined via the WebUI will have higher priority and can redefine the values included
@@ -714,6 +729,12 @@ In the example above `fallback+file://${CONFDIR}/2tld.inc` will be used when the
 Bear in mind that (1) and (3) can only be distinguished by making an array like `map = ["192.168.1.1/24"]`
 Historically just for radix map (ipnetwork ones) you could also use `map = "192.168.1.1/24"` but it is not recommended.
 
+### How is maps.rspamd.com maintained
+
+The Rspamd source code refers to some online maps from `maps.rspamd.com`.
+
+These are maintained in [https://github.com/rspamd/maps](https://github.com/rspamd/maps).
+
 ### What can be in the maps
 
 Maps can have the following objects:
@@ -752,6 +773,24 @@ IP maps:
 [::1]/64
 192.168.0.1/19
 ```
+
+### How HTTP maps are loaded
+
+There is a difference between hot and cold start:
+
+* on hot start Rspamd reuses cached maps for HTTP maps (and their `Cache-Control/ETag` attributes as well) so it starts using them just after the start
+* on cold start (when new maps are added or when `/var/lib/rspamd` is cleaned) Rspamd fetches maps merely after workers are started so there could be a gap that might be covered in turn by `file+fallback` backend option if map downtime is unacceptable:
+
+```
+map = [
+  "https://maps.rspamd.com/rspamd/spf_dkim_whitelist.inc.zst",
+  "$LOCAL_CONFDIR/local.d/maps.d/spf_dkim_whitelist.inc.local",
+  "${DBDIR}/spf_dkim_whitelist.inc.local",
+  "fallback+file://${CONFDIR}/maps.d/spf_dkim_whitelist.inc"
+];
+```
+
+In this case, the first three backends will be used when HTTP map is available (and the data will be joined all together). The final location defines cold startup fallback which will be replaced when/if HTTP map is downloaded.
 
 ### How to sign maps
 
@@ -815,6 +854,8 @@ group "test" {
 
 In this case, if `test1` and `test2` both match, their joint score won't be more than `15`.
 
+You can check your groups configuration by using `rspamadm configdump -g` from version 2.5: this command shows all Rspamd groups, symbols and their scores. You can add flag `-j` for JSON output and use `jq` tool to operate with the output.
+
 ### Why are some symbols missing in the metric configuration
 
 It is now possible to set up rules completely using Lua. This allows setting all necessary attributes without touching the configuration files. However, it is still possible to override the default scores in any configuration file. Here is an example of such a rule:
@@ -873,7 +914,7 @@ settings {
 Just disable `greylisting` module by adding the following configuration:
 
 ~~~ucl
-# local.d/greylisting.conf
+# local.d/greylist.conf
 enabled = false;
 ~~~
 
@@ -1025,7 +1066,7 @@ redis-cli [-p 6379] --scan --pattern 'rn_SHORT_*' | xargs redis-cli unlink
 
 ### How to run Rspamd using Unix sockets
 
-From https://github.com/vstakhov/rspamd/issues/1905
+From [https://github.com/vstakhov/rspamd/issues/1905](https://github.com/vstakhov/rspamd/issues/1905)
 
 
 **Redis**
@@ -1148,7 +1189,7 @@ Then transfer it to the new server and restore it to a binary RRD:
 
 You have multiple options here. First of all, if you need to define a whitelist based on `SPF`, `DKIM` or `DMARC` policies, then you should look at the [whitelist module]({{ site.url }}{{ site.baseurl }}/doc/modules/whitelist.html). Otherwise, there is a [multimap module]({{ site.url }}{{ site.baseurl }}/doc/modules/multimap.html) that implements different types of checks to add symbols according to list matches or to set pre-actions which allow you to reject or permit certain messages.
 
-Another option is to disable spam filtering for some senders or recipients based on [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html). You can specify `want_spam = yes` and Rspamd will skip messages that satisfy a particular rule's conditions.
+Another option is to disable spam filtering for some senders or recipients based on [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html). You can specify `symbols_enabled = [];` and Rspamd will skip all filtering rules that satisfy a particular settings conditions. Using of a more powerful `want_spam = yes` can be [confusing](https://github.com/rspamd/rspamd/issues/3552).
 
 ### How to blacklist messages based on extension
 
@@ -1170,6 +1211,7 @@ filename_blacklist {
   map = "/${LOCAL_CONFDIR}/filename.map";
   symbol = "FILENAME_BLACKLISTED";
   action = "reject";
+  # skip_archives = true; # Uncomment if filenames in archives should be excluded from this check
 }
 ```
 
@@ -1251,7 +1293,7 @@ Please check the [following document]({{ site.url }}{{ site.baseurl }}/doc/confi
 
 ### What is faster between custom Lua rules and regular expressions
 
-Switching from C to Lua might be expensive. Hence, you should use regular expressions for simple checks where possible. If Rspamd is compiled with [Hyperscan](https://01.org/hyperscan) the cost of adding another regular expression is usually very cheap. In this case, you should avoid constructions that are not supported by Hyperscan: backtracking, lookbehind and some [others](http://01org.github.io/hyperscan/dev-reference/compilation.html#unsupported-constructs). On the other hand, Lua provides some unique functions that are not available by using of regular expressions. In this case, you should use Lua.
+Switching from C to Lua might be expensive. Hence, you should use regular expressions for simple checks where possible. If Rspamd is compiled with [Hyperscan](https://www.hyperscan.io/) the cost of adding another regular expression is usually very cheap. In this case, you should avoid constructions that are not supported by Hyperscan: backtracking, lookbehind and some [others](http://intel.github.io/hyperscan/dev-reference/compilation.html#unsupported-constructs). On the other hand, Lua provides some unique functions that are not available by using of regular expressions. In this case, you should use Lua.
 
 ## WebUI questions
 

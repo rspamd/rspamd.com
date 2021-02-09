@@ -21,13 +21,13 @@ This guide describes the main steps to get and start working with Rspamd. In par
 
 ## Alternative guides (3rd party)
 
-* [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/){:target="&#95;blank"} - a good example of all-in-one tutorial about how to setup your own mail server
-* [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://www.c0ffee.net/blog/mail-server-guide){:target="&#95;blank"} - similar to the previous guide but uses a different technologies stack
-* [An alternative introduction to rspamd configuration](https://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/){:target="&#95;blank"}
+* [An alternative introduction to rspamd configuration](https://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/){:target="&#95;blank"} - a detailed information about Rspamd configuration files and their purposes from the sysadmin point of view: concentrating on two main questions “What is there to configure?” and “How do I configure things?”.
+* [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/){:target="&#95;blank"} - a good example of all-in-one tutorial about how to setup your own mail server. Please bear in mind that the advice of adding `level = error` to /etc/rspamd/local.d/logging.inc is not correct. You should use the default `info` in the most of the cases or `silent` if you merely want important information to be logged.
+* [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://www.c0ffee.net/blog/mail-server-guide){:target="&#95;blank"} - similar to the previous guide but uses a different technologies stack. Here, you should ignore an advice about `url_tag` module.
 
 ## Preparation steps
 
-First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. In this guide, we describe the setup of the [Postfix MTA](http://www.postfix.org/){:target="&#95;blank"}. However, Rspamd can work with other MTA software - you can find details in the [integration document]({{ site.baseurl }}/doc/integration.html).
+First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. In this guide, we describe the setup of the [Postfix MTA](http://www.postfix.org/){:target="&#95;blank"}. However, Rspamd can work with other MTA software - you can find details in the [integration document]({{ site.baseurl }}/doc/integration.html). Exim MTA has a very limited support of Rspamd so it is not recommended to run Exim in conjunction with Rspamd.
 
 You should also consider to setup your own [local  DNS resolver]({{ site.baseurl }}/doc/faq.html#resolver-setup).
 
@@ -47,7 +47,7 @@ We assume that you are installing Postfix with your OS's package manager (e.g. `
     </a>
 <div id="main_cf" class="collapse collapse-block">
 <pre><code>
-# SSL setup (we assume the same certs for IMAP and SMTP here)
+# TLS setup (we assume the same certs for IMAP and SMTP here)
 smtpd_tls_cert_file = /etc/letsencrypt/live/your.domain/fullchain.pem
 smtpd_tls_key_file = /etc/letsencrypt/live/your.domain/privkey.pem
 smtpd_use_tls = yes
@@ -197,7 +197,7 @@ The download process is described in the [downloads page]({{ site.baseurl }}/dow
 
 ## Running Rspamd
 
-### Platforms with systemd (Arch, CentOS 7, Debian Jessie, Fedora, Ubuntu Xenial)
+### Platforms with systemd (Arch, CentOS 7, Debian, Fedora, Ubuntu)
 
 Packaging should start rspamd and configure it to run on startup on installation.
 
@@ -206,26 +206,6 @@ You can verify it's running as follows:
 ```
 systemctl status rspamd
 ```
-
-### Old Debian based systems (Ubuntu before xenial, Debian before Jessie)
-
-To enable run on startup:
-
-    update-rc.d rspamd defaults
-
-To start once:
-
-    /etc/init.d/rspamd start
-
-### CentOS/RHEL 6
-
-To enable run on startup:
-
-    chkconfig rspamd on
-
-To start once:
-
-    /etc/init.d/rspamd start
 
 ## Configuring Rspamd
 
@@ -388,37 +368,6 @@ local_addrs = "192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, fd00::/8, 169.254.0.0/
 
 Please review the [global options documentation]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html) for other global settings you may want to use.
 
-## Using of Milter protocol (for Rspamd >= 1.6)
-
-From Rspamd 1.6, rspamd proxy worker supports the `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introducing of this feature also finally obsoletes the `rmilter` project in honor of the new integration method. Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
-
-* Proxy mode (for large instances) with a dedicated scan layer
-* Self-scan mode (for small instances)
-
-Here, we describe the simplest `self-scan` option:
-
-<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
-
-In this mode, `rspamd_proxy` scans messages itself and talks to MTA directly using the Milter protocol. The advantage of this approach is its simplicity. Here is a sample configuration for this mode:
-
-~~~ucl
-# local.d/worker-proxy.inc
-milter = yes; # Enable milter mode
-timeout = 120s; # Needed for Milter usually
-upstream "local" {
-  default = yes; # Self-scan upstreams are always default
-  self_scan = yes; # Enable self-scan
-}
-count = 4; # Spawn more processes in self-scan mode
-max_retries = 5; # How many times master is queried in case of failure
-discard_on_reject = false; # Discard message instead of rejection
-quarantine_on_reject = false; # Tell MTA to quarantine rejected messages
-spam_header = "X-Spam"; # Use the specific spam header
-reject_message = "Spam message rejected"; # Use custom rejection message
-~~~
-
-For more advanced proxy usage, please see the corresponding [documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html).
-
 ### Setting the controller password
 
 Rspamd requires a password when queried from non-trusted IPs, except for scanning messages which are unrestricted (the default config trusts the loopback interface). This is configured in the file `/etc/rspamd/local.d/worker-controller.inc`.
@@ -445,9 +394,7 @@ enable_password = "$2$qda98oexjhcf6na4mfujqjwf4qmbi545$ijkrmjx96iyj56an9jfzbba6m
 
 From version 1.7, the setting of passwords is also suggested by `rspamadm configwizard`.
 
-**Important information**: the default passwords (namely, `q1` and `q2`) are **BANNED**, so you cannot use them in your installation. Please set the appropriate passwords before using the controller.
-
-Then you can copy this string and store it in the configuration file.
+**Important information**: the default passwords (namely, `q1` and `q2`) are **BANNED**, so you cannot use them in your installation. Please set the appropriate passwords before using the controller. This is done to prevent an occasional data leak caused by misconfiguration.
 
 ### Setting up the WebUI
 
@@ -499,19 +446,15 @@ http {
                 proxy_set_header Host $http_host;
         }
         ssl on;
-        ssl_protocols TLSv1.2 TLSv1.1 TLSv1;
+        ssl_protocols TLSv1.2 TLSv1.3;
 
-        ssl_ciphers "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EDH+aRSA+AESGCM:EDH+aRSA+SHA256:EDH+aRSA:EECDH:!aNULL:!eNULL:!MEDIUM:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED";
+        ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305;
         ssl_prefer_server_ciphers on;
-        ssl_session_cache builtin;
-        ssl_session_timeout 1m;
+        ssl_session_cache shared:TLS:10m;
+        ssl_session_timeout 1d;
         ssl_stapling on;
         ssl_stapling_verify on;
         server_tokens off;
-        # Do not forget to generate custom dhparam using
-        # openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
-        ssl_dhparam /etc/nginx/dhparam.pem;
-        ssl_ecdh_curve prime256v1;
     }
 }
 {% endhighlight %}
@@ -538,6 +481,37 @@ location /rspamd/ {
 </div>
 
 Alternatively, you could set up HTTP authentication in Nginx itself.
+
+## Using of Milter protocol (for Rspamd >= 1.6)
+
+From Rspamd 1.6, rspamd proxy worker supports the `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introducing of this feature also finally obsoletes the `rmilter` project in honor of the new integration method. Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
+
+* Proxy mode (for large instances) with a dedicated scan layer
+* Self-scan mode (for small instances)
+
+Here, we describe the simplest `self-scan` option:
+
+<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
+
+In this mode, `rspamd_proxy` scans messages itself and talks to MTA directly using the Milter protocol. The advantage of this approach is its simplicity. Here is a sample configuration for this mode:
+
+~~~ucl
+# local.d/worker-proxy.inc
+milter = yes; # Enable milter mode
+timeout = 120s; # Needed for Milter usually
+upstream "local" {
+  default = yes; # Self-scan upstreams are always default
+  self_scan = yes; # Enable self-scan
+}
+count = 4; # Spawn more processes in self-scan mode
+max_retries = 5; # How many times master is queried in case of failure
+discard_on_reject = false; # Discard message instead of rejection
+quarantine_on_reject = false; # Tell MTA to quarantine rejected messages
+spam_header = "X-Spam"; # Use the specific spam header
+reject_message = "Spam message rejected"; # Use custom rejection message
+~~~
+
+For more advanced proxy usage, please see the corresponding [documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html).
 
 ## Setup Redis statistics
 
@@ -596,11 +570,11 @@ There is a special module called `multimap` that allows you to define your maps 
 
 Though Rspamd is free to use for any purpose many of the RBLs used in the default configuration aren't & care should be taken to see that your use cases are not infringing. Notes about specific RBLs follow below (please follow the links for details):
 
-[Abusix Mail Intelligence](http://www.abusix.ai){:target="&#95;blank"} - Free for home/non-commercial use up to 100k queries per day (requires registration), commercial use requires a subscription
+[Abusix Mail Intelligence](https://abusix.com/products/abusix-mail-intelligence/){:target="&#95;blank"} - Free for home/non-commercial use up to 100k queries per day (requires registration), commercial use requires a subscription
 
 [DNSWL](https://www.dnswl.org/?page_id=9){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 100k queries per day
 
-[Mailspike](http://mailspike.net/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
+[Mailspike](http://mailspike.org/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
 
 [Rspamd URIBL](http://www.rspamd.com/feed-policies.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
 
@@ -616,7 +590,7 @@ Though Rspamd is free to use for any purpose many of the RBLs used in the defaul
 
 [URIBL](http://uribl.com/about.shtml){:target="&#95;blank"} - Requires a commercial subscription if 'excessive queries' are sent (numbers unclear).
 
-Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) and [SURBL]({{ site.url }}{{ site.baseurl }}/doc/modules/surbl.html) module documentation for information about disabling RBLs/SURBLs.
+Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) module documentation for information about disabling RBLs/SURBLs.
 
 ## Using Rspamd
 
@@ -658,23 +632,30 @@ Rspamadm is a new utility that is intended to manage rspamd directly. It comes w
 
 ~~~
 % rspamadm help
-Rspamadm 1.5.0
+Rspamadm 2.6
 Usage: rspamadm [global_options] command [command_options]
 
 Available commands:
-pw                 Manage rspamd passwords
-keypair            Create encryption key pairs
-configtest         Perform configuration file test
-fuzzy_merge        Merge fuzzy databases
-configdump         Perform configuration file dump
-control            Manage rspamd main control interface
-confighelp         Shows help for configuration options
-statconvert        Convert statistics from sqlite3 to redis
-fuzzyconvert       Convert statistics from sqlite3 to redis
-grep               Search for patterns in rspamd logs
-signtool           Sign and verify files tool
-lua                Run LUA interpreter
-dkim_keygen        Create dkim key pairs
+  configdump         Perform configuration file dump
+  configgraph        Produces graph of Rspamd includes
+  confighelp         Shows help for configuration options
+  configtest         Perform configuration file test
+  configwizard       Perform guided configuration for Rspamd daemon
+  control            Manage rspamd main control interface
+  cookie             Produces cookies or message ids
+  corpustest         Create logs files from email corpus
+  dkim_keygen        Create dkim key pairs
+  dnstool            DNS tools provided by Rspamd
+  fuzzyconvert       Convert fuzzy hashes from sqlite3 to redis
+  grep               Search for patterns in rspamd logs
+  keypair            Manages keypairs for Rspamd
+  lua                Run LUA interpreter
+  mime               Mime manipulations provided by Rspamd
+  pw                 Manage rspamd passwords
+  signtool           Sign and verify files tool
+  statconvert        Convert statistics from sqlite3 to redis
+  template           Apply jinja templates for strings/files
+  vault              Perform Hashicorp Vault management
 ~~~
 
 For example, it is possible to get help for a specific configuration option by typing something like
@@ -741,7 +722,7 @@ You might also want to enable the following modules:
  servers = "redis:6384";
 timeout = 25s; # Sometimes ANNs are very large
 train {
-  max_train = 1k; # Number ham/spam samples needed to start train
+  max_trains = 1k; # Number ham/spam samples needed to start train
   max_usages = 20; # Number of learn iterations while ANN data is valid
   spam_score = 8; # Score to learn spam
   ham_score = -2; # Score to learn ham

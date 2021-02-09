@@ -2,27 +2,15 @@
 layout: home
 title: Rspamd spam filtering system
 ---
-<!--
-<div class="row news_row" style="position: relative;">
-		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;">News: Rspamd 1.9.3 has been released</h3>
-				<span class="date"><small>2019-05-13</small></span>
-				<p style="margin-bottom: 0px; margin-top: 5px">The next stable release with some new features and fixes.</p>
-   </div>
-   <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://rspamd.com/announce/2019/05/13/rspamd-1.9.3.html" style="margin-top: 10px;">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
-	</div>
-</div>
--->
 
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
-				<h3 style="margin: 0px;">News: Rspamd 2.2 has been released</h3>
-				<span class="date"><small>2019-11-19</small></span>
+				<h3 style="margin: 0px;">News: Rspamd 2.7 has been released</h3>
+				<span class="date"><small>2021-01-08</small></span>
 				<p style="margin-bottom: 0px; margin-top: 5px">New stable release is now available.</p>
    </div>
    <div class="col-xs-12 col-sm-2 bottom-right">
-				<a class="btn btn-primary pull-right" href="https://rspamd.com/announce/2019/11/19/rspamd-2.2.html" style="margin-top: 10px;">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
+				<a class="btn btn-primary pull-right" href="https://rspamd.com/announce/2021/01/08/rspamd-2.7.html" style="margin-top: 10px;">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
 	</div>
 </div>
 
@@ -88,12 +76,12 @@ title: Rspamd spam filtering system
 										<div class="item">
 												<div class="carousel-content"><div>
 														<div class="col-sm-3 col-xs-12">
-																<a href="http://www.rambler.ru/" target="_blank"><img src="img/Rambler_logo.png" class="img-responsive"></a>
+																<a href="https://mailcow.email/" target="_blank"><img src="https://mailcow.email/img/cow_mailcow.svg" class="img-responsive" style="max-height: 200px;"></a>
 														</div>
 														<div class="col-sm-9 col-xs-12">
 																<blockquote>
-																		<p>We use both Rspamd to filter spam for our users processing about 100M of messages per day on a couple of scanners. Rspamd provides an excellent opportunities to build custom rules for better spam and phishing protection.</p>
-																		<footer>Alexander Rayushkin <cite title="Source Title">Manager of the Email department</cite></footer>
+																		<p>Following its fast development and truly innovative ideas, mailcows migration to Rspamd was only a matter of time. The concept of Rspamd is to be expandable. If it is within the scope of a mail filter, Rspamd is able to handle it.</p> <p>Rspamd is an important enrichment for the open source community.</p>
+																		<footer>André Peters <cite title="Source Title">The author of the Mailcow project</cite></footer>
 																		<div class="placeholder"></div>
 																</blockquote>
 														</div>

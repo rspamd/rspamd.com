@@ -89,7 +89,7 @@ Here is a list of C debug modules defined in Rspamd (this list is usually incomp
 Rspamd supports a custom log format when writing information about a message to the log. (This feature is supported since version 1.1.) The format string looks as follows:
 
 
-	log_format =<< EOD
+	log_format =<<EOD
 	id: <$mid>,$if_qid{ qid: <$>,}$if_ip{ ip: $,}$if_user{ user: $,}$if_smtp_from{ from: <$>,}
 	(default: $is_spam ($action): [$scores] [$symbols]),
 	len: $len, time: $time_real real,

@@ -92,13 +92,13 @@ Supported parameters for the redis backend are:
 - `servers`: IP or hostname with port for the redis server. Use an IP for the loopback interface, if you have defined localhost in /etc/hosts for both IPv4 and IPv6, or your redis server will not be found!
 - `write_servers` (optional): If needed, define dedicated servers for learning
 - `password` (optional): Password for the redis server
-- `database` (optional): Database to use (though it is recommended to use dedicated redis instances and not databases in redis)
+- `db` (optional): Database to use (though it is recommended to use dedicated redis instances and not databases in redis)
 - `min_tokens` : minimum number of words required for statistics processing
 - `min_learns` (optional): minimum learn count for **both** spam and ham classes to perform  classification
 - `autolearn` (optional): see below for details
 - `per_user` (optional): enable per users statistics. See above
 - `statfile`: Define keys for spam and ham mails.
-- `learn_condition` (optional): Lua function for autoleraning as described below.
+- `learn_condition` (optional): Lua function for autolearning as described below.
  
 You are also recommended to use [`bayes_expiry` module](https://rspamd.com/doc/modules/bayes_expiry.html) to maintain your statistics database.
 

@@ -8,7 +8,7 @@ Controller worker is used to manage rspamd stats, to learn rspamd and to serve W
 
 Internally, the controller worker is just a web server that accepts requests and sends replies using JSON serialization.
 Each command is defined by URL. Some commands are read only and are considered as `unprivileged` whilst other commands, such as
-maps modification, config modifications and learning requires higher level of privileges: `enable` level. The differece between levels is specified
+maps modification, config modifications and learning requires higher level of privileges: `enable` level. The difference between levels is specified
 by password. If only one password is specified in the configuration, it is used for both type of commands.
 
 ## Controller configuration
@@ -17,7 +17,7 @@ Rspamd controller worker supports the following options:
 
 * `password`: password for read-only commands
 * `enable_password`: password for write commands
-* `secure_ip`: list or map with IP addresses that are treated as `secure` so **all** commands are allowed from these IPs **without** passwords
+* `secure_ip`: list or map with IP addresses that are treated as `secure` so **all** commands are allowed from these IPs **without** passwords (if a reverse proxy sets an `X-Forwarded-For` header, both the proxy and actual client IP must be contained in `secure_ip`)
 * `static_dir`: directory where interface static files are placed (usually `${WWWDIR}`)
 * `stats_path`: path where controller save persistent stats about rspamd (such as scanned messages count)
 
@@ -68,6 +68,7 @@ You can use that line as `password` and `enable_password` values.
 * `/savemap` (priv)
 * `/scan`
 * `/check`
+* `/checkv2`
 * `/stat`
 * `/statreset` (priv)
 * `/counters`

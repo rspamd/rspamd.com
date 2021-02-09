@@ -21,6 +21,9 @@ h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6,
 {
     font-family: Tahoma, Arial, sans-serif;
 }
+html.hasFontSmoothing-false code,kbd,pre,samp {
+    font-family: Courier New, monospace;
+}
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 1024px) {
   /* Remove padding from wrapping element since we kick in the grid classes here */

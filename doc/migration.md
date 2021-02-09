@@ -13,6 +13,15 @@ This document describes incompatible changes introduced in recent Rspamd version
   {:toc}
 </div>
 
+## Migration to Rspamd 2.6
+
+It is necessary to clear the browser cache and restart the browser for the GUI to work properly after upgrading to 2.6.
+
+`Neural networks` plugin training data will also be lost as the internal structure of the NN has been reworked in an incompatible way. Further training should continue as usually.
+
+If you observe complains about `SENDER_REP_HAM` and `SENDER_REP_SPAM` symbols in Rspamd logs, then you might need to define the corresponding scores for these symbols (see more in the documentation: https://rspamd.com/doc/modules/reputation.html). This issue will be fixed in future Rspamd releases.
+
+
 ## Migration to Rspamd 2.0
 
 RBL module has replaced both `emails` and `surbl` module unifying all Runtime Black Lists checks in a single place. The existing rules are normally automatically converted to `rbl` syntax which also includes even your `local.d` defines. `override.d` defines act as `local.d` overrides unfortunately. If you need to use overrides then please consider converting them to `override.d/rbl.conf` rules.

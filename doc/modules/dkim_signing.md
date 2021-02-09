@@ -46,14 +46,14 @@ allow_hdrfrom_multiple = false;
 # If true, username does not need to contain matching domain
 allow_username_mismatch = false;
 
-# If false, messages from authenticated users are not selected for signing
-auth_only = true;
-
 # Default path to key, can include '$domain' and '$selector' variables
 path = "/var/lib/rspamd/dkim/$domain.$selector.key";
 
 # Default selector to use
 selector = "dkim";
+
+# If false, messages from authenticated users are not selected for signing
+sign_authenticated = true;
 
 # If false, messages from local networks are not selected for signing
 sign_local = true;
@@ -93,7 +93,7 @@ key_prefix = "DKIM_KEYS";
 
 # If `true` get pubkey from DNS record and check if it matches private key
 check_pubkey = false;
-# Set to `false` if you want to skip signing if publick and private keys mismatches
+# Set to `false` if you want to skip signing if public and private keys mismatch
 allow_pubkey_mismatch = true;
 
 
@@ -404,7 +404,7 @@ For DKIM signing, Rspamd uses the following default list:
     (o)to:(o)cc:(x)mime-version:(x)content-type:(x)content-transfer-encoding:
     resent-to:resent-cc:resent-from:resent-sender:resent-message-id:
     (x)in-reply-to:(x)references:list-id:list-help:list-owner:list-unsubscribe:
-    list-subscribe:list-post:(x)openpgp:(x)autocrypt
+    list-unsubscribe-post:list-subscribe:list-post:(x)openpgp:(x)autocrypt
 		
 Here is the summary of the list above:
 
@@ -432,6 +432,7 @@ Here is the summary of the list above:
 | `List-Help`      | Do not oversign                |
 | `List-Owner`      | Do not oversign                |
 | `List-Unsubscribe`      | Do not oversign                |
+| `List-Unsubscribe-Post`      | Do not oversign                |
 | `List-Subscribe`      | Do not oversign                |
 | `List-Post`      | Do not oversign                |
 | `Openpgp`      | Conditionally oversign                |
@@ -500,3 +501,18 @@ and deserve consideration.
   so that the version that arrives at the signing instance is already
   in the rewritten form, guaranteeing the input and output are the same
   and thus the signature matches the payload. You can do such a split using [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html).
+
+## Optimize signing only mode
+
+If you intend to run Rspamd for DKIM signing only in certain conditions, then please use the [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html) as following:
+
+~~~ucl
+# local.d/settings.conf
+dkim_signing {
+  ... # Add conditions to match this setting
+  apply {
+    symbols_enabled = ["DKIM_SIGNED"];
+    flags = ["skip_process"]; # Disable expensive MIME processing
+  }
+}
+~~~

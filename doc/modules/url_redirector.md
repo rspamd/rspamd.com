@@ -5,11 +5,10 @@ title: URL redirector module
 
 # URL redirector module
 
-This module provides a hook for [SURBL]({{ site.baseurl }}/doc/modules/surbl.html) module to dereference redirects.
-
-For it to be enabled, `redirector_hosts_map` must be set in SURBL configuration, for example by adding the following to `/etc/rspamd/local.d/surbl.conf`:
+This module provides a hook for [RBL]({{ site.baseurl }}/doc/modules/rbl.html) module to resolve redirects.
+To enable this module one should add a `redirector_hosts_map` option to the module's configuration, i.e. by adding the following to `local.d/url_redirector.conf`:
 ~~~ucl
-redirector_hosts_map = "/etc/rspamd/redirectors.inc";
+redirector_hosts_map = "${LOCAL_CONFDIR}/local.d/maps.d/redirectors.inc";
 ~~~
 
 This file/URL should contain a list of domains that should be checked by URL redirector.
@@ -18,7 +17,7 @@ Dereferenced links are cached in Redis (see [here]({{ site.baseurl }}/doc/config
 
 # Configuration
 
-The following settings could be set in `/etc/rspamd/local.d/url_redirector.conf` to control behaviour of the URL redirector module.
+The following settings could be set in `local.d/url_redirector.conf` to control behaviour of the URL redirector module.
 
 ~~~ucl
 # How long to cache dereferenced links in Redis (default 1 day)
@@ -31,5 +30,18 @@ nested_limit = 1;
 key_prefix = "rdr:";
 # Check SSL certificates (default false)
 check_ssl = false;
-max_size = 10k; # maximum body to process
+# How many urls to check
+max_urls = 5;
+# Maximum body to process
+max_size = 10k;
+# Insert symbol if redirected url has been found
+redirector_symbol = "MY_REDIRECTOR_SYMBOL";
+# Follow merely redirectors
+redirectors_only = true;
+# Redis key for top urls
+top_urls_key = 'rdr:top_urls';
+# How many top urls to save
+top_urls_count = 200;
+# Check only those redirectors
+redirector_hosts_map = "${LOCAL_CONFDIR}/local.d/maps.d/redirectors.inc";
 ~~~

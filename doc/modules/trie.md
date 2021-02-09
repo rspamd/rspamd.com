@@ -2,8 +2,13 @@
 layout: doc
 title: Trie module
 ---
+
 # Trie plugin
 
+### Deprecation warning
+This plugin is obsoleted since all it's functionality is now covered by [multimap module](multimap.html). Multimap module supports regexp and patterns based rules that completely cover features listed below. It is also safe to use regular expressions module for the same purposes as these expressions are normally accelerated by multi-pattern lookup engine. However, for some platforms, such as arm/mips or everything that is non x86, this module can still be useful. Hence, there are no plans to remove it from Rspamd.
+
+## Module description
 Trie plugin is designed to search multiple strings within raw messages or text parts
 doing this blazingly fast. In fact, it uses aho-corasic algorithm that performs incredibly
 good even on large texts and many input strings.
