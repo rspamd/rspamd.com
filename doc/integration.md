@@ -126,7 +126,7 @@ Then compile m4 to cf in the usual way.
 
 ## Integration with Haraka MTA
 
-Support for rspamd is available in [Haraka v2.7.0+](http://haraka.github.io/manual/plugins/rspamd.html){:target="&#95;blank"}.
+Support for rspamd is available in [Haraka v2.7.0+](https://haraka.github.io/plugins/rspamd/){:target="&#95;blank"}.
 
 To enable: add `rspamd` to the `DATA` section of your `config/plugins` file and edit `config/rspamd.ini` to suit your preferences.
 
