@@ -268,7 +268,7 @@ LIMIT 10
 
 ## URLs storage
 
-This text has been contributed by (Anton Yuzhaninov)[https://github.com/citrin]
+This text has been contributed by [Anton Yuzhaninov](https://github.com/citrin)
 
 From version 2.8, Rspamd stores URLs from all sources, together with the corresponding flags.
 To differentiate different types we've added `Urls.Flags` column which will contain all flags as an integer. 
