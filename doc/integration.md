@@ -101,8 +101,9 @@ acl_check_spam:
     add_header = X-Spam-Report: $spam_report
 
   # add x-spam-status header if message is not ham
+  # do not match when $spam_action is empty (e.g. when rspamd is not running)
   warn
-    ! condition  = ${if match{$spam_action}{^no action\$|^greylist\$}}
+    ! condition  = ${if match{$spam_action}{^no action\$|^greylist\$|^\$}}
     add_header = X-Spam-Status: Yes
 
   # add x-spam-bar header if score is positive
