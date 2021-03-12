@@ -96,13 +96,17 @@ Rspamd supports the following .deb based distributives:
 
 To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
 
-    apt-get install -y lsb-release wget # optional
-    CODENAME=`lsb_release -c -s`
-    wget -O- https://rspamd.com/apt-stable/gpg.key | apt-key add -
-    echo "deb [arch=amd64] http://rspamd.com/apt-stable/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
-    echo "deb-src [arch=amd64] http://rspamd.com/apt-stable/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
-    apt-get update
-    apt-get --no-install-recommends install rspamd
+~~~bash
+sudo apt-get install -y lsb-release wget # optional
+CODENAME=`lsb_release -c -s`
+sudo mkdir -p /etc/apt/keyrings
+wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-stable/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
+echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-stable/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
+apt-get update
+apt-get --no-install-recommends install rspamd
+~~~
+
 
 To obtain your distributive's codename, you could use the command `lsb_release -s -c` from the package called `lsb-release`.
 
@@ -110,23 +114,29 @@ For [Hyperscan](https://www.hyperscan.io/) and [LuaJIT](https://luajit.org) info
 
 For <a class="undecor" href="#experimentalSys2">experimental<sup>2</sup></a> branch replace `apt-stable` with just `apt`:
 
-    apt-get install -y lsb-release wget # optional
-    CODENAME=`lsb_release -c -s`
-    wget -O- https://rspamd.com/apt/gpg.key | apt-key add -
-    echo "deb [arch=amd64] http://rspamd.com/apt/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
-    echo "deb-src [arch=amd64] http://rspamd.com/apt/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
-    apt-get update
-    apt-get --no-install-recommends install rspamd
+~~~bash
+sudo apt-get install -y lsb-release wget # optional
+CODENAME=`lsb_release -c -s`
+sudo mkdir -p /etc/apt/keyrings
+wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
+echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
+apt-get update
+apt-get --no-install-recommends install rspamd
+~~~
 
 For <a class="undecor" href="#asanSys2">ASAN<sup>2</sup></a> branch replace `apt-stable` or `apt` with `apt-stable-asan` and `apt-asan` correspondingly:
 
-    apt-get install -y lsb-release wget # optional
-    CODENAME=`lsb_release -c -s`
-    wget -O- https://rspamd.com/apt/gpg.key | apt-key add -
-    echo "deb [arch=amd64] http://rspamd.com/apt-asan/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
-    echo "deb-src [arch=amd64] http://rspamd.com/apt-asan/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
-    apt-get update
-    apt-get --no-install-recommends install rspamd
+~~~bash
+sudo apt-get install -y lsb-release wget # optional
+CODENAME=`lsb_release -c -s`
+sudo mkdir -p /etc/apt/keyrings
+wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-asan/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
+echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-asan/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
+apt-get update
+apt-get --no-install-recommends install rspamd
+~~~
 
 
 Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-dbg` package and could be safely installed even in the production environment.
@@ -205,11 +215,9 @@ sudo port load rspamd
             <h3>Build rspamd from the sources</h3>
 <div markdown="1">
 
-If there are no packages for your system or you want custom build options you can also build rspamd from the source code. To do that grab the source from [github](https://github.com/vstakhov/rspamd) using `git`:
+If there are no packages for your system or you want custom build options you can also build rspamd from the source code. To do that grab the source from [github](https://github.com/rspamd/rspamd) using `git`:
 
-	git clone --recursive https://github.com/vstakhov/rspamd.git
-
-There is also a mirror of rspamd repository: <https://git.rspamd.com/vstakhov/rspamd>
+	git clone --recursive https://github.com/rspamd/rspamd.git
 
 ### Build requirements
 
