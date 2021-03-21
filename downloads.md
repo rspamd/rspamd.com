@@ -45,16 +45,17 @@ Please note that `CentOS` rpm packages **requires** [EPEL](https://fedoraproject
 
 To install rspamd repo, please download the corresponding repository file and the signing key (both repo and all packages are signed with my GPG key). You could use the following commands to install rspamd <a class="undecor" href="#stableSys1">stable<sup>1</sup></a> RPM repository:
 
-    curl https://rspamd.com/rpm-stable/${YOUR_DISTRO}/rspamd.repo > /etc/yum.repos.d/rspamd.repo
+    curl https://rspamd.com/rpm-stable/centos-7/rspamd.repo > /etc/yum.repos.d/rspamd.repo # For Centos-7
+    #curl https://rspamd.com/rpm-stable/centos-8/rspamd.repo > /etc/yum.repos.d/rspamd.repo # Uncomment for Centos-8
     rpm --import https://rspamd.com/rpm-stable/gpg.key
     yum update
     yum install rspamd
 
-Where `${YOUR_DISTRO}` is the short name of your os (e.g. `centos-7` or `fedora-22`).
 
 For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> branch packages, download `rpm-experimental` repofile as following:
 
-    curl https://rspamd.com/rpm/${YOUR_DISTRO}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd-experimental.repo
+    curl https://rspamd.com/rpm/centos-7/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo # For Centos-7
+    #curl https://rspamd.com/rpm/centos-8/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo # Uncomment for Centos-8
     rpm --import https://rspamd.com/rpm/gpg.key
     yum update
     yum install rspamd
@@ -62,14 +63,8 @@ For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> bra
 
 For <a class="undecor" href="#asanSys1">asan<sup>2</sup></a> branch packages, download `rpm-experimental-asan` repofile as following:
 
-    curl https://rspamd.com/rpm-asan/${YOUR_DISTRO}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd-experimental-asan.repo
-    rpm --import https://rspamd.com/rpm/gpg.key
-    yum update
-    yum install rspamd
-
-Or the same for the stable+asan:
-
-    curl https://rspamd.com/rpm-asan/${YOUR_DISTRO}/rspamd.repo > /etc/yum.repos.d/rspamd-asan.repo
+    curl https://rspamd.com/rpm-asan/centos-7/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo # For Centos-7
+    #curl https://rspamd.com/rpm-asan/centos-8/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo # Uncomment for Centos-8
     rpm --import https://rspamd.com/rpm/gpg.key
     yum update
     yum install rspamd
@@ -225,8 +220,8 @@ Rspamd requires several 3-rd party software to build and run:
 
 * [openssl](https://www.openssl.org/) - cryptography and SSL/TLS Toolkit
 * [glib2](https://developer.gnome.org/glib/) - common purposes library
-* [ragel](https://www.colm.net/open-source/ragel/) - state machine compiler. **Please be aware** that the experimental version of Ragel (namely, `7.0`) is **NOT compatible** with Rspamd. Since it is shipped with CentOS 7.0, there is no way to use Ragel from the packages and you need to build compatible Ragel (e.g. 6.8) manually from the source packages or from source code. Ragel is required to **build** Rspamd not to run it.
-* [LuaJIT](https://luajit.org/) - jit compiler for [lua](https://www.lua.org/) programming language. Plain lua will work as well.
+* [ragel](https://www.colm.net/open-source/ragel/) - state machine compiler.
+* [LuaJIT](https://luajit.org/) - jit compiler for [lua](https://www.lua.org/) programming language. Plain Lua should work as well.
 * [cmake](https://cmake.org/) - build system used to configure rspamd
 * [sqlite3](https://sqlite.org/) - embedded database used to store some data by rspamd
 * [libmagic](https://www.darwinsys.com/file/) - common library for detecting file types
