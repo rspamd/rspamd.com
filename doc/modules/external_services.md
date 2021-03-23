@@ -148,7 +148,6 @@ Scan requests are send to an icap URL (e.g. icap://127.0.0.1:1344/squidclamav). 
 
 Typical error responses like `X-Infection-Found: Type=2; Resolution=2; Threat=Encrypted container violation;` will be reported as symbol fail (e.g. CLAM_ICAP_FAIL(0.00){Encrypted container violation}).
 
-
 ## oletools specific details
 
 Oletools is a great python module for scanning and analyzing office documents with macros. Typically a macro-virus uses an auto-exec function to be loaded when the document is opened next to functions for executing code in a shell or save files to the system. oletools classifies bad functions in AutoExec and Suspicious. In the default mode the oletools module will set the result when at least one AutoExec and one Suspicious function is used.
@@ -163,10 +162,9 @@ To use oletools with Rspamd you have to install a wrapper daemon: [olefy](https:
 
 olefy communicates with Rspamd over TCP and calls olevba to get the report of an office file.
 
-
 ### oletools default mode
 
-In order to send only office files to the olevba analyzer enable scan_mime_parts (needed for versions < 1.9.5) set mime_parts_filter_regex and mime_parts_filter_ext like shown below. (Maybe this list is still incomplete). Sometimes office files are sent with the generic content-type `application/octet-stream`. You can enable UNKNOWN to catch these, but this will also catch non-office file attachments like images, pdf etc. Sending non-office files to olevba will result in error messages.
+In order to send only office files to the olevba analyzer enable scan_mime_parts (needed for versions < 1.9.5) set mime_parts_filter_regex and mime_parts_filter_ext like shown below (maybe this list is still incomplete). Sometimes office files are sent with the generic content-type `application/octet-stream`. You can enable UNKNOWN to catch these, but this will also catch non-office file attachments like images, pdf etc. Sending non-office files to olevba will result in error messages.
 
 ~~~ucl
 # local.d/external_services.conf
@@ -226,14 +224,13 @@ In the default mode the oletools module will set a symbol description like this:
 
 If you enable debug mode for external_services the oletools module will also report the description of a function as reported by olevba.
 
-
 ### oletools extended mode
 
-In the extended mode the oletools module will not trigger on specific categories, but will *always* set a threat string with all found flags when at least a macro was found. Next to the flags all reported functions will be set as individual threats:
+In the extended mode the oletools module will not trigger on specific categories, but will *always* set a threat string with all found flags when at least a macro was found. Those flags are sorted alphabetically and always displayed at the same position when set. Next to the flags all reported functions will be set as individual threats:
 
-`OLETOOLS (4.00)[MAS-----, Document_open, Shell, Chr]`
+`OLETOOLS (4.00)[A----MS-, Document_open, Shell, Chr]`
 
-In this example 4 threats will be reported (and the symbol score will be counted 4 times). You can use `one_shot = true` change this behavior.
+In this example 4 threats will be reported, one for the flag list, and one for each reported function (and the symbol score will be counted 4 times). You can use `one_shot = true` change this behavior.
 
 ~~~ucl
 # local.d/external_services_group.conf
@@ -258,27 +255,53 @@ oletools {
 
   patterns {
     # catch Macro, AutoExec, Suspicious and Hex Strings
-    BAD_MACRO_MYFLAGS = '^MAS.H...$';
-    BAD_MACRO_SHELL   = '^Shell$';
+    BAD_MACRO_MYFLAGS   = '^A..H.MS.$';
+    BAD_MACRO_RISKY_IOC = '^A...IMS.$';
+    BAD_MACRO_SHELL     = '^Shell$';
   }
   ...
 }
 
 ~~~
 
-A little help for the flags:
+You can then use those patterns in the group configuration:
 
-`MASIHBDV` or `M-------`
+~~~ucl
+# local.d/external_services_group.conf
+description = "Oletools content rules";
+symbols = {
+...
+  "OLETOOLS" {
+    weight = 1.0;
+    description = "OLETOOLS found a Macro";
+    one_shot = true;
+  },
+  "BAD_MACRO_MYFLAGS" {
+    weight = 5.0;
+    description = "Suspicious hex strings in office document";
+  },
+  "BAD_MACRO_RISKY_IOC" {
+    weight = 10.0;
+    description = "Risky lacro in office document";
+  }
+...
+}
+~~~
 
-*   M=Macros (contains VBA Macros)
+A little help for the 8 flags:
+
+`ABDHIMSV` or `A-------`
+
 *   A=Auto-executable (auto-executable macros)
-*   S=Suspicious keywords (suspicious VBA keywords)
-*   I=IOCs (macro contains IP, URL or executable filename)
-*   H=Hex strings (hex-encoded strings (potential obfuscation))
 *   B=Base64 strings (Base64-encoded strings (potential obfuscation))
 *   D=Dridex strings (Dridex-encoded strings (potential obfuscation))
+*   H=Hex strings (hex-encoded strings (potential obfuscation))
+*   I=IOCs (macro contains IP, URL or executable filename)
+*   M=Macros (contains VBA Macros)
+*   S=Suspicious keywords (suspicious VBA keywords)
 *   V=VBA strings (VBA string expressions (potential obfuscation))
 
+Note that in versions <= 2.7, flags were ordered but stacked to the right in the flag string. For instance, if flags `A`, `I`, `M` and `S` are be set, the resulting flag string would be `----AIMS`.
 
 ## DCC specific details
 
