@@ -921,6 +921,7 @@ enabled = false;
 ### Can I scan outgoing mail with Rspamd
 
 Yes, Rspamd should be safe for outbound scanning by default, [see here for detail]({{ site.url }}{{ site.baseurl }}/doc/tutorials/scanning_outbound.html).
+Please bear in mind that this mode is enabled **by default** for both **authenticated** senders and senders that are from **local networks** (options.inc -> local_networks option). The default settings for local networks are both loopback/unix socket initiated connections and RFC 1918 private networks, such as `10.0.0.0/8` or `192.168.0.0/16`. Many checks are disabled for outbound checks so do not enable this mode unintentionally, e.g. by missing XCLIENT on a proxy MTA or by using a backup MX.
 
 ### Can I just sign messages using DKIM
 
