@@ -2,11 +2,23 @@ name: Rspamd - rapid spam filtering system.
 highlighter: rouge
 plugins:
   - jekyll-sitemap
-  - jekyll-paginate
-  - jekyll-seo-tag
-  - jekyll-include-cache
-paginate: 3
-paginate_path: "blog/page:num"
+  - jekyll-paginate-v2
+
+# Explicitly turn off the old code
+paginate: nil
+paginate_path: nil
+
+# Pagination Settings
+pagination:
+  enabled: true
+  per_page: 3
+  offset: 2
+  permalink: '/blog/page:num'
+  title: ':title - page :num of :max'
+  limit: 0
+  sort_field: 'date'
+  sort_reverse: true
+  
 description: Rspamd home.
 url: http://rspamd.com
 future: true
