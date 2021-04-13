@@ -207,6 +207,7 @@ coefficient:
     00:...
 ~~~
 
+You can also configure `dkim_signing` module to verify the published pubkey record to match the selected private key by setting option `check_pubkey` to `true` (it is `false` by default). However, please be aware that it might cause an extra DNS request on signing.
 
 
 ## DKIM keys in Redis
