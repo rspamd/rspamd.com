@@ -136,7 +136,7 @@ You also need to set the "product_id" that should match with the id for your HBE
 
 ## Kaspersky specific
 
-You might want to use `clamav` socket to scan data. Since it is a Unix socket, you can only use it for local scan. It is also important that Rspamd should be able to write into Kaspersky Unix socket. For example, you can add Rspamd user (`_rspamd` on Linux most likely) into `klusers` group: `usermod -G klusers _rspamd` in Linux. Rspamd will also write data into some intermeniet files that are normally placed in `/tmp` folder.
+You might want to use `clamav` socket to scan data. Since it is a Unix socket, you can only use it for local scan. It is also important that Rspamd should be able to write into Kaspersky Unix socket. For example, you can add Rspamd user (`_rspamd` on Linux most likely) into `klusers` group: `usermod -G klusers _rspamd` in Linux. Rspamd will also write data into some intermediate files that are normally placed in `/tmp` folder.
 
 ~~~ucl
 # local.d/antivirus.conf
