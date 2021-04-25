@@ -95,7 +95,7 @@ To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></
 sudo apt-get install -y lsb-release wget # optional
 CODENAME=`lsb_release -c -s`
 sudo mkdir -p /etc/apt/keyrings
-wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg
+wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-stable/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
 echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-stable/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
 apt-get update
@@ -113,7 +113,7 @@ For <a class="undecor" href="#experimentalSys2">experimental<sup>2</sup></a> bra
 sudo apt-get install -y lsb-release wget # optional
 CODENAME=`lsb_release -c -s`
 sudo mkdir -p /etc/apt/keyrings
-wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg
+wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
 echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
 apt-get update
@@ -126,7 +126,7 @@ For <a class="undecor" href="#asanSys2">ASAN<sup>2</sup></a> branch replace `apt
 sudo apt-get install -y lsb-release wget # optional
 CODENAME=`lsb_release -c -s`
 sudo mkdir -p /etc/apt/keyrings
-wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg
+wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-asan/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
 echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-asan/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
 apt-get update
@@ -140,10 +140,6 @@ Check [quick start]({{ site.baseurl }}/doc/quickstart.html#rspamd-installation) 
 ### Debian `standard` repos notes
 
 Please **DO NOT** use those packages.
-
-Please **DO NOT** use those packages!!
-
-Please **DO NOT** use those packages!!!
 
 Rspamd is also available in some versions of Debian and Ubuntu.
 Please **DO NOT** use those packages, as they are not supported in any way. Any issues or feature requests related to the packages from Debian provided distros will be closed with no feedback (or even rage feedback). Just don't do it, you are warned! 
