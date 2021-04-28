@@ -5,16 +5,16 @@ title: Modules documentation
 # Rspamd modules
 
 Rspamd ships with a set of modules. Some modules are written in C to speed up
-complex procedures, while others are written in lua to reduce code size.
-We encourage you to write new modules in lua and add the essential
+complex procedures, while others are written in Lua to reduce code size.
+We encourage you to write new modules in Lua and add the essential
 support to the Lua API itself. Lua modules are very close to
 C modules in terms of performance. Lua modules, however, can be written and loaded
 dynamically.
 
 ## C Modules
 
-C modules provide the core functionality of rspamd and are actually statically linked
-to the main rspamd code. C modules are defined in the `options` section of rspamd
+C modules provide the core functionality of Rspamd and are actually statically linked
+to the main Rspamd code. C modules are defined in the `options` section of Rspamd
 configuration. If no `filters` attribute is defined, then all modules are disabled.
 The default configuration enables all modules explicitly:
 
@@ -27,18 +27,18 @@ Here is the list of available C modules:
 - [chartable](chartable.html): checks character sets of text parts in messages.
 - [dkim](dkim.html): performs DKIM signatures checks.
 - [fuzzy_check](fuzzy_check.html): checks a message's fuzzy hashes against public blacklists.
-- [spf](spf.html): checks SPF records for messages processed. Since rspamd 2.3, this C module has been removed and replaced by an equivalent Lua module.
+- [spf](spf.html): checks SPF records for messages processed. Since Rspamd 2.3, this C module has been removed and replaced by an equivalent Lua module.
 - [surbl](surbl.html): this module extracts URLs from messages and check them against
 public DNS black-lists to filter messages containing malicious URLs. Since Rspamd 2.0, this module has been removed and replaced by [rbl module](rbl.html). The existing configuration is automatically converted by Rspamd.
 - [regexp](regexp.html): the core module that allows to define regexp rules,
-rspamd internal functions and lua rules.
+Rspamd internal functions and Lua rules.
 
 ## Lua modules
 
-Lua modules are dynamically loaded on rspamd startup and are reloaded on rspamd
-reconfiguration. Should you want to write a lua module, consult the
-[Lua API documentation](../lua/). To define a path to lua modules there is a special section
-named `modules` in rspamd:
+Lua modules are dynamically loaded on Rspamd startup and are reloaded on Rspamd
+reconfiguration. Should you want to write a Lua module, consult the
+[Lua API documentation](../lua/). To define a path to Lua modules there is a special section
+named `modules` in Rspamd:
 
 ~~~ucl
 modules {
@@ -48,7 +48,7 @@ modules {
 }
 ~~~
 
-If a path is a directory then rspamd scans it for `*.lua` pattern and load all
+If a path is a directory then Rspamd scans it for `*.lua` pattern and load all
 files matched.
 
 The following Lua modules are enabled in the default configuration (but may require additional configuration to work, see notes below):
@@ -81,7 +81,7 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [replies](replies.html) - checks if an incoming message is a reply for our own message (requires Redis)
 - [rbl](rbl.html) - a plugin that checks messages against DNS runtime blacklists.
 - [reputation](reputation.html) - a plugin that manages reputation evaluation based on various rules.
-- [rspamd_update](rspamd_update.html) - load dynamic rules and other rspamd updates (requires configuration)
+- [rspamd_update](rspamd_update.html) - load dynamic rules and other Rspamd updates (requires configuration)
 - [spamassassin](spamassassin.html) - load spamassassin rules (requires configuration)
 - [spf.html](spf.html) - perform SPF checks
 - [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages. (requires configuration)
