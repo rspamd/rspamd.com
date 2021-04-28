@@ -47,8 +47,8 @@ configuration is automatically converted.
 
 Lua modules are dynamically loaded on Rspamd startup and are reloaded on Rspamd
 reconfiguration. Should you want to write a Lua module, consult the
-[Lua API documentation](../lua/). To define a path to Lua modules there is a special section
-named `modules` in Rspamd:
+[Lua API documentation](../lua/). To define a path to Lua modules there is a section
+named `modules` in common.conf:
 
 ~~~ucl
 modules {
