@@ -52,9 +52,9 @@ named `modules` in common.conf:
 
 ~~~ucl
 modules {
-  path = "/path/to/dir/";
-  path = "/path/to/module.lua";
-  path = "$PLUGINSDIR/lua";
+  path = "${PLUGINSDIR}";
+  fallback_path = "${SHAREDIR}/lua"; # Legacy path
+  try_path = "${LOCAL_CONFDIR}/plugins.d/"; # User plugins
 }
 ~~~
 
