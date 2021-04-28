@@ -18,19 +18,30 @@ main Rspamd code. C modules are defined in options.inc with the `filters` attrib
 The default configuration enables all C modules explicitly:
 
 ~~~ucl
-filters = "chartable,dkim,surbl,regexp,fuzzy_check";
+filters = "chartable,dkim,regexp,fuzzy_check";
 ~~~
 
-Here is the list of available C modules:
+If no `filters` attribute is defined, all C modules are disabled. To understand how to
+override defaults, see the FAQ [here](faq.html#what-are-local-and-override-config-files)
+and [here](faq.html#what-are-the-locald-and-overrided-directories).
 
-- [chartable](chartable.html): checks character sets of text parts in messages.
+Available C modules:
+
+- [chartable](chartable.html): checks character sets of text parts in messages. (Note:
+"char" as in character, and "table" as in a table of character sets.)
 - [dkim](dkim.html): performs DKIM signatures checks.
 - [fuzzy_check](fuzzy_check.html): checks a message's fuzzy hashes against public blacklists.
-- [spf](spf.html): checks SPF records for messages processed. Since Rspamd 2.3, this C module has been removed and replaced by an equivalent Lua module.
-- [surbl](surbl.html): this module extracts URLs from messages and check them against
-public DNS black-lists to filter messages containing malicious URLs. Since Rspamd 2.0, this module has been removed and replaced by [rbl module](rbl.html). The existing configuration is automatically converted by Rspamd.
-- [regexp](regexp.html): the core module that allows to define regexp rules,
-Rspamd internal functions and Lua rules.
+- [regexp](regexp.html): a core module that deals with regular expressions, internal
+functions and Lua code to filter messages.
+
+In prior releases other C modules were enabled by default:
+
+- [spf](spf.html): checks SPF records for messages processed. This C module was removed in
+version 2.3 and replaced by an equivalent Lua module.
+- [surbl](surbl.html): extracts URLs from messages and check them against
+public DNS black-lists to filter messages containing malicious URLs. This module was removed
+in version 2.0 and replaced by the [rbl module](rbl.html). In an upgrade to v2, the existing
+configuration is automatically converted.
 
 ## Lua modules
 
