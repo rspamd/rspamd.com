@@ -13,10 +13,9 @@ dynamically.
 
 ## C Modules
 
-C modules provide the core functionality of Rspamd and are actually statically linked
-to the main Rspamd code. C modules are defined in the `options` section of Rspamd
-configuration. If no `filters` attribute is defined, then all modules are disabled.
-The default configuration enables all modules explicitly:
+C modules provide the core functionality of Rspamd and are statically linked to the
+main Rspamd code. C modules are defined in options.inc with the `filters` attribute.
+The default configuration enables all C modules explicitly:
 
 ~~~ucl
 filters = "chartable,dkim,surbl,regexp,fuzzy_check";
