@@ -16,7 +16,7 @@ UCL functionality.
 
 ## UCL sections and includes
 
-UCL implements JSON data model. However, there are a lot of mentions of the `sections` in Rspamd documentation. You can treat sections as a simple subobjects of the top object. For example, here are two equivalent definitions in `ucl config` and in `json` syntax:
+UCL implements the JSON data model. However, there are a lot of mentions of `sections` in Rspamd documentation. You can treat sections as simple sub-objects of the top object. For example, here are two equivalent definitions in `UCL` and in `JSON` syntax:
 
 ```ucl
 section "foo" {
@@ -36,13 +36,30 @@ vs
 }
 ```
 
-UCL also supports include directive and it is used extensively in Rspamd configuration. This directive allows to include other file (or files), to define override/merge strategy, to define new elements priority and do couple of other useful things. Priorities determine how values are overwritten during include. Higher priority elements overwrite lower priority ones. Normally, all Rspamd sections contain 2 or 3 includes:
+UCL also supports a `.include` directive which is used extensively in Rspamd configuration. This directive allows inclusion of another file (or files), to define override/merge strategy, to define new element priorities, and to do other useful things. Normally, all Rspamd sections contain 2 or 3 includes.
 
-* Dynamic configuration include (priority = 5) - used to redefine elements from WebUI (this include can be omitted in some cases)
-* Override file (priority=10) - used to define static overrides (have the highest priority)
-* Local file (priority=1, duplicate=merge) - used to add new configuration directives
+The format of an include directive is as follows:
 
-Duplicate policy merge means that if there are two objects with the same name in both files, then their keys are merged:
+```
+.include(key=value,key=value) "filename"
+```
+
+Key/value arguments are called policies, which are applied to the file being included.
+
+The "priority" policy determines how values are overwritten during include. Higher priority elements overwrite lower priority ones. 
+
+The "duplicate" policy defines what happens if there are two objects with the same name in both files. The value "merge" on the "duplicate" policy causes a merge of keys from the included file into the current file.
+
+This is how included files are processed:
+
+* Dynamic configuration include (priority=5)  
+This is used to redefine elements from WebUI. This include can be omitted in some cases.
+* Override file (priority=10)  
+This is used to define static overrides, which have the highest priority.
+* Local file (priority=1, duplicate=merge)  
+This is used to add new configuration directives.
+
+Here is an example of how .include is used to achieve a desired configuration.
 
 ```ucl
 # fileA.conf
@@ -69,10 +86,10 @@ will form the following configuration:
 
 ```ucl
 obj {
-    key = 2; # overriden from fileB
+    key = 2; # fileB overrides fileA
     nkey = 1; # added from fileB
     subobj {
-        subkey = 3; # overriden from fileB
+        subkey = 3; # fileB overrides fileA
         nsub = 1; # added from fileB
     }
 }
