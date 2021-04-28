@@ -36,19 +36,17 @@ vs
 }
 ```
 
-UCL also supports a `.include` directive which is used extensively in Rspamd configuration. This directive allows inclusion of another file (or files), to define override/merge strategy, to define new element priorities, and to do other useful things. Normally, all Rspamd sections contain 2 or 3 includes.
-
-The format of an include directive is as follows:
+UCL also supports a `.include` macro which is used extensively in Rspamd configuration. This allows inclusion of another file (or files), to define an override/merge strategy, to define new element priorities, and to do other useful things. Almost all Rspamd sections are followed by two or three include directives. The following is a summary of how the include macro is used in Rspamd. More details are available in the [Macros Support](ucl.html#macros-support) section of the UCL document.
 
 ```
-.include(key=value,key=value) "filename"
+.include(param=value,param=value) "filename"
 ```
 
-Key/value arguments are called policies, which are applied to the file being included.
+Param/value arguments are options (sometimes called policies) which are applied to the file being included.
 
 The "priority" policy determines how values are overwritten during include. Higher priority elements overwrite lower priority ones. 
 
-The "duplicate" policy defines what happens if there are two objects with the same name in both files. The value "merge" on the "duplicate" policy causes a merge of keys from the included file into the current file.
+The "duplicate" policy defines what happens if there are two objects with the same name in both files. The value "merge" on the "duplicate" policy causes a merge of keys from the included file into the current file. (See the Macros Support notes for other values.)
 
 This is how included files are processed:
 
@@ -59,7 +57,7 @@ This is used to define static overrides, which have the highest priority.
 * Local file (priority=1, duplicate=merge)  
 This is used to add new configuration directives.
 
-Here is an example of how .include is used to achieve a desired configuration.
+Here is an example of how `.include` is used to achieve a desired configuration.
 
 ```ucl
 # fileA.conf
