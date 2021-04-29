@@ -93,7 +93,7 @@ obj {
 }
 ```
 
-Typical section in Rspamd:
+Typical _section_ in Rspamd (where _section_ is replaced with an actual section name):
 
 ```ucl
 section {
@@ -108,7 +108,7 @@ section {
 }
 ```
 
-If you want to add or redefine some of those default values, you can use `local.d/section.conf` file:
+If you want to add or redefine some of those default values, you can use a `local.d/section` file:
 
 ```ucl
 # local.d/section.conf
@@ -118,21 +118,21 @@ subsection {
 }
 ```
 
-Please mention that you **don't need** to add `section {}` in local.d/override.d files. It will break your configuration since include directives are already placed directly inside of the `section {}` block.
+Note: When an include directive is inside of a `section {}` block, the included local.d/override.d files must not also have the same `section {}` wrapper. This would result in nested blocks: `section { section{} }`. Files referenced by include directives outside of a section must specify the sections being defined, achieving the following pattern: `section{} section{}` where the second section overrides or merges with the first.
 
 ## Rspamd variables
 
-Rspamd defines some of the useful variables to use in the configuration files (as "${VAR}"). These variables are simply replaced with substitution value. Nested variables (e.g. "${VAR1_${VAR2}}") are **NOT** supported.
+Rspamd defines some useful variables to use in configuration files, as `${VAR}`, or simply as `$VAR`). These variables are replaced with substitution values at run-time. Nested variables like `${ VAR1_${VAR2} }` are **NOT** supported.
 
 - *CONFDIR*: configuration directory for Rspamd, found in `$PREFIX/etc/rspamd/`
-- *LOCAL_CONFDIR*: site-local configuration directory for Rspamd, usually $CONFDIR
+- *LOCAL_CONFDIR*: site-local configuration directory for Rspamd (usually the same value as $CONFDIR, and not to be confused with local.d)
 - *RUNDIR*: runtime directory to store pidfiles or UNIX sockets
-- *DBDIR*: persistent databases directory (used for statistics or symbols cache).
+- *DBDIR*: persistent databases directory (used for statistics or symbols cache)
 - *LOGDIR*: a directory to store log files
 - *PLUGINSDIR*: plugins directory for Lua plugins
 - *RULESDIR*: directory in which rules are kept
-- *PREFIX*: basic installation prefix
-- *VERSION*: Rspamd version string (e.g. "0.6.6")
+- *PREFIX*: basic installation prefix (may be null, for example for /etc/rspamd compared to /prefix/etc/rspamd)
+- *VERSION*: Rspamd version string (e.g. "2.7")
 - *WWWDIR*: root directory for web interface
 
 ## Rspamd specific macros
