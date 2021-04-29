@@ -238,7 +238,7 @@ Starting in version 1.9.1, Rspamd supports Jinja templates with Lua code within 
 
 {% endraw %}
 
- templating can be useful to hide secret values from config files, by placing them into environment variables. Rspamd automatically reads environment variables that start with a `RSPAMD_` prefix, and pushes them onto the `env` variable. For example, `RSPAMD_foo=bar` becomes `env.foo="bar"` in templates.
+Templating can be useful to hide secret values from config files, by placing them into environment variables. Rspamd automatically reads environment variables that start with a `RSPAMD_` prefix, and pushes them onto the `env` variable. For example, `RSPAMD_foo=bar` becomes `env.foo="bar"` in templates.
 
 The `env` variable also contains the following information:
 
