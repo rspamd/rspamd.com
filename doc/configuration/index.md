@@ -16,7 +16,7 @@ UCL functionality.
 
 ## UCL sections and includes
 
-UCL implements JSON data model. However, there are a lot of mentions of the `sections` in Rspamd documentation. You can treat sections as a simple subobjects of the top object. For example, here are two equivalent definitions in `ucl config` and in `json` syntax:
+UCL implements the JSON data model. However, there are a lot of mentions of `sections` in Rspamd documentation. You can treat sections as simple sub-objects of the top object. For example, here are two equivalent definitions in `UCL` and in `JSON` syntax:
 
 ```ucl
 section "foo" {
@@ -36,13 +36,28 @@ vs
 }
 ```
 
-UCL also supports include directive and it is used extensively in Rspamd configuration. This directive allows to include other file (or files), to define override/merge strategy, to define new elements priority and do couple of other useful things. Priorities determine how values are overwritten during include. Higher priority elements overwrite lower priority ones. Normally, all Rspamd sections contain 2 or 3 includes:
+UCL also supports a `.include` macro which is used extensively in Rspamd configuration. This allows inclusion of another file (or files), to define an override/merge strategy, to define new element priorities, and to do other useful things. Almost all Rspamd sections are followed by two or three include directives. The following is a summary of how the include macro is used in Rspamd. More details are available in the [Macros Support](ucl.html#macros-support) section of the UCL document.
 
-* Dynamic configuration include (priority = 5) - used to redefine elements from WebUI (this include can be omitted in some cases)
-* Override file (priority=10) - used to define static overrides (have the highest priority)
-* Local file (priority=1, duplicate=merge) - used to add new configuration directives
+```
+.include(param=value,param=value) "filename"
+```
 
-Duplicate policy merge means that if there are two objects with the same name in both files, then their keys are merged:
+Param/value arguments are options (sometimes called policies) which are applied to the file being included.
+
+The "priority" policy determines how values are overwritten during include. Higher priority elements overwrite lower priority ones. 
+
+The "duplicate" policy defines what happens if there are two objects with the same name in both files. The value "merge" on the "duplicate" policy causes a merge of keys from the included file into the current file. (See the Macros Support notes for other values.)
+
+This is how included files are processed:
+
+* Dynamic configuration include (priority=5)  
+This is used to redefine elements from WebUI. This include can be omitted in some cases.
+* Override file (priority=10)  
+This is used to define static overrides, which have the highest priority.
+* Local file (priority=1, duplicate=merge)  
+This is used to add new configuration directives.
+
+Here is an example of how `.include` is used to achieve a desired configuration.
 
 ```ucl
 # fileA.conf
@@ -69,16 +84,16 @@ will form the following configuration:
 
 ```ucl
 obj {
-    key = 2; # overriden from fileB
+    key = 2; # fileB overrides fileA
     nkey = 1; # added from fileB
     subobj {
-        subkey = 3; # overriden from fileB
+        subkey = 3; # fileB overrides fileA
         nsub = 1; # added from fileB
     }
 }
 ```
 
-Typical section in Rspamd:
+Typical _section_ in Rspamd (where _section_ is replaced with an actual section name):
 
 ```ucl
 section {
@@ -93,7 +108,7 @@ section {
 }
 ```
 
-If you want to add or redefine some of those default values, you can use `local.d/section.conf` file:
+If you want to add or redefine some of those default values, you can use a `local.d/section` file:
 
 ```ucl
 # local.d/section.conf
@@ -103,21 +118,21 @@ subsection {
 }
 ```
 
-Please mention that you **don't need** to add `section {}` in local.d/override.d files. It will break your configuration since include directives are already placed directly inside of the `section {}` block.
+Note: When an include directive is inside of a `section {}` block, the included local.d/override.d files must not also have the same `section {}` wrapper. This would result in nested blocks: `section { section{} }`. Files referenced by include directives outside of a section must specify the sections being defined, achieving the following pattern: `section{} section{}` where the second section overrides or merges with the first.
 
 ## Rspamd variables
 
-Rspamd defines some of the useful variables to use in the configuration files (as "${VAR}"). These variables are simply replaced with substitution value. Nested variables (e.g. "${VAR1_${VAR2}}") are **NOT** supported.
+Rspamd defines some useful variables to use in configuration files, as `${VAR}`, or simply as `$VAR`). These variables are replaced with substitution values at run-time. Nested variables like `${ VAR1_${VAR2} }` are **NOT** supported.
 
 - *CONFDIR*: configuration directory for Rspamd, found in `$PREFIX/etc/rspamd/`
-- *LOCAL_CONFDIR*: site-local configuration directory for Rspamd, usually $CONFDIR
+- *LOCAL_CONFDIR*: site-local configuration directory for Rspamd (usually the same value as $CONFDIR, and not to be confused with local.d)
 - *RUNDIR*: runtime directory to store pidfiles or UNIX sockets
-- *DBDIR*: persistent databases directory (used for statistics or symbols cache).
+- *DBDIR*: persistent databases directory (used for statistics or symbols cache)
 - *LOGDIR*: a directory to store log files
 - *PLUGINSDIR*: plugins directory for Lua plugins
 - *RULESDIR*: directory in which rules are kept
-- *PREFIX*: basic installation prefix
-- *VERSION*: Rspamd version string (e.g. "0.6.6")
+- *PREFIX*: basic installation prefix (may be null, for example for /etc/rspamd compared to /prefix/etc/rspamd)
+- *VERSION*: Rspamd version string (e.g. "2.7")
 - *WWWDIR*: root directory for web interface
 
 ## Rspamd specific macros
@@ -126,51 +141,92 @@ Rspamd defines some of the useful variables to use in the configuration files (a
 
 ## Rspamd basic configuration
 
-The basic Rspamd configuration is stored in `$CONFDIR/rspamd.conf`. By default, this file looks like this one:
+### Overview
+Configuration files that are installed or updated with Rspamd are not intended to be changed by the user. Rather, files should be overridden in site-specific configuration files. See the [quickstart](../quickstart.html#configuring-rspamd) page for details.
+
+Nevertheless, packaging will generally never overwrite configuration files on upgrade if they have been touched by the user. Please read the [migration notes](../migration.html) carefully if you upgrade Rspamd to a new version for all incompatible configuration changes.
+
+Rspamd configuration starts in file `$CONFDIR/rspamd.conf`. That file has a few settings, and includes other files, which themselves include yet more files. The final configuration is the sum of all files processed in the order found.
+
+For each Rspamd "core" file, there is an include to the `local.d` folder for local overrides, and another include to the `overide.d` folder for final overrides. For clarity on this architecture, see [this FAQ](../faq.html#what-are-local-and-override-config-files) and others related to the topic.
+
+### Detail
+The `rspamd.conf` file starts by including `common.conf`:
 
 ~~~ucl
 .include "$CONFDIR/common.conf"
+~~~
 
+In `common.conf`, a Lua script containing rules is defined, `$RULESDIR/rspamd.lua`. This is the main Lua config file for Rspamd, which loads and executes many other Lua programs as [modules](../modules/index.html).
+
+Tip: $RULESDIR may be something like /usr/share/rspamd/rules.
+
+ Other files are then included to define rules, and set rule weights and Rspamd actions.
+
+~~~ucl
+lua = "$RULESDIR/rspamd.lua"
+.include "$CONFDIR/metrics.conf"
+.include "$CONFDIR/actions.conf"
+.include "$CONFDIR/groups.conf"
+.include "$CONFDIR/composites.conf"
+.include "$CONFDIR/statistic.conf"
+.include "$CONFDIR/modules.conf"
+.include "$CONFDIR/settings.conf"
+~~~
+
+Each of those .conf files defines a specific section, as well as `.include` files to override each section with local settings.
+
+- The [metrics.conf](metrics.html) file was previously included in this documentation. It was deprecated in v1.7 and was replaced with `actions.conf` and `groups.conf`.
+- actions.conf (no separate doc yet) defines score limits for specific [action](../faq.html#what-are-rspamd-actions) types.
+- groups.conf (no separate doc yet) defines a single "group" section, with multiple symbol groups. Each group has `.include` directives to files containing details for symbols related to those groups. ([See also](../faq.html#how-to-change-score-for-some-symbol))
+- [composites.conf](composites.html) describes composite symbols.
+- Statistical filters are defined in [statistic.conf](statistic.html).
+- Rspamd stores module configurations (for both Lua and internal modules) in .conf files in the [modules.d](../modules/index.html) folder. For example, settings for the [RBL module](../modules/rbl.html) are defined in "/modules.d/rbl.conf". The `modules.conf` file exists merely to `.include` all of those files.
+- User settings are described extensively in the [settings.conf](settings.html) documentation. Each setting can define a set of custom metric weights, symbols or action scores, and enable or disable certain checks.
+
+After those includes, `common.conf` ends with a check for final override settings, and a small `modules` section:
+
+~~~ucl
+.include(try=true) "$LOCAL_CONFDIR/rspamd.conf.local"
+.include(try=true,priority=10) "$LOCAL_CONFDIR/rspamd.conf.local.override"
+.include(try=true,priority=10) "$LOCAL_CONFDIR/rspamd.conf.override"
+
+modules {
+  path = "${PLUGINSDIR}";
+  fallback_path = "${SHAREDIR}/lua"; # Legacy path
+  try_path = "${LOCAL_CONFDIR}/plugins.d/"; # User plugins
+}
+~~~
+
+The modules section defines paths of directories or specific files. If a directory is specified, all files in that folder with a `.lua` suffix are loaded as Lua plugins. (The directory path is treated as a `*.lua` shell pattern).
+
+Coming back to `rspamd.conf`, a global [options](options.html) section is defined, followed by [logging](logging.html) configuration.
+
+~~~ucl
 options {
+    pidfile = "$RUNDIR/rspamd.pid";
     .include "$CONFDIR/options.inc"
     .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/options.inc"
     .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/options.inc"
 }
 
+.include(try=true; duplicate=merge) "$CONFDIR/cgp.inc"
+.include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/cgp.inc"
+
 logging {
-    type = "console";
-    systemd = true;
+    type = "file";
+    filename = "$LOGDIR/rspamd.log";
     .include "$CONFDIR/logging.inc"
     .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/logging.inc"
     .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/logging.inc"
 }
-
-worker {
-    bind_socket = "*:11333";
-    .include "$CONFDIR/worker-normal.inc"
-    .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/worker-normal.inc"
-    .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/worker-normal.inc"
-}
-
-worker {
-    bind_socket = "localhost:11334";
-    .include "$CONFDIR/worker-controller.inc"
-    .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/worker-controller.inc"
-    .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/worker-controller.inc"
-}
 ~~~
 
-In `common.conf`, we read a Lua script placed in `$RULESDIR/rspamd.lua` and load Lua rules from it. Then we include a global [options](options.html) section followed by [logging](logging.html) logging configuration. The [metrics.conf](metrics.html) file defines metric settings, including rule weights and Rspamd actions. The [workers](../workers/index.html) section specifies Rspamd workers settings. [Composites.conf](composites.html) describes composite symbols. Statistical filters are defined in [statistics.conf](statistic.html). Rspamd stores module configurations (for both Lua and internal modules) in  [modules.d](../modules/index.html) section while modules themselves are loaded from the following portion of `common.conf`:
+Finally, a [workers](../workers/index.html) section (code not provided here) is defined using the `section "foo" {}` syntax noted above, for worker types: normal, controller, rspamd_proxy, and fuzzy.
 
-~~~ucl
-modules {
-	path = "$PLUGINSDIR/lua/"
-}
-~~~
 
-The modules section defines the path or paths of directories or specific files. If a directory is specified then all files with a `.lua` suffix are loaded as lua plugins (the directory path is treated as a `*.lua` shell pattern).
 
-This configuration is not intended to be changed by the user, rather it should be overridden in site-specific configuration files- see the [quickstart]({{ site.baseurl }}/doc/quickstart.html#configuring-rspamd) for details. Nevertheless, packaging will generally never overwrite configuration files on upgrade if they have been touched by the user. Please read the [migration notes]({{ site.baseurl }}/doc/migration.html) carefully if you upgrade Rspamd to a new version for all incompatible configuration changes.
+
 
 ## Jinja templating
 
