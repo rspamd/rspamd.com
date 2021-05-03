@@ -15,6 +15,8 @@ Neural network is learned for spam when a message is recognized as spam and it i
 
 Training is performed in background and after some amount of trains neural network is updated and stored in Redis server allowing scanners to load and update their own data.
 
+You cannot currently currently train the network manually with `rspamc learn_ham` / `rspamc learn_spam`.
+
 After some amount of training iterations (`10` by default), the training process removes old neural network and starts training a new one. This is done to ensure that old data does not influence the current processing. Once trained, neural network data is saved into Redis where all Rspamd scanners share their learning data. Redis is also used to store intermediate train vectors. ANN and training data is saved in Redis compressed using `zstd` compressor.
 
 ## Configuration
