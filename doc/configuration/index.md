@@ -232,23 +232,27 @@ Finally, a [workers](../workers/index.html) section (code not provided here) is 
 
 {% raw %}
 
-From version 1.9.1, Rspamd supports [Jinja2 templates](http://jinja.pocoo.org) provided by [Lupa Lua library](https://foicica.com/lupa/). You can read the basic syntax documnentation and the abilities provided by these templating engines using the links above. Rspamd itself uses a specific syntax for variable tags: `{=` and `=}` instead of the traditional `{{` and `}}` as these tags could mean, e.g. a table in table in Lua.
+[Jinja](http://jinja.pocoo.org) is a modern and designer-friendly templating language for Python, modelled after Django’s templates.
+[Lupa](https://github.com/orbitalquark/lupa) is a Jinja2 template engine implementation written in Lua and supports Lua syntax within tags and variables.
+Starting in version 1.9.1, Rspamd supports Jinja templates with Lua code within Rspamd UCL configuration files. This can be used to implement logic and data transformations, beyond the static assignments and `.include` directives noted above. Rspamd itself uses a specific syntax for variable tags: `{=` and `=}` instead of the traditional `{{` and `}}`, as these tags could otherwise mean "a table within a table" in Lua.
 
 {% endraw %}
 
-Templating might be useful to hide some secrets from config files and places them in environment. Rspamd automatically reads environment variables that start from `RSPAMD_` prefix and pushes it to the `env` variable, e.g. `RSPAMD_foo=bar` comes to `env.foo="bar"` in templates.
+Templating can be useful to hide secret values from config files, by placing them into environment variables. Rspamd automatically reads environment variables that start with a `RSPAMD_` prefix, and pushes them onto the `env` variable. For example, `RSPAMD_foo=bar` becomes `env.foo="bar"` in templates.
 
-`env` variable also contains the following information:
+The `env` variable also contains the following information:
 
 * `ver_major` - major version (e.g. `1`)
 * `ver_minor` - minor version (e.g. `9`)
 * `ver_patch` - patch version (e.g. `1`)
 * `version` - full version as a string (e.g. `1.9.1`)
 * `ver_num` - numeric version as a hex string (e.g. `0x1090100000000`)
-* `ver_id` - git id or `release` if not a git build
+* `ver_id` - git ID or `release` if not a git build
 * `hostname` - local hostname
 
-You can also add values, not merely plain strings but any Lua objects, e.g. tables, specifying additional environment files with `--lua-env` command line argument. This file will be read by `root` user if Rspamd main process starts as root and then drops privilleges. These file or files when specified multiple times should return a table as a single possible outcome, for example:
+You can also add values, not merely plain strings but any Lua objects, like tables, by specifying additional environment files with the `--lua-env` command line argument. The specified Lua program file will be read by the `root` user if the Rspamd main process starts as root and then drops privileges.
+<!-- TG - Not understanding the following statement (revised from original for language clarity) -->
+The Lua program file (or files) when specified multiple times should return a table as a single possible outcome. For example:
 
 ```lua
 return {
@@ -260,7 +264,7 @@ return {
 }
 ```
 
-You can use them as following in the config files:
+You can then use the variables as follows in config files:
 
 {% raw %}
 ~~~ucl
@@ -271,20 +275,19 @@ baz = {= env.var2.subvar2 =};
 ~~~
 {% endraw %}
 
-You can also use that for secure storing of the passwords:
+You can also use this for secure storage of passwords. This code sample would be used in a config file, and demonstrates many details for using Jinja.
 
 {% raw %}
 ~~~ucl
 # local.d/controller.inc
 {% if env.password %}
-password = "{= env.password|pbkdf =}"; # Password also will be encrypted using `catena` PBKDF
+password = "{= env.password|pbkdf =}"; # Password is encrypted using `catena` PBKDF
 {% endif %}
 ~~~
 {% endraw %}
 
-{% raw %}
+Note that the pipe symbol `|` is used to send the password into a Jinja [filter](https://jinja.palletsprojects.com/en/2.11.x/templates/#filters) for additional processing. The `pbkdf` filter (defined in Rspamd) encrypts the password using the [PBKDF](https://en.wikipedia.org/wiki/PBKDF2) standard, specifically using the [Catena](https://github.com/bsdphk/PHC/tree/master/Catena) hashing scheme.)
 
-As a consequence, from the version 1.9.1, your config files should be Jinja safe, meaning that there should be no special sequences like `{%` or `{=` anywhere in your configuration. Alternatively, you can escape them using `raw` and `endraw` tags.
+With this enhancement, as of version 1.9.1, your config files should be Jinja safe. However, this also implies that there should be no special sequences like {% raw %}`{%` or `{=`{% endraw %} anywhere in your configuration, other than for Jinja. If you do require these sequences for any reason, you can [escape](https://jinja.palletsprojects.com/en/2.11.x/templates/#escaping) them using {% raw %}{%{% endraw %} raw {% raw %}%}{% endraw %} and {% raw %}{%{% endraw %} endraw {% raw %}%}{% endraw %} tags.
 
-{% endraw %}
-
+Just remember that the standard Jinja documentation describes the use of Python syntax and features, while Rspamd with Lupa facilitates the use of Lua syntax and features. See the Lupa documentation for details.
