@@ -115,3 +115,20 @@ report_settings {
 ~~~
 
 When sending of reports is enabled Rspamd will try to immediately send reports covering the previous day in UTC time; further sends are scheduled to run every 24 hours from this time. The file `$DBDIR/dmarc_reports_last_sent` tracks the time of the last send between restarts.
+
+## DMARC Munging
+
+From version 2.8, Rspamd supports DMARC munging for the mailing list. In this mode, Rspamd will change the `From:` header to some pre-defined address (e.g. a mailing list address) for those messages who have **valid** DMARC policy with **reject/quarantine** that would otherwise fail during mailing list forwarding. An example of this technique is defined here: https://mailman.readthedocs.io/en/release-3.1/src/mailman/handlers/docs/dmarc-mitigations.html
+Here is an example for such a configuration:
+
+~~~ucl
+# local.d/dmarc.conf
+munging {
+  list_map = "/etc/rspamd/maps.d/dmarc_munging.map"; # map of maillist domains (mandatory)
+  mitigate_strict_only = false; # perform mugning merely for reject/quarantine policies
+  reply_goes_to_list = false; # set reply-to to the list address
+  mitigate_allow_only = true; # perform munging based on DMARC_POLICY_ALLOW only
+  munge_from = true; # replace from with something like <orig name> via <rcpt user>
+  munge_map_condition = nil; # maps expression to enable munging
+}
+~~~
