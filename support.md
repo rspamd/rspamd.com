@@ -21,7 +21,7 @@ Please join our community for updates, release announces and other news.
     <a class="btn-support btn-github" href="https://github.com/rspamd/rspamd/discussions" target="_blank"><i class="fa fa-github"></i> Discussions</a>
     <a class="btn-support btn-telegram" href="http://t.me/rspamd"><i class="fa fa-paper-plane"></i> Telegram</a>
     <a class="btn-support btn-telegram" href="http://t.me/rspamd_ru"><i class="fa fa-paper-plane"></i> Telegram RU</a>
-    <a class="btn-support btn-reddit" href="ircs://chat.freenode.net/rspamd" title="#rspamd on freenode"><i class="fa fa-comments-o"></i> IRC channel</a>
+    <a class="btn-support btn-reddit" href="ircs://irc.oftc.net/rspamd" title="#rspamd on OFTC"><i class="fa fa-comments-o"></i> IRC channel</a>
 </div>
 
 ## Donations
