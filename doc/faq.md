@@ -18,7 +18,7 @@ This document includes some questions and practical examples that are frequently
 
 ### Where to get help about Rspamd
 
-The most convenient place for asking questions about Rspamd is the IRC channel _#rspamd_ on [http://freenode.net](http://freenode.net). For more information you can also check the [support page]({{ site.url }}{{ site.baseurl }}/support.html)
+The most convenient place for asking questions about Rspamd is the IRC channel _#rspamd_ on [OFTC](https://oftc.net). For more information you can also check the [support page]({{ site.url }}{{ site.baseurl }}/support.html)
 
 ### What versions of Rspamd are supported
 

@@ -9,7 +9,7 @@ The vast majority of technical discussion topics are held within the dedicated [
 
 For those who are familiar with IRC, here are settings for IRC channel access:
 
-* server: `irc.freenode.net` (port 6666)
+* server: `irc.oftc.net` (port 6667)
 * channel: `#rspamd`
 
 ## IRC quick tutorial
@@ -22,7 +22,7 @@ To access IRC, you can use a set of clients for your favourite platform, for ins
 
 Alternatively, you could use some web interface to access IRC:
 
-* [freenode webchat](https://webchat.freenode.net/?channels=%23rspamd) - a simple web interface
+* [OFTC webchat](https://webchat.oftc.net/?channels=%23rspamd) - a simple web interface
 * [Irccloud](https://irccloud.com) - advanced platform with tons of features
 
 ## IRC rules
