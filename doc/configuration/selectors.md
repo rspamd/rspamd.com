@@ -285,7 +285,7 @@ local samples = {
 
 All selectors provide type safety controls. It means that Rspamd checks if types within pipeline match each other. For example, `rcpts` extractor returns a list of addresses, and `from` returns a single address. If you need to lowercase this address you need to convert it to a string as the first step. This could be done by getting a specific element of this address, e.g. `from.addr` -> this returns a `string` (you could also get `from.name` to get a displayed name, for example). Each processor has its own list of the accepted types.
 
-However, in the case of recipients, `rcpt` returns a list of addresses not a single address. Despite of this, you can still apply the same pipeline `rcpts.addr.tolower`. This magic works as many processors could be functionally applied as a map:
+However, in the case of recipients, `rcpt` returns a list of addresses not a single address. Despite of this, you can still apply the same pipeline `rcpts.addr.lower`. This magic works as many processors could be functionally applied as a map:
 
 ```
 elt1 -> f(elt1) -> elt1'
