@@ -81,7 +81,7 @@ to the **classifier** configuration.
 
 ### Classifier and headers
 
-The classifer will only learn headers that are defined in `classify_headers` in the `options.inc` file.  It is therefore not necessary to remove any headers added (such as X-Spam or others) before learning, as these headers will not be used for classification. Rspamd also uses `Subject` that is tokenized according to the rules above and several meta-tokens, such as size or number of attachments that are extracted from the messages.
+The classifier will only learn headers that are defined in `classify_headers` in the `options.inc` file.  It is therefore not necessary to remove any headers added (such as X-Spam or others) before learning, as these headers will not be used for classification. Rspamd also uses `Subject` that is tokenized according to the rules above and several meta-tokens, such as size or number of attachments that are extracted from the messages.
 
 ## Redis statistics
 
