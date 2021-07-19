@@ -343,6 +343,82 @@ DCC identifies bulky mails by creating hash and therefor DCC needs the complete 
 Any messages that DCC returns a *reject* result for (based on the configured `DCCM_REJECT_AT`
 value) will cause the symbol `DCC_REJECT` to fire. `DCC_BULK` will be calculated from the body, fuz1, fuz2 return values and has a dynamic score.
 
+## Pyzor specific details
+
+`Requires rspamd >2.8`
+
+Pyzor is, like Razor2 and DCC, a bulk email scanner that doesn't detect spam but how often a message (hash) has been seen, or how "bulky" a message is.
+
+Pyzor will be exposed to rspamd through a systemd socket, a wrapper isn't needed.
+
+Install Pyzor e.g. on CentOS/Rocky Linux `yum install pyzor`
+
+Enable the module:
+
+~~~ucl
+# local.d/external_services.conf
+...
+pyzor {
+  # default pyzor settings
+  servers = "127.0.0.1:5953"
+}
+~~~
+
+Restart rspamd `systemctl restart rspamd`
+
+Add the systemd socket and service:
+
+~~~ucl
+# /usr/lib/systemd/system/pyzor.socket
+
+[Unit]
+Description=Pyzor socket
+
+[Socket]
+ListenStream=127.0.0.1:5953
+Accept=yes
+
+[Install]
+WantedBy=sockets.target
+~~~
+
+~~~ucl
+# /usr/lib/systemd/system/pyzor@.service
+
+[Unit]
+Description=Pyzor Socket Service
+Requires=pyzor.socket
+
+[Service]
+Type=simple
+ExecStart=-/usr/bin/pyzor check -
+StandardInput=socket
+StandardError=journal
+TimeoutStopSec=10
+
+User=_rspamd
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+PrivateUsers=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+
+[Install]
+WantedBy=multi-user.target
+~~~
+
+Reload systemd `systemctl daemon-reload` and enable/start pyzor socket `systemctl enable pyzor.socket && systemctl start pyzor.socket`
+
+`pyzor.socket` will call `pyzor@.service` so there is no need to enable/start `pyzor@.service`
+
+Since Pyzor is executed as `_rspamd` you probably have to create the Pyzor home directory `mkdir /var/lib/rspamd/.pyzor`, alternatively create a dedicated Pyzor user and edit `pyzor@.service`.
+
+The `PYZOR` symbole weight is calculated dynamically based on the number of times a message has been seen and whitelisted by Pyzor (Count - WL-Count of default_score in percent)
+
 ## Razor specific details
 
 Vipul's Razor is a spam detection using  method using hashes of spam emails checked against a distributed database.
