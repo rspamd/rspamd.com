@@ -391,7 +391,7 @@ Requires=pyzor.socket
 
 [Service]
 Type=simple
-ExecStart=-/usr/bin/pyzor check -
+ExecStart=-/usr/bin/pyzor check
 StandardInput=socket
 StandardError=journal
 TimeoutStopSec=10
