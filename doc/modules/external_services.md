@@ -389,7 +389,7 @@ Requires=razor.socket
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/razor-check -
+ExecStart=/usr/bin/razor-check
 ExecStop=/usr/bin/echo -n "spam"
 ExecStopPost=/usr/bin/echo -n "ham"
 StandardInput=socket
