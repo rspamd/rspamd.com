@@ -389,9 +389,7 @@ Requires=razor.socket
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/razor-check
-ExecStop=/usr/bin/echo -n "spam"
-ExecStopPost=/usr/bin/echo -n "ham"
+ExecStart=/bin/sh -c '/usr/bin/razor-check && /usr/bin/echo -n "spam" || /usr/bin/echo -n "ham"'
 StandardInput=socket
 StandardError=journal
 TimeoutStopSec=10
@@ -415,7 +413,7 @@ Reload systemd `systemctl daemon-reload` and enable/start razor socket `systemct
 
 `razor.socket` will call `razor@.service` so there is no need to enable/start `razor@.service`
 
-The 'RAZOR' symbole will be added based on the exit code of Razor (0 = SPAM or 1 = HAM) naturally systemd will flag the unit as failed on a non-zero exit code which in this case just means the last scanned message was HAM.
+The `RAZOR` symbole will be added based on the exit code of Razor (0 = SPAM or 1 = HAM)
 
 ## VadeSecure specific details
 
