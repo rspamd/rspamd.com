@@ -421,23 +421,75 @@ The `PYZOR` symbole weight is calculated dynamically based on the number of time
 
 ## Razor specific details
 
-Vipul's Razor is a spam detection using  method using hashes of spam emails checked against a distributed database.
+Razor is, like Pyzor and DCC, a bulk email scanner that doesn't detect spam but how often a message (hash) has been seen, or how "bulky" a message is.
 
-To use razor with Rspamd you have to install a wrapper daemon: [razor](https://github.com/HeinleinSupport/razorfy).
+Razor will be exposed to rspamd through a systemd socket, a wrapper isn't needed.
 
-razor communicates with Rspamd over TCP and calls razor to get the report of a scanned mail. Until now we are just detecting the spam or ham decision and not evaluating the detailed reports
+Install Razor e.g. on CentOS/Rocky Linux `yum install perl-Razor-Agent`
+
+Enable the module:
 
 ~~~ucl
 # local.d/external_services.conf
-
+...
 razor {
-  ...
   # default razor settings
   servers = "127.0.0.1:11342"
-  ...
 }
-
 ~~~
+
+Restart rspamd `systemctl restart rspamd`
+
+Add the systemd socket and service:
+
+~~~ucl
+# /usr/lib/systemd/system/razor.socket
+
+[Unit]
+Description=Razor socket
+
+[Socket]
+ListenStream=127.0.0.1:11342
+Accept=yes
+
+[Install]
+WantedBy=sockets.target
+~~~
+
+~~~ucl
+# /usr/lib/systemd/system/razor@.service
+
+[Unit]
+Description=Razor Socket Service
+Requires=razor.socket
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c '/usr/bin/razor-check && /usr/bin/echo -n "spam" || /usr/bin/echo -n "ham"'
+StandardInput=socket
+StandardError=journal
+TimeoutStopSec=10
+
+User=_rspamd
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+PrivateUsers=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+
+[Install]
+WantedBy=multi-user.target
+~~~
+
+Reload systemd `systemctl daemon-reload` and enable/start razor socket `systemctl enable razor.socket && systemctl start razor.socket`
+
+`razor.socket` will call `razor@.service` so there is no need to enable/start `razor@.service`
+
+The `RAZOR` symbole will be added based on the exit code of Razor (0 = SPAM or 1 = HAM)
 
 ## VadeSecure specific details
 
