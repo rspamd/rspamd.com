@@ -13,6 +13,11 @@ This document describes incompatible changes introduced in recent Rspamd version
   {:toc}
 </div>
 
+## Migration to Rspamd 3.0
+
+Dmarc reporting stuff is no longer in the dmarc module: you need to run `rspamadm dmarc_report` command periodically to send DMARC reports. This could be done via cron. Configuration of the reporting has also changed in the incompatible matter, please check the [module documentation](modules/dmarc.html).
+
+
 ## Migration to Rspamd 2.6
 
 It is necessary to clear the browser cache and restart the browser for the GUI to work properly after upgrading to 2.6.
