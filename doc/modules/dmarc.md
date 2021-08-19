@@ -64,61 +64,36 @@ dmarc {
 
 ## Reporting
 
-From Rspamd 1.6 experimental support for generation of DMARC reports is provided.
+From Rspamd 3.0 you should use `rspamadm dmarc_report` tool called manually (e.g. via cron or systemd timers) to send reports, this should be done either daily or hourly depending on traffic. You also need a working MTA running on a specific host that allows email to be sent with no authentication/ssl (preferrably local MTA).
 
 DMARC reporting information is stored in Redis- see [here]({{ site.baseurl }}/doc/configuration/redis.html) for information about configuring Redis.
 
-For Rspamd to store information to be used for reports, you must set `reporting = true` in the DMARC module configuration
+Here are the configuration parameters for Dmarc reporting with the corresponding comments:
 
 ~~~ucl
-# /etc/rspamd/local.d/dmarc.conf
-reporting = true;
+# local.d/dmarc.conf
+  reporting {
+    # Required attributes
+    enabled = true; # Enable reports in general
+    email = 'dmarc_reports@example.com'; # Source of DMARC reports
+    domain = 'example.com'; # Domain to serve
+    org_name = 'Example organisation'; # Organisation
+    # Optional parameters
+    report_local_controller = false; # Store reports for local/controller scans (for testing only)
+    helo = 'rspamd.localhost'; # Helo used in SMTP dialog
+    smtp = '127.0.0.1'; # SMTP server IP
+    smtp_port = 25; # SMTP server port
+    from_name = 'Rspamd'; # SMTP FROM
+    msgid_from = 'rspamd'; # Msgid format
+    max_entries = 1k; # Maxiumum amount of entries per domain
+    keys_expire = 2d; # Expire date for Redis keys
+    #only_domains = '/path/to/map'; # Store reports merely from those domains
+  }
 ~~~
-
-This should be enabled on every machine you want to collect reporting information from.
-
-Sending of reports should only be enabled on single machine. This is done by adding the below settings to the configuration:
-
-~~~ucl
-# /etc/rspamd/local.d/dmarc.conf
-# send_reports MUST be true
-send_reports = true;
-# report_settings MUST be present
-report_settings {
-  # The following elements MUST be present
-  # organisation name to use for reports
-  org_name = "Example";
-  # organisation domain
-  domain = "example.net";
-  # sender address to use for reports
-  email = "postmaster@example.net";
-  # The following elements MAY be present
-  # sender name to use for reports ("Rspamd" if unset)
-  # from_name = "Rspamd";
-  # SMTP host to send reports to ("127.0.0.1" if unset)
-  # smtp = "127.0.0.1";
-  # TCP port to use for SMTP (25 if unset)
-  # smtp_port = 25;
-  # HELO to use for SMTP ("rspamd" if unset)
-  # helo = "rspamd";
-  # Number of retries on temporary errors (2 if unset)
-  # retries = 2;
-  # Send DMARC reports here instead of domain owners
-  # override_address = "postmaster@example.net";
-  # Send DMARC reports here in addition to domain owners
-  # additional_address = "postmaster@example.net";
-  # DMARC Reports send to addition will be send as BCC
-  # additional_address_bcc = false;
-  # Number of records to request with HSCAN
-  # hscan_count = 200
-}
-~~~
-
-When sending of reports is enabled Rspamd will try to immediately send reports covering the previous day in UTC time; further sends are scheduled to run every 24 hours from this time. The file `$DBDIR/dmarc_reports_last_sent` tracks the time of the last send between restarts.
 
 ## DMARC Munging
 
-From version 2.8, Rspamd supports DMARC munging for the mailing list. In this mode, Rspamd will change the `From:` header to some pre-defined address (e.g. a mailing list address) for those messages who have **valid** DMARC policy with **reject/quarantine** that would otherwise fail during mailing list forwarding. An example of this technique is defined here: https://mailman.readthedocs.io/en/release-3.1/src/mailman/handlers/docs/dmarc-mitigations.html
+From version 3.0, Rspamd supports DMARC munging for the mailing list. In this mode, Rspamd will change the `From:` header to some pre-defined address (e.g. a mailing list address) for those messages who have **valid** DMARC policy with **reject/quarantine** that would otherwise fail during mailing list forwarding. An example of this technique is defined here: https://mailman.readthedocs.io/en/release-3.1/src/mailman/handlers/docs/dmarc-mitigations.html
 Here is an example for such a configuration:
 
 ~~~ucl
