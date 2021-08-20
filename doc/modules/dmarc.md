@@ -45,8 +45,6 @@ Actions can be forced for messages based on DMARC disposition as demonstrated in
 
 ~~~ucl
 dmarc {
-	# Enables storing reporting information to redis
-	reporting = true;
 	# If Redis server is not configured below, settings from redis {} will be used
 	#servers = "127.0.0.1:6379"; # Servers to use for reads and writes (can be a list)
 	# Alternatively set read_servers / write_servers to split reads and writes
