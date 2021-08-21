@@ -45,8 +45,6 @@ Actions can be forced for messages based on DMARC disposition as demonstrated in
 
 ~~~ucl
 dmarc {
-	# Enables storing reporting information to redis
-	reporting = true;
 	# If Redis server is not configured below, settings from redis {} will be used
 	#servers = "127.0.0.1:6379"; # Servers to use for reads and writes (can be a list)
 	# Alternatively set read_servers / write_servers to split reads and writes
@@ -79,6 +77,7 @@ Here are the configuration parameters for Dmarc reporting with the corresponding
     domain = 'example.com'; # Domain to serve
     org_name = 'Example organisation'; # Organisation
     # Optional parameters
+    bcc_addrs = ["postmaster@example.com"]; # additional addresses to copy on reports
     report_local_controller = false; # Store reports for local/controller scans (for testing only)
     helo = 'rspamd.localhost'; # Helo used in SMTP dialog
     smtp = '127.0.0.1'; # SMTP server IP
