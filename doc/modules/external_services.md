@@ -282,7 +282,7 @@ symbols = {
   },
   "BAD_MACRO_RISKY_IOC" {
     weight = 10.0;
-    description = "Risky lacro in office document";
+    description = "Risky macro in office document";
   }
 ...
 }
