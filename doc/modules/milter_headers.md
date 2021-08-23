@@ -336,22 +336,18 @@ custom {
   my_routine = <<EOD
 return function(task, common_meta)
 -- parameters are task and metadata from previous functions
-  local extra_header
 
   if task:has_symbol('SYMBOL') then
-    extra_header = 'Bar'
+    return nil, -- no error
+    {['X-ExtraHeader'] = 'Bar'},
+    {['X-ExtraHeader'] = 0}, -- remove foreign X-Foo headers
+    {} -- metadata to return to other functions
   end
 
-  if extra_header ~= nil then
-    return nil, -- no error
-    {['X-ExtraHeader'] = string.format('%s', extra_header)},
-    {['X-ExtraHeader'] = 0}, -- remove foreign X-Foo headers
-    {} -- metadata to return to other functions
-  else
-    return nil, -- no error
-    {['X-ExtraHeader'] = 0}, -- remove foreign X-Foo headers
-    {} -- metadata to return to other functions
-  end
+  return nil, -- no error
+  {['X-ExtraHeader'] = 0}, -- remove foreign X-Foo headers
+  {} -- metadata to return to other functions
+    
 end
 EOD;
 }
