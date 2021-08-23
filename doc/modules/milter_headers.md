@@ -344,6 +344,7 @@ Besides, disabling DSN prevents backscatter generation.
 ### Postfix example
 
 The following configuration example allows DSN requests from local subnets and authenticated users only. The `smtpd_discard_ehlo_keyword_address_maps` is applied to `smtp` service only, `smtps` and `submission` are not affected.
+Please ensure you modify the example below to match your subnet(s).
 
 esmtp_access:
 ```conf
