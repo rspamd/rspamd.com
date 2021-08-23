@@ -339,15 +339,15 @@ return function(task, common_meta)
 
   if task:has_symbol('SYMBOL') then
     return nil, -- no error
-    {['X-ExtraHeader'] = 'Bar'},
-    {['X-ExtraHeader'] = 0}, -- remove foreign X-Foo headers
+    {['X-Foo'] = 'Bar'},
+    {['X-Foo'] = 0}, -- remove foreign X-Foo headers
     {} -- metadata to return to other functions
   end
 
   return nil, -- no error
-  {['X-ExtraHeader'] = 0}, -- remove foreign X-Foo headers
+  {['X-Foo'] = 0}, -- remove foreign X-Foo headers
   {} -- metadata to return to other functions
-    
+
 end
 EOD;
 }
