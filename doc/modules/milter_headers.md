@@ -349,7 +349,7 @@ esmtp_access:
 ```conf
 # Allow DSN requests from local subnets only
 192.168.0.0/16  silent-discard
-10.10.0.0/16    silent-discard
+10.10.0.0/8     silent-discard
 0.0.0.0/0       silent-discard, dsn
 ::/0            silent-discard, dsn
 ```
