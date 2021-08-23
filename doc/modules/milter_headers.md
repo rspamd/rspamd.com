@@ -339,12 +339,13 @@ return function(task, common_meta)
 
   if task:has_symbol('SYMBOL') then
     return nil, -- no error
-    {['X-Foo'] = 'Bar'},
+    {['X-Foo'] = 'Bar'}, -- set extra header
     {['X-Foo'] = 0}, -- remove foreign X-Foo headers
     {} -- metadata to return to other functions
   end
 
   return nil, -- no error
+  {}, -- need to fill the parameter
   {['X-Foo'] = 0}, -- remove foreign X-Foo headers
   {} -- metadata to return to other functions
 
