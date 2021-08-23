@@ -363,3 +363,16 @@ master.cf:
 smtp      inet  n       -       n       -       1       postscreen
   -o smtpd_discard_ehlo_keyword_address_maps=cidr:$config_directory/esmtp_access
 ```
+or globaly
+main.cf:
+```conf
+smtpd_discard_ehlo_keyword_address_maps = 
+        cidr:/etc/postfix/esmtp_access
+```
+
+DSN can also be disabled for everyone with a shorter configuration change:
+main.cf:
+```conf
+/etc/postfix/main.cf:
+    smtpd_discard_ehlo_keywords = silent-discard, dsn
+```
