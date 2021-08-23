@@ -335,6 +335,7 @@ A slightly more complex example that adds an extra header when a specified symbo
 custom {
   my_routine = <<EOD
 return function(task, common_meta)
+-- parameters are task and metadata from previous functions
   local extra_header
 
   if task:has_symbol('SYMBOL') then
@@ -342,7 +343,6 @@ return function(task, common_meta)
   end
 
   if extra_header ~= nil then
-    -- parameters are task and metadata from previous functions
     return nil, -- no error
     {['X-ExtraHeader'] = string.format('%s', extra_header)},
     {['X-ExtraHeader'] = 0}, -- remove foreign X-Foo headers
