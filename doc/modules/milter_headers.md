@@ -356,6 +356,7 @@ esmtp_access:
 ```
 
 master.cf:
+
 ```conf
 # ==========================================================================
 # service type  private unpriv  chroot  wakeup  maxproc command + args
@@ -366,14 +367,15 @@ smtp      inet  n       -       n       -       1       postscreen
 ```
 or globaly
 main.cf:
+
 ```conf
 smtpd_discard_ehlo_keyword_address_maps = 
-        cidr:/etc/postfix/esmtp_access
+        cidr:$config_directory/esmtp_access
 ```
 
 DSN can also be disabled for everyone with a shorter configuration change:
 main.cf:
 ```conf
-/etc/postfix/main.cf:
+# $config_directory/main.cf:
     smtpd_discard_ehlo_keywords = silent-discard, dsn
 ```
