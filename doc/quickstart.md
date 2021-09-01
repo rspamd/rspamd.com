@@ -576,7 +576,7 @@ Though Rspamd is free to use for any purpose many of the RBLs used in the defaul
 
 [Mailspike](http://mailspike.org/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
 
-[Rspamd URIBL](http://www.rspamd.com/feed-policies.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
+[Rspamd URIBL](http://www.rspamd.com/doc/usage_policy.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
 
 [SORBS](http://www.sorbs.net/general/using.shtml#largesites){:target="&#95;blank"} - Limit of 100k users or more than 5 messages per second sustained
 
