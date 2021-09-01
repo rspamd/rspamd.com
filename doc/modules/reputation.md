@@ -81,11 +81,12 @@ group "reputation" {
         "IP_REPUTATION_SPAM" {
             weight = 4.0;
         }
-
-        "DKIM_REPUTATION" {
+        "DKIM_REPUTATION_HAM" {
             weight = 1.0;
         }
-
+        "DKIM_REPUTATION_SPAM" {
+            weight = 2.0;
+        }
         "SPF_REPUTATION_HAM" {
             weight = 1.0;
         }
