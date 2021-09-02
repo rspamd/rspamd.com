@@ -81,7 +81,7 @@ For <a class="undecor" href="#asanSys1">asan<sup>2</sup></a> branch packages, do
 
 Rspamd supports the following .deb based distributives:
 
-- **Debian stretch** (only x86_64) Hyperscan and LuaJIT are enabled.
+- **Debian bullseye** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Debian buster** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Debian sid** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Ubuntu xenial** (only x86_64) Hyperscan and LuaJIT are enabled.
