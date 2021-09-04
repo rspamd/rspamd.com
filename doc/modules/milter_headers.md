@@ -329,6 +329,31 @@ EOD;
 
 The key `my_routine` could then be referenced in the `use` setting like other routines.
 
+A slightly more complex example that adds an extra header when a specified symbol has been added:
+
+~~~ucl
+custom {
+  my_routine = <<EOD
+return function(task, common_meta)
+-- parameters are task and metadata from previous functions
+
+  if task:has_symbol('SYMBOL') then
+    return nil, -- no error
+    {['X-Foo'] = 'Bar'}, -- set extra header
+    {['X-Foo'] = 0}, -- remove foreign X-Foo headers
+    {} -- metadata to return to other functions
+  end
+
+  return nil, -- no error
+  {}, -- need to fill the parameter
+  {['X-Foo'] = 0}, -- remove foreign X-Foo headers
+  {} -- metadata to return to other functions
+
+end
+EOD;
+}
+~~~
+
 ## Scan results exposure prevention
 
 To prevent exposing scan results in outbound mail, extended Rspamd headers routines (`x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`) add headers only if messages is **NOT** originated from authenticated users or `our_networks`.
