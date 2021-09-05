@@ -64,6 +64,8 @@ dmarc {
 
 From Rspamd 3.0 you should use `rspamadm dmarc_report` tool called manually (e.g. via cron or systemd timers) to send reports, this should be done either daily or hourly depending on traffic. You also need a working MTA running on a specific host that allows email to be sent with no authentication/ssl (preferrably local MTA).
 
+While migrating from the previous versions, please ensure that you don't have something like `reporting = true;` in `rspamadm configdump dmarc`. It was intentionally converted to the new options schema to avoid misconfiguration. The line `reporting = true;` **must** be removed from the `local.d/dmarc.conf` if it is there.
+
 DMARC reporting information is stored in Redis- see [here]({{ site.baseurl }}/doc/configuration/redis.html) for information about configuring Redis.
 
 Here are the configuration parameters for Dmarc reporting with the corresponding comments:
