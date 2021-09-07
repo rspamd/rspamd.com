@@ -115,13 +115,6 @@ Rspamd supports a set of internal functions to do some common spam filtering tas
 * `has_content_part(type)` - return `true` if the part with the specified `type` exists
 * `has_content_part_len(type, len)` - return `true` if the part with the specified `type` exists and have at least `len` length
 * `has_fake_html()` - check if there is an HTML part in message with no HTML tags
-* `has_html_tag(tagname)` - return `true` if html part contains specified tag
-* `has_only_html_part()` - return `true` if there is merely a single HTML part
-* `header_exists(header)` - return `true` if a specified header exists in the message
-* `is_empty_body()` - return `true` if the message has no payload body
-* `is_html_balanced()` - check whether HTML part has balanced tags
-* `is_recipients_sorted()` - return `true` if there are more than 5 recipients in a message and they are sorted
-* `raw_header_exists()` - does the same as `header_exists`
 * `has_flag(flag)` - returns `true` is this task has a specific flag:
   - `pass_all`
   - `no_log`
@@ -135,6 +128,14 @@ Rspamd supports a set of internal functions to do some common spam filtering tas
   - `skip_process`
   - `milter`
   - `bad_unicode`
+* `has_html_tag(tagname)` - return `true` if html part contains specified tag
+* `has_only_html_part()` - return `true` if there is merely a single HTML part
+* `has_symbol(symbolname)` - return `true` if symbol name is present in result
+* `header_exists(header)` - return `true` if a specified header exists in the message
+* `is_empty_body()` - return `true` if the message has no payload body
+* `is_html_balanced()` - check whether HTML part has balanced tags
+* `is_recipients_sorted()` - return `true` if there are more than 5 recipients in a message and they are sorted
+* `raw_header_exists()` - does the same as `header_exists`
 
 Many of these functions are just legacy but they are supported in terms of compatibility.
 
