@@ -66,7 +66,7 @@ The following strategy-specific settings are defined:
 
 ### authenticated
 
- * `user_map` (optional): A [map]({{ site.baseurl }/doc/faq.html#what-are-maps) containing a list of usernames. If set, the local sender is required to use a listed username for the rule to be applied.
+ * `user_map` (optional): A [map]({{ site.baseurl }}/doc/faq.html#what-are-maps) containing a list of usernames. If set, the local sender is required to use a listed username for the rule to be applied.
 
 ### count
 
@@ -74,4 +74,4 @@ The following strategy-specific settings are defined:
 
 ### hostname_map
 
- * `hostname_map` (required): A [map]({{ site.baseurl }/doc/faq.html#what-are-maps) of hostnames which we expect to see from the sender and in `Received` headers.
+ * `hostname_map` (required): A [map]({{ site.baseurl }}/doc/faq.html#what-are-maps) of hostnames which we expect to see from the sender and in `Received` headers.
