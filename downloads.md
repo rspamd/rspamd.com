@@ -98,8 +98,8 @@ sudo mkdir -p /etc/apt/keyrings
 wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-stable/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
 echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-stable/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
-apt-get update
-apt-get --no-install-recommends install rspamd
+sudo apt-get update
+sudo apt-get --no-install-recommends install rspamd
 ~~~
 
 
@@ -116,8 +116,8 @@ sudo mkdir -p /etc/apt/keyrings
 wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
 echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
-apt-get update
-apt-get --no-install-recommends install rspamd
+sudo apt-get update
+sudo apt-get --no-install-recommends install rspamd
 ~~~
 
 For <a class="undecor" href="#asanSys2">ASAN<sup>2</sup></a> branch replace `apt-stable` or `apt` with `apt-stable-asan` and `apt-asan` correspondingly:
@@ -129,8 +129,8 @@ sudo mkdir -p /etc/apt/keyrings
 wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-asan/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
 echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-asan/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
-apt-get update
-apt-get --no-install-recommends install rspamd
+sudo apt-get update
+sudo apt-get --no-install-recommends install rspamd
 ~~~
 
 
