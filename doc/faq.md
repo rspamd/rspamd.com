@@ -155,6 +155,7 @@ To automatically set the variables each time the machine boots, add them to `/et
 
 ```
 kern.corefile=/coreland/%N.core
+kern.sugid_coredump=1
 ```
 
 **macOS specific**
