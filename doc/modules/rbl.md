@@ -17,49 +17,97 @@ For example, you can use [Abusix Mail Intelligence](https://docs.abusix.com/1057
   {:toc}
 </div>
 
+## Configuration structure
+
 Configuration for this module is structured as following:
 
 ~~~ucl
 # local.d/rbl.conf
 
+# 'rbls' subsection under which the RBL definitions are nested
 rbls {
-  # 'rbls' subsection under which the RBL definitions are nested
-  an_rbl {
-    # rbl-specific subsection 
-  }
-  # ...
-}
-~~~
+	# rbl-specific subsection
+	an_rbl {
+		## required settings
+		# checks to enable for this RBL
+		checks = ["from"];
+		# Address used for RBL-testing
+		rbl = "rbl.example.net";
 
-The default settings define the ways in which the RBLs are used unless overridden in an RBL-specific subsection. This setting is a legacy since Rspamd 2.7 but the compatibility is kept.
+		## some optional settings
+		# Explicitly defined symbol
+		symbol = "SOME_SYMBOL";
 
-Other parameters which can be set here are:
+		# redefined defaults for IPv6 only RBL
+		ipv4 = false;
+		ipv6 = true; # Define IPv6 only RBL
 
-- `local_exclude_ip_map`: map containing IPv4/IPv6 addresses/subnets that shouldn't be checked in RBLs (where `exclude_local` is `true` (default)).
-- `hash`: (new in Rspamd 1.5) valid for `helo` and `emails` RBL types - lookup hashes instead of literal strings. Possible values for this parameter are `sha1`, `sha256`, `sha384`, `sha512` and `md5` or any other value for the default hashing algorithm.
-- `disable_monitoring`: (new in Rspamd 1.6) boolean value that disables monitoring completely. It should be placed in the **global [options]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html)** file. 
-- `monitored_address`: (new in Rspamd 1.6) fixed address to check for absence (`1.0.0.127` by default).
-
-RBL-specific subsection is structured as following:
-
-~~~ucl
-# Descriptive name of RBL or symbol if symbol is not defined.
-an_rbl {
-	# Explicitly defined symbol
-	symbol = "SOME_SYMBOL";
-	ipv4 = false;
-        ipv6 = true; # Define IPv6 only RBL
-        checks = ['from'];
-	# Address used for RBL-testing
-	rbl = "v6bl.example.net";
-	# Possible responses from RBL and symbols to yield
-	returncodes {
-		# Name_of_symbol = "address";
-		EXAMPLE_ONE = "127.0.0.1";
-		EXAMPLE_TWO = "127.0.0.2";
+		# Possible responses from RBL and symbols to yield
+		returncodes {
+			# Name_of_symbol = "address";
+			EXAMPLE_ONE = "127.0.0.1";
+			EXAMPLE_TWO = "127.0.0.2";
+		}
 	}
 }
 ~~~
+
+## Configuration parameters
+
+### Global parameters
+
+- `local_exclude_ip_map`: map containing additional IPv4/IPv6 addresses/subnets that should be considered private and excluded from checks where `exclude_local` is `true` (the default).
+
+### RBL-specific parameters
+
+The required parameters `rbl` and `checks` set the address used for testing and the checks to be performed respectively. Valid values for `checks` can include any of the following:
+
+- `content_urls` - URLs extracted by `lua_content` (eg. from PDFs)
+- `dkim` - domain that provided DKIM signature for a message
+- `emails` - email addresses found in a message-body
+- `from` - the sending IP that sent the message
+- `helo` - HELO provided by the sender
+- `rdns` - sender's hostname as provided to Rspamd (expected to be forward-confirmed)
+- `received` - IP addresses found in `Received` headers
+- `replyto` - address from the `Reply-To` header of a message
+- `urls` - URLs extracted from message body
+
+Selectors can be used to lookup up arbitrary data; see the section on selectors for more information.
+
+~~~ucl
+# /etc/rspamd/local.d/rbl.conf
+rules {
+	# minimal configuration example
+	SIMPLE_RBL {
+		rbl = "rbl.example.net";
+		checks = ["from"];
+	}
+}
+~~~
+
+Optional parameters (and their defaults if applicable) are as follows:
+
+- `dkim_domainonly` (true) - lookup eSLD associated with DKIM signature rather than full label
+- `dkim_match_from` (false) - only check DKIM signatures matching the `From` header
+- `emails_domainonly` (false) - lookup domain of address instead of full address
+- `enabled` (true) - allow for disabling of RBLs
+- `exclude_local` (true) - do not check private addresses in this RBL
+- `exclude_users` (false) - do not check this RBL if sender is an authenticated user
+- `hash` - valid for `helo` and `emails` RBL types - lookup hashes instead of literal strings. Possible values for this parameter are `sha1`, `sha256`, `sha384`, `sha512` and `md5` or any other value for the default hashing algorithm.
+- `hash_format` - encoding to use for hash: `hex`, `base32` or `base64`
+- `ignore_whitelist` (false) - allow whitelists to neutralise this RBL
+- `ipv4` (true) - if IPv4 addresses should be checked
+- `ipv6` (true) - if IPv4 addresses should be checked
+- `is_whitelist` (false) - denotes that this RBL is an whitelist
+- `local_exclude_ip_map` - map containing IPv4/IPv6 addresses/subnets that shouldn't be checked in RBLs (where `exclude_local` is `true` (default)).
+- `monitored_address` (`1.0.0.127`) - fixed address to check for absence; see section on monitoring for more information
+- `no_ip` (false) - do not look up IP addresses in this RBL
+- `returnbits` - dictionary of symbols mapped to bit positions; if the bit in the specified position is set the symbol will be returned
+- `returncodes` - dictionary of symbols mapped to lua patterns; if result returned by the RBL matches the pattern the symbol will be returned
+- `selector_flatten` (true) - FIXME
+- `selector` - one or more selectors producing data to look up in this RBL; see section on selectors for more information
+- `unknown` (false) - yield default symbol if `returncodes` or `returnbits` is specified and RBL returns unrecognised result
+- `whitelist_exception` - for whitelists; list of symbols which will not act as whitelists
 
 Some examples of using RBL:
 
@@ -104,21 +152,6 @@ rbls {
   }
   
 ~~~
-
-The following extra settings are valid in the RBL subsection:
-
-- `disabled`: if set, the RBL is not used. Use this to disable specific RBLs in `local.d/rbl.conf`. For example:
-
-~~~ucl
-rbls {
-	spamhaus {
-		disabled = true;
-	}
-}
-~~~
-
-- `whitelist_exception`: (for whitelists) - symbols named as parameters for this setting will not be used for neutralising blacklists (set this multiple times to add multiple exceptions).
-
 
 ## URL rules
 
@@ -286,7 +319,7 @@ In this example, we also enable privacy for requests by hashing all elements bef
 
 ## Monitoring
 
-By default, Rspamd checks each rule sanity by querying of `facebook.com` domain. URL black list must NOT reply by some positive result (other than NXDOMAIN) to such a query. However, sometimes you might need to change that to another domain (e.g. to `INVALID`), so you can use `monitored_domain` option from Rspamd 1.6:
+By default, Rspamd checks each rule sanity by querying of `127.0.0.1`. RBLs must NOT reply by some positive result (other than NXDOMAIN) to such a query. However, sometimes you might need to change that to another domain (e.g. to `INVALID`), so you can use `monitored_domain` option from Rspamd 1.6:
 
 ~~~ucl
     "HOSTKARMA_URIBL" {
@@ -308,23 +341,7 @@ By default, Rspamd checks each rule sanity by querying of `facebook.com` domain.
 }
 ~~~
 
-It is also possible to check `Reply-to` header by using URL blacklists. Just specify `replyto = true`. You can also specify checking only domain part by option `emails_domainonly = true`:
-
-~~~ucl
-    RSPAMD_EMAILBL {
-      ignore_whitelist = true;
-      ignore_defaults = true;
-      emails_delimiter = ".";
-      hash_format = "base32";
-      hash_len = 32;
-      rbl = "email.rspamd.com";
-      checks = ['emails', 'replyto'];
-      hash = "blake2";
-      returncodes = {
-        RSPAMD_EMAILBL = "127.0.0.2";
-      }
-    }
-~~~
+Monitoring can be disabled globally by setting `disable_monitoring = true` in **[/etc/rspamd/local.d/options.inc]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html)**.
 
 ## Principles of operation
 
@@ -469,8 +486,8 @@ Selectors can be used to look up arbitrary values in RBLs.
 The `selector` field could be configured as a string in the rule settings if only one selector is needed:
 
 ~~~
+checks = ["replyto"];
 selector = "from('mime'):addr";
-replyto = true;
 hash = "sha1";
 symbols_prefixes {
   replyto = "REPLYTO";
