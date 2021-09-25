@@ -96,15 +96,17 @@ Optional parameters (and their defaults if applicable) are as follows:
 - `hash` - valid for `helo` and `emails` RBL types - lookup hashes instead of literal strings. Possible values for this parameter are `sha1`, `sha256`, `sha384`, `sha512` and `md5` or any other value for the default hashing algorithm.
 - `hash_format` - encoding to use for hash: `hex`, `base32` or `base64`
 - `ignore_whitelist` (false) - allow whitelists to neutralise this RBL
+- `images` (false) - whether image URLs should be checked by `urls` check
 - `ipv4` (true) - if IPv4 addresses should be checked
 - `ipv6` (true) - if IPv4 addresses should be checked
 - `is_whitelist` (false) - denotes that this RBL is an whitelist
 - `local_exclude_ip_map` - map containing IPv4/IPv6 addresses/subnets that shouldn't be checked in RBLs (where `exclude_local` is `true` (default)).
 - `monitored_address` (`1.0.0.127`) - fixed address to check for absence; see section on monitoring for more information
 - `no_ip` (false) - do not look up IP addresses in this RBL
+- `requests_limit` (9999) - maximum number of entities extracted by URL checks
 - `returnbits` - dictionary of symbols mapped to bit positions; if the bit in the specified position is set the symbol will be returned
 - `returncodes` - dictionary of symbols mapped to lua patterns; if result returned by the RBL matches the pattern the symbol will be returned
-- `selector_flatten` (true) - FIXME
+- `selector_flatten` (false) - lookup result of chained selector as a single label
 - `selector` - one or more selectors producing data to look up in this RBL; see section on selectors for more information
 - `unknown` (false) - yield default symbol if `returncodes` or `returnbits` is specified and RBL returns unrecognised result
 - `whitelist_exception` - for whitelists; list of symbols which will not act as whitelists
