@@ -328,7 +328,7 @@ From version 1.9.3, Rspamd can use [Hashicorp Vault](https://www.vaultproject.io
 
 You need to create a KV storage version 1 to store DKIM keys. You can read more about it [here](https://learn.hashicorp.com/vault/getting-started/secrets-engines).
 
-To use keys in Rspamd you could add the following lines to `locald/dkim_signing.conf` (or `arc.conf` for [ARC signing](arc.html)):
+To use keys in Rspamd you could add the following lines to `local.d/dkim_signing.conf` (or `arc.conf` for [ARC signing](arc.html)):
 
 ~~~ucl
 use_vault = true;
