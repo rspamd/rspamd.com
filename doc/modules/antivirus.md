@@ -88,7 +88,7 @@ clamav {
   }
   # In version 1.7.0+ patterns could be extended
   #patterns = {SANE_MAL = 'Sanesecurity\.Malware\.*', CLAM_UNOFFICIAL = 'UNOFFICIAL$'};
-  # `whitelist` points to a map of IP addresses. Mail from these addresses is not scanned.
+  # `whitelist` points to a map of signature names. Hits on these signatures are ignored.
   whitelist = "/etc/rspamd/antivirus.wl";
 }
 ~~~
