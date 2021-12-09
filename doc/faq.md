@@ -1207,13 +1207,15 @@ lnk
 Then define the following multimap rule in `local.d/multimap.conf`:
 
 ```ucl
-filename_blacklist {
+file_extension_blacklist {
   type = "filename";
   filter = "extension";
-  map = "/${LOCAL_CONFDIR}/filename.map";
-  symbol = "FILENAME_BLACKLISTED";
+  map = "${LOCAL_CONFDIR}/local.d/file_extensions.map";
+  symbol = "FILE_EXTENSION_BLACKLISTED";
+  prefilter = true;
   action = "reject";
-  # skip_archives = true; # Uncomment if filenames in archives should be excluded from this check
+  message = "attachment type not allowed";
+# skip_archives = true; # Uncomment if filenames in archives should be excluded from this check
 }
 ```
 
