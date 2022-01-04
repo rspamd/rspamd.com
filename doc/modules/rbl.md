@@ -43,7 +43,7 @@ rbls {
 		ipv6 = true; # Define IPv6 only RBL
 
 		# Possible responses from RBL and symbols to yield
-		returncodes {
+		returncodes = {
 			# Name_of_symbol = "address";
 			EXAMPLE_ONE = "127.0.0.1";
 			EXAMPLE_TWO = "127.0.0.2";
@@ -98,12 +98,13 @@ Optional parameters (and their defaults if applicable) are as follows:
 - `ignore_whitelist` (false) - allow whitelists to neutralise this RBL
 - `images` (false) - whether image URLs should be checked by `urls` check
 - `ipv4` (true) - if IPv4 addresses should be checked
-- `ipv6` (true) - if IPv4 addresses should be checked
+- `ipv6` (true) - if IPv6 addresses should be checked
 - `is_whitelist` (false) - denotes that this RBL is an whitelist
 - `local_exclude_ip_map` - map containing IPv4/IPv6 addresses/subnets that shouldn't be checked in RBLs (where `exclude_local` is `true` (default)).
 - `monitored_address` (`1.0.0.127`) - fixed address to check for absence; see section on monitoring for more information
 - `no_ip` (false) - do not look up IP addresses in this RBL
 - `requests_limit` (9999) - maximum number of entities extracted by URL checks
+- `resolve_ip` - resolve the domain to IP address
 - `returnbits` - dictionary of symbols mapped to bit positions; if the bit in the specified position is set the symbol will be returned
 - `returncodes` - dictionary of symbols mapped to lua patterns; if result returned by the RBL matches the pattern the symbol will be returned
 - `selector_flatten` (false) - lookup result of chained selector as a single label
@@ -137,7 +138,7 @@ rbls {
       DNS_WL {
       symbol = "DNS_WL";
       rbl = "dnswl.test";
-      dkim = true;
+      checks = ['dkim'];
       dkim_domainonly = false;
       dkim_match_from = true;
       ignore_whitelist = true;
@@ -205,7 +206,7 @@ whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
       checks = ['emails', 'dkim', 'urls'];
       emails_domainonly = true;
 
-      returnbits {
+      returnbits = {
         URIBL_BLOCKED = 1;
         URIBL_BLACK = 2;
         URIBL_GREY = 4;
