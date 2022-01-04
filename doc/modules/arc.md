@@ -62,6 +62,9 @@ key_prefix = "ARC_KEYS";
 #selector_map = "/etc/rspamd/arc_selectors.map";
 # map of domains -> paths to keys (since rspamd 1.5.3)
 #path_map = "/etc/rspamd/arc_paths.map";
+# map of trusted domains. Symbol ARC_ALLOW_TRUSTED is added to messages
+# with valid ARC chains from these domains
+# whitelisted_signers_map = ["example.org", "example.com"]
 
 # From version 1.8.4, Rspamd uses a different set of sign_headers for ARC:
 sign_headers = "(o)from:(o)sender:(o)reply-to:(o)subject:(o)date:(o)message-id:(o)to:(o)cc:(o)mime-version:(o)content-type:(o)content-transfer-encoding:resent-to:resent-cc:resent-from:resent-sender:resent-message-id:(o)in-reply-to:(o)references:list-id:list-owner:list-unsubscribe:list-subscribe:list-post:dkim-signature"
