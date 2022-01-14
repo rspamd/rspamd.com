@@ -322,7 +322,7 @@ In this example, we also enable privacy for requests by hashing all elements bef
 
 ## Monitoring
 
-By default, Rspamd checks each rule sanity by querying of `127.0.0.1`. RBLs must NOT reply by some positive result (other than NXDOMAIN) to such a query. However, sometimes you might need to change that to another domain (e.g. to `INVALID`), so you can use `monitored_domain` option from Rspamd 1.6:
+By default, Rspamd checks each RBL rule to be a valid DNS list as defined in [RFC 5782](https://datatracker.ietf.org/doc/html/rfc5782). This is done to avoid situations when some RBL blacklists the whole world or is irresponsive. For the IP based rules (meaning that an IP address is queried), Rspamd will query for `127.0.0.1` address as, per RFC, this must return `NXDOMAIN` response. However, some DNS lists are non RFC compatible, so you can disable monitoring for them as following:
 
 ~~~ucl
     "HOSTKARMA_URIBL" {
@@ -340,11 +340,12 @@ By default, Rspamd checks each rule sanity by querying of `127.0.0.1`. RBLs must
         URIBL_HOSTKARMA_LAST_10D = "127.0.2.2";
         URIBL_HOSTKARMA_OLDER_10D = "127.0.2.3";
     }
-    monitored_domain = "INVALID";
+    disable_monitoring = true;
 }
 ~~~
 
-Monitoring can be disabled globally by setting `disable_monitoring = true` in **[/etc/rspamd/local.d/options.inc]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html)**.
+For non IP lists (DKIM, URL, Email and so on), Rspamd will just produce some long random string to query expecting that this random string will *very likely* return `NXDOMAIN` by its nature.
+
 
 ## Principles of operation
 
