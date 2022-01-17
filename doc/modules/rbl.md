@@ -135,7 +135,7 @@ rbls {
       }
     }
       
-      DNS_WL {
+    DNS_WL {
       symbol = "DNS_WL";
       rbl = "dnswl.test";
       checks = ['dkim'];
