@@ -26,29 +26,29 @@ Configuration for this module is structured as following:
 
 # 'rbls' subsection under which the RBL definitions are nested
 rbls {
-	# rbl-specific subsection
-	an_rbl {
-		## required settings
-		# checks to enable for this RBL
-		checks = ["from"];
-		# Address used for RBL-testing
-		rbl = "rbl.example.net";
+  # rbl-specific subsection
+  an_rbl {
+    ## required settings
+    # checks to enable for this RBL
+    checks = ["from"];
+    # Address used for RBL-testing
+    rbl = "rbl.example.net";
 
-		## some optional settings
-		# Explicitly defined symbol
-		symbol = "SOME_SYMBOL";
+    ## some optional settings
+    # Explicitly defined symbol
+    symbol = "SOME_SYMBOL";
 
-		# redefined defaults for IPv6 only RBL
-		ipv4 = false;
-		ipv6 = true; # Define IPv6 only RBL
+    # redefined defaults for IPv6 only RBL
+    ipv4 = false;
+    ipv6 = true; # Define IPv6 only RBL
 
-		# Possible responses from RBL and symbols to yield
-		returncodes = {
-			# Name_of_symbol = "address";
-			EXAMPLE_ONE = "127.0.0.1";
-			EXAMPLE_TWO = "127.0.0.2";
-		}
-	}
+    # Possible responses from RBL and symbols to yield
+    returncodes = {
+      # Name_of_symbol = "address";
+      EXAMPLE_ONE = "127.0.0.1";
+      EXAMPLE_TWO = "127.0.0.2";
+    }
+  }
 }
 ~~~
 
@@ -77,11 +77,11 @@ Selectors can be used to lookup up arbitrary data; see the section on selectors 
 ~~~ucl
 # /etc/rspamd/local.d/rbl.conf
 rules {
-	# minimal configuration example
-	SIMPLE_RBL {
-		rbl = "rbl.example.net";
-		checks = ["from"];
-	}
+  # minimal configuration example
+  SIMPLE_RBL {
+    rbl = "rbl.example.net";
+    checks = ["from"];
+  }
 }
 ~~~
 
@@ -339,9 +339,9 @@ By default, Rspamd checks each RBL rule to be a valid DNS list as defined in [RF
         URIBL_HOSTKARMA_24_48H = "127.0.2.1";
         URIBL_HOSTKARMA_LAST_10D = "127.0.2.2";
         URIBL_HOSTKARMA_OLDER_10D = "127.0.2.3";
+      }
+      disable_monitoring = true;
     }
-    disable_monitoring = true;
-}
 ~~~
 
 For non IP lists (DKIM, URL, Email and so on), Rspamd will just produce some long random string to query expecting that this random string will *very likely* return `NXDOMAIN` by its nature.
@@ -380,12 +380,12 @@ From Rspamd 2.5, there is also support for a custom composition rules per RBL ru
 ```lua
 -- First one is the input hostname, the second is the expected results
 cases = {
-	{'example.com', 'example.com'},
-	{'baz.example.com', 'baz.example.com'},
-	{'3.baz.example.com', 'baz.example.com'},
-	{'bar.example.com', 'example.com'},
-	{'foo.example.com', 'foo.example.com'},
-	{'3.foo.example.com', '3.foo.example.com'},
+  {'example.com', 'example.com'},
+  {'baz.example.com', 'baz.example.com'},
+  {'3.baz.example.com', 'baz.example.com'},
+  {'bar.example.com', 'example.com'},
+  {'foo.example.com', 'foo.example.com'},
+  {'3.foo.example.com', '3.foo.example.com'},
 }
 -- Just a domain means domain + 1 level
 -- *.domain means the full hostname if the last part matches
@@ -393,9 +393,9 @@ cases = {
 -- !*.domain means the same in fact :)
 -- More rules can be added easily...
 local excl_rules1 = {
-	'example.com',
-	'*.foo.example.com',
-	'!bar.example.com'
+  'example.com',
+  '*.foo.example.com',
+  '!bar.example.com'
 }
 ```
 
