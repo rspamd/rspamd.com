@@ -38,7 +38,6 @@ There are several algorithms available in Rspamd so far:
 * `master-slave`
 * `round-robin`
 * `random`
-* `sequential`
 * `hash`
 
 ### Master-slave algorithm
@@ -48,10 +47,6 @@ This algorithm always select the upstream with highest weight unless it is not a
 ### Round-robin algorithm
 
 In this algorithm, upstreams are selected based on its weight, but, after selection, the upstream's weight is decreased by one. For example, `round-robin:127.0.0.1:53:10,8.8.8.8:53:1` will select `127.0.0.1` 10 times and `8.8.8.8` merely one time. After all upstreams are rotated, Rspamd reset current weights to the initial ones. Hence, this could be treated as `10:1` distribution for these two upstreams. Upstreams with errors pending have their priorities penalised according to number of errors pending, so Rspamd prefers to select upstreams with no errors.
-
-### Sequential algorithm
-
-Selects upstreams sequentially ignoring priorities.
 
 ### Random algorithm
 
