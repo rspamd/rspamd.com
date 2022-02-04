@@ -9,7 +9,7 @@ title: Rspamd Options
 The options section defines basic Rspamd behaviour. Options are global for all types of workers. Some default options are shown in the following example snippet:
 
 ~~~ucl
-filters = "chartable,dkim,spf,surbl,regexp,fuzzy_check";
+filters = "chartable,dkim,regexp,fuzzy_check";
 raw_mode = false;
 one_shot = false;
 cache_file = "$DBDIR/symbols.cache";
