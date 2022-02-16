@@ -29,7 +29,9 @@ lifetimes are accordingly limited by the matching DNS record time to live.
 You can manually specify the size and max expire of this cache by configuring SPF module.
 In addition, you can assign some parameters such as maximum number of recursive DNS subrequests (e.g. includes chain
 length), maximum count of DNS requests per record, minimum TTL enforced for all elements in SPF records, disable all IPv6
-lookups and specify IP addresses for which the SPF check will not be used.
+lookups.
+
+## Example configuration
 
 ~~~ucl
 # local.d/spf.conf
@@ -43,36 +45,6 @@ lookups and specify IP addresses for which the SPF check will not be used.
 	whitelist = "/path/to/some/file"; # whitelist IPs from checks
 ~~~
 
-You can do it by adding an IP address (or multiple addresses) to the configuration file directly or using an external map.
-Should you place the IP address or addresses in the configuration file directly then please remember to use an array of string
-representing the desired addresses even if you add a single IP address, e.g. ['192.168.1.1']. You can use networks in CIDR
-notation instead of IP addresses as well.
+## Using SPF with forwarding
 
-~~~ucl
-# local.d/spf.conf
-
-	external_relay = ["192.168.1.1"]; # use IP address from a received header produced by this relay (using by attribute)
-~~~
-
-~~~ucl
-# local.d/spf.conf
-
-	external_relay = "/path/to/ip.map";
-~~~
-
-For example, in mail's header below, Rspamd will check SPF policy for IP 77.77.77.77, provided that IP 192.168.1.1 was
-specified as external relay by configuring SPF module.
-
-~~~ucl
-Received: from external-relay.com (external-relay.com [192.168.1.1]) by
- external-relay.com with LMTP id MJX+NoRd5F2caAAAzslS3g for <test@example.com>;
- Thu, 5 Dec 2019 18:22:18 +0300
-Received: from test.com (test.com [77.77.77.77]) by
- external-relay.com (Postfix) with ESMTP id C018DA00021;
- Thu, 5 Dec 2019 18:22:18 +0300
-To: test@example.com
-From: root@test.com
-~~~
-
-Currently, Rspamd supports the full set of SPF elements, macros and has internal
-protection from DNS recursion.
+If your MTA is placed behind some trusted forwarder you can still check SPF policies for the originating domains and IP addresses. Please consider checking the [external relay](external_relay.html) documentation. There is a legacy option `external_relay` in SPF plugin itself but it is kept for compatibility and should not be used nowadays.
