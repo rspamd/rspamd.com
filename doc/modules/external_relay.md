@@ -13,7 +13,7 @@ If possible, it is better to run Rspamd on the MX.
 
 ## Strategies
 
-This plugin attempts to find the real point of hand-off of a message in its `Received` headers & set the sending IP & hostname appropriately (as well as an assumed value for `HELO`) - before other processing, such that other modules (such as [rbl]({{ site.baseurl }}/modules/rbl.html), [spf]({{ site.baseurl }}/modules/spf.html)) etc would see the corrected values.
+This plugin attempts to find the real point of hand-off of a message in its `Received` headers & set the sending IP & hostname appropriately (as well as an assumed value for `HELO`) - before other processing, such that other modules (such as [rbl]({{ site.baseurl }}/modules/rbl.html), [spf]({{ site.baseurl }}/modules/spf.html) etc) would see the corrected values.
 
 Different strategies for identifying mail to tamper with and the point of hand-off are available. They can be configured in parallel but the general expectation is that you'd pick whichever is most appropriate to your setup and configure that. If multiple strategies are configured they are not mutually exclusive & you may wish to adjust `priority` of the rules.
 
@@ -70,7 +70,7 @@ The following strategy-specific settings are defined:
 
 ### count
 
- * `count` (required): the position of the `Received` header, from bottom-to-top
+ * `count` (required): the position of the `Received` header, from top to bottom.
 
 ### hostname_map
 
