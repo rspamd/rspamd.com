@@ -277,7 +277,7 @@ Some plugins in Rspamd might set so called `passthrough` action. In this case, t
 
 The part `forced:` tells you what's happened. Here is a list of plugins that can set forced action:
 
-* [greylist](modules/greylist.html) - will set `soft reject` when a message needs to be greylisted
+* [greylist](modules/greylisting.html) - will set `soft reject` when a message needs to be greylisted
 * [ratelimit](modules/ratelimit.html) - will set `soft reject` when a ratelimit is reached
 * [dmarc](modules/dmarc.html) - might set actions if configured to do so (not enabled by default but listed in an example)
 * [antivirus](modules/antivirus.html) - can set actions if that's explicitly set in rules
