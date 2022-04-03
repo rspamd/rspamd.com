@@ -169,7 +169,7 @@ Like regexp rules, conditions are allowed for Lua regexps, for example:
 ~~~lua
 rspamd_config.SYMBOL = {
 	callback = function(task)
-		return 1
+		return true
 	end,
 	score = 1.2,
 	description = 'some description',
@@ -192,12 +192,12 @@ rspamd_config.HTML_MESSAGE = {
     if parts then
       for i,p in ipairs(parts) do
         if p:is_html() then
-          return 1
+          return true
         end
       end
     end
 
-    return 0
+    return false
   end,
   score = -0.1,
   description = 'HTML included in message',
