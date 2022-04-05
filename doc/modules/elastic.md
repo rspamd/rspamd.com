@@ -38,6 +38,8 @@ index_pattern = "rspamd-%Y.%m.%d";
 import_kibana = false;
 # Use https if needed
 use_https = false;
+# Ignore certificate warnings (rspamd will lookup the IP-address of a given hostname and connect with the IP-address)
+no_ssl_verify = false;
 # credential to connect to ElasticSearch (optional)
 user = "rspamd"
 password = "supersecret"
