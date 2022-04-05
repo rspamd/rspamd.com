@@ -41,6 +41,6 @@ use_https = false;
 # credential to connect to ElasticSearch (optional)
 user = "rspamd"
 password = "supersecret"
-# ingest_-geoip is a module (true if ElasticSearch >= 6.7.0)
+# ingest-geoip is a module (true if ElasticSearch >= 6.7.0)
 ingest_module = false;
 ~~~
