@@ -74,6 +74,6 @@ There are many resources that define policies for different objects in email tra
 
 Statistical approach includes many useful spam recognition techniques that can **learn** dynamically from messages being scanned. Rspamd provides different tools that could be learned either manually or automatically and adopt for the actual mail flow.
 
-* [**Bayes classifier**]({{ site.baseurl }}/doc/configuration/statistic.html) is a tool to classify spam and ham messages. Rspamd uses an advanced algorithm of statistical tokens generation that achieves better results than traditionally used ones (e.g. in SpamAssassin) that is described in details in the following [paper](http://osbf-lua.luaforge.net/papers/osbf-eddc.pdf).
+* [**Bayes classifier**]({{ site.baseurl }}/doc/configuration/statistic.html) is a tool to classify spam and ham messages. Rspamd uses an [advanced algorithm](https://www.virusbulletin.com/virusbulletin/2007/02/osbf-lua/) of statistical tokens generation that might achieve better results than the mostly used naive Bayes method.
 
 * [**Neural network**]({{ site.baseurl }}/doc/modules/neural.html) learns from scan results and allows to improve the final score by finding some common patterns of rules that are typical for either spam or ham messages. This module is especially useful for large email systems as it can learn from your own rules and adopt quickly for spam mass mailings.
