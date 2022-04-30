@@ -83,7 +83,7 @@ It is not recommended to increase storage size more than the available RAM size 
 
 ### Sample configuration
 
-The rspamd process that is responsible for fuzzy hashes storing is called [`fuzzy_storage`](./workers/fuzzy_storage.md). To turn on and configure this process you may use the local file of rspamd configuration: `/etc/rspamd/rspamd.conf.local`:
+The rspamd process that is responsible for fuzzy hashes storing is called [`fuzzy_storage`](./workers/fuzzy_storage.html). To turn on and configure this process you may use the local file of rspamd configuration: `/etc/rspamd/rspamd.conf.local`:
 
 ~~~ucl
 worker "fuzzy" {
