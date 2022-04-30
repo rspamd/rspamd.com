@@ -13,6 +13,8 @@ Fuzzy hashes are used to search for similar messages – i.e. you can find messa
 
 Furthermore, fuzzy hashes are used not merely for textual data but also for images and other attachments types in email messages. However, in this case, rspamd looks for the exact matches to find similar objects.
 
+_Fuzzy hashes is a short term for context triggered piecewise hashes (CTPH). Fuzzy hashes can match inputs that have homologues. Such inputs have sequences of identical bytes in the same order, although bytes in between these sequences may be different in both content and length._
+
 This article is intended for mail system administrators who wish to create and maintain their own hash storage.
 
 ## Step 1: Hash sources selection
