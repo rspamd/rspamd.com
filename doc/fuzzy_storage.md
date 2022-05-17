@@ -36,19 +36,21 @@ There are three high-level steps toward using fuzzy hashes.
 
 It is important to choose the sources of spam samples to learn on. The basic principle is to use spam messages that are received by a lot of users. There are two main approaches to this task:
 
-- working with users complaints;
-- creating spam traps (honeypot).
+- working with users complaints
+- creating spam traps (honeypot)
 
-### Working with users complaints
+### Working with user complaints
 
-It is possible to study users' complaints for improving hash storages. Unfortunately, users sometimes complain about legitimate mailings they’ve subscribed on to by themselves: for example, stores newsletters, notifications from tickets booking and even personal emails which they do not like for some reasons. Many users simply do not see the difference between "Delete" and "Mark as Spam" buttons. Perhaps, a good idea would be to prompt a user for additional information about the complaint, for example, why he or she decided that it is a spam email, as well as to draw the user's attention to the fact that user is able to unsubscribe from receiving mailings instead of marking them as spam.
+User complaints can be used as an effective source for improving the quality of the hash storage. Unfortunately, users sometimes complain about legitimate mailings they’ve subscribed on to by themselves, for example: stores newsletters, notifications from ticket bookings, and even personal emails which they do not like for some reason. Many users simply do not see the difference between "Delete" and "Mark as Spam" buttons.
 
-Another way to solve this problem is manual processing of user spam complaints. A combination of these methods might also work: assign greater weight to the manually processed emails, and a smaller one for all other complaints.
+Perhaps, a good idea would be to prompt a user for additional information about the complaint, for example, why he or she decided that it is a spam email. This may draw the user's attention to the fact that they should unsubscribe from receiving requested mailings rather than marking them as spam. Another way to solve this problem is manual processing of user spam complaints.
 
-There are also two features in rspamd that allow to filter out some false positives:
+A combination of these methods might also work: assign greater weight to the manually processed emails, and a smaller one for all other complaints.
 
-1. Hash weight.
-2. Learning filters.
+There are two features in Rspamd that allow for filtering out some false positives. (Tip: The abbreviation FP in this documentation means "False Positive", and FN means "False Negative".)
+
+1. Hash weight
+2. Learning filters
 
 The first method is pretty simple: let's assign some weight to each complaint, and then we add this weight to the stored hash value for the each subsequent learning step. During querying a storage we will not consider hashes with weights that are less than a defined threshold.
 
