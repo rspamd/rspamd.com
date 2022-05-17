@@ -9,47 +9,70 @@ title: Usage of fuzzy hashes
 
 ## Introduction
 
-Fuzzy hashes are used to search for similar messages – i.e. you can find messages with the same or a slightly modified text using this method. This technology fits well for blocking spam that is simultaneously sent to many users. Since the hash function is unidirectional, it is impossible to restore the original text using a hash only. And this allows you to send requests to third-party hash storages without risk of disclosure.
+Fuzzy hashes are used to search for similar messages – i.e. they help us to find messages with the same or slightly modified text. This technology is well-suited to blocking spam that is simultaneously sent to many users.
 
-Furthermore, fuzzy hashes are used not merely for textual data but also for images and other attachments types in email messages. However, in this case, rspamd looks for the exact matches to find similar objects.
+The intent of this page is to explain how to use fuzzy hashes, not to provide extended details and nuances of what fuzzy hashes are or how they work within Rspamd. However the following summary provides a base understanding for the content of this page. More detail will be provided elsewhere (TODO). 
 
-This article is intended for mail system administrators who wish to create and maintain their own hash storage.
+Textual content is broken down into tokens (also known as chunks or shingles). Each token represents a "window" of text of some number of characters. These tokens are then individually hashed and stored. When new email arrives, it is similarly tokenized, each token is hashed, and this new collection of hashes is compared to the corpus of data in storage. Calculations are performed based on the position and number of matches, to determine if the current mail item is similar to or identical to previously encountered mail items.
+
+For images and other attachment types, a single hash is calculated and that hash is used to check for an exact match in storage.
+
+Since the hash function is unidirectional, it is impossible to restore the original text using the hashed data. This allows us the option to send requests to third-party hash storages without risk of disclosure, and to benefit from a much larger corpus of data aggregated from any number of unrelated sources.
+
+The source data for fuzzy hash storage includes both spam and ham. Fuzzy hashes are used to match, not to classify messages. First, we see if an email looks like other emails, then, separately, we evaluate what that similarity means. The weight assigned to fuzzy hash matches (that is, the measure of how the current email item matches or does not match content in the pool of many other email items) is only one factor of many in the determination of ham versus spam.
+
+This page is intended for mail system administrators who wish to create and maintain their own hash storage, and for those who wish to understand how rspamd.com serves as such a third-party resource. More details can be found in other pages here, including:
+
+- [Fuzzy Check module]({{ site.baseurl }}/doc/modules/fuzzy_check.html)
+- [Fuzzy Collection module]({{ site.baseurl }}/doc/modules/fuzzy_collect.html)
+- [Fuzzy Storage Workers]({{ site.baseurl }}/doc/workers/fuzzy_storage.html)
+- [Rspamd.com infrastructure policies]({{ site.baseurl }}/doc/usage_policy.html)
+
+----
+
+There are three high-level steps toward using fuzzy hashes.
 
 ## Step 1: Hash sources selection
 
 It is important to choose the sources of spam samples to learn on. The basic principle is to use spam messages that are received by a lot of users. There are two main approaches to this task:
 
-- working with users complaints;
-- creating spam traps (honeypot).
+- working with users complaints
+- creating spam traps (honeypot)
 
-### Working with users complaints
+### Working with user complaints
 
-It is possible to study users' complaints for improving hash storages. Unfortunately, users sometimes complain about legitimate mailings they’ve subscribed on to by themselves: for example, stores newsletters, notifications from tickets booking and even personal emails which they do not like for some reasons. Many users simply do not see the difference between "Delete" and "Mark as Spam" buttons. Perhaps, a good idea would be to prompt a user for additional information about the complaint, for example, why he or she decided that it is a spam email, as well as to draw the user's attention to the fact that user is able to unsubscribe from receiving mailings instead of marking them as spam.
+User complaints can be used as an effective source for improving the quality of the hash storage. Unfortunately, users sometimes complain about legitimate mailings they’ve subscribed on to by themselves, for example: stores newsletters, notifications from ticket bookings, and even personal emails which they do not like for some reason. Many users simply do not see the difference between "Delete" and "Mark as Spam" buttons.
 
-Another way to solve this problem is manual processing of user spam complaints. A combination of these methods might also work: assign greater weight to the manually processed emails, and a smaller one for all other complaints.
+Perhaps, a good idea would be to prompt a user for additional information about the complaint, for example, why he or she decided that it is a spam email. This may draw the user's attention to the fact that they should unsubscribe from receiving requested mailings rather than marking them as spam. Another way to solve this problem is manual processing of user spam complaints.
 
-There are also two features in rspamd that allow to filter out some false positives:
+A combination of these methods might also work: assign greater weight to the manually processed emails, and a smaller one for all other complaints.
 
-1. Hash weight.
-2. Learning filters.
+There are two features in Rspamd that allow for filtering out some false positives. (Tip: The abbreviation FP in this documentation means "False Positive", and FN means "False Negative".)
 
-The first method is pretty simple: let's assign some weight to each complaint, and then we add this weight to the stored hash value for the each subsequent learning step. During querying a storage we will not consider hashes with weights that are less than a defined threshold.
+1. Hash weight
+2. Learning filters
 
-For instance, if the weight of a complaint is `w=1` and the threshold is `t=20`, then we ignore this hash unless receiving at least 20 user complaints.
+#### Hash weight
 
-In addition, rspamd does not assign the maximum score finding a threshold value - scores gradually increases from zero to a maximum (up to metric value) when the weight of hash grows up to the threshold value multiplied by two (t .. 2 * t).
+The first method to filter out false positives is pretty simple: let's assign some weight to each complaint, and then add this weight to the stored hash value for each subsequent learning step.
+
+When querying a storage we will not consider hashes with weights that are less than a defined threshold. For instance, if the weight of a complaint is `w=1` and the threshold is `t=20`, then we ignore this hash unless receiving at least 20 user complaints.
+
+In addition, Rspamd does not assign the maximum score finding a threshold value - scores gradually increases from zero to a maximum (up to metric value) when the weight of hash grows up to the threshold value multiplied by two (t .. 2 * t).
 
 <center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-1.png" width="50%"></center>
 
-The second method, namely learning filters, allows you to write certain conditions that can skip learning or change a value of hash for instance, for emails from a specific domain (for example, facebook.com). Such filters are written in Lua language. The possibilities of the filters are quite extensive, however, they require manual writing and configuring.
+#### Learning filters
+
+The second method to filter out false positives, as reported through user complaints, allows you to write certain conditions that can skip learning or change a value of a hash, for instance, for emails from a specific domain. Such filters are written in the Lua language. The possibilities for these filters are quite extensive. However, they require manual writing and configuring.
 
 ### Configuring spam traps
 
-This method requires a mailbox that doesn't receive legitimate emails but spam emails instead. The main idea is to expose the address to spammers' databases, but do not show it to legitimate users. For example, by putting emails in a hidden *iframe* element on a fairly popular website. This element is not visible to users due to *hidden* property or zero size but it is visible for spam bots. Recently, this method has become not very effective, as spammers have learnt how to abstain from such traps.
+This "honey pot" method of improving the value of a hash storage requires a mailbox that doesn't receive legitimate emails - it should only receive spam emails. The main idea here is that a large volume of fresh, (perhaps 100%) guaranteed spam will be continually received, following current patterns, providing a huge corpus of fuzzy hash data for comparison with email coming in to live mailboxes. As described above, user interpretation of spam is subject to some degree of error. A corpus of user-described spam is not as reliable as a spam trap, where matches are very highly likely to indicate that a new inbound mail item is also spam. 
 
-Another possible way to create a trap is to find domains that were popular in the past but that are not functional at the moment (addresses from these domains could be found in many spam databases). In this case, learning filters are required as legitimate emails, for instance, social networking or distribution services, will likely be blacklisted.
+One way to configure a spam trap is to expose addresses to spammer databases, and not show them to legitimate users. This can be accomplished, for example, by putting email addresses in a hidden *iframe* element on a fairly popular website. This element is not visible to users due to the *hidden* property or zero size, but it is visible to spam bots. This method is not as effective as it was some years ago, as spammers have learnt how to avoid such traps.
 
-In general, setting own traps is reasonable merely for large mail systems, as it might be expensive both in terms of maintenance and as direct expenses, e.g. for purchasing domains.
+Another way to create a trap is to find domains that were popular in the past but that are no longer functional. Domain names like this can be found in many spam databases. Buy domains and allow all inbound mail to go to a catch-all address, where it is processed for fuzzy hashing and then purged. In general, setting your own traps like this is only reasonable for large mail systems, as it might be expensive both in terms of maintenance and with direct expenses like domain purchases.
 
 ## Step 2: Configuring storage
 
