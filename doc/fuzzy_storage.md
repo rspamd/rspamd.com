@@ -68,11 +68,11 @@ The second method to filter out false positives, as reported through user compla
 
 ### Configuring spam traps
 
-This method requires a mailbox that doesn't receive legitimate emails but spam emails instead. The main idea is to expose the address to spammers' databases, but do not show it to legitimate users. For example, by putting emails in a hidden *iframe* element on a fairly popular website. This element is not visible to users due to *hidden* property or zero size but it is visible for spam bots. Recently, this method has become not very effective, as spammers have learnt how to abstain from such traps.
+This "honey pot" method of improving the value of a hash storage requires a mailbox that doesn't receive legitimate emails - it should only receive spam emails. The main idea here is that a large volume of fresh, (perhaps 100%) guaranteed spam will be continually received, following current patterns, providing a huge corpus of fuzzy hash data for comparison with email coming in to live mailboxes. As described above, user interpretation of spam is subject to some degree of error. A corpus of user-described spam is not as reliable as a spam trap, where matches are very highly likely to indicate that a new inbound mail item is also spam. 
 
-Another possible way to create a trap is to find domains that were popular in the past but that are not functional at the moment (addresses from these domains could be found in many spam databases). In this case, learning filters are required as legitimate emails, for instance, social networking or distribution services, will likely be blacklisted.
+One way to configure a spam trap is to expose addresses to spammer databases, and not show them to legitimate users. This can be accomplished, for example, by putting email addresses in a hidden *iframe* element on a fairly popular website. This element is not visible to users due to the *hidden* property or zero size, but it is visible to spam bots. This method is not as effective as it was some years ago, as spammers have learnt how to avoid such traps.
 
-In general, setting own traps is reasonable merely for large mail systems, as it might be expensive both in terms of maintenance and as direct expenses, e.g. for purchasing domains.
+Another way to create a trap is to find domains that were popular in the past but that are no longer functional. Domain names like this can be found in many spam databases. Buy domains and allow all inbound mail to go to a catch-all address, where it is processed for fuzzy hashing and then purged. In general, setting your own traps like this is only reasonable for large mail systems, as it might be expensive both in terms of maintenance and with direct expenses like domain purchases.
 
 ## Step 2: Configuring storage
 
