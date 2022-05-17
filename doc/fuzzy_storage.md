@@ -52,15 +52,19 @@ There are two features in Rspamd that allow for filtering out some false positiv
 1. Hash weight
 2. Learning filters
 
-The first method is pretty simple: let's assign some weight to each complaint, and then we add this weight to the stored hash value for the each subsequent learning step. During querying a storage we will not consider hashes with weights that are less than a defined threshold.
+#### Hash weight
 
-For instance, if the weight of a complaint is `w=1` and the threshold is `t=20`, then we ignore this hash unless receiving at least 20 user complaints.
+The first method to filter out false positives is pretty simple: let's assign some weight to each complaint, and then add this weight to the stored hash value for each subsequent learning step.
 
-In addition, rspamd does not assign the maximum score finding a threshold value - scores gradually increases from zero to a maximum (up to metric value) when the weight of hash grows up to the threshold value multiplied by two (t .. 2 * t).
+When querying a storage we will not consider hashes with weights that are less than a defined threshold. For instance, if the weight of a complaint is `w=1` and the threshold is `t=20`, then we ignore this hash unless receiving at least 20 user complaints.
+
+In addition, Rspamd does not assign the maximum score finding a threshold value - scores gradually increases from zero to a maximum (up to metric value) when the weight of hash grows up to the threshold value multiplied by two (t .. 2 * t).
 
 <center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-1.png" width="50%"></center>
 
-The second method, namely learning filters, allows you to write certain conditions that can skip learning or change a value of hash for instance, for emails from a specific domain (for example, facebook.com). Such filters are written in Lua language. The possibilities of the filters are quite extensive, however, they require manual writing and configuring.
+#### Learning filters
+
+The second method to filter out false positives, as reported through user complaints, allows you to write certain conditions that can skip learning or change a value of a hash, for instance, for emails from a specific domain. Such filters are written in the Lua language. The possibilities for these filters are quite extensive. However, they require manual writing and configuring.
 
 ### Configuring spam traps
 
