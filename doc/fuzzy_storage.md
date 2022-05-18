@@ -206,7 +206,7 @@ keypair {
 
 The  **public** `pubkey` should be copied manually to the remote host, or published in any way that guarantees the reliability (e.g. certified digital signature or HTTPS-site hosting). As always the **private** `privkey` should never be published or shared.
 
-Each storage can use any number of keys simultaneously, one for each remote client:
+Each storage can use any number of keys simultaneously, one for each remote client (or a group of clients):
 
 ~~~ucl
 worker "fuzzy" {
