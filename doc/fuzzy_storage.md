@@ -161,21 +161,24 @@ Spam patterns change as tactics are found to be more or less successful. Blasts 
 
 It would be prudent to compare the volume of hashes learned over some time with available RAM. For example, 400 thousands hashes may occupy about 100 Mb and 1.5 million hashes may occupy 0.5 Gb. It is not recommended to increase storage size more than the available RAM size due to a significant performance degradation. That is, don't rely on swap space, and don't choke other processes for resources. If you have a small volume of hashes suitable for learning, start with an expiration time of 90 days. Tune that down if the volume of data over that time period results in an unsuitable amount of available RAM - for example, if peak-time available RAM goes down to 20%, reduce the expiration time to 70 days, and see if data expiring from storage releases a more acceptable amount of RAM.
 
-### Access control setup
 
-Rspamd does not allow to modify data in the repository by default. It is required to specify a list of trusted IP-addresses and/or networks to make learning possible. Practically, it is better to write from the local address only (127.0.0.1) since fuzzy storage uses UDP that is not protected from source IP forgery.
+### Access control
+
+Rspamd does not allow changes to fuzzy storage by default. Any server connecting via UDP to the fuzzy_storage process must be authorized. A list of trusted IP-addresses and/or networks must be provided to make learning possible. Practically, it is better to write from the local address only (127.0.0.1) since fuzzy storage uses UDP that is not protected from source IP forgery.
 
 ~~~ucl
 worker "fuzzy" {
   # Same options as before ...
-
   allow_update = ["127.0.0.1"];
 
   # or 10.0.0.0/8, for internal network
 }
 ~~~
 
-Transport encryption might also be used for access control purposes.
+The `allow_update` setting is a comma-delimited array of strings, or a [map]({{ site.baseurl }}/doc/modules/multimap.html) of IP addresses, that are allowed to perform changes to fuzzy storage - You should also set `read_only` = no in your fuzzy_check plugin, see step 3 below.
+
+Transport protocol encryption might also be used for access control purposes...
+
 
 ### Transport encryption
 
