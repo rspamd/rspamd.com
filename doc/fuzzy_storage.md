@@ -164,7 +164,7 @@ It would be prudent to compare the volume of hashes learned over some time with 
 
 ### Access control
 
-Rspamd does not allow changes to fuzzy storage by default. Any server connecting via UDP to the fuzzy_storage process must be authorized. A list of trusted IP-addresses and/or networks must be provided to make learning possible. Practically, it is better to write from the local address only (127.0.0.1) since fuzzy storage uses UDP that is not protected from source IP forgery.
+Rspamd does not allow changes to fuzzy storage by default. Any system connecting via UDP to the fuzzy_storage process must be authorized. A list of trusted IP-addresses and/or networks must be provided to make learning possible. Practically, it is better to write from the local address only (127.0.0.1) since fuzzy storage uses UDP that is not protected from source IP forgery.
 
 ~~~ucl
 worker "fuzzy" {
