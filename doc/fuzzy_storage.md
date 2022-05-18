@@ -245,66 +245,9 @@ worker "fuzzy" {
 
 ### Hash replication
 
-### Storage testing
+It is often desirable to have a local copy of remote fuzzy storage. For this, Rspamd supports hash replication, which is managed by the fuzzy storage worker. Details for replication setup are below in Step 4.
 
-To test the storage you can use `rspamadm control fuzzystat` command:
-
-```
-Statistics for storage 73ee122ac2cfe0c4f12
-invalid_requests: 6.69M
-fuzzy_expired: 35.57k
-fuzzy_found: (v0.6: 0), (v0.8: 0), (v0.9: 0), (v1.0+: 20.10M)
-fuzzy_stored: 425.46k
-fuzzy_shingles: (v0.6: 0), (v0.8: 41.78k), (v0.9: 23.60M), (v1.0+: 380.87M)
-fuzzy_checked: (v0.6: 0), (v0.8: 95.29k), (v0.9: 55.47M), (v1.0+: 1.01G)
-
-Keys statistics:
-Key id: icy63itbhhni8
-        Checked: 1.00G
-        Matched: 18.29M
-        Errors: 0
-        Added: 1.81M
-        Deleted: 0
-
-        IPs stat:
-        x.x.x.x
-                Checked: 131.23M
-                Matched: 1.85M
-                Errors: 0
-                Added: 0
-                Deleted: 0
-
-        x.x.x.x
-                Checked: 119.86M
-                ...
-```
-
-Primarily, a general storage statistics is shown, namely the number of stored and obsolete hashes, as well as the requests distribution for versions of the client Protocol:
-
-* `v0.6` - requests from rspamd 0.6 - 0.8 (older versions, compatibility is limited)
-* `v0.8` - requests from rspamd 0.8 - 0.9 (partially compatible)
-* `v0.9` - unencrypted requests from rspamd 0.9+ (fully compatible)
-* `v1.1` - encrypted requests from rspamd 1.1+ (fully compatible)
-
-And then detailed statistics is displayed for each of the keys configured in the storage and for the latest requested client IP-addresses. In conclusion, we see the overall statistics on IP-addresses.
-
-To change the output from this command, you can use the following options:
-
-* `-n`: display raw numbers without reduction
-* `--short`: do not display detailed statistics on the keys and IP-addresses
-* `--no-keys`: do not show statistics on keys
-* `--no-ips`: do not show statistics on IP-addresses
-* `--sort`: sort:
-  + `checked`: by the number of trusted hashes (default)
-  + `matched`: by the number of found hashes
-  + `errors`: by the number of failed requests
-  + `ip`: by IP-address lexicographically
-
-e.g.
-
-```
-rspamadm control fuzzystat -n
-```
+----
 
 ## Step 3: Configuring `fuzzy_check` plugin
 
@@ -605,3 +548,65 @@ master_flags {
   "3" = 30;
 };
 ~~~
+
+
+## Storage testing
+
+To test the storage you can use `rspamadm control fuzzystat` command:
+
+```
+Statistics for storage 73ee122ac2cfe0c4f12
+invalid_requests: 6.69M
+fuzzy_expired: 35.57k
+fuzzy_found: (v0.6: 0), (v0.8: 0), (v0.9: 0), (v1.0+: 20.10M)
+fuzzy_stored: 425.46k
+fuzzy_shingles: (v0.6: 0), (v0.8: 41.78k), (v0.9: 23.60M), (v1.0+: 380.87M)
+fuzzy_checked: (v0.6: 0), (v0.8: 95.29k), (v0.9: 55.47M), (v1.0+: 1.01G)
+
+Keys statistics:
+Key id: icy63itbhhni8
+        Checked: 1.00G
+        Matched: 18.29M
+        Errors: 0
+        Added: 1.81M
+        Deleted: 0
+
+        IPs stat:
+        x.x.x.x
+                Checked: 131.23M
+                Matched: 1.85M
+                Errors: 0
+                Added: 0
+                Deleted: 0
+
+        x.x.x.x
+                Checked: 119.86M
+                ...
+```
+
+Primarily, a general storage statistics is shown, namely the number of stored and obsolete hashes, as well as the requests distribution for versions of the client Protocol:
+
+* `v0.6` - requests from rspamd 0.6 - 0.8 (older versions, compatibility is limited)
+* `v0.8` - requests from rspamd 0.8 - 0.9 (partially compatible)
+* `v0.9` - unencrypted requests from rspamd 0.9+ (fully compatible)
+* `v1.1` - encrypted requests from rspamd 1.1+ (fully compatible)
+
+And then detailed statistics is displayed for each of the keys configured in the storage and for the latest requested client IP-addresses. In conclusion, we see the overall statistics on IP-addresses.
+
+To change the output from this command, you can use the following options:
+
+* `-n`: display raw numbers without reduction
+* `--short`: do not display detailed statistics on the keys and IP-addresses
+* `--no-keys`: do not show statistics on keys
+* `--no-ips`: do not show statistics on IP-addresses
+* `--sort`: sort:
+  + `checked`: by the number of trusted hashes (default)
+  + `matched`: by the number of found hashes
+  + `errors`: by the number of failed requests
+  + `ip`: by IP-address lexicographically
+
+e.g.
+
+```
+rspamadm control fuzzystat -n
+```
