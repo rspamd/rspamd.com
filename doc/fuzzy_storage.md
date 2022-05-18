@@ -243,7 +243,7 @@ worker "fuzzy" {
 ~~~
 
 
-### Hash replication
+### Hashes replication
 
 It is often desirable to have a local copy of remote fuzzy storage. For this, Rspamd supports hash replication, which is managed by the fuzzy storage worker. Details for replication setup are below in Step 4.
 
@@ -251,12 +251,12 @@ It is often desirable to have a local copy of remote fuzzy storage. For this, Rs
 
 ## Step 3: Configuring `fuzzy_check` plugin
 
-`fuzzy_check` plugin is used by scanner processes for querying a storage and by controller processes for learning fuzzy hashes.
+The `fuzzy_check` plugin is used by scanner processes for querying a storage, and by controller processes for learning fuzzy hashes.
 
 Plugin functions:
 
-1. Email processing and hashes creating from the email parts and attachements
-2. Querying and learning the storage
+1. Email processing and hash creation from email parts and attachments
+2. Querying from and learning to storage
 3. Transport Encryption
 
 Learning is performing by `rspamc fuzzy_add` command:
@@ -265,19 +265,19 @@ Learning is performing by `rspamc fuzzy_add` command:
 $ rspamc -f 1 -w 10 fuzzy_add <message|directory|stdin>
 ```
 
-Where `-w` parameter is for setting the hash weight discussed above whilst `-f` parameter specifies the flag number.
+The `-w` parameter is for setting the hash weight discussed above, whilst the `-f` parameter specifies the flag number.
 
-Flags allow to store hashes of different origin in storage. For example, the hash of spam traps, hashes of user complaints and hashes of emails that come from a "white" list. Each flag may be associated with its own symbol and have a weight while checking emails:
+Flags allows for storage of hashes from different origins. For example, one hash may originate from a spam trap, another hash may originate from user complaints, and other hash may originate from emails that come from a whitelist. Each flag may be associated with its own symbol, and have a weight while checking emails:
 
 <center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-4.png" width="75%"></center>
 
-Symbol name could also be used instead of a numeric flag during learning, e.g.:
+A symbol name can be used instead of a numeric flag during learning, for example:
 
 ```
 $ rspamc -S FUZZY_DENIED -w 10 fuzzy_add <message|directory|stdin>
 ```
 
-To match symbols with the corresponding flags you can use the `rule` section.
+The FUZZY_DENIED symbol is equivalent to flag=1, as defined in modules.d/fuzzy_check.conf. To match symbols with the corresponding flags you can use the `rule` section.
 
 local.d/fuzzy_check.conf example:
 
@@ -363,25 +363,27 @@ read_only = false; # allow learning
 
 `Algorithm` parameter specifies the algorithm for generating hashes from text parts of emails (for attachments and images [blake2b](https://blake2.net/) is always used).
 
-Initially, rspamd used merely siphash algorithm. However, it has some performance issues, especially on obsolete hardware (CPU until Intel Haswell). Therefore it could be better to use another algorithms when creating a new storage:
+Initially, rspamd only supported the [siphash](https://en.wikipedia.org/wiki/SipHash) algorithm. However, that had some performance issues, especially on obsolete hardware (CPU models through to Intel Haswell). Support was later added for the following algorithms:
 
-* `xxhash`
 * `mumhash`
+* `xxhash`
 * `fasthash`
 
-For the vast majority of configurations we recommend to use `mumhash` or `fasthash` that shows an excellent performance on a wide variety of platforms. You can also evaluate the performance of different algorithms by compiling the tests set from rspamd sources:
+For the vast majority of configurations we recommend `mumhash` or `fasthash` (also called `fast`). These perform excellently on a wide variety of platforms, and `mumhash` is the current default for all new storage. `siphash` (also called `old`) is only supported for legacy purposes.
+
+You can evaluate the performance of different algorithms yourself by [compiling the tests set]({{ site.baseurl }}/doc/tutorials/writing_tests.html) from rspamd sources:
 
 ```
 $ make rspamd-test
 ```
 
-and run the test suite of different variants of hash algorithms on a specific platform:
+Run the test suite of different variants of hash algorithms on a specific platform:
 
 ```
 test/rspamd-test -p /rspamd/shingles
 ```
 
-**Important note:** it is not possible to change the parameter without losing all data in the storage, as only one algorithm can be used simultaneously for each storage. Conversion of one type of hash to another is impossible by design as a hash function cannot be reversed.
+**Important note:** Changing this parameter **will result in losing all data in the fuzzy hash storage**, as only one algorithm can be used simultaneously for each storage. Conversion of one type of hash to another is impossible by design, as a hash function cannot be reversed.
 
 ### Condition scripts for the learning
 
@@ -456,7 +458,9 @@ return function(task)
 end
 ~~~
 
-## Step 4: Hashes replication
+----
+
+## Hashes replication
 
 It is often desired to have a local copy of the remote storage. Rspamd supports replication for this purposes that is implemented in the hashes storage since version 1.3:
 
