@@ -28,6 +28,7 @@ Since the hash function is unidirectional, it is impossible to restore the origi
 The source data for fuzzy hash storage includes both spam and ham. Fuzzy hashes are used to match, not to classify messages. First, we see if an email looks like other emails, then, separately, we evaluate what that similarity means. The weight assigned to fuzzy hash matches (that is, the measure of how the current email item matches or does not match content in the pool of many other email items) is only one factor of many in the determination of ham versus spam.
 
 This page is intended for mail system administrators who wish to create and maintain their own hash storage, and for those who wish to understand how rspamd.com serves as such a third-party resource. More details can be found in other pages here, including:
+
 - [Fuzzy Check module]({{ site.baseurl }}/doc/modules/fuzzy_check.html)
 - [Fuzzy Collection module]({{ site.baseurl }}/doc/modules/fuzzy_collect.html)
 - [Fuzzy Storage Workers]({{ site.baseurl }}/doc/workers/fuzzy_storage.html)
@@ -88,6 +89,8 @@ One way to configure a spam trap is to expose addresses to spammer databases, an
 
 Another way to create a trap is to find domains that were popular in the past but that are no longer functional. Domain names like this can be found in many spam databases. Buy domains and allow all inbound mail to go to a catch-all address, where it is processed for fuzzy hashing and then purged. In general, setting your own traps like this is only reasonable for large mail systems, as it might be expensive both in terms of maintenance and with direct expenses like domain purchases.
 
+----
+
 ## Step 2: Configuring storage
 
 The Rspamd process that is responsible for fuzzy hash storage is called the [`fuzzy_storage`]({{ site.baseurl }}/workers/fuzzy_storage.html) worker. The information here should be useful whether you are using local or remote storage.
@@ -140,23 +143,17 @@ Fuzzy storage works with hashes and not with email messages. A [worker/scanner p
 
 <center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-2.png" width="75%"></center>
 
-Fuzzy storage functions:
 
-1. Data storage
-2. Transport Protocol Encryption
-3. Hashes expiration
-4. Access control (read and write)
-5. Replication (since v. 1.3)
+### Data storage
 
-### Storage architecture
+The database engine, namely sqlite3, imposes some restrictions on the storage architecture. The most important concern is that sqlite cannot deal well with concurrent write requests. This translates to database performance being degraded significantly.
 
-The database engine, namely sqlite3, imposes some restrictions on the storage architecture.
+To manage this, Rspamd hash storage always writes to the database strictly from one process, the fuzzy storage worker. This one process maintains the updates queue whilst all other processes simply forward write requests from clients to this process. The updates queue is written to disk once per minute by default, configurable with the `sync` setting seen in the sample.
 
-Firstly, sqlite cannot deal well with concurrent write requests: in this case, the database performance is degraded significantly. Secondly, it is quite difficult to provide replication and scale the database as it requires third-party tools.
+This architecture is optimized with priority given to read requests.
 
-Therefore, rspamd hash storage always writes to the database strictly from one process. To reach this goal, one of the processes maintains the updates queue whilst all other processes simply forward write requests from clients to the selected process. The updates queue is written to the disk once per minute (by default). Such an architecture is optimized for the load profile with prevalence of read requests.
 
-### Hashes expiration
+### Hash expiration
 
 Another major function of the fuzzy storage is removing of the obsolete hashes. Since the duration of spam mailings is always limited, there is no reason to store all hashes permanently. It is better to compare the quantity of hashes learned over some time, with the available RAM amount. For example, 400 thousands hashes occupy about 100 Mb and 1.5 million hashes occupy 0.5 Gb.
 
