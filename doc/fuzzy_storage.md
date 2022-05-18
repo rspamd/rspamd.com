@@ -155,9 +155,11 @@ This architecture is optimized with priority given to read requests.
 
 ### Hash expiration
 
-Another major function of the fuzzy storage is removing of the obsolete hashes. Since the duration of spam mailings is always limited, there is no reason to store all hashes permanently. It is better to compare the quantity of hashes learned over some time, with the available RAM amount. For example, 400 thousands hashes occupy about 100 Mb and 1.5 million hashes occupy 0.5 Gb.
+Another major function of the fuzzy storage worker is to remove obsolete hashes, using the `expire` setting, above.
 
-It is not recommended to increase storage size more than the available RAM size due to a significant performance degradation. Furthermore, it makes no sense to store the hashes for longer than about three months. Therefore, if you have a small amount of hashes suitable for learning, it is better to set expiration time to 90 days. Otherwise, when RAM size is less than the learn flow over this time, it is better to set a shorter period of expiration.
+Spam patterns change as tactics are found to be more or less successful. Blasts of spam go out, and after some period of time, anywhere from days to months, spammers change the patterns, because they know systems like this are operating on their data. Since the "effective lifetime" of spam mailings is always limited, there is no reason to store all hashes permanently. Therefore, based on experiemce, it recommended to store the hashes for no longer than about three months.
+
+It would be prudent to compare the volume of hashes learned over some time with available RAM. For example, 400 thousands hashes may occupy about 100 Mb and 1.5 million hashes may occupy 0.5 Gb. It is not recommended to increase storage size more than the available RAM size due to a significant performance degradation. That is, don't rely on swap space, and don't choke other processes for resources. If you have a small volume of hashes suitable for learning, start with an expiration time of 90 days. Tune that down if the volume of data over that time period results in an unsuitable amount of available RAM - for example, if peak-time available RAM goes down to 20%, reduce the expiration time to 70 days, and see if data expiring from storage releases a more acceptable amount of RAM.
 
 ### Access control setup
 
