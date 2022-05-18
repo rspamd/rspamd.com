@@ -90,9 +90,53 @@ Another way to create a trap is to find domains that were popular in the past bu
 
 ## Step 2: Configuring storage
 
-In this chapter, we describe the basic fuzzy storage settings and how to optimize its performance.
+The Rspamd process that is responsible for fuzzy hash storage is called the [`fuzzy_storage`]({{ site.baseurl }}/workers/fuzzy_storage.html) worker. The information here should be useful whether you are using local or remote storage.
 
-**Important note:** fuzzy storage works with hashes and not with email messages. Hence, in order to convert a email into the corresponging set of hashes you need to use a scanner (for checking) or a controller process:
+This process performs the following functions which will be detailed below.
+
+1. Data storage
+1. Hash expiration
+1. Access control (read and write)
+1. Transport protocol encryption
+1. Replication
+
+The configuration for the `worker "fuzzy"` section begins in `/etc/rspamd/rspamd.conf`.  
+An `.include` directive there links to `/etc/rspamd/local.d/worker-fuzzy.inc`, which is where local settings activate and configure this process. (Earlier documentation referred to `/etc/rspamd/rspamd.conf.local`.)
+
+
+### Sample configuration
+
+The following is a sample configuration for this fuzzy storage worker process, which will be explained and referred to below. Please refer to [this page]({{ site.baseurl }}/workers/fuzzy_storage.html#configuration) for any settings not profiled here.
+
+~~~ucl
+worker "fuzzy" {
+  # Socket to listen on (UDP and TCP from rspamd 1.3)
+  bind_socket = "*:11335";
+
+  # Number of processes to serve this storage (useful for read scaling)
+  count = 4;
+
+  # Backend ("sqlite" or "redis" - default "sqlite")
+  backend = "sqlite";
+
+  # sqlite: Where data file is stored (must be owned by rspamd user)
+  database = "${DBDIR}/fuzzy.db";
+
+  # Hashes storage time (3 months)
+  expire = 90d;
+
+  # Synchronize updates to the storage each minute
+  sync = 1min;
+}
+~~~
+
+This sample shows an entire section, not as you will see it in the file, but as it looks to the controller when the setting details are collected from all files (with the `.include` directive) : Be sure to put changes in the .inc file, without the `worker` wrapper.
+
+By default, the fuzzy_storage process is not active, with the `count=-1` directive found in the core file. To activate fuzzy storage, the local .inc file gets the `count=4` directive as seen above.
+
+The `expire` and `sync` values are related to database cleanup and performance, as described below.
+
+Fuzzy storage works with hashes and not with email messages. A [worker/scanner process](/doc/workers/normal.html) or a [controller process](/doc/workers/controller.html) convert emails to hashes before connecting to this process for fuzzy processing. In this sample, we see the fuzzy storage process that operates on the sqlite database is listening on socket 11335 for UDP requests from the other processes to query or update the storage. 
 
 <center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-2.png" width="75%"></center>
 
@@ -117,32 +161,6 @@ Therefore, rspamd hash storage always writes to the database strictly from one p
 Another major function of the fuzzy storage is removing of the obsolete hashes. Since the duration of spam mailings is always limited, there is no reason to store all hashes permanently. It is better to compare the quantity of hashes learned over some time, with the available RAM amount. For example, 400 thousands hashes occupy about 100 Mb and 1.5 million hashes occupy 0.5 Gb.
 
 It is not recommended to increase storage size more than the available RAM size due to a significant performance degradation. Furthermore, it makes no sense to store the hashes for longer than about three months. Therefore, if you have a small amount of hashes suitable for learning, it is better to set expiration time to 90 days. Otherwise, when RAM size is less than the learn flow over this time, it is better to set a shorter period of expiration.
-
-### Sample configuration
-
-The rspamd process that is responsible for fuzzy hashes storing is called [`fuzzy_storage`](./workers/fuzzy_storage.html). To turn on and configure this process you may use the local file of rspamd configuration: `/etc/rspamd/rspamd.conf.local`:
-
-~~~ucl
-worker "fuzzy" {
-  # Socket to listen on (UDP and TCP from rspamd 1.3)
-  bind_socket = "*:11335";
-
-  # Number of processes to serve this storage (useful for read scaling)
-  count = 4;
-
-  # Backend ("sqlite" or "redis" - default "sqlite")
-  backend = "sqlite";
-
-  # sqlite: Where data file is stored (must be owned by rspamd user)
-  database = "${DBDIR}/fuzzy.db";
-
-  # Hashes storage time (3 months)
-  expire = 90d;
-
-  # Synchronize updates to the storage each minute
-  sync = 1min;
-}
-~~~
 
 ### Access control setup
 
