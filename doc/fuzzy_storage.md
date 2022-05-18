@@ -180,11 +180,20 @@ The `allow_update` setting is a comma-delimited array of strings, or a [map]({{ 
 Transport protocol encryption might also be used for access control purposes...
 
 
-### Transport encryption
+### Transport protocol encryption
 
-Fuzzy hashes protocol allows to enable optional (opportunistic) or mandatory encryption based on public-key cryptography. Encryption architecture uses cryptobox construction: <https://nacl.cr.yp.to/box.html> and it is similar to the algorithm for end-to-end encryption used in DNSCurve protocol: <https://dnscurve.org/>.
+The fuzzy hashes protocol allows optional (opportunistic) or mandatory encryption based on public-key cryptography. This feature is useful for creating restricted storages where access is allowed exclusively to customers or other business partners who have a generated public key.
 
-To configure transport encryption, it is necessary to create a keypair for storage server using the command `rspamadm keypair -u`:
+**How this works:**
+
+- The configuration is modified in `/etc/rspamd/local.d/worker-fuzzy.inc` of the local system running the fuzzy_storage worker. One public/private keypair is set for each remote UDP client that will connect on port 11335.
+- One unique **public** key is given to each unique client system, so that only that one system can use that one key.
+
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-3.png" width="75%"></center>
+
+The encryption architecture uses cryptobox construction: <https://nacl.cr.yp.to/box.html> and it is similar to the algorithm for end-to-end encryption used in the DNSCurve protocol: <https://dnscurve.org/>.
+
+To configure transport encryption, create a keypair for the storage server, using the command `rspamadm keypair -u`. Each time this is run, unique output is returned as seen in this example (the order of the name=value pairs may change each time this is run) :
 
 ~~~ucl
 keypair {
@@ -197,9 +206,9 @@ keypair {
 }
 ~~~
 
-This command creates a **unique**  keypair, where **public** key should be copied manually to the customer's host (e.g. via ssh) or published in any way to guarantee the reliability (e.g. certified digital signature or HTTPS-site hosting).
+The  **public** `pubkey` should be copied manually to the remote host, or published in any way that guarantees the reliability (e.g. certified digital signature or HTTPS-site hosting). As always the **private** `privkey` should never be published or shared.
 
-Each storage can use any number of keys simultaneously:
+Each storage can use any number of keys simultaneously, one for each remote client:
 
 ~~~ucl
 worker "fuzzy" {
@@ -219,11 +228,7 @@ worker "fuzzy" {
 }
 ~~~
 
-This feature is useful for creating restricted storages where access is allowed merely to those customers who knows about one of the public keys of storage:
-
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-3.png" width="75%"></center>
-
-To enable such a mandatory encryption mode you should use `encrypted_only` option:
+This mechanism is optional unless explicitly made mandatory. To enable mandatory encryption mode, add the `encrypted_only` option. Then, client systems without a valid public key are not able to access the storage in this mode.
 
 ~~~ucl
 worker "fuzzy" {
@@ -237,7 +242,8 @@ worker "fuzzy" {
 }
 ~~~
 
-Clients who do not have a valid public key are not able to access the storage in this mode.
+
+### Hash replication
 
 ### Storage testing
 
