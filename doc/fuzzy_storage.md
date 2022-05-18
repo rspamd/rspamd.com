@@ -11,7 +11,13 @@ title: Usage of fuzzy hashes
 
 Fuzzy hashes are used to search for similar messages – i.e. they help us to find messages with the same or slightly modified text. This technology is well-suited to blocking spam that is simultaneously sent to many users.
 
-The intent of this page is to explain how to use fuzzy hashes, not to provide extended details and nuances of what fuzzy hashes are or how they work within Rspamd. However the following summary provides a base understanding for the content of this page. More detail will be provided elsewhere (TODO). 
+<div id="toc" markdown="1">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
+
+The intent of this page is to explain how to use fuzzy hashes, not to provide extended details and nuances of what fuzzy hashes are or how they work within Rspamd. However the following summary provides a base understanding for the content of this page.
 
 Textual content is broken down into tokens (also known as chunks or shingles). Each token represents a "window" of text of some number of characters. These tokens are then individually hashed and stored. When new email arrives, it is similarly tokenized, each token is hashed, and this new collection of hashes is compared to the corpus of data in storage. Calculations are performed based on the position and number of matches, to determine if the current mail item is similar to or identical to previously encountered mail items.
 
@@ -22,7 +28,6 @@ Since the hash function is unidirectional, it is impossible to restore the origi
 The source data for fuzzy hash storage includes both spam and ham. Fuzzy hashes are used to match, not to classify messages. First, we see if an email looks like other emails, then, separately, we evaluate what that similarity means. The weight assigned to fuzzy hash matches (that is, the measure of how the current email item matches or does not match content in the pool of many other email items) is only one factor of many in the determination of ham versus spam.
 
 This page is intended for mail system administrators who wish to create and maintain their own hash storage, and for those who wish to understand how rspamd.com serves as such a third-party resource. More details can be found in other pages here, including:
-
 - [Fuzzy Check module]({{ site.baseurl }}/doc/modules/fuzzy_check.html)
 - [Fuzzy Collection module]({{ site.baseurl }}/doc/modules/fuzzy_collect.html)
 - [Fuzzy Storage Workers]({{ site.baseurl }}/doc/workers/fuzzy_storage.html)
@@ -30,7 +35,16 @@ This page is intended for mail system administrators who wish to create and main
 
 ----
 
-There are three high-level steps toward using fuzzy hashes.
+**There are three high-level steps toward using fuzzy hashes**
+
+- Step 1: Hash sources selection
+- Step 2: Configuring storage
+- Step 3: Configuring fuzzy_check plugin
+
+**Optional:** Hashes replication  
+**Suggested:** Storage testing
+
+----
 
 ## Step 1: Hash sources selection
 
