@@ -31,6 +31,9 @@ DKIM module has several useful configuration options:
  *  `strict_multiplier` (_number_): multiplier for strict domains
  *  `time_jitter` (_number_): jitter in seconds to allow time diff while checking
  *  `trusted_only` (_boolean_): check signatures only for domains in 'domains' map
+ *  `dkim_cache_size` (_number_): cache up to 1000 of the most recent DKIM records
+ *  `dkim_cache_expire` (_time_): default max expire for an element in this cache
+ *  `skip_multi` (_boolean_): skip DKIM check for messages with multiple signatures
 
 ## DKIM signatures
 
