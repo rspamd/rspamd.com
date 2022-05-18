@@ -226,7 +226,7 @@ worker "fuzzy" {
 }
 ~~~
 
-This mechanism is optional unless explicitly made mandatory. To enable mandatory encryption mode, add the `encrypted_only` option. Then, client systems without a valid public key are not able to access the storage in this mode.
+This mechanism is optional unless explicitly made mandatory. To enable mandatory encryption mode, add the `encrypted_only` option. In this mode, client systems that do not use a valid public key will not able to access the storage.
 
 ~~~ucl
 worker "fuzzy" {
