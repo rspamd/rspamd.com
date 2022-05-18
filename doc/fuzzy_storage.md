@@ -177,8 +177,6 @@ worker "fuzzy" {
 
 The `allow_update` setting is a comma-delimited array of strings, or a [map]({{ site.baseurl }}/doc/modules/multimap.html) of IP addresses, that are allowed to perform changes to fuzzy storage - You should also set `read_only` = no in your fuzzy_check plugin, see step 3 below.
 
-Transport protocol encryption might also be used for access control purposes...
-
 
 ### Transport protocol encryption
 
