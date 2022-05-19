@@ -11,7 +11,13 @@ title: Usage of fuzzy hashes
 
 Fuzzy hashes are used to search for similar messages – i.e. they help us to find messages with the same or slightly modified text. This technology is well-suited to blocking spam that is simultaneously sent to many users.
 
-The intent of this page is to explain how to use fuzzy hashes, not to provide extended details and nuances of what fuzzy hashes are or how they work within Rspamd. However the following summary provides a base understanding for the content of this page. More detail will be provided elsewhere (TODO). 
+<div id="toc" markdown="1">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
+
+The intent of this page is to explain how to use fuzzy hashes, not to provide extended details and nuances of what fuzzy hashes are or how they work within Rspamd. However the following summary provides a base understanding for the content of this page.
 
 Textual content is broken down into tokens (also known as chunks or shingles). Each token represents a "window" of text of some number of characters. These tokens are then individually hashed and stored. When new email arrives, it is similarly tokenized, each token is hashed, and this new collection of hashes is compared to the corpus of data in storage. Calculations are performed based on the position and number of matches, to determine if the current mail item is similar to or identical to previously encountered mail items.
 
@@ -30,7 +36,16 @@ This page is intended for mail system administrators who wish to create and main
 
 ----
 
-There are three high-level steps toward using fuzzy hashes.
+**There are three high-level steps toward using fuzzy hashes**
+
+- Step 1: Hash sources selection
+- Step 2: Configuring storage
+- Step 3: Configuring fuzzy_check plugin
+
+**Optional:** Hashes replication  
+**Suggested:** Storage testing
+
+----
 
 ## Step 1: Hash sources selection
 
@@ -74,39 +89,27 @@ One way to configure a spam trap is to expose addresses to spammer databases, an
 
 Another way to create a trap is to find domains that were popular in the past but that are no longer functional. Domain names like this can be found in many spam databases. Buy domains and allow all inbound mail to go to a catch-all address, where it is processed for fuzzy hashing and then purged. In general, setting your own traps like this is only reasonable for large mail systems, as it might be expensive both in terms of maintenance and with direct expenses like domain purchases.
 
+----
+
 ## Step 2: Configuring storage
 
-In this chapter, we describe the basic fuzzy storage settings and how to optimize its performance.
+The Rspamd process that is responsible for fuzzy hash storage is called the [`fuzzy_storage`]({{ site.baseurl }}/workers/fuzzy_storage.html) worker. The information here should be useful whether you are using local or remote storage.
 
-**Important note:** fuzzy storage works with hashes and not with email messages. Hence, in order to convert a email into the corresponging set of hashes you need to use a scanner (for checking) or a controller process:
-
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-2.png" width="75%"></center>
-
-Fuzzy storage functions:
+This process performs the following functions which will be detailed below.
 
 1. Data storage
-2. Transport Protocol Encryption
-3. Hashes expiration
-4. Access control (read and write)
-5. Replication (since v. 1.3)
+1. Hash expiration
+1. Access control (read and write)
+1. Transport protocol encryption
+1. Replication
 
-### Storage architecture
+The configuration for the `worker "fuzzy"` section begins in `/etc/rspamd/rspamd.conf`.  
+An `.include` directive there links to `/etc/rspamd/local.d/worker-fuzzy.inc`, which is where local settings activate and configure this process. (Earlier documentation referred to `/etc/rspamd/rspamd.conf.local`.)
 
-The database engine, namely sqlite3, imposes some restrictions on the storage architecture.
-
-Firstly, sqlite cannot deal well with concurrent write requests: in this case, the database performance is degraded significantly. Secondly, it is quite difficult to provide replication and scale the database as it requires third-party tools.
-
-Therefore, rspamd hash storage always writes to the database strictly from one process. To reach this goal, one of the processes maintains the updates queue whilst all other processes simply forward write requests from clients to the selected process. The updates queue is written to the disk once per minute (by default). Such an architecture is optimized for the load profile with prevalence of read requests.
-
-### Hashes expiration
-
-Another major function of the fuzzy storage is removing of the obsolete hashes. Since the duration of spam mailings is always limited, there is no reason to store all hashes permanently. It is better to compare the quantity of hashes learned over some time, with the available RAM amount. For example, 400 thousands hashes occupy about 100 Mb and 1.5 million hashes occupy 0.5 Gb.
-
-It is not recommended to increase storage size more than the available RAM size due to a significant performance degradation. Furthermore, it makes no sense to store the hashes for longer than about three months. Therefore, if you have a small amount of hashes suitable for learning, it is better to set expiration time to 90 days. Otherwise, when RAM size is less than the learn flow over this time, it is better to set a shorter period of expiration.
 
 ### Sample configuration
 
-The rspamd process that is responsible for fuzzy hashes storing is called [`fuzzy_storage`](./workers/fuzzy_storage.html). To turn on and configure this process you may use the local file of rspamd configuration: `/etc/rspamd/rspamd.conf.local`:
+The following is a sample configuration for this fuzzy storage worker process, which will be explained and referred to below. Please refer to [this page]({{ site.baseurl }}/workers/fuzzy_storage.html#configuration) for any settings not profiled here.
 
 ~~~ucl
 worker "fuzzy" {
@@ -130,27 +133,65 @@ worker "fuzzy" {
 }
 ~~~
 
-### Access control setup
+This sample shows an entire section, not as you will see it in the file, but as it looks to the controller when the setting details are collected from all files (with the `.include` directive) : Be sure to put changes in the .inc file, without the `worker` wrapper.
 
-Rspamd does not allow to modify data in the repository by default. It is required to specify a list of trusted IP-addresses and/or networks to make learning possible. Practically, it is better to write from the local address only (127.0.0.1) since fuzzy storage uses UDP that is not protected from source IP forgery.
+By default, the fuzzy_storage process is not active, with the `count=-1` directive found in the core file. To activate fuzzy storage, the local .inc file gets the `count=4` directive as seen above.
+
+The `expire` and `sync` values are related to database cleanup and performance, as described below.
+
+Fuzzy storage works with hashes and not with email messages. A [worker/scanner process](/doc/workers/normal.html) or a [controller process](/doc/workers/controller.html) convert emails to hashes before connecting to this process for fuzzy processing. In this sample, we see the fuzzy storage process that operates on the sqlite database is listening on socket 11335 for UDP requests from the other processes to query or update the storage. 
+
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-2.png" width="75%"></center>
+
+
+### Data storage
+
+The database engine, namely sqlite3, imposes some restrictions on the storage architecture. The most important concern is that sqlite cannot deal well with concurrent write requests. This translates to database performance being degraded significantly.
+
+To manage this, Rspamd hash storage always writes to the database strictly from one process, the fuzzy storage worker. This one process maintains the updates queue whilst all other processes simply forward write requests from clients to this process. The updates queue is written to disk once per minute by default, configurable with the `sync` setting seen in the sample.
+
+This architecture is optimized with priority given to read requests.
+
+
+### Hash expiration
+
+Another major function of the fuzzy storage worker is to remove obsolete hashes, using the `expire` setting, above.
+
+Spam patterns change as tactics are found to be more or less successful. Blasts of spam go out, and after some period of time, anywhere from days to months, spammers change the patterns, because they know systems like this are operating on their data. Since the "effective lifetime" of spam mailings is always limited, there is no reason to store all hashes permanently. Therefore, based on experiemce, it recommended to store the hashes for no longer than about three months.
+
+It would be prudent to compare the volume of hashes learned over some time with available RAM. For example, 400 thousands hashes may occupy about 100 Mb and 1.5 million hashes may occupy 0.5 Gb. It is not recommended to increase storage size more than the available RAM size due to a significant performance degradation. That is, don't rely on swap space, and don't choke other processes for resources. If you have a small volume of hashes suitable for learning, start with an expiration time of 90 days. Tune that down if the volume of data over that time period results in an unsuitable amount of available RAM - for example, if peak-time available RAM goes down to 20%, reduce the expiration time to 70 days, and see if data expiring from storage releases a more acceptable amount of RAM.
+
+
+### Access control
+
+Rspamd does not allow changes to fuzzy storage by default. Any system connecting via UDP to the fuzzy_storage process must be authorized. A list of trusted IP-addresses and/or networks must be provided to make learning possible. Practically, it is better to write from the local address only (127.0.0.1) since fuzzy storage uses UDP that is not protected from source IP forgery.
 
 ~~~ucl
 worker "fuzzy" {
   # Same options as before ...
-
   allow_update = ["127.0.0.1"];
 
   # or 10.0.0.0/8, for internal network
 }
 ~~~
 
-Transport encryption might also be used for access control purposes.
+The `allow_update` setting is a comma-delimited array of strings, or a [map]({{ site.baseurl }}/doc/modules/multimap.html) of IP addresses, that are allowed to perform changes to fuzzy storage - You should also set `read_only` = no in your fuzzy_check plugin, see step 3 below.
 
-### Transport encryption
 
-Fuzzy hashes protocol allows to enable optional (opportunistic) or mandatory encryption based on public-key cryptography. Encryption architecture uses cryptobox construction: <https://nacl.cr.yp.to/box.html> and it is similar to the algorithm for end-to-end encryption used in DNSCurve protocol: <https://dnscurve.org/>.
+### Transport protocol encryption
 
-To configure transport encryption, it is necessary to create a keypair for storage server using the command `rspamadm keypair -u`:
+The fuzzy hashes protocol allows optional (opportunistic) or mandatory encryption based on public-key cryptography. This feature is useful for creating restricted storages where access is allowed exclusively to customers or other business partners who have a generated public key.
+
+**How this works:**
+
+- The configuration is modified in `/etc/rspamd/local.d/worker-fuzzy.inc` of the local system running the fuzzy_storage worker. One public/private keypair is set for each remote UDP client that will connect on port 11335.
+- One unique **public** key is given to each unique client system, so that only that one system can use that one key.
+
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-3.png" width="75%"></center>
+
+The encryption architecture uses cryptobox construction: <https://nacl.cr.yp.to/box.html> and it is similar to the algorithm for end-to-end encryption used in the DNSCurve protocol: <https://dnscurve.org/>.
+
+To configure transport encryption, create a keypair for the storage server, using the command `rspamadm keypair -u`. Each time this is run, unique output is returned as seen in this example (the order of the name=value pairs may change each time this is run) :
 
 ~~~ucl
 keypair {
@@ -163,9 +204,9 @@ keypair {
 }
 ~~~
 
-This command creates a **unique**  keypair, where **public** key should be copied manually to the customer's host (e.g. via ssh) or published in any way to guarantee the reliability (e.g. certified digital signature or HTTPS-site hosting).
+The  **public** `pubkey` should be copied manually to the remote host, or published in any way that guarantees the reliability (e.g. certified digital signature or HTTPS-site hosting). As always the **private** `privkey` should never be published or shared.
 
-Each storage can use any number of keys simultaneously:
+Each storage can use any number of keys simultaneously, one for each remote client (or a group of clients):
 
 ~~~ucl
 worker "fuzzy" {
@@ -185,11 +226,7 @@ worker "fuzzy" {
 }
 ~~~
 
-This feature is useful for creating restricted storages where access is allowed merely to those customers who knows about one of the public keys of storage:
-
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-3.png" width="75%"></center>
-
-To enable such a mandatory encryption mode you should use `encrypted_only` option:
+This mechanism is optional unless explicitly made mandatory. To enable mandatory encryption mode, add the `encrypted_only` option. In this mode, client systems that do not use a valid public key will not able to access the storage.
 
 ~~~ucl
 worker "fuzzy" {
@@ -203,68 +240,12 @@ worker "fuzzy" {
 }
 ~~~
 
-Clients who do not have a valid public key are not able to access the storage in this mode.
 
-### Storage testing
+### Hash replication
 
-To test the storage you can use `rspamadm control fuzzystat` command:
+It is often desirable to have a local copy of remote fuzzy storage. For this, Rspamd supports hash replication, which is managed by the fuzzy storage worker. Details for replication setup are below in Step 4.
 
-```
-Statistics for storage 73ee122ac2cfe0c4f12
-invalid_requests: 6.69M
-fuzzy_expired: 35.57k
-fuzzy_found: (v0.6: 0), (v0.8: 0), (v0.9: 0), (v1.0+: 20.10M)
-fuzzy_stored: 425.46k
-fuzzy_shingles: (v0.6: 0), (v0.8: 41.78k), (v0.9: 23.60M), (v1.0+: 380.87M)
-fuzzy_checked: (v0.6: 0), (v0.8: 95.29k), (v0.9: 55.47M), (v1.0+: 1.01G)
-
-Keys statistics:
-Key id: icy63itbhhni8
-        Checked: 1.00G
-        Matched: 18.29M
-        Errors: 0
-        Added: 1.81M
-        Deleted: 0
-
-        IPs stat:
-        x.x.x.x
-                Checked: 131.23M
-                Matched: 1.85M
-                Errors: 0
-                Added: 0
-                Deleted: 0
-
-        x.x.x.x
-                Checked: 119.86M
-                ...
-```
-
-Primarily, a general storage statistics is shown, namely the number of stored and obsolete hashes, as well as the requests distribution for versions of the client Protocol:
-
-* `v0.6` - requests from rspamd 0.6 - 0.8 (older versions, compatibility is limited)
-* `v0.8` - requests from rspamd 0.8 - 0.9 (partially compatible)
-* `v0.9` - unencrypted requests from rspamd 0.9+ (fully compatible)
-* `v1.1` - encrypted requests from rspamd 1.1+ (fully compatible)
-
-And then detailed statistics is displayed for each of the keys configured in the storage and for the latest requested client IP-addresses. In conclusion, we see the overall statistics on IP-addresses.
-
-To change the output from this command, you can use the following options:
-
-* `-n`: display raw numbers without reduction
-* `--short`: do not display detailed statistics on the keys and IP-addresses
-* `--no-keys`: do not show statistics on keys
-* `--no-ips`: do not show statistics on IP-addresses
-* `--sort`: sort:
-  + `checked`: by the number of trusted hashes (default)
-  + `matched`: by the number of found hashes
-  + `errors`: by the number of failed requests
-  + `ip`: by IP-address lexicographically
-
-e.g.
-
-```
-rspamadm control fuzzystat -n
-```
+----
 
 ## Step 3: Configuring `fuzzy_check` plugin
 
@@ -565,3 +546,65 @@ master_flags {
   "3" = 30;
 };
 ~~~
+
+
+## Storage testing
+
+To test the storage you can use `rspamadm control fuzzystat` command:
+
+```
+Statistics for storage 73ee122ac2cfe0c4f12
+invalid_requests: 6.69M
+fuzzy_expired: 35.57k
+fuzzy_found: (v0.6: 0), (v0.8: 0), (v0.9: 0), (v1.0+: 20.10M)
+fuzzy_stored: 425.46k
+fuzzy_shingles: (v0.6: 0), (v0.8: 41.78k), (v0.9: 23.60M), (v1.0+: 380.87M)
+fuzzy_checked: (v0.6: 0), (v0.8: 95.29k), (v0.9: 55.47M), (v1.0+: 1.01G)
+
+Keys statistics:
+Key id: icy63itbhhni8
+        Checked: 1.00G
+        Matched: 18.29M
+        Errors: 0
+        Added: 1.81M
+        Deleted: 0
+
+        IPs stat:
+        x.x.x.x
+                Checked: 131.23M
+                Matched: 1.85M
+                Errors: 0
+                Added: 0
+                Deleted: 0
+
+        x.x.x.x
+                Checked: 119.86M
+                ...
+```
+
+Primarily, a general storage statistics is shown, namely the number of stored and obsolete hashes, as well as the requests distribution for versions of the client Protocol:
+
+* `v0.6` - requests from rspamd 0.6 - 0.8 (older versions, compatibility is limited)
+* `v0.8` - requests from rspamd 0.8 - 0.9 (partially compatible)
+* `v0.9` - unencrypted requests from rspamd 0.9+ (fully compatible)
+* `v1.1` - encrypted requests from rspamd 1.1+ (fully compatible)
+
+And then detailed statistics is displayed for each of the keys configured in the storage and for the latest requested client IP-addresses. In conclusion, we see the overall statistics on IP-addresses.
+
+To change the output from this command, you can use the following options:
+
+* `-n`: display raw numbers without reduction
+* `--short`: do not display detailed statistics on the keys and IP-addresses
+* `--no-keys`: do not show statistics on keys
+* `--no-ips`: do not show statistics on IP-addresses
+* `--sort`: sort:
+  + `checked`: by the number of trusted hashes (default)
+  + `matched`: by the number of found hashes
+  + `errors`: by the number of failed requests
+  + `ip`: by IP-address lexicographically
+
+e.g.
+
+```
+rspamadm control fuzzystat -n
+```
