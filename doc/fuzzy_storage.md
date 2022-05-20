@@ -93,7 +93,7 @@ Another way to create a trap is to find domains that were popular in the past bu
 
 ## Step 2: Configuring storage
 
-The Rspamd process that is responsible for fuzzy hash storage is called the [`fuzzy_storage`]({{ site.baseurl }}/workers/fuzzy_storage.html) worker. The information here should be useful whether you are using local or remote storage.
+The Rspamd process that is responsible for fuzzy hash storage is called the [`fuzzy_storage`]({{ site.baseurl }}/doc/workers/fuzzy_storage.html) worker. The information here should be useful whether you are using local or remote storage.
 
 This process performs the following functions which will be detailed below.
 
@@ -109,7 +109,7 @@ An `.include` directive there links to `/etc/rspamd/local.d/worker-fuzzy.inc`, w
 
 ### Sample configuration
 
-The following is a sample configuration for this fuzzy storage worker process, which will be explained and referred to below. Please refer to [this page]({{ site.baseurl }}/workers/fuzzy_storage.html#configuration) for any settings not profiled here.
+The following is a sample configuration for this fuzzy storage worker process, which will be explained and referred to below. Please refer to [this page]({{ site.baseurl }}/doc/workers/fuzzy_storage.html#configuration) for any settings not profiled here.
 
 ~~~ucl
 worker "fuzzy" {
