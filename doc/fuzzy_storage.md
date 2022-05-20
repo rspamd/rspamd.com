@@ -164,7 +164,7 @@ It would be prudent to compare the volume of hashes learned over some time with 
 
 ### Access control
 
-Rspamd does not allow changes to fuzzy storage by default. Any server connecting via UDP to the fuzzy_storage process must be authorized. A list of trusted IP-addresses and/or networks must be provided to make learning possible. Practically, it is better to write from the local address only (127.0.0.1) since fuzzy storage uses UDP that is not protected from source IP forgery.
+Rspamd does not allow changes to fuzzy storage by default. Any system connecting via UDP to the fuzzy_storage process must be authorized. A list of trusted IP-addresses and/or networks must be provided to make learning possible. Practically, it is better to write from the local address only (127.0.0.1) since fuzzy storage uses UDP that is not protected from source IP forgery.
 
 ~~~ucl
 worker "fuzzy" {
@@ -176,8 +176,6 @@ worker "fuzzy" {
 ~~~
 
 The `allow_update` setting is a comma-delimited array of strings, or a [map]({{ site.baseurl }}/doc/modules/multimap.html) of IP addresses, that are allowed to perform changes to fuzzy storage - You should also set `read_only` = no in your fuzzy_check plugin, see step 3 below.
-
-Transport protocol encryption might also be used for access control purposes...
 
 
 ### Transport protocol encryption
@@ -208,7 +206,7 @@ keypair {
 
 The  **public** `pubkey` should be copied manually to the remote host, or published in any way that guarantees the reliability (e.g. certified digital signature or HTTPS-site hosting). As always the **private** `privkey` should never be published or shared.
 
-Each storage can use any number of keys simultaneously, one for each remote client:
+Each storage can use any number of keys simultaneously, one for each remote client (or a group of clients):
 
 ~~~ucl
 worker "fuzzy" {
@@ -228,7 +226,7 @@ worker "fuzzy" {
 }
 ~~~
 
-This mechanism is optional unless explicitly made mandatory. To enable mandatory encryption mode, add the `encrypted_only` option. Then, client systems without a valid public key are not able to access the storage in this mode.
+This mechanism is optional unless explicitly made mandatory. To enable mandatory encryption mode, add the `encrypted_only` option. In this mode, client systems that do not use a valid public key will not able to access the storage.
 
 ~~~ucl
 worker "fuzzy" {
