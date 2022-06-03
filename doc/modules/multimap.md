@@ -53,7 +53,7 @@ You should normally define your own rules in the file `/etc/rspamd/local.d/multi
 Mandatory attributes are:
 
 * `type` - map [type](#map-types)
-* `map` - [map data](#map-field-syntax]
+* `map` - [map data](#map-field-syntax)
 
 Optional map configuration attributes:
 
