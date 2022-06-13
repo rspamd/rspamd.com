@@ -23,7 +23,7 @@ Example configuration shown below, for the minimum working configuration you nee
 ~~~ucl
 # local.d/clickhouse.conf
 
-# Push update when 1000 records are collected (1000 if unset)
+# Push update when 1000 records are collected (1000 if unset) (until 2.1, see limits section below for >2.1)
 limit = 1000;
 # IP:port of Clickhouse server ("localhost:8123" if unset)
 server = "localhost:8123";
@@ -39,17 +39,32 @@ full_urls = false;
 # If a message has a domain in this map in From: header and DKIM signature,
 # record general metadata in a table named after the domain
 #from_tables = "/etc/rspamd/clickhouse_from.map";
+# store digest/hash of email (default false)
+enable_digest = false;
+# store Symbols.Names, Symbols.Scores, Symbols.Options, Groups.Names and Groups.Scores (default false)
+enable_symbols = false;
 # These are symbols of other checks in Rspamd
 # Set these if you use non-default symbol names (unlikely)
 #bayes_spam_symbols = ["BAYES_SPAM"];
 #bayes_ham_symbols = ["BAYES_HAM"];
-#fann_symbols = ["FANN_SCORE"];
+#ann_symbols_spam = {'NEURAL_SPAM'},
+#ann_symbols_ham = {'NEURAL_HAM'},
 #fuzzy_symbols = ["FUZZY_DENIED"];
 #whitelist_symbols = ["WHITELIST_DKIM", "WHITELIST_SPF_DKIM", "WHITELIST_DMARC"];
 #dkim_allow_symbols = ["R_DKIM_ALLOW"];
 #dkim_reject_symbols = ["R_DKIM_REJECT"];
-#dmarc_allow_symbols = ["DMARC_POLICY_ALLOW"];
-#dmarc_reject_symbols = ["DMARC_POLICY_REJECT", "DMARC_POLICY_QUARANTINE"];
+#dkim_dnsfail_symbols = {'R_DKIM_TEMPFAIL', 'R_DKIM_PERMFAIL'},
+#dkim_na_symbols = {'R_DKIM_NA'},
+#dmarc_allow_symbols = {'DMARC_POLICY_ALLOW'},
+#dmarc_reject_symbols = {'DMARC_POLICY_REJECT'},
+#dmarc_quarantine_symbols = {'DMARC_POLICY_QUARANTINE'},
+#dmarc_softfail_symbols = {'DMARC_POLICY_SOFTFAIL'},
+#dmarc_na_symbols = {'DMARC_NA'},
+#spf_allow_symbols = {'R_SPF_ALLOW'},
+#spf_reject_symbols = {'R_SPF_FAIL'},
+#spf_dnsfail_symbols = {'R_SPF_DNSFAIL', 'R_SPF_PERMFAIL'},
+#spf_neutral_symbols = {'R_DKIM_TEMPFAIL', 'R_DKIM_PERMFAIL'},
+#spf_na_symbols = {'R_SPF_NA'},
 # Subject related (from 1.9)
 insert_subject = false; 
 # Privacy is off
