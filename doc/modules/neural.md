@@ -76,7 +76,7 @@ Rspamd can use the same neural network from multiple processes that could run on
 
 Rspamd also automatically uses settings id to select different networks for different sets of [user settings](../configuration/settings.html). This is identified by settings id that is appended to neural network name. This feature can be useful, for example, when you want to split neural networks for inbound and outbound users identified by settings.
 
-One can set which rules in neural.conf are applied to different settings-id's by either setting allowed_settings = "all"; in the rules section or allowed_settings = [ "settings-id1" "settings-id2" ];
+One can set which rules in neural.conf are applied to different settings-id's by either setting `allowed_settings = "all";` in the rules section to allow messages with all possible settings ids to train this rule, or `allowed_settings = [ "settings-id1", "settings-id2" ];` to allow merely messages with some specific settings ids to do that.
 
 ### Multiple networks
 
