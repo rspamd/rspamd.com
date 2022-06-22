@@ -15,6 +15,8 @@ The configuration of this module is very similar to both  [dkim](./dkim.html) an
 ## Configuration
 
 - `whitelist` - a map of domains that should not be checked with ARC (e.g. if that domains have totally broken ARC signer)
+- `whitelisted_signers_map` - a map of the trusted ARC forwarders
+- `adjust_dmarc` - boolean flag that allows to *fix* DMARC when we observer a trusted ARC forwarder in the chain. It is useful for example, if we have some domain `X` that uses some signer `Y` to forward email, however, `X` defines a strict DMARC policy whilst `Y` alters message somehow in a legit way. But if we trust `Y`, then we can fix DMARC rejection for `X` with this option.
 
 ## Principles of operation
 
