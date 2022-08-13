@@ -51,7 +51,8 @@ Here is the summary of logging parameters, each of those can be redefined or def
 | `filename` | Path to log file for file logging (required for **file** type)
 | `facility` | Logging facility for **syslog** type (required if this type is used)
 | `level` | Defines logging level (error, warning, info or debug).
-| `log_buffer` | For file and console logging defines buffer size that will be used for logging output.
+| `log_buffered` | Flag that controls whether logging is buffered.
+| `log_buf_size` | For file and console logging defines buffer size that will be used for logging output.
 | `log_urls` | Flag that defines whether all URLs in message should be logged. Useful for testing. Default: `false`.
 | `log_re_cache` | Output regular expressions statistics after each message. Default: `true`.
 | `debug_ip` | List that contains IP addresses for which debugging should be turned on.
