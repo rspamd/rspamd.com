@@ -12,6 +12,7 @@ This document describes several methods of integrating rspamd with some popular 
 * [Sendmail](http://sendmail.org)
 * [Haraka](https://haraka.github.io/)
 * [EmailSuccess](https://www.emailsuccess.com)
+* [Apache James](https://james.apache.org)
 
 This document also describes the rspamd LDA proxy mode that can be used for any MTA.
 
@@ -165,3 +166,29 @@ In this mode, `rspamc` cannot reject or greylist messages, but it appends the fo
 - `X-Spam-Result`: contains base64 encoded `JSON` reply from rspamd if `--json` option was given to `rspamc`
 
 Please note that despite the fact that this method can be used with any MTA (or even without an MTA), it has more overhead than other methods and it cannot apply certain actions, like greylisting (however, that could also be implemented using external tools).
+
+## Integration with Apache James
+
+Apache James supports RSpamD as an extension by customizing the mailbox listeners and mailet processing.
+The `RSpamDScanner` mailet will handle each mail income, this mailet will query to RSpamD for getting a spam or ham result, then append new headers to the mail with status/flag spam.
+By setting up with `IsMarkedAsSpam` matcher, the mail will be rejected or not.
+
+Here is an example of `mailetcontainer.xml`:
+
+```xml
+<mailet match="All" class="org.apache.james.rspamd.RSpamDScanner"></mailet>
+<mailet match="IsMarkedAsSpam=org.apache.james.rspamd.status" class="WithStorageDirective">
+    <targetFolderName>Spam</targetFolderName>
+</mailet>
+```
+
+The `RSpamDListener` listener will handle mailbox events, then detecting the mail is spam or ham and report RSpamD, enrich data to RSpamD, thus we will get more exact results in the next query.
+
+Here is an example of `listeners.xml`:
+```xml
+<listener>
+    <class>org.apache.james.rspamd.RSpamDListener</class>
+</listener>
+```
+
+For further information please refer directly to: [James' extensions for RSpamD](https://github.com/apache/james-project/tree/master/third-party/rspamd)
