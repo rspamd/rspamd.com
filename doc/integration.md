@@ -169,10 +169,10 @@ Please note that despite the fact that this method can be used with any MTA (or 
 
 ## Integration with Apache James
 
-Apache James supports RSpamD as an extension by customizing the mailbox listeners and mailet processing.
+Apache James supports Rspamd as an extension by customizing the mailbox listeners and mailet processing.
 
-- James uses HTTP API to contact RSpamD.
-- James can query RSpamD upon email processing (receive, sending), then the mail will be rejected or not.
-- James can be used as a feedback source in order to enrich RSpamD Spam/Ham database, both live feedback (mailbox listener) or with a CRON batch job (calls via web-admin tasks)
+- James uses HTTP API to contact Rspamd.
+- James can query Rspamd upon email processing (receive, sending), then the mail will be rejected or not.
+- James can be used as a feedback source in order to enrich Rspamd Spam/Ham database, both live feedback (mailbox listener) or with a CRON batch job (calls via web-admin tasks)
 
-For further information please refer directly to: [James' extensions for RSpamD](https://github.com/apache/james-project/tree/master/third-party/rspamd)
+For further information please refer directly to: [James' extensions for Rspamd](https://github.com/apache/james-project/tree/master/third-party/rspamd)
