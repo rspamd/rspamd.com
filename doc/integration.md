@@ -170,25 +170,9 @@ Please note that despite the fact that this method can be used with any MTA (or 
 ## Integration with Apache James
 
 Apache James supports RSpamD as an extension by customizing the mailbox listeners and mailet processing.
-The `RSpamDScanner` mailet will handle each mail income, this mailet will query to RSpamD for getting a spam or ham result, then append new headers to the mail with status/flag spam.
-By setting up with `IsMarkedAsSpam` matcher, the mail will be rejected or not.
 
-Here is an example of `mailetcontainer.xml`:
-
-```xml
-<mailet match="All" class="org.apache.james.rspamd.RSpamDScanner"></mailet>
-<mailet match="IsMarkedAsSpam=org.apache.james.rspamd.status" class="WithStorageDirective">
-    <targetFolderName>Spam</targetFolderName>
-</mailet>
-```
-
-The `RSpamDListener` listener will handle mailbox events, then detecting the mail is spam or ham and report RSpamD, enrich data to RSpamD, thus we will get more exact results in the next query.
-
-Here is an example of `listeners.xml`:
-```xml
-<listener>
-    <class>org.apache.james.rspamd.RSpamDListener</class>
-</listener>
-```
+- James uses HTTP API to contact RSpamD.
+- James can query RSpamD upon email processing (receive, sending), then the mail will be rejected or not.
+- James can be used as a feedback source in order to enrich RSpamD Spam/Ham database, both live feedback (mailbox listener) or with a CRON batch job (calls via web-admin tasks)
 
 For further information please refer directly to: [James' extensions for RSpamD](https://github.com/apache/james-project/tree/master/third-party/rspamd)
