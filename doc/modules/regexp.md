@@ -73,7 +73,7 @@ It can be either a single letter or a long type in curly braces (from Rspamd 1.3
 | ---- | --------------- | -------------- |
 | `H`  | `{header}`      | Header value; if the header contains [encoded words](https://tools.ietf.org/html/rfc2047) they are decoded and converted to utf-8, all invalid utf-8 bytes are replaced by a `?` |
 | `X`  | `{raw_header}`  | Raw header value (encoded words are not decoded, but [folding](https://tools.ietf.org/html/rfc5322#section-2.2.3) is removed) |
-| `B`  | `{mime_header}` | Raw MIME header value (applied for headers in MIME parts only) |
+| `B`  | `{mime_header}` | MIME header value extracted for headers in MIME parts that are not `message/rfc822` and that are enclosed in multipart containers only |
 | `R`  | `{all_headers}` | Full headers content (applied for all headers in their original form and for the message only - **not** including MIME headers) |
 | `M`  | `{body}`        | Full message (with all *headers*) as it was send to Rspamd |
 | `P`  | `{mime}`        | Text MIME part content; base64/quoted-printable is decoded, HTML tags are stripped; if charset is not utf-8 Rspamd tries to convert it to utf-8, but if conversion fails the original text is examined |
