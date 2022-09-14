@@ -223,14 +223,14 @@ Rspamd requires several 3-rd party software to build and run:
 * [libmagic](https://www.darwinsys.com/file/) - common library for detecting file types
 * [libicu](http://site.icu-project.org/) - unicode library
 * [PCRE](https://www.pcre.org/) - regular expressions library
-* [Hyperscan](https://hyperscan.io) - optional regexp performance boost library
+* [Hyperscan](https://hyperscan.io)/[Vectorscan](https://github.com/VectorCamp/vectorscan) - optional regexp performance boost library
 * [zlib](https://zlib.net/) - compression library
 
 You can either install them from sources or (recommended) install using package manager of your system.
 
 It is also highly recommended to use [Redis](https://redis.io) as it can be used by many Rspamd modules to improve their filtering quality (some modules will be turned off completely without Redis).
 
-It is also recommended to build Rspamd with Hyperscan (x86_64 only) and Jemalloc to improve performance.
+It is also recommended to build Rspamd with Hyperscan (x86_64 only) or Vectorscan (aarch64/ppc64le) and Jemalloc to improve performance.
 
 ### Build process
 
