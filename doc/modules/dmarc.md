@@ -89,8 +89,13 @@ Here are the configuration parameters for Dmarc reporting with the corresponding
     max_entries = 1k; # Maxiumum amount of entries per domain
     keys_expire = 2d; # Expire date for Redis keys
     #only_domains = '/path/to/map'; # Store reports merely from those domains
+    # Available from 3.3
+    #exclude_domains = '/path/to/map'; # Exclude reports from those domains or eslds
+    #exclude_domains = ["example.com", "another.com"]; # Exclude reports from those domains or eslds
   }
 ~~~
+
+Prior to Rspamd 3.3 you can skip some domains from the reporting by setting `no_reporting_domains` that is a map of domains or eSLDs to be excluded. Rspamd 3.3 supports this option in `reporting` section, however, a legacy option `settings.no_reporting_domains` is also supported (but not preferred).
 
 ## DMARC Munging
 
