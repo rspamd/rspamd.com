@@ -378,7 +378,7 @@ You should store an encrypted password for better security. To generate such a p
     Enter passphrase:
     $2$g95ywihfinjqx4r69u6mgfs9cqbfq1ay$1h4bm5uod9njfu3hdbwd3w5xf5d9u8gb7i9xnimm5u8ddq3c5byy 
 
-The config to be modified is shown below (replace 'q1' with your chosen password):
+The config to be modified is shown below (replace below password with your the output generated from your chosen password):
 
 ~~~ucl
 # /etc/rspamd/local.d/worker-controller.inc
