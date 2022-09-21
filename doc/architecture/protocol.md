@@ -298,3 +298,4 @@ These also accept `POST`. The below endpoints all use `GET`:
 * `/fuzzydelhash` - Deletes entries from fuzzy according to content of `Hash:` header(s)
 * `/plugins` - Returns list of plugins or plugin specific stuff
 * `/ping` - Returns just a `pong` HTTP reply (could be used for monitoring)
+* `/metrics` - Returns OpenMetrics data
