@@ -299,3 +299,103 @@ These also accept `POST`. The below endpoints all use `GET`:
 * `/plugins` - Returns list of plugins or plugin specific stuff
 * `/ping` - Returns just a `pong` HTTP reply (could be used for monitoring)
 * `/metrics` - Returns OpenMetrics data
+
+  Sample response of `/metrics` endpoint:
+```
+  	# HELP rspamd_build_info A metric with a constant '1' value labeled by version from which rspamd was built.
+	# TYPE rspamd_build_info gauge
+	rspamd_build_info{version="3.2"} 1
+	# HELP rspamd_config A metric with a constant '1' value labeled by id of the current config.
+	# TYPE rspamd_config gauge
+	rspamd_config{id="nzpuz9fm3jk1xncp3q136cudb3qycb7sygxjcko89ya69i8zs3879wbifxh9wfoip7ur8or6dx1crry9px36j9x36btbndjtxug9kub"} 1
+	# HELP rspamd_scan_time_average Average messages scan time.
+	# TYPE rspamd_scan_time_average gauge
+	rspamd_scan_time_average 0.15881561463879001
+	# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+	# TYPE process_start_time_seconds gauge
+	process_start_time_seconds 1663651459
+	# HELP rspamd_read_only Whether the rspamd instance is read-only.
+	# TYPE rspamd_read_only gauge
+	rspamd_read_only 0
+	# HELP rspamd_scanned_total Scanned messages.
+	# TYPE rspamd_scanned_total counter
+	rspamd_scanned_total 5978
+	# HELP rspamd_learned_total Learned messages.
+	# TYPE rspamd_learned_total counter
+	rspamd_learned_total 5937
+	# HELP rspamd_spam_total Messages classified as spam.
+	# TYPE rspamd_spam_total counter
+	rspamd_spam_total 5978
+	# HELP rspamd_ham_total Messages classified as spam.
+	# TYPE rspamd_ham_total counter
+	rspamd_ham_total 0
+	# HELP rspamd_connections Active connections.
+	# TYPE rspamd_connections gauge
+	rspamd_connections 0
+	# HELP rspamd_control_connections_total Control connections.
+	# TYPE rspamd_control_connections_total gauge
+	rspamd_control_connections_total 45399
+	# HELP rspamd_pools_allocated Pools allocated.
+	# TYPE rspamd_pools_allocated gauge
+	rspamd_pools_allocated 45585
+	# HELP rspamd_pools_freed Pools freed.
+	# TYPE rspamd_pools_freed gauge
+	rspamd_pools_freed 45542
+	# HELP rspamd_allocated_bytes Bytes allocated.
+	# TYPE rspamd_allocated_bytes gauge
+	rspamd_allocated_bytes 60537276
+	# HELP rspamd_chunks_allocated Memory pools: current chunks allocated.
+	# TYPE rspamd_chunks_allocated gauge
+	rspamd_chunks_allocated 374
+	# HELP rspamd_shared_chunks_allocated Memory pools: current shared chunks allocated.
+	# TYPE rspamd_shared_chunks_allocated gauge
+	rspamd_shared_chunks_allocated 15
+	# HELP rspamd_chunks_freed Memory pools: current chunks freed.
+	# TYPE rspamd_chunks_freed gauge
+	rspamd_chunks_freed 0
+	# HELP rspamd_chunks_oversized Memory pools: current chunks oversized (needs extra allocation/fragmentation).
+	# TYPE rspamd_chunks_oversized gauge
+	rspamd_chunks_oversized 1550
+	# HELP rspamd_fragmented Memory pools: fragmented memory waste.
+	# TYPE rspamd_fragmented gauge
+	rspamd_fragmented 0
+	# HELP rspamd_learns_total Total learns.
+	# TYPE rspamd_learns_total counter
+	rspamd_learns_total 9526
+	# HELP rspamd_actions_total Actions labelled by action type.
+	# TYPE rspamd_actions_total counter
+	rspamd_actions_total{type="reject"} 0
+	rspamd_actions_total{type="soft reject"} 0
+	rspamd_actions_total{type="rewrite subject"} 0
+	rspamd_actions_total{type="add header"} 5978
+	rspamd_actions_total{type="greylist"} 0
+	rspamd_actions_total{type="no action"} 0
+	# HELP rspamd_statfiles_revision Stat files revision.
+	# TYPE rspamd_statfiles_revision gauge
+	rspamd_statfiles_revision{symbol="BAYES_SPAM",type="redis"} 9429
+	rspamd_statfiles_revision{symbol="BAYES_HAM",type="redis"} 97
+	# HELP rspamd_statfiles_used Stat files used.
+	# TYPE rspamd_statfiles_used gauge
+	rspamd_statfiles_used{symbol="BAYES_SPAM",type="redis"} 0
+	rspamd_statfiles_used{symbol="BAYES_HAM",type="redis"} 0
+	# HELP rspamd_statfiles_totals Stat files total.
+	# TYPE rspamd_statfiles_totals gauge
+	rspamd_statfiles_totals{symbol="BAYES_SPAM",type="redis"} 0
+	rspamd_statfiles_totals{symbol="BAYES_HAM",type="redis"} 0
+	# HELP rspamd_statfiles_size Stat files size.
+	# TYPE rspamd_statfiles_size gauge
+	rspamd_statfiles_size{symbol="BAYES_SPAM",type="redis"} 0
+	rspamd_statfiles_size{symbol="BAYES_HAM",type="redis"} 0
+	# HELP rspamd_statfiles_languages Stat files languages.
+	# TYPE rspamd_statfiles_languages gauge
+	rspamd_statfiles_languages{symbol="BAYES_SPAM",type="redis"} 0
+	rspamd_statfiles_languages{symbol="BAYES_HAM",type="redis"} 0
+	# HELP rspamd_statfiles_users Stat files users.
+	# TYPE rspamd_statfiles_users gauge
+	rspamd_statfiles_users{symbol="BAYES_SPAM",type="redis"} 1
+	rspamd_statfiles_users{symbol="BAYES_HAM",type="redis"} 1
+	# HELP rspamd_fuzzy_stat Fuzzy stat labelled by storage.
+	# TYPE rspamd_fuzzy_stat gauge
+	rspamd_fuzzy_stat{storage="rspamd.com"} 1768011131
+	# EOF
+```

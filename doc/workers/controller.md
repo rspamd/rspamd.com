@@ -73,3 +73,4 @@ You can use that line as `password` and `enable_password` values.
 * `/stat`
 * `/statreset` (priv)
 * `/counters`
+* `/metrics`
