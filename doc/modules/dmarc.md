@@ -4,10 +4,9 @@ title: DMARC module
 ---
 # DMARC module
 
-DMARC is a technology leveraging SPF & DKIM which allows domain owners to publish policies regarding how messages bearing
-their domain in the RFC5322.From field should be handled (for example to quarantine or reject messages which do not have an
-aligned DKIM or SPF identifier) and to elect to receive reporting information about such messages (to help them identify
-abuse and/or misconfiguration and make informed decisions about policy application).
+DMARC is a technology leveraging SPF & DKIM, allowing domain owners to publish policies regarding how messages bearing their domain in the (RFC5322) From field should be handled.
+For example, DMARC can be configured to request that a receiving MTA quarantine or reject messages which do not have an aligned DKIM or SPF identifier.
+DMARC can also be configured to request reports from remote MTAs about such messages, to help identify abuse and/or misconfiguration, and to help make informed decisions about policy application.
 
 ## DMARC in rspamd
 
