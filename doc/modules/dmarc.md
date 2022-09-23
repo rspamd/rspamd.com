@@ -61,13 +61,13 @@ dmarc {
 
 ## Reporting
 
-From Rspamd 3.0 you should use `rspamadm dmarc_report` tool called manually (e.g. via cron or systemd timers) to send reports, this should be done either daily or hourly depending on traffic. You also need a working MTA running on a specific host that allows email to be sent with no authentication/ssl (preferrably local MTA).
+From Rspamd 3.0 the `rspamadm dmarc_report` command should be used with cron or systemd timers to send reports. This should be done either daily or hourly depending on traffic. This requires a working MTA running on a specific host that allows email to be sent with no authentication/ssl - preferrably the local MTA.
 
-While migrating from the previous versions, please ensure that you don't have something like `reporting = true;` in `rspamadm configdump dmarc`. It was intentionally converted to the new options schema to avoid misconfiguration. The line `reporting = true;` **must** be removed from the `local.d/dmarc.conf` if it is there.
+When migrating from the previous versions, please ensure that you don't have `reporting = true;` in `rspamadm configdump dmarc`. That setting was intentionally converted to the new options schema to avoid misconfiguration. The line `reporting = true;` **must** be removed from the `local.d/dmarc.conf` if it is there.
 
-DMARC reporting information is stored in Redis- see [here]({{ site.baseurl }}/doc/configuration/redis.html) for information about configuring Redis.
+DMARC reporting information is stored in Redis. See [this information]({{ site.baseurl }}/doc/configuration/redis.html) about configuring Redis.
 
-Here are the configuration parameters for Dmarc reporting with the corresponding comments:
+Here are the configuration parameters for DMARC reporting, with corresponding comments:
 
 ~~~ucl
 # local.d/dmarc.conf
@@ -87,10 +87,10 @@ Here are the configuration parameters for Dmarc reporting with the corresponding
     msgid_from = 'rspamd'; # Msgid format
     max_entries = 1k; # Maxiumum amount of entries per domain
     keys_expire = 2d; # Expire date for Redis keys
-    #only_domains = '/path/to/map'; # Store reports merely from those domains
+    #only_domains = '/path/to/map'; # Only store reports from domains or eSLDs listed in this map
     # Available from 3.3
-    #exclude_domains = '/path/to/map'; # Exclude reports from those domains or eslds
-    #exclude_domains = ["example.com", "another.com"]; # Exclude reports from those domains or eslds
+    #exclude_domains = '/path/to/map'; # Exclude reports from domains or eSLDs listed in this map
+    #exclude_domains = ["example.com", "another.com"]; # Alternative, use array to exclude reports from domains or eSLDs
   }
 ~~~
 
