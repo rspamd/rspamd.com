@@ -98,17 +98,19 @@ Prior to Rspamd 3.3 you can skip some domains from the reporting by setting `no_
 
 ## DMARC Munging
 
-From version 3.0, Rspamd supports DMARC munging for the mailing list. In this mode, Rspamd will change the `From:` header to some pre-defined address (e.g. a mailing list address) for those messages who have **valid** DMARC policy with **reject/quarantine** that would otherwise fail during mailing list forwarding. An example of this technique is defined here: https://mailman.readthedocs.io/en/release-3.1/src/mailman/handlers/docs/dmarc-mitigations.html
-Here is an example for such a configuration:
+From version 3.0, Rspamd supports DMARC munging for mailing lists.
+In this mode, Rspamd will change the `From:` header to a pre-defined address (e.g. a mailing list address) for messages that have a **valid** DMARC policy with **reject/quarantine**, where delivery would otherwise fail during mailing list forwarding. An example of this technique is [documented](https://mailman.readthedocs.io/en/release-3.1/src/mailman/handlers/docs/dmarc-mitigations.html) for the Mailman mailing list management system.
+
+And here is an example for such a configuration in Rspamd:
 
 ~~~ucl
 # local.d/dmarc.conf
 munging {
   list_map = "/etc/rspamd/maps.d/dmarc_munging.map"; # map of maillist domains (mandatory)
-  mitigate_strict_only = false; # perform mugning merely for reject/quarantine policies
+  mitigate_strict_only = false; # perform munging merely for reject/quarantine policies
   reply_goes_to_list = false; # set reply-to to the list address
   mitigate_allow_only = true; # perform munging based on DMARC_POLICY_ALLOW only
-  munge_from = true; # replace from with something like <orig name> via <rcpt user>
+  munge_from = true; # replace From header with something like <orig name> via <rcpt user>
   munge_map_condition = nil; # maps expression to enable munging
 }
 ~~~
