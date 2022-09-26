@@ -180,6 +180,7 @@ Here are possible settings for this engine:
 ~~~ucl
 # local.d/antivirus.conf
 avast {
+
   symbol = "AVAST_VIRUS";
   servers = "127.0.0.1:8080";
 
@@ -197,7 +198,6 @@ avast {
     # pup = false,
     # heuristics = 40,
     # detections = false,
-
   
   }
 }
