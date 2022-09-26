@@ -175,7 +175,6 @@ Here some configuration examples for ICAP capable products:
 ~~~ucl
 # local.d/external_services.conf
 
-
 # C-ICAP Squidclamav
 squidclamav {
   type = "icap";
@@ -268,7 +267,8 @@ trend_micro {
   x_client_header = true;
   ...
 }
-]] --
+
+~~~
 
 ## oletools specific details
 
