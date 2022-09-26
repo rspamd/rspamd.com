@@ -118,20 +118,27 @@ icap {
 
 ## ICAP protocol specific details
 
-ICAP servers are normally used by http proxies or file servers to scan HTTP queries or files. Only the RESPMOD method is supported in Rspamd. Currently Rspamd evaluates the X-Infection-Found and X-Virus-ID return headers.
+ICAP servers are normally used by http proxies or file servers to scan HTTP queries or files. Only the RESPMOD method is supported in Rspamd. Next to the X-Infection-Found and X-Virus-ID return headers Rspamd also tries to evaluate more unusual headers.
+
+From Version 3.2 Rspamd supports the full ICAP protocol (with encapsulated HTTP headers) and is also capable to evaluate encapsulated HTTP return codes.
 
 This module was tested with these icap implementations:
 
-*   ClamAV (using c-icap server and squidclamav)
-*   Sophos (via SAVDI)
-*   Symantec Protection Engine for Cloud Services
-*   Kaspersky Web Traffic Security 6.0
-*   Trend Micro InterScan Web Security Virtual Appliance (IWSVA) (Rspamd 2.0)
-*   F-Secure Internet Gatekeeper (Rspamd 2.0)
+* Checkpoint Sandblast
+* ClamAV (using c-icap server and squidclamav)
+* ESET Server Security for Linux 9.0
+* F-Secure Internet Gatekeeper
+* Kaspersky Scan Engine 2.0
+* Kaspersky Web Traffic Security 6.0
+* McAfee Web Gateway 9/10/11
+* Metadefender ICAP
+* Sophos (via SAVDI)
+* Symantec Protection Engine for Cloud Services (Rspamd <3.2, >=3.2 untested)
+* Trend Micro InterScan Web Security Virtual Appliance (IWSVA)
+* Trend Micro IWSVA 6.0
+* Trend Micro Web Gateway
 
-If using a proprietary ICAP service **please check** with your vendor if it is suitable for your intended use- do not assume any proprietary software above to be fit for use.
-
-Please use the `Edit Page` button on this article to add software which was tested as working or remove software which is unfit for use.
+Please report other working or non-working icap implementations.
 
 ~~~ucl
 # local.d/external_services.conf
@@ -139,14 +146,129 @@ Please use the `Edit Page` button on this article to add software which was test
 clamav_icap {
   ...
   scheme = "squidclamav";
+  type = "icap";
   ...
 }
 
 ~~~
 
-Scan requests are send to an icap URL (e.g. icap://127.0.0.1:1344/squidclamav). So next to IP and port a scheme is needed to communicate with the icap server. Often icap servers have multiple schemes - so choose one with RESPMOD support.
+Scan requests are send to an icap URL (e.g. icap://127.0.0.1:1344/squidclamav). So next to the host and port a scheme is needed to communicate with the icap server. Often icap servers have multiple schemes - so choose one with RESPMOD support.
 
 Typical error responses like `X-Infection-Found: Type=2; Resolution=2; Threat=Encrypted container violation;` will be reported as symbol fail (e.g. CLAM_ICAP_FAIL(0.00){Encrypted container violation}).
+
+Depending on the ICAP software there are some extra options available:
+
+~~~ucl
+# local.d/external_services.conf
+
+icap {
+  user_agent = "Rspamd"; # Use none, extended or a self defined name
+  x_client_header = true; # Add X-Client-IP: $IP header
+  x_rcpt_header = true; # Add X-Rcpt-To: $SMTP_RCPT header
+  x_from_header = true; # Add X-Mail-From: $SMTP_FROM header
+}
+
+~~~
+
+Here some configuration examples for ICAP capable products:
+
+~~~ucl
+# local.d/external_services.conf
+
+
+# C-ICAP Squidclamav
+squidclamav {
+  type = "icap";
+  scheme = "squidclamav";
+  ...
+}
+
+# Checkpoint Sandblast
+sandblast {
+  type = "icap";
+  scheme = "sandblast";
+  ...
+}
+
+# ESET Gateway Security / Antivirus for Linux
+eset {
+  type = "icap";
+  scheme = "scan";
+  ...
+}
+
+# F-Secure Internet Gatekeeper
+f-secure {
+  type = "icap";
+  scheme = "respmod";
+  x_client_header = true;
+  x_rcpt_header = true;
+  x_from_header = true;
+  ...
+}
+
+# Kaspersky Scan Engine 2.0 (as configured in kavicapd.xml):
+kaspersky {
+  type = "icap";
+  scheme = "resp";
+  x_client_header = true;
+  ...
+}
+
+# Kaspersky Web Traffic Security
+kaspersky {
+  type = "icap";
+  scheme = "av/respmod";
+  x_client_header = true;
+  ...
+}
+
+# McAfee Web Gateway 9/10/11 (Headers must be activated with personal extra Rules)
+mcafee {
+  type = "icap";
+  scheme = "respmod";
+  x_client_header = true;
+  ...
+}
+
+# Metadefender ICAP
+metadefender {
+  type = "icap";
+  scheme = ""
+  x_client_header = true;
+}
+
+# Sophos SAVDI example:
+sophos {
+  type = "icap";
+  # scheme as configured in savdi.conf (name option in service section)
+  scheme = "respmod";
+  ...
+}
+
+# Symantec Protection Engine for Cloud Services
+symantec {
+  type = "icap";
+  scheme = "avscan";
+  ...
+}
+
+# Trend Micro IWSVA example (X-Virus-ID/X-Infection-Found headers must be activated):
+trend_micro {
+  type = "icap";
+  scheme = "avscan";
+  x_client_header = true;
+  ...
+}
+
+# Trend Micro Web Gateway example (X-Virus-ID/X-Infection-Found headers must be activated):
+trend_micro {
+  type = "icap";
+  scheme = "interscan";
+  x_client_header = true;
+  ...
+}
+]] --
 
 ## oletools specific details
 
