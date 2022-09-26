@@ -7,12 +7,13 @@ title: Antivirus module
 
 Antivirus module (available from Rspamd 1.4) provides integration with virus scanners. Currently supported are:
 
+* [Avast Antivirus Rest API](https://businesshelp.avast.com/Content/Products/AfB_Antivirus/Linux/InstallingAvastBusinessAntivirusLinux.htm) (from 3.3)
+* [Avira](https://www.avira.com/de/oem-antivirus) (via SAVAPI)
 * [ClamAV](http://www.clamav.net)
 * [F-Prot](http://www.f-prot.com/products/corporate_users/unix/linux/mailserver.html)
-* [Sophos](https://www.sophos.com/en-us/medialibrary/PDFs/partners/sophossavdidsna.pdf) (via SAVDI)
-* [Avira](https://www.avira.com/de/oem-antivirus) (via SAVAPI)
 * [Kaspersky antivirus](https://www.kaspersky.com/small-to-medium-business-security/linux-mail-server) (from 1.8.3)
 * [Kaspersky Scan Engine](https://www.kaspersky.com/scan-engine) (from 2.0)
+* [Sophos](https://www.sophos.com/en-us/medialibrary/PDFs/partners/sophossavdidsna.pdf) (via SAVDI)
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
@@ -149,7 +150,7 @@ kaspersky {
 }
 ~~~
 
-##  Kaspersky Scan Engine details
+## Kaspersky Scan Engine details
 
 This engine uses HTTP [REST API version 1.0](https://help.kaspersky.com/ScanEngine/1.0/en-US/181038.htm). Rspamd can work in files and TCP stream mode. Files mode could be useful if you have fast `tmpfs` that relies in memory and want to reduce the amount of data transferred over a socket for the local machine, however, this is definitely not recommended for any type of real storage (even SSD). Here are possible settings for this engine:
 
@@ -162,7 +163,43 @@ kaspersky_se {
   timeout = 5.0; # Allow 5 seconds for scan
   scan_mime_parts = true; # Just attachments
   use_files = false; # Or true if you want this mode
-  use_https = false; # Enable if you terminate SSL requests to Kaspersky SE using, for example, Nginx
+  use_https = false; # Enable if you like to use SSL
+}
+~~~
+
+## Avast Antivirus Rest API details
+
+You need to install the Avast-rest package next to the Avast antivirus package itself. Maybe you want to adjust the default settings in /etc/avast/rest.conf. Rspamd can work in files and TCP stream mode. Files mode could be useful if you have fast `tmpfs` that relies in memory and want to reduce the amount of data transferred over a socket for the local machine, however, this is definitely not recommended for any type of real storage (even SSD).
+
+Warnings like corrupt file or possible zip bomb are only logged. You can set `warnings_as_threat = true` if you want Rspamd to use warnings as pseudo virus. Maybe you should use patterns to avoid false positive.
+
+Using the option `parameter` you can set any option for the rest-api from Rspamd.
+
+Here are possible settings for this engine:
+
+~~~ucl
+# local.d/antivirus.conf
+avast {
+  symbol = "AVAST_VIRUS";
+  servers = "127.0.0.1:8080";
+
+  scan_mime_parts = true; # (Default) Just attachments
+  use_files = false; # (Default) Or true if you need the file mode (not recommend)
+  use_https = false; # (Default) Enable if you like to use SSL
+
+  warnings_as_threat = false; # (Default)
+
+  # https://repo.avcdn.net/linux-av/doc/avast-techdoc.pdf
+  parameter = {
+    archives = true, # (Default) 
+    # email = false,
+    # full = false,
+    # pup = false,
+    # heuristics = 40,
+    # detections = false,
+
+  
+  }
 }
 ~~~
 
@@ -172,10 +209,15 @@ The ICAP protocol is implemented in [external_services]({{ site.baseurl }}/doc/m
 
 Currently these products are tested with Rspamd (please report others):
 
-*   ClamAV (using c-icap server and squidclamav)
-*   Sophos (via SAVDI)
-*   Symantec Protection Engine for Cloud Services
-*   Kaspersky Web Traffic Security 6.0
-*   Trend Micro InterScan Web Security Virtual Appliance (IWSVA)
-*   F-Secure Internet Gatekeeper
-*   ESET File Security for Linux 7.0
+* Checkpoint Sandblast
+* ClamAV (using c-icap server and squidclamav)
+* ESET Server Security for Linux 9.0
+* F-Secure Internet Gatekeeper
+* Kaspersky Scan Engine 2.0
+* Kaspersky Web Traffic Security 6.0
+* McAfee Web Gateway 9/10/11
+* Metadefender ICAP
+* Sophos (via SAVDI)
+* Symantec Protection Engine for Cloud Services (Rspamd <3.2, >=3.2 untested)
+* Trend Micro InterScan Web Security Virtual Appliance (IWSVA)
+* Trend Micro Web Gateway
