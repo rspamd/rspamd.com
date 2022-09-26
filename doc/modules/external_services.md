@@ -414,14 +414,14 @@ A little help for the 8 flags:
 
 `ABDHIMSV` or `A-------`
 
-*   A=Auto-executable (auto-executable macros)
-*   B=Base64 strings (Base64-encoded strings (potential obfuscation))
-*   D=Dridex strings (Dridex-encoded strings (potential obfuscation))
-*   H=Hex strings (hex-encoded strings (potential obfuscation))
-*   I=IOCs (macro contains IP, URL or executable filename)
-*   M=Macros (contains VBA Macros)
-*   S=Suspicious keywords (suspicious VBA keywords)
-*   V=VBA strings (VBA string expressions (potential obfuscation))
+* A=Auto-executable (auto-executable macros)
+* B=Base64 strings (Base64-encoded strings (potential obfuscation))
+* D=Dridex strings (Dridex-encoded strings (potential obfuscation))
+* H=Hex strings (hex-encoded strings (potential obfuscation))
+* I=IOCs (macro contains IP, URL or executable filename)
+* M=Macros (contains VBA Macros)
+* S=Suspicious keywords (suspicious VBA keywords)
+* V=VBA strings (VBA string expressions (potential obfuscation))
 
 Note that in versions <= 2.7, flags were ordered but stacked to the right in the flag string. For instance, if flags `A`, `I`, `M` and `S` are be set, the resulting flag string would be `----AIMS`.
 
@@ -440,7 +440,7 @@ Please view the License terms on the DCC website before you enable this module.
 
 This module requires that you have the `dccifd` daemon configured, running and
 working correctly.  To do this you must download and build the [latest DCC client]
-(https://www.dcc-servers.net/dcc/source/dcc.tar.Z).  Once installed, edit
+(<https://www.dcc-servers.net/dcc/source/dcc.tar.Z>). Once installed, edit
 `/var/dcc/dcc_conf` set `DCCIFD_ENABLE=on` and set `DCCM_LOG_AT=NEVER` and
 `DCCM_REJECT_AT=MANY`. Maybe you want DCC to listen to a TCP socket by setting `DCCIFD_ARGS="-SHELO -Smail_host -SSender -SList-ID -p *,10045,127.0.0.0/8"`.
 
@@ -460,6 +460,7 @@ dcc {
 }
 
 ~~~
+
 DCC identifies bulky mails by creating hash and therefor DCC needs the complete message to work properly. `scan_mime_parts = false` is already set in the defaults.
 
 Any messages that DCC returns a *reject* result for (based on the configured `DCCM_REJECT_AT`
@@ -705,7 +706,7 @@ vadesecure {
 
 You can define subcategories for symbols if needed (see `spam` example above).
 
-# SpamAssassin specific details
+## SpamAssassin specific details
 
 SpamAssassin is supported by using the spamd daemon. Please take in mind there is also a dedicated spamassassin module with different benefits. The dedicated spamassassin module is able to load spamassassin rules directly into the Rspamd environment whereas the External Services SpamAssassin module communicates to a full separate spamassassin installation.
 
@@ -713,11 +714,11 @@ Just a warning - compared to Rspamd SpamAssassin is much more CPU-hungry and wil
 
 The benefit of this module is the support of all spamassassin features and plugins (e.g. iXHash). Also if you are using the Neural Network plugin you maybe don't want to import thousands of extra symbols into Rspamd. Another approach is maybe the soft migration from a SpamAssassin setup to Rspamd.
 
-## Spamd setup
+### Spamd setup
 
 Enable the spamassassin spamd daemon to listen on a socket or a TCP port. You might want to disable all unused plugins or even all remote checks by editing the config files in /etc/mail/spamassassin.
 
-## spamassassin module default setup
+### spamassassin module default setup
 
 In the default setup no special configuration is needed. The module will set all reported spamassassin symbols as string into the Rspamd SPAMD symbol. The score reported by spamd will be set as dynamic score. If you set the weight of the symbol it will be used as a mutliplier - so `dynamic_score * weight = total score`.
 
@@ -731,7 +732,7 @@ spamassassin {
 }
 ~~~
 
-## spamassassin module extended setup
+### spamassassin module extended setup
 
 ~~~ucl
 # local.d/external_services.conf
@@ -744,7 +745,6 @@ spamassassin {
 ~~~
 
 When setting `extended = true` the module will set all reported symbols as dedicated threats. Be aware in the extended configuration the score calculation is `number of threats * dynamic_score * weight = total score`. You can use `one_shot = true` change this behavior.
-
 
 ~~~ucl
 # local.d/external_services_group.conf
