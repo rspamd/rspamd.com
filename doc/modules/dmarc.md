@@ -4,10 +4,9 @@ title: DMARC module
 ---
 # DMARC module
 
-DMARC is a technology leveraging SPF & DKIM which allows domain owners to publish policies regarding how messages bearing
-their domain in the RFC5322.From field should be handled (for example to quarantine or reject messages which do not have an
-aligned DKIM or SPF identifier) and to elect to receive reporting information about such messages (to help them identify
-abuse and/or misconfiguration and make informed decisions about policy application).
+DMARC is a technology leveraging SPF & DKIM, allowing domain owners to publish policies regarding how messages bearing their domain in the (RFC5322) From field should be handled.
+For example, DMARC can be configured to request that a receiving MTA quarantine or reject messages which do not have an aligned DKIM or SPF identifier.
+DMARC can also be configured to request reports from remote MTAs about such messages, to help identify abuse and/or misconfiguration, and to help make informed decisions about policy application.
 
 ## DMARC in rspamd
 
@@ -62,13 +61,13 @@ dmarc {
 
 ## Reporting
 
-From Rspamd 3.0 you should use `rspamadm dmarc_report` tool called manually (e.g. via cron or systemd timers) to send reports, this should be done either daily or hourly depending on traffic. You also need a working MTA running on a specific host that allows email to be sent with no authentication/ssl (preferrably local MTA).
+From Rspamd 3.0 the `rspamadm dmarc_report` command should be used with cron or systemd timers to send reports. This should be done either daily or hourly depending on traffic. This requires a working MTA running on a specific host that allows email to be sent with no authentication/ssl - preferrably the local MTA.
 
-While migrating from the previous versions, please ensure that you don't have something like `reporting = true;` in `rspamadm configdump dmarc`. It was intentionally converted to the new options schema to avoid misconfiguration. The line `reporting = true;` **must** be removed from the `local.d/dmarc.conf` if it is there.
+When migrating from the previous versions, please ensure that you don't have `reporting = true;` in `rspamadm configdump dmarc`. That setting was intentionally converted to the new options schema to avoid misconfiguration. The line `reporting = true;` **must** be removed from the `local.d/dmarc.conf` if it is there.
 
-DMARC reporting information is stored in Redis- see [here]({{ site.baseurl }}/doc/configuration/redis.html) for information about configuring Redis.
+DMARC reporting information is stored in Redis. See [this information]({{ site.baseurl }}/doc/configuration/redis.html) about configuring Redis.
 
-Here are the configuration parameters for Dmarc reporting with the corresponding comments:
+Here are the configuration parameters for DMARC reporting, with corresponding comments:
 
 ~~~ucl
 # local.d/dmarc.conf
@@ -88,10 +87,10 @@ Here are the configuration parameters for Dmarc reporting with the corresponding
     msgid_from = 'rspamd'; # Msgid format
     max_entries = 1k; # Maxiumum amount of entries per domain
     keys_expire = 2d; # Expire date for Redis keys
-    #only_domains = '/path/to/map'; # Store reports merely from those domains
+    #only_domains = '/path/to/map'; # Only store reports from domains or eSLDs listed in this map
     # Available from 3.3
-    #exclude_domains = '/path/to/map'; # Exclude reports from those domains or eslds
-    #exclude_domains = ["example.com", "another.com"]; # Exclude reports from those domains or eslds
+    #exclude_domains = '/path/to/map'; # Exclude reports from domains or eSLDs listed in this map
+    #exclude_domains = ["example.com", "another.com"]; # Alternative, use array to exclude reports from domains or eSLDs
   }
 ~~~
 
@@ -99,17 +98,19 @@ Prior to Rspamd 3.3 you can skip some domains from the reporting by setting `no_
 
 ## DMARC Munging
 
-From version 3.0, Rspamd supports DMARC munging for the mailing list. In this mode, Rspamd will change the `From:` header to some pre-defined address (e.g. a mailing list address) for those messages who have **valid** DMARC policy with **reject/quarantine** that would otherwise fail during mailing list forwarding. An example of this technique is defined here: https://mailman.readthedocs.io/en/release-3.1/src/mailman/handlers/docs/dmarc-mitigations.html
-Here is an example for such a configuration:
+From version 3.0, Rspamd supports DMARC munging for mailing lists.
+In this mode, Rspamd will change the `From:` header to a pre-defined address (e.g. a mailing list address) for messages that have a **valid** DMARC policy with **reject/quarantine**, where delivery would otherwise fail during mailing list forwarding. An example of this technique is [documented](https://mailman.readthedocs.io/en/release-3.1/src/mailman/handlers/docs/dmarc-mitigations.html) for the Mailman mailing list management system.
+
+And here is an example for such a configuration in Rspamd:
 
 ~~~ucl
 # local.d/dmarc.conf
 munging {
   list_map = "/etc/rspamd/maps.d/dmarc_munging.map"; # map of maillist domains (mandatory)
-  mitigate_strict_only = false; # perform mugning merely for reject/quarantine policies
+  mitigate_strict_only = false; # perform munging merely for reject/quarantine policies
   reply_goes_to_list = false; # set reply-to to the list address
   mitigate_allow_only = true; # perform munging based on DMARC_POLICY_ALLOW only
-  munge_from = true; # replace from with something like <orig name> via <rcpt user>
+  munge_from = true; # replace From header with something like <orig name> via <rcpt user>
   munge_map_condition = nil; # maps expression to enable munging
 }
 ~~~
