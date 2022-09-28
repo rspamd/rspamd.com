@@ -5,7 +5,12 @@ title: Metric exporter
 
 # Metric exporter
 
-Metric exporter collects statistics from Rspamd and feeds them to external monitoring/graphing systems. [Graphite](https://graphiteapp.org/) is the only supported backend for now.
+Metric exporter collects statistics from Rspamd and feeds them to external monitoring/graphing systems. 
+[Graphite](https://graphiteapp.org/) is the only supported backend for now. 
+
+Besides, if you want to use `pull` model to collect statistics from Rspamd, we provide support for [Prometheus](https://prometheus.io/) endpoint.
+Please have a look at [Controller worker](/doc/workers/controller.md) and [Controller HTTP endpoints](/doc/architecture/protocol.md#controller-http-endpoints)
+for further information.
 
 ### Configuration
 
