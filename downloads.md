@@ -85,7 +85,7 @@ Rspamd supports the following .deb based distributives:
 - **Debian buster** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Debian sid** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Ubuntu xenial** (only x86_64) Hyperscan and LuaJIT are enabled.
-- **Ubuntu bionic** (only x86_64) Hyperscan and LuaJIT are enabled.
+- **Ubuntu bionic** (only x86_64) Hyperscan and LuaJIT are enabled; llvm repo is required to be enabled from Rspamd 3.3
 - **Ubuntu focal** (since 2.5) Same as above.
 
 
@@ -102,8 +102,18 @@ sudo apt-get update
 sudo apt-get --no-install-recommends install rspamd
 ~~~
 
-
 To obtain your distributive's codename, you could use the command `lsb_release -s -c` from the package called `lsb-release`.
+	
+If you have `ubuntu-bionic`, then you might need to add llvm repository as Rspamd now requires compatible standard c++ library that supports C++ 20 standard. To enable this repo you can use the following commands:
+
+~~~bash
+wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
+echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-13 main" | sudo tee /etc/apt/sources.list.d/llvm-13.list
+echo "deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-13 main"  | sudo tee -a /etc/apt/sources.list.d/llvm-13.list
+sudo apt-get update
+~~~
+
+This step is required for ubuntu-bionic only.
 
 For [Hyperscan](https://www.hyperscan.io/) and [LuaJIT](https://luajit.org) information see the [FAQ]({{ site.url }}{{ site.baseurl }}/doc/faq.html).
 
