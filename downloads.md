@@ -84,9 +84,10 @@ Rspamd supports the following .deb based distributives:
 - **Debian bullseye** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Debian buster** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Debian sid** (only x86_64) Hyperscan and LuaJIT are enabled.
-- **Ubuntu xenial** (only x86_64) Hyperscan and LuaJIT are enabled.
+- **Ubuntu xenial** (only x86_64) Hyperscan and LuaJIT are enabled - deprecated since 3.3
 - **Ubuntu bionic** (only x86_64) Hyperscan and LuaJIT are enabled; llvm repo is required to be enabled from Rspamd 3.3
 - **Ubuntu focal** (since 2.5) Same as above.
+- **Ubuntu jammy** (since 3.3) Same as above.
 
 
 To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
