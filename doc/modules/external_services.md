@@ -622,13 +622,14 @@ After that, you can use VadeSecure to adjust symbols according to the category r
 
 ~~~ucl
 vadesecure {
+  servers = 127.0.0.1,
   default_port = 23808,
   url = '/api/v1/scan',
   use_https = false,
   timeout = 5.0,
   log_clean = false,
   retransmits = 1,
-  cache_expire = 7200, -- expire redis in 2h
+  cache_expire = 7200,
   message = '${SCANNER}: spam message found: "${VIRUS}"',
   detection_category = "hash",
   default_score = 1,
