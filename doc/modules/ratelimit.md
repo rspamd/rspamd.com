@@ -2,6 +2,7 @@
 layout: doc
 title: Ratelimit module
 ---
+
 # Ratelimit plugin
 {:.no_toc}
 
@@ -220,3 +221,14 @@ Valid suffixes for amounts are:
 - `m`: millions
 - `g`: billions
 
+## Changes in the module
+
+**From version 3.1**, buckets can also define their custom symbols or messages, for example like this:
+
+~~~ucl
+# local.d/ratelimit.conf
+rates = {
+  my_bucket = { symbol = "SOME_NAME"; selector = ...; rate = ...;}  # inserts SOME_NAME symbol
+  my_other_bucket = { symbol = "OTHER_NAME"; selector = ...; rate = ...;}  # inserts OTHER_NAME symbol
+}
+~~~

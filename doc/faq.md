@@ -18,7 +18,7 @@ This document includes some questions and practical examples that are frequently
 
 ### Where to get help about Rspamd
 
-The most convenient place for asking questions about Rspamd is the IRC channel _#rspamd_ on [http://freenode.net](http://freenode.net). For more information you can also check the [support page]({{ site.url }}{{ site.baseurl }}/support.html)
+The most convenient place for asking questions about Rspamd is the IRC channel _#rspamd_ on [OFTC](https://oftc.net). For more information you can also check the [support page]({{ site.url }}{{ site.baseurl }}/support.html)
 
 ### What versions of Rspamd are supported
 
@@ -155,6 +155,7 @@ To automatically set the variables each time the machine boots, add them to `/et
 
 ```
 kern.corefile=/coreland/%N.core
+kern.sugid_coredump=1
 ```
 
 **macOS specific**
@@ -276,7 +277,7 @@ Some plugins in Rspamd might set so called `passthrough` action. In this case, t
 
 The part `forced:` tells you what's happened. Here is a list of plugins that can set forced action:
 
-* [greylist](modules/greylist.html) - will set `soft reject` when a message needs to be greylisted
+* [greylist](modules/greylisting.html) - will set `soft reject` when a message needs to be greylisted
 * [ratelimit](modules/ratelimit.html) - will set `soft reject` when a ratelimit is reached
 * [dmarc](modules/dmarc.html) - might set actions if configured to do so (not enabled by default but listed in an example)
 * [antivirus](modules/antivirus.html) - can set actions if that's explicitly set in rules
@@ -921,6 +922,7 @@ enabled = false;
 ### Can I scan outgoing mail with Rspamd
 
 Yes, Rspamd should be safe for outbound scanning by default, [see here for detail]({{ site.url }}{{ site.baseurl }}/doc/tutorials/scanning_outbound.html).
+Please bear in mind that this mode is enabled **by default** for both **authenticated** senders and senders that are from **local networks** (options.inc -> local_networks option). The default settings for local networks are both loopback/unix socket initiated connections and RFC 1918 private networks, such as `10.0.0.0/8` or `192.168.0.0/16`. Many checks are disabled for outbound checks so do not enable this mode unintentionally, e.g. by missing XCLIENT on a proxy MTA or by using a backup MX.
 
 ### Can I just sign messages using DKIM
 

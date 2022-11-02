@@ -329,6 +329,31 @@ EOD;
 
 The key `my_routine` could then be referenced in the `use` setting like other routines.
 
+A slightly more complex example that adds an extra header when a specified symbol has been added:
+
+~~~ucl
+custom {
+  my_routine = <<EOD
+return function(task, common_meta)
+-- parameters are task and metadata from previous functions
+
+  if task:has_symbol('SYMBOL') then
+    return nil, -- no error
+    {['X-Foo'] = 'Bar'}, -- set extra header
+    {['X-Foo'] = 0}, -- remove foreign X-Foo headers
+    {} -- metadata to return to other functions
+  end
+
+  return nil, -- no error
+  {}, -- need to fill the parameter
+  {['X-Foo'] = 0}, -- remove foreign X-Foo headers
+  {} -- metadata to return to other functions
+
+end
+EOD;
+}
+~~~
+
 ## Scan results exposure prevention
 
 To prevent exposing scan results in outbound mail, extended Rspamd headers routines (`x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`) add headers only if messages is **NOT** originated from authenticated users or `our_networks`.
@@ -344,6 +369,7 @@ Besides, disabling DSN prevents backscatter generation.
 ### Postfix example
 
 The following configuration example allows DSN requests from local subnets and authenticated users only. The `smtpd_discard_ehlo_keyword_address_maps` is applied to `smtp` service only, `smtps` and `submission` are not affected.
+Please ensure you modify the example below to match your subnet(s).
 
 esmtp_access:
 ```conf
@@ -355,6 +381,7 @@ esmtp_access:
 ```
 
 master.cf:
+
 ```conf
 # ==========================================================================
 # service type  private unpriv  chroot  wakeup  maxproc command + args
@@ -362,4 +389,18 @@ master.cf:
 # ==========================================================================
 smtp      inet  n       -       n       -       1       postscreen
   -o smtpd_discard_ehlo_keyword_address_maps=cidr:$config_directory/esmtp_access
+```
+or globaly
+main.cf:
+
+```conf
+smtpd_discard_ehlo_keyword_address_maps = 
+        cidr:$config_directory/esmtp_access
+```
+
+DSN can also be disabled for everyone with a shorter configuration change:
+main.cf:
+```conf
+# $config_directory/main.cf:
+    smtpd_discard_ehlo_keywords = silent-discard, dsn
 ```

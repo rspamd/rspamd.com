@@ -73,6 +73,7 @@ metadata_exporter {
  - `is_spam_authed`: matches messages with `reject` or `add header` action from authenticated users
  - `is_reject`: matches messages with `reject` action
  - `is_reject_authed`: matches messages with `reject` action from authenticated users
+ - `is_not_soft_reject`: matches all messages except those with `soft reject` action
 
 ### Stock formatters
 

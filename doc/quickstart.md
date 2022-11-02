@@ -378,7 +378,7 @@ You should store an encrypted password for better security. To generate such a p
     Enter passphrase:
     $2$g95ywihfinjqx4r69u6mgfs9cqbfq1ay$1h4bm5uod9njfu3hdbwd3w5xf5d9u8gb7i9xnimm5u8ddq3c5byy 
 
-The config to be modified is shown below (replace 'q1' with your chosen password):
+The config to be modified is shown below (replace below password with the output generated from your chosen password):
 
 ~~~ucl
 # /etc/rspamd/local.d/worker-controller.inc
@@ -576,7 +576,7 @@ Though Rspamd is free to use for any purpose many of the RBLs used in the defaul
 
 [Mailspike](http://mailspike.org/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
 
-[Rspamd URIBL](http://www.rspamd.com/feed-policies.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
+[Rspamd URIBL](http://www.rspamd.com/doc/usage_policy.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
 
 [SORBS](http://www.sorbs.net/general/using.shtml#largesites){:target="&#95;blank"} - Limit of 100k users or more than 5 messages per second sustained
 

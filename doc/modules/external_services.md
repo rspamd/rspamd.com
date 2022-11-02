@@ -118,20 +118,27 @@ icap {
 
 ## ICAP protocol specific details
 
-ICAP servers are normally used by http proxies or file servers to scan HTTP queries or files. Only the RESPMOD method is supported in Rspamd. Currently Rspamd evaluates the X-Infection-Found and X-Virus-ID return headers.
+ICAP servers are normally used by http proxies or file servers to scan HTTP queries or files. Only the RESPMOD method is supported in Rspamd. Next to the X-Infection-Found and X-Virus-ID return headers Rspamd also tries to evaluate more unusual headers.
+
+From Version 3.2 Rspamd supports the full ICAP protocol (with encapsulated HTTP headers) and is also capable to evaluate encapsulated HTTP return codes.
 
 This module was tested with these icap implementations:
 
-*   ClamAV (using c-icap server and squidclamav)
-*   Sophos (via SAVDI)
-*   Symantec Protection Engine for Cloud Services
-*   Kaspersky Web Traffic Security 6.0
-*   Trend Micro InterScan Web Security Virtual Appliance (IWSVA) (Rspamd 2.0)
-*   F-Secure Internet Gatekeeper (Rspamd 2.0)
+* Checkpoint Sandblast
+* ClamAV (using c-icap server and squidclamav)
+* ESET Server Security for Linux 9.0
+* F-Secure Internet Gatekeeper
+* Kaspersky Scan Engine 2.0
+* Kaspersky Web Traffic Security 6.0
+* McAfee Web Gateway 9/10/11
+* Metadefender ICAP
+* Sophos (via SAVDI)
+* Symantec Protection Engine for Cloud Services (Rspamd <3.2, >=3.2 untested)
+* Trend Micro InterScan Web Security Virtual Appliance (IWSVA)
+* Trend Micro IWSVA 6.0
+* Trend Micro Web Gateway
 
-If using a proprietary ICAP service **please check** with your vendor if it is suitable for your intended use- do not assume any proprietary software above to be fit for use.
-
-Please use the `Edit Page` button on this article to add software which was tested as working or remove software which is unfit for use.
+Please report other working or non-working icap implementations.
 
 ~~~ucl
 # local.d/external_services.conf
@@ -139,15 +146,129 @@ Please use the `Edit Page` button on this article to add software which was test
 clamav_icap {
   ...
   scheme = "squidclamav";
+  type = "icap";
   ...
 }
 
 ~~~
 
-Scan requests are send to an icap URL (e.g. icap://127.0.0.1:1344/squidclamav). So next to IP and port a scheme is needed to communicate with the icap server. Often icap servers have multiple schemes - so choose one with RESPMOD support.
+Scan requests are send to an icap URL (e.g. icap://127.0.0.1:1344/squidclamav). So next to the host and port a scheme is needed to communicate with the icap server. Often icap servers have multiple schemes - so choose one with RESPMOD support.
 
 Typical error responses like `X-Infection-Found: Type=2; Resolution=2; Threat=Encrypted container violation;` will be reported as symbol fail (e.g. CLAM_ICAP_FAIL(0.00){Encrypted container violation}).
 
+Depending on the ICAP software there are some extra options available:
+
+~~~ucl
+# local.d/external_services.conf
+
+icap {
+  user_agent = "Rspamd"; # Use none, extended or a self defined name
+  x_client_header = true; # Add X-Client-IP: $IP header
+  x_rcpt_header = true; # Add X-Rcpt-To: $SMTP_RCPT header
+  x_from_header = true; # Add X-Mail-From: $SMTP_FROM header
+}
+
+~~~
+
+Here some configuration examples for ICAP capable products:
+
+~~~ucl
+# local.d/external_services.conf
+
+# C-ICAP Squidclamav
+squidclamav {
+  type = "icap";
+  scheme = "squidclamav";
+  ...
+}
+
+# Checkpoint Sandblast
+sandblast {
+  type = "icap";
+  scheme = "sandblast";
+  ...
+}
+
+# ESET Gateway Security / Antivirus for Linux
+eset {
+  type = "icap";
+  scheme = "scan";
+  ...
+}
+
+# F-Secure Internet Gatekeeper
+f-secure {
+  type = "icap";
+  scheme = "respmod";
+  x_client_header = true;
+  x_rcpt_header = true;
+  x_from_header = true;
+  ...
+}
+
+# Kaspersky Scan Engine 2.0 (as configured in kavicapd.xml):
+kaspersky {
+  type = "icap";
+  scheme = "resp";
+  x_client_header = true;
+  ...
+}
+
+# Kaspersky Web Traffic Security
+kaspersky {
+  type = "icap";
+  scheme = "av/respmod";
+  x_client_header = true;
+  ...
+}
+
+# McAfee Web Gateway 9/10/11 (Headers must be activated with personal extra Rules)
+mcafee {
+  type = "icap";
+  scheme = "respmod";
+  x_client_header = true;
+  ...
+}
+
+# Metadefender ICAP
+metadefender {
+  type = "icap";
+  scheme = ""
+  x_client_header = true;
+}
+
+# Sophos SAVDI example:
+sophos {
+  type = "icap";
+  # scheme as configured in savdi.conf (name option in service section)
+  scheme = "respmod";
+  ...
+}
+
+# Symantec Protection Engine for Cloud Services
+symantec {
+  type = "icap";
+  scheme = "avscan";
+  ...
+}
+
+# Trend Micro IWSVA example (X-Virus-ID/X-Infection-Found headers must be activated):
+trend_micro {
+  type = "icap";
+  scheme = "avscan";
+  x_client_header = true;
+  ...
+}
+
+# Trend Micro Web Gateway example (X-Virus-ID/X-Infection-Found headers must be activated):
+trend_micro {
+  type = "icap";
+  scheme = "interscan";
+  x_client_header = true;
+  ...
+}
+
+~~~
 
 ## oletools specific details
 
@@ -163,10 +284,9 @@ To use oletools with Rspamd you have to install a wrapper daemon: [olefy](https:
 
 olefy communicates with Rspamd over TCP and calls olevba to get the report of an office file.
 
-
 ### oletools default mode
 
-In order to send only office files to the olevba analyzer enable scan_mime_parts (needed for versions < 1.9.5) set mime_parts_filter_regex and mime_parts_filter_ext like shown below. (Maybe this list is still incomplete). Sometimes office files are sent with the generic content-type `application/octet-stream`. You can enable UNKNOWN to catch these, but this will also catch non-office file attachments like images, pdf etc. Sending non-office files to olevba will result in error messages.
+In order to send only office files to the olevba analyzer enable scan_mime_parts (needed for versions < 1.9.5) set mime_parts_filter_regex and mime_parts_filter_ext like shown below (maybe this list is still incomplete). Sometimes office files are sent with the generic content-type `application/octet-stream`. You can enable UNKNOWN to catch these, but this will also catch non-office file attachments like images, pdf etc. Sending non-office files to olevba will result in error messages.
 
 ~~~ucl
 # local.d/external_services.conf
@@ -226,14 +346,13 @@ In the default mode the oletools module will set a symbol description like this:
 
 If you enable debug mode for external_services the oletools module will also report the description of a function as reported by olevba.
 
-
 ### oletools extended mode
 
-In the extended mode the oletools module will not trigger on specific categories, but will *always* set a threat string with all found flags when at least a macro was found. Next to the flags all reported functions will be set as individual threats:
+In the extended mode the oletools module will not trigger on specific categories, but will *always* set a threat string with all found flags when at least a macro was found. Those flags are sorted alphabetically and always displayed at the same position when set. Next to the flags all reported functions will be set as individual threats:
 
-`OLETOOLS (4.00)[MAS-----, Document_open, Shell, Chr]`
+`OLETOOLS (4.00)[A----MS-, Document_open, Shell, Chr]`
 
-In this example 4 threats will be reported (and the symbol score will be counted 4 times). You can use `one_shot = true` change this behavior.
+In this example 4 threats will be reported, one for the flag list, and one for each reported function (and the symbol score will be counted 4 times). You can use `one_shot = true` change this behavior.
 
 ~~~ucl
 # local.d/external_services_group.conf
@@ -258,27 +377,53 @@ oletools {
 
   patterns {
     # catch Macro, AutoExec, Suspicious and Hex Strings
-    BAD_MACRO_MYFLAGS = '^MAS.H...$';
-    BAD_MACRO_SHELL   = '^Shell$';
+    BAD_MACRO_MYFLAGS   = '^A..H.MS.$';
+    BAD_MACRO_RISKY_IOC = '^A...IMS.$';
+    BAD_MACRO_SHELL     = '^Shell$';
   }
   ...
 }
 
 ~~~
 
-A little help for the flags:
+You can then use those patterns in the group configuration:
 
-`MASIHBDV` or `M-------`
+~~~ucl
+# local.d/external_services_group.conf
+description = "Oletools content rules";
+symbols = {
+...
+  "OLETOOLS" {
+    weight = 1.0;
+    description = "OLETOOLS found a Macro";
+    one_shot = true;
+  },
+  "BAD_MACRO_MYFLAGS" {
+    weight = 5.0;
+    description = "Suspicious hex strings in office document";
+  },
+  "BAD_MACRO_RISKY_IOC" {
+    weight = 10.0;
+    description = "Risky macro in office document";
+  }
+...
+}
+~~~
 
-*   M=Macros (contains VBA Macros)
-*   A=Auto-executable (auto-executable macros)
-*   S=Suspicious keywords (suspicious VBA keywords)
-*   I=IOCs (macro contains IP, URL or executable filename)
-*   H=Hex strings (hex-encoded strings (potential obfuscation))
-*   B=Base64 strings (Base64-encoded strings (potential obfuscation))
-*   D=Dridex strings (Dridex-encoded strings (potential obfuscation))
-*   V=VBA strings (VBA string expressions (potential obfuscation))
+A little help for the 8 flags:
 
+`ABDHIMSV` or `A-------`
+
+* A=Auto-executable (auto-executable macros)
+* B=Base64 strings (Base64-encoded strings (potential obfuscation))
+* D=Dridex strings (Dridex-encoded strings (potential obfuscation))
+* H=Hex strings (hex-encoded strings (potential obfuscation))
+* I=IOCs (macro contains IP, URL or executable filename)
+* M=Macros (contains VBA Macros)
+* S=Suspicious keywords (suspicious VBA keywords)
+* V=VBA strings (VBA string expressions (potential obfuscation))
+
+Note that in versions <= 2.7, flags were ordered but stacked to the right in the flag string. For instance, if flags `A`, `I`, `M` and `S` are be set, the resulting flag string would be `----AIMS`.
 
 ## DCC specific details
 
@@ -295,7 +440,7 @@ Please view the License terms on the DCC website before you enable this module.
 
 This module requires that you have the `dccifd` daemon configured, running and
 working correctly.  To do this you must download and build the [latest DCC client]
-(https://www.dcc-servers.net/dcc/source/dcc.tar.Z).  Once installed, edit
+(<https://www.dcc-servers.net/dcc/source/dcc.tar.Z>). Once installed, edit
 `/var/dcc/dcc_conf` set `DCCIFD_ENABLE=on` and set `DCCM_LOG_AT=NEVER` and
 `DCCM_REJECT_AT=MANY`. Maybe you want DCC to listen to a TCP socket by setting `DCCIFD_ARGS="-SHELO -Smail_host -SSender -SList-ID -p *,10045,127.0.0.0/8"`.
 
@@ -315,30 +460,159 @@ dcc {
 }
 
 ~~~
+
 DCC identifies bulky mails by creating hash and therefor DCC needs the complete message to work properly. `scan_mime_parts = false` is already set in the defaults.
 
 Any messages that DCC returns a *reject* result for (based on the configured `DCCM_REJECT_AT`
 value) will cause the symbol `DCC_REJECT` to fire. `DCC_BULK` will be calculated from the body, fuz1, fuz2 return values and has a dynamic score.
 
-## Razor specific details
+## Pyzor specific details
 
-Vipul's Razor is a spam detection using  method using hashes of spam emails checked against a distributed database.
+`Requires rspamd >2.8`
 
-To use razor with Rspamd you have to install a wrapper daemon: [razor](https://github.com/HeinleinSupport/razorfy).
+Pyzor is, like Razor2 and DCC, a bulk email scanner that doesn't detect spam but how often a message (hash) has been seen, or how "bulky" a message is.
 
-razor communicates with Rspamd over TCP and calls razor to get the report of a scanned mail. Until now we are just detecting the spam or ham decision and not evaluating the detailed reports
+Pyzor will be exposed to rspamd through a systemd socket, a wrapper isn't needed.
+
+Install Pyzor e.g. on CentOS/Rocky Linux `yum install pyzor`
+
+Enable the module:
 
 ~~~ucl
 # local.d/external_services.conf
+...
+pyzor {
+  # default pyzor settings
+  servers = "127.0.0.1:5953"
+}
+~~~
 
+Restart rspamd `systemctl restart rspamd`
+
+Add the systemd socket and service:
+
+~~~ucl
+# /usr/lib/systemd/system/pyzor.socket
+
+[Unit]
+Description=Pyzor socket
+
+[Socket]
+ListenStream=127.0.0.1:5953
+Accept=yes
+
+[Install]
+WantedBy=sockets.target
+~~~
+
+~~~ucl
+# /usr/lib/systemd/system/pyzor@.service
+
+[Unit]
+Description=Pyzor Socket Service
+Requires=pyzor.socket
+
+[Service]
+Type=simple
+ExecStart=-/usr/bin/pyzor check
+StandardInput=socket
+StandardError=journal
+TimeoutStopSec=10
+
+User=_rspamd
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+PrivateUsers=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+
+[Install]
+WantedBy=multi-user.target
+~~~
+
+Reload systemd `systemctl daemon-reload` and enable/start pyzor socket `systemctl enable pyzor.socket && systemctl start pyzor.socket`
+
+`pyzor.socket` will call `pyzor@.service` so there is no need to enable/start `pyzor@.service`
+
+Since Pyzor is executed as `_rspamd` you probably have to create the Pyzor home directory `mkdir /var/lib/rspamd/.pyzor`, alternatively create a dedicated Pyzor user and edit `pyzor@.service`.
+
+The `PYZOR` symbole weight is calculated dynamically based on the number of times a message has been seen and whitelisted by Pyzor (Count - WL-Count of default_score in percent)
+
+## Razor specific details
+
+Razor is, like Pyzor and DCC, a bulk email scanner that doesn't detect spam but how often a message (hash) has been seen, or how "bulky" a message is.
+
+Razor will be exposed to rspamd through a systemd socket, a wrapper isn't needed.
+
+Install Razor e.g. on CentOS/Rocky Linux `yum install perl-Razor-Agent`
+
+Enable the module:
+
+~~~ucl
+# local.d/external_services.conf
+...
 razor {
-  ...
   # default razor settings
   servers = "127.0.0.1:11342"
-  ...
 }
-
 ~~~
+
+Restart rspamd `systemctl restart rspamd`
+
+Add the systemd socket and service:
+
+~~~ucl
+# /usr/lib/systemd/system/razor.socket
+
+[Unit]
+Description=Razor socket
+
+[Socket]
+ListenStream=127.0.0.1:11342
+Accept=yes
+
+[Install]
+WantedBy=sockets.target
+~~~
+
+~~~ucl
+# /usr/lib/systemd/system/razor@.service
+
+[Unit]
+Description=Razor Socket Service
+Requires=razor.socket
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c '/usr/bin/razor-check && /usr/bin/echo -n "spam" || /usr/bin/echo -n "ham"'
+StandardInput=socket
+StandardError=journal
+TimeoutStopSec=10
+
+User=_rspamd
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+PrivateUsers=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+
+[Install]
+WantedBy=multi-user.target
+~~~
+
+Reload systemd `systemctl daemon-reload` and enable/start razor socket `systemctl enable razor.socket && systemctl start razor.socket`
+
+`razor.socket` will call `razor@.service` so there is no need to enable/start `razor@.service`
+
+The `RAZOR` symbole will be added based on the exit code of Razor (0 = SPAM or 1 = HAM)
 
 ## VadeSecure specific details
 
@@ -348,13 +622,14 @@ After that, you can use VadeSecure to adjust symbols according to the category r
 
 ~~~ucl
 vadesecure {
+  servers = 127.0.0.1,
   default_port = 23808,
   url = '/api/v1/scan',
   use_https = false,
   timeout = 5.0,
   log_clean = false,
   retransmits = 1,
-  cache_expire = 7200, -- expire redis in 2h
+  cache_expire = 7200,
   message = '${SCANNER}: spam message found: "${VIRUS}"',
   detection_category = "hash",
   default_score = 1,
@@ -432,7 +707,7 @@ vadesecure {
 
 You can define subcategories for symbols if needed (see `spam` example above).
 
-# SpamAssassin specific details
+## SpamAssassin specific details
 
 SpamAssassin is supported by using the spamd daemon. Please take in mind there is also a dedicated spamassassin module with different benefits. The dedicated spamassassin module is able to load spamassassin rules directly into the Rspamd environment whereas the External Services SpamAssassin module communicates to a full separate spamassassin installation.
 
@@ -440,11 +715,11 @@ Just a warning - compared to Rspamd SpamAssassin is much more CPU-hungry and wil
 
 The benefit of this module is the support of all spamassassin features and plugins (e.g. iXHash). Also if you are using the Neural Network plugin you maybe don't want to import thousands of extra symbols into Rspamd. Another approach is maybe the soft migration from a SpamAssassin setup to Rspamd.
 
-## Spamd setup
+### Spamd setup
 
 Enable the spamassassin spamd daemon to listen on a socket or a TCP port. You might want to disable all unused plugins or even all remote checks by editing the config files in /etc/mail/spamassassin.
 
-## spamassassin module default setup
+### spamassassin module default setup
 
 In the default setup no special configuration is needed. The module will set all reported spamassassin symbols as string into the Rspamd SPAMD symbol. The score reported by spamd will be set as dynamic score. If you set the weight of the symbol it will be used as a mutliplier - so `dynamic_score * weight = total score`.
 
@@ -458,7 +733,7 @@ spamassassin {
 }
 ~~~
 
-## spamassassin module extended setup
+### spamassassin module extended setup
 
 ~~~ucl
 # local.d/external_services.conf
@@ -471,7 +746,6 @@ spamassassin {
 ~~~
 
 When setting `extended = true` the module will set all reported symbols as dedicated threats. Be aware in the extended configuration the score calculation is `number of threats * dynamic_score * weight = total score`. You can use `one_shot = true` change this behavior.
-
 
 ~~~ucl
 # local.d/external_services_group.conf

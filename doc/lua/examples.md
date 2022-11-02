@@ -62,6 +62,7 @@ This sample shows how to store email into Dovecot (or other IMAP server) maildir
 
 ~~~lua
 local fun = require "fun"
+local logger = require "rspamd_logger"
 
 -- Returns newline delimiter for specific task
 local function get_newline_delim(task)

@@ -6,7 +6,13 @@ title: Setting up encrypted tunnel using stunnel
 
 To implement encrypted communication between Redis masters and slaves, we recommend using [stunnel](https://www.stunnel.org). Stunnel works as TLS encryption wrapper between client and server.
 
-This step-by-step tutorial will explain how to install and configure `stunnel` proxies on FreeBSD client and server. Configuration procedures for other operating systems are very similar. For simplicity, this tutorial only covers replication to one client host as this configuration does not require individual preshared keys for each of the clients.
+This step-by-step tutorial will explain how to install and configure `stunnel` proxies on FreeBSD client and server.
+
+Alternatively, for [DigitalOcean's managed Redis](https://docs.digitalocean.com/products/databases/redis/), there is a [community tutorial](https://www.digitalocean.com/community/tutorials/how-to-connect-to-managed-redis-over-tls-with-stunnel-and-redis-cli) available.
+
+Configuration procedures for other operating systems are very similar. For simplicity, this tutorial only covers replication to one client host as this configuration does not require individual preshared keys for each of the clients.
+
+## Introduction
 
 Assuming we have 3 Redis instances on both `server` and `client`, listening sockets on the `server` (master side):
 

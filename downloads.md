@@ -45,16 +45,17 @@ Please note that `CentOS` rpm packages **requires** [EPEL](https://fedoraproject
 
 To install rspamd repo, please download the corresponding repository file and the signing key (both repo and all packages are signed with my GPG key). You could use the following commands to install rspamd <a class="undecor" href="#stableSys1">stable<sup>1</sup></a> RPM repository:
 
-    curl https://rspamd.com/rpm-stable/${YOUR_DISTRO}/rspamd.repo > /etc/yum.repos.d/rspamd.repo
+    curl https://rspamd.com/rpm-stable/centos-7/rspamd.repo > /etc/yum.repos.d/rspamd.repo # For Centos-7
+    #curl https://rspamd.com/rpm-stable/centos-8/rspamd.repo > /etc/yum.repos.d/rspamd.repo # Uncomment for Centos-8
     rpm --import https://rspamd.com/rpm-stable/gpg.key
     yum update
     yum install rspamd
 
-Where `${YOUR_DISTRO}` is the short name of your os (e.g. `centos-7` or `fedora-22`).
 
 For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> branch packages, download `rpm-experimental` repofile as following:
 
-    curl https://rspamd.com/rpm/${YOUR_DISTRO}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd-experimental.repo
+    curl https://rspamd.com/rpm/centos-7/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo # For Centos-7
+    #curl https://rspamd.com/rpm/centos-8/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo # Uncomment for Centos-8
     rpm --import https://rspamd.com/rpm/gpg.key
     yum update
     yum install rspamd
@@ -62,14 +63,8 @@ For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> bra
 
 For <a class="undecor" href="#asanSys1">asan<sup>2</sup></a> branch packages, download `rpm-experimental-asan` repofile as following:
 
-    curl https://rspamd.com/rpm-asan/${YOUR_DISTRO}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd-experimental-asan.repo
-    rpm --import https://rspamd.com/rpm/gpg.key
-    yum update
-    yum install rspamd
-
-Or the same for the stable+asan:
-
-    curl https://rspamd.com/rpm-asan/${YOUR_DISTRO}/rspamd.repo > /etc/yum.repos.d/rspamd-asan.repo
+    curl https://rspamd.com/rpm-asan/centos-7/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo # For Centos-7
+    #curl https://rspamd.com/rpm-asan/centos-8/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo # Uncomment for Centos-8
     rpm --import https://rspamd.com/rpm/gpg.key
     yum update
     yum install rspamd
@@ -86,47 +81,68 @@ Or the same for the stable+asan:
 
 Rspamd supports the following .deb based distributives:
 
-- **Debian stretch** (only x86_64) Hyperscan and LuaJIT are enabled.
+- **Debian bullseye** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Debian buster** (only x86_64) Hyperscan and LuaJIT are enabled.
 - **Debian sid** (only x86_64) Hyperscan and LuaJIT are enabled.
-- **Ubuntu xenial** (only x86_64) Hyperscan and LuaJIT are enabled.
-- **Ubuntu bionic** (only x86_64) Hyperscan and LuaJIT are enabled.
+- **Ubuntu xenial** (only x86_64) Hyperscan and LuaJIT are enabled - deprecated since 3.3
+- **Ubuntu bionic** (only x86_64) Hyperscan and LuaJIT are enabled; llvm repo is required to be enabled from Rspamd 3.3
 - **Ubuntu focal** (since 2.5) Same as above.
+- **Ubuntu jammy** (since 3.3) Same as above.
 
 
 To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
 
-    apt-get install -y lsb-release wget # optional
-    CODENAME=`lsb_release -c -s`
-    wget -O- https://rspamd.com/apt-stable/gpg.key | apt-key add -
-    echo "deb [arch=amd64] http://rspamd.com/apt-stable/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
-    echo "deb-src [arch=amd64] http://rspamd.com/apt-stable/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
-    apt-get update
-    apt-get --no-install-recommends install rspamd
+~~~bash
+sudo apt-get install -y lsb-release wget # optional
+CODENAME=`lsb_release -c -s`
+sudo mkdir -p /etc/apt/keyrings
+wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-stable/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
+echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-stable/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
+sudo apt-get update
+sudo apt-get --no-install-recommends install rspamd
+~~~
 
 To obtain your distributive's codename, you could use the command `lsb_release -s -c` from the package called `lsb-release`.
+	
+If you have `ubuntu-bionic`, then you might need to add llvm repository as Rspamd now requires compatible standard c++ library that supports C++ 20 standard. To enable this repo you can use the following commands:
+
+~~~bash
+wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
+echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-13 main" | sudo tee /etc/apt/sources.list.d/llvm-13.list
+echo "deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-13 main"  | sudo tee -a /etc/apt/sources.list.d/llvm-13.list
+sudo apt-get update
+~~~
+
+This step is required for ubuntu-bionic only.
 
 For [Hyperscan](https://www.hyperscan.io/) and [LuaJIT](https://luajit.org) information see the [FAQ]({{ site.url }}{{ site.baseurl }}/doc/faq.html).
 
 For <a class="undecor" href="#experimentalSys2">experimental<sup>2</sup></a> branch replace `apt-stable` with just `apt`:
 
-    apt-get install -y lsb-release wget # optional
-    CODENAME=`lsb_release -c -s`
-    wget -O- https://rspamd.com/apt/gpg.key | apt-key add -
-    echo "deb [arch=amd64] http://rspamd.com/apt/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
-    echo "deb-src [arch=amd64] http://rspamd.com/apt/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
-    apt-get update
-    apt-get --no-install-recommends install rspamd
+~~~bash
+sudo apt-get install -y lsb-release wget # optional
+CODENAME=`lsb_release -c -s`
+sudo mkdir -p /etc/apt/keyrings
+wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
+echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
+sudo apt-get update
+sudo apt-get --no-install-recommends install rspamd
+~~~
 
 For <a class="undecor" href="#asanSys2">ASAN<sup>2</sup></a> branch replace `apt-stable` or `apt` with `apt-stable-asan` and `apt-asan` correspondingly:
 
-    apt-get install -y lsb-release wget # optional
-    CODENAME=`lsb_release -c -s`
-    wget -O- https://rspamd.com/apt/gpg.key | apt-key add -
-    echo "deb [arch=amd64] http://rspamd.com/apt-asan/ $CODENAME main" > /etc/apt/sources.list.d/rspamd.list
-    echo "deb-src [arch=amd64] http://rspamd.com/apt-asan/ $CODENAME main" >> /etc/apt/sources.list.d/rspamd.list
-    apt-get update
-    apt-get --no-install-recommends install rspamd
+~~~bash
+sudo apt-get install -y lsb-release wget # optional
+CODENAME=`lsb_release -c -s`
+sudo mkdir -p /etc/apt/keyrings
+wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-asan/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
+echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-asan/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
+sudo apt-get update
+sudo apt-get --no-install-recommends install rspamd
+~~~
 
 
 Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-dbg` package and could be safely installed even in the production environment.
@@ -135,10 +151,6 @@ Check [quick start]({{ site.baseurl }}/doc/quickstart.html#rspamd-installation) 
 ### Debian `standard` repos notes
 
 Please **DO NOT** use those packages.
-
-Please **DO NOT** use those packages!!
-
-Please **DO NOT** use those packages!!!
 
 Rspamd is also available in some versions of Debian and Ubuntu.
 Please **DO NOT** use those packages, as they are not supported in any way. Any issues or feature requests related to the packages from Debian provided distros will be closed with no feedback (or even rage feedback). Just don't do it, you are warned! 
@@ -205,11 +217,9 @@ sudo port load rspamd
             <h3>Build rspamd from the sources</h3>
 <div markdown="1">
 
-If there are no packages for your system or you want custom build options you can also build rspamd from the source code. To do that grab the source from [github](https://github.com/vstakhov/rspamd) using `git`:
+If there are no packages for your system or you want custom build options you can also build rspamd from the source code. To do that grab the source from [github](https://github.com/rspamd/rspamd) using `git`:
 
-	git clone --recursive https://github.com/vstakhov/rspamd.git
-
-There is also a mirror of rspamd repository: <https://git.rspamd.com/vstakhov/rspamd>
+	git clone --recursive https://github.com/rspamd/rspamd.git
 
 ### Build requirements
 
@@ -217,21 +227,21 @@ Rspamd requires several 3-rd party software to build and run:
 
 * [openssl](https://www.openssl.org/) - cryptography and SSL/TLS Toolkit
 * [glib2](https://developer.gnome.org/glib/) - common purposes library
-* [ragel](https://www.colm.net/open-source/ragel/) - state machine compiler. **Please be aware** that the experimental version of Ragel (namely, `7.0`) is **NOT compatible** with Rspamd. Since it is shipped with CentOS 7.0, there is no way to use Ragel from the packages and you need to build compatible Ragel (e.g. 6.8) manually from the source packages or from source code. Ragel is required to **build** Rspamd not to run it.
-* [LuaJIT](https://luajit.org/) - jit compiler for [lua](https://www.lua.org/) programming language. Plain lua will work as well.
+* [ragel](https://www.colm.net/open-source/ragel/) - state machine compiler.
+* [LuaJIT](https://luajit.org/) - jit compiler for [lua](https://www.lua.org/) programming language. Plain Lua should work as well.
 * [cmake](https://cmake.org/) - build system used to configure rspamd
 * [sqlite3](https://sqlite.org/) - embedded database used to store some data by rspamd
 * [libmagic](https://www.darwinsys.com/file/) - common library for detecting file types
 * [libicu](http://site.icu-project.org/) - unicode library
 * [PCRE](https://www.pcre.org/) - regular expressions library
-* [Hyperscan](https://hyperscan.io) - optional regexp performance boost library
+* [Hyperscan](https://hyperscan.io)/[Vectorscan](https://github.com/VectorCamp/vectorscan) - optional regexp performance boost library
 * [zlib](https://zlib.net/) - compression library
 
 You can either install them from sources or (recommended) install using package manager of your system.
 
 It is also highly recommended to use [Redis](https://redis.io) as it can be used by many Rspamd modules to improve their filtering quality (some modules will be turned off completely without Redis).
 
-It is also recommended to build Rspamd with Hyperscan (x86_64 only) and Jemalloc to improve performance.
+It is also recommended to build Rspamd with Hyperscan (x86_64 only) or Vectorscan (aarch64/ppc64le) and Jemalloc to improve performance.
 
 ### Build process
 

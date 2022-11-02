@@ -65,6 +65,10 @@ An example of a map file is:
 
 The first is a full email address, while the second is a catch-all domain.
 
+## User settings
+
+Please see [settings module documentation]({{ site.baseurl }}/doc/configuration/settings.html) for more information about using this module; some examples are provided below for convenience.
+
 ### Advanced: settings_redis example
 
 The following is an example that you can use for the spamtrap module. It will look

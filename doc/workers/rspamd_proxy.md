@@ -83,10 +83,14 @@ rspamc -h rspamd.example.org:11334 input-file
 
 <img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_proxy.png">
 
-In this mode, there is a dedicated layer of Rspamd scanners with load-balancing and optional encryption and/or compression. For this setup, the configuration might be different. Here is a small sample of proxy mode with 4 scanners where 2 scanners are more powerful and receive more requests:
+In this mode, there is a dedicated layer of Rspamd scanners with load-balancing and optional encryption and/or compression. For this setup, the configuration might be different. Here is a small sample of proxy mode with 4 scanners where 2 scanners are more powerful and receive more requests. Also the local worker is disabled:
 
 ~~~ucl
 # local.d/worker-proxy.inc
+upstream "local" {
+  disabled = true;
+}
+
 upstream "scan" {
   default = yes;
   hosts = "round-robin:host1:11333:10,host2:11333:10,host3:11333:5,host4:11333:5";

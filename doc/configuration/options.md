@@ -9,7 +9,7 @@ title: Rspamd Options
 The options section defines basic Rspamd behaviour. Options are global for all types of workers. Some default options are shown in the following example snippet:
 
 ~~~ucl
-filters = "chartable,dkim,spf,surbl,regexp,fuzzy_check";
+filters = "chartable,dkim,regexp,fuzzy_check";
 raw_mode = false;
 one_shot = false;
 cache_file = "$DBDIR/symbols.cache";
@@ -63,7 +63,7 @@ control_socket = "$DBDIR/rspamd.sock mode=0600";
 |`enable_test_patterns`| enable test GTUBE like patterns (not for production!)
 |`events_backend`| events backend to use: kqueue, epoll, select, poll or auto (default: auto)
 |`explicit_modules`| always load modules from the list even if they have no configuration section in the file
-|`filters`| comma separated string that defines enabled ||internal|| Rspamd filters; for a list of the internal filters please check the [modules page](../modules/)
+|`filters`| comma separated string that defines enabled **internal** (not Lua) Rspamd filters; for a list of the internal filters please check the [modules page](../modules/)
 |`fips_mode`| enable FIPS 140-2 mode in OpenSSL
 |`full_gc_iters`| task scanned before memory gc is performed (default: 0 - disabled)
 |`heartbeat_interval`| time between workers heartbeats (default: 10.0)

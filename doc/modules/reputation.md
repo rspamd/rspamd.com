@@ -92,9 +92,16 @@ group "reputation" {
         "SPF_REPUTATION_SPAM" {
             weight = 2.0;
         }
+
+        "GENERIC_REPUTATION" {
+            weight = 1.0;
+        }
     }
 }
 ~~~
+
+The weight configured for these symbols are examples and you should tweak them
+to your situation.
 
 The picture below demonstrates how reputation tokens are being processed:
 

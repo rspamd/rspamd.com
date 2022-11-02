@@ -192,7 +192,7 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 | `emails` | 1.8+ | Get list of all emails. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_user`
 | `files` | 1.8+ | Get all attachments files
 | `from` | 1.8+ | Get MIME or SMTP from (e.g. `from('smtp')` or `from('mime')`, uses any type by default)
-| `header` | 1.8+ | Get header with the name that is expected as an argument. The optional second argument accepts list of flags:<ul><li>`full`: returns all headers with this name with all data (like task:get_header_full())</li><li>`strong`: use case sensitive match when matching header's name</li></ul>
+| `header` | 1.8+ | Get header with the name that is expected as an argument. The optional second argument accepts list of flags:{::nomarkdown}<ul><li><code>full</code>: returns all headers with this name with all data (like task:get_header_full())</li><li><code>strong</code>: use case sensitive match when matching header's name</li></ul>{:/}
 | `helo` | 1.8+ | Get helo value
 | `id` | 1.8+ | Return value from function's argument or an empty string, For example, `id('Something')` returns a string 'Something'
 | `ip` | 1.8+ | Get source IP address
@@ -205,7 +205,7 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 | `received` | 1.8+ | Get list of received headers. If no arguments specified, returns list of tables. Otherwise, selects a specific element, e.g. `by_hostname`
 | `request_header` | 1.8+ | Get specific HTTP request header. The first argument must be header name.
 | `symbol` | 2.6+ | Get symbol with the name that is expected as first argument. Returns the symbol table (like task:get_symbol())
-| `time` | 1.8+ | Get task timestamp. The first argument is type: <ul><li>`connect`: connection timestamp (default)</li><li>`message`: timestamp as defined by `Date` header</li></ul>The second argument is optional time format, see [os.date](http://pgl.yoyo.org/luai/i/os.date) description
+| `time` | 1.8+ | Get task timestamp. The first argument is type:{::nomarkdown}<ul><li><code>connect</code>: connection timestamp (default)</li><li><code>message</code>: timestamp as defined by <code>Date</code> header</li></ul>{:/}The second argument is optional time format, see [os.date](http://pgl.yoyo.org/luai/i/os.date) description
 | `to` | 1.8+ | Get principal recipient
 | `uid` | 2.6+ | Get ID of the task being processed
 | `urls` | 1.8+ | Get list of all urls. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_tld`
@@ -285,7 +285,7 @@ local samples = {
 
 All selectors provide type safety controls. It means that Rspamd checks if types within pipeline match each other. For example, `rcpts` extractor returns a list of addresses, and `from` returns a single address. If you need to lowercase this address you need to convert it to a string as the first step. This could be done by getting a specific element of this address, e.g. `from.addr` -> this returns a `string` (you could also get `from.name` to get a displayed name, for example). Each processor has its own list of the accepted types.
 
-However, in the case of recipients, `rcpt` returns a list of addresses not a single address. Despite of this, you can still apply the same pipeline `rcpts.addr.tolower`. This magic works as many processors could be functionally applied as a map:
+However, in the case of recipients, `rcpt` returns a list of addresses not a single address. Despite of this, you can still apply the same pipeline `rcpts.addr.lower`. This magic works as many processors could be functionally applied as a map:
 
 ```
 elt1 -> f(elt1) -> elt1'

@@ -169,7 +169,7 @@ Like regexp rules, conditions are allowed for Lua regexps, for example:
 ~~~lua
 rspamd_config.SYMBOL = {
 	callback = function(task)
-		return 1
+		return true
 	end,
 	score = 1.2,
 	description = 'some description',
@@ -192,12 +192,12 @@ rspamd_config.HTML_MESSAGE = {
     if parts then
       for i,p in ipairs(parts) do
         if p:is_html() then
-          return 1
+          return true
         end
       end
     end
 
-    return 0
+    return false
   end,
   score = -0.1,
   description = 'HTML included in message',
@@ -546,7 +546,7 @@ Rules in Rspamd are checked in the following order:
 | **Connection filters** (from 2.7) | initial stage just after a connection has been established (these rules should not rely on any body content)
 | **Message processing** | a stage where Rspamd performs text extraction, htm parsing, language detection etc
 | **Pre-filters** | checked before all normal filters and are executed in order from high priority to low priority ones (e.g. a prefilter with priority 10 is executed before a prefilter with priority 1)
-| **Normal filters** | normal rules that form dependency graph on each other by calling `rspamd_config:add_dependency(from, to)`, otherwise the order of execution is not defined
+| **Normal filters** | normal rules that form dependency graph on each other by calling `rspamd_config:register_dependency(from, to)`, otherwise the order of execution is not defined
 | **Statistics** | checked only when all normal symbols are checked
 | **Composites** | combined symbols to adjust the final results; pass 1
 | **Post-filters** | rules that are called after normal filters and composites pass, the order of execution is from low priority to high priority (e.g. a postfilter with priority 10 is executed after a postfilter with priority 1)

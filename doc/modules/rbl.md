@@ -9,7 +9,7 @@ The RBL module provides support for checking various messages elements, such as 
 
 By default, Rspamd comes with a set of RBL rules configured to the popular resources that are usually free for non-profit usage (including fair usage policies). Should you require a different level of support and access then please contact the relevant vendors.
 
-For example, you can use [Abusix Mail Intelligence](https://docs.abusix.ai/en/articles/2965246-rspamd-configuration) or [Spamhaus DQS](https://github.com/spamhaus/rspamd-dqs) or any other RBL provider that suits your needs. 
+For example, you can use [Abusix Mail Intelligence](https://docs.abusix.com/105726-setup-abusix-mail-intelligence/rspamd-configuration) or [Spamhaus DQS](https://github.com/spamhaus/rspamd-dqs) or any other RBL provider that suits your needs. 
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
@@ -17,77 +17,100 @@ For example, you can use [Abusix Mail Intelligence](https://docs.abusix.ai/en/ar
   {:toc}
 </div>
 
+## Configuration structure
+
 Configuration for this module is structured as following:
 
 ~~~ucl
 # local.d/rbl.conf
-# default settings defined here
-default_from = true;
-default_received = false;
-default_exclude_users = true;
-default_unknown = true;
 
+# 'rbls' subsection under which the RBL definitions are nested
 rbls {
-  # 'rbls' subsection under which the RBL definitions are nested
+  # rbl-specific subsection
   an_rbl {
-    # rbl-specific subsection 
+    ## required settings
+    # checks to enable for this RBL
+    checks = ["from"];
+    # Address used for RBL-testing
+    rbl = "rbl.example.net";
+
+    ## some optional settings
+    # Explicitly defined symbol
+    symbol = "SOME_SYMBOL";
+
+    # redefined defaults for IPv6 only RBL
+    ipv4 = false;
+    ipv6 = true; # Define IPv6 only RBL
+
+    # Possible responses from RBL and symbols to yield
+    returncodes = {
+      # Name_of_symbol = "address";
+      EXAMPLE_ONE = "127.0.0.1";
+      EXAMPLE_TWO = "127.0.0.2";
+    }
   }
-  # ...
 }
 ~~~
 
-The default settings define the ways in which the RBLs are used unless overridden in an RBL-specific subsection.
+## Configuration parameters
 
-Defaults may be set for the following parameters (default values used if these are not set are shown in brackets - note that these may be redefined in the default config; if `ignore_defaults` is set for a specific RBL then *everything* will be default `false` for that RBL):
+### Global parameters
 
-- `default_ipv4`: use this RBL to test IPv4 addresses (`true` by default).
-- `default_ipv6`: use this RBL to test IPv6 addresses (`true` by default).
-- `default_received`: use this RBL to test IPv4/IPv6 addresses found in `Received` headers. The RBL should also be configured to check one/both of IPv4/IPv6 addresses (`false` by default).
-- `default_from`: use this RBL to test IPv4/IPv6 addresses of message senders. The RBL should also be configured to check one/both of IPv4/IPv6 addresses (`true` by default).
-- `default_rdns`: use this RBL to test reverse DNS names of message senders (hostnames passed to Rspamd should have been validated with a forward lookup, particularly if this is to be used to provide whitelisting) (`false` by default).
-- `default_helo`: use this RBL to test parameters sent for HELO/EHLO at SMTP time (`false` by default).
-- `default_dkim`: use this RBL to test domains found in validated DKIM signatures (`false` by default).
-- `default_dkim_domainonly`: if `true` test top-level domain only, otherwise test entire domain found in DKIM signature (`true` by default).
-- `default_emails`: use this RBL to test email addresses in form `[localpart].[domainpart].[rbl]` or if set to `"domain_only"` uses `[domainpart].[rbl]` (`false` by default).
-- `default_unknown`: if set to `false`, do not yield a result unless the response received from the RBL is defined in its related returncodes `{}` subsection, else return the default symbol for the RBL (`false` by default).
-- `default_exclude_users`: if set to `true`, do not use this RBL if the message sender is authenticated. (`false` by default).
-- `default_exclude_private_ips`: if `true`, do not use the RBL if the sending host address is in `local_addrs` and do not check received headers baring these addresses (`true` by default).
-- `default_exclude_local`: if `true`, hosts listed in `local_exclude_ip_map` should not be checked in this RBL (see also `local_exclude_ip_map` setting) (`true` by default).
-- `default_is_whitelist`: if `true` matches on this list should neutralise any listings where this setting is false and ignore_whitelists is not true (`false` by default).
-- `default_ignore_whitelists`: if `true` this list should not be neutralised by whitelists (`false` by default).
-- `default_no_ip`: if `true`, IP addresses in URLs, like http://10.0.0.1/example.exe, should not be checked (`false` by default).
-- `default_images`: if `true`, use this RBL to check URLs in images (`false` by default).
-- `default_replyto`: if `true`, use this RBL to check header "Reply-to" (`false` by default).
-- `default_dkim_match_from`: if `true`, use this RBL to check only aligned DKIM domains (`false` by default).
+- `local_exclude_ip_map`: map containing additional IPv4/IPv6 addresses/subnets that should be considered private and excluded from checks where `exclude_local` is `true` (the default).
 
-Other parameters which can be set here are:
+### RBL-specific parameters
 
-- `local_exclude_ip_map`: map containing IPv4/IPv6 addresses/subnets that shouldn't be checked in RBLs (where `exclude_local` is `true` (default)).
-- `hash`: (new in Rspamd 1.5) valid for `helo` and `emails` RBL types - lookup hashes instead of literal strings. Possible values for this parameter are `sha1`, `sha256`, `sha384`, `sha512` and `md5` or any other value for the default hashing algorithm.
-- `disable_monitoring`: (new in Rspamd 1.6) boolean value that disables monitoring completely. It should be placed in the **global [options]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html)** file. 
-- `monitored_address`: (new in Rspamd 1.6) fixed address to check for absence (`1.0.0.127` by default).
+The required parameters `rbl` and `checks` set the address used for testing and the checks to be performed respectively. Valid values for `checks` can include any of the following:
 
-RBL-specific subsection is structured as following:
+- `content_urls` - URLs extracted by `lua_content` (eg. from PDFs)
+- `dkim` - domain that provided DKIM signature for a message
+- `emails` - email addresses found in a message-body
+- `from` - the sending IP that sent the message
+- `helo` - HELO provided by the sender
+- `rdns` - sender's hostname as provided to Rspamd (expected to be forward-confirmed)
+- `received` - IP addresses found in `Received` headers
+- `replyto` - address from the `Reply-To` header of a message
+- `urls` - URLs extracted from message body
+
+Selectors can be used to lookup up arbitrary data; see the section on selectors for more information.
 
 ~~~ucl
-# Descriptive name of RBL or symbol if symbol is not defined.
-an_rbl {
-	# Explicitly defined symbol
-	symbol = "SOME_SYMBOL";
-	# RBL-specific defaults (where different from global defaults)
-	#The global defaults may be overridden using 'helo' to override 'default_helo' and so on.
-	ipv6 = true;
-	ipv4 = false;
-	# Address used for RBL-testing
-	rbl = "v6bl.example.net";
-	# Possible responses from RBL and symbols to yield
-	returncodes {
-		# Name_of_symbol = "address";
-		EXAMPLE_ONE = "127.0.0.1";
-		EXAMPLE_TWO = "127.0.0.2";
-	}
+# /etc/rspamd/local.d/rbl.conf
+rules {
+  # minimal configuration example
+  SIMPLE_RBL {
+    rbl = "rbl.example.net";
+    checks = ["from"];
+  }
 }
 ~~~
+
+Optional parameters (and their defaults if applicable) are as follows:
+
+- `dkim_domainonly` (true) - lookup eSLD associated with DKIM signature rather than full label
+- `dkim_match_from` (false) - only check DKIM signatures matching the `From` header
+- `emails_domainonly` (false) - lookup domain of address instead of full address
+- `enabled` (true) - allow for disabling of RBLs
+- `exclude_local` (true) - do not check private addresses in this RBL
+- `exclude_users` (false) - do not check this RBL if sender is an authenticated user
+- `hash` - valid for `helo` and `emails` RBL types - lookup hashes instead of literal strings. Possible values for this parameter are `sha1`, `sha256`, `sha384`, `sha512` and `md5` or any other value for the default hashing algorithm.
+- `hash_format` - encoding to use for hash: `hex`, `base32` or `base64`
+- `ignore_whitelist` (false) - allow whitelists to neutralise this RBL
+- `images` (false) - whether image URLs should be checked by `urls` check
+- `ipv4` (true) - if IPv4 addresses should be checked
+- `ipv6` (true) - if IPv6 addresses should be checked
+- `is_whitelist` (false) - denotes that this RBL is an whitelist
+- `local_exclude_ip_map` - map containing IPv4/IPv6 addresses/subnets that shouldn't be checked in RBLs (where `exclude_local` is `true` (default)).
+- `monitored_address` (`1.0.0.127`) - fixed address to check for absence; see section on monitoring for more information
+- `no_ip` (false) - do not look up IP addresses in this RBL
+- `requests_limit` (9999) - maximum number of entities extracted by URL checks
+- `resolve_ip` - resolve the domain to IP address
+- `returnbits` - dictionary of symbols mapped to bit positions; if the bit in the specified position is set the symbol will be returned
+- `returncodes` - dictionary of symbols mapped to lua patterns; if result returned by the RBL matches the pattern the symbol will be returned
+- `selector_flatten` (false) - lookup result of chained selector as a single label
+- `selector` - one or more selectors producing data to look up in this RBL; see section on selectors for more information
+- `unknown` (false) - yield default symbol if `returncodes` or `returnbits` is specified and RBL returns unrecognised result
+- `whitelist_exception` - for whitelists; list of symbols which will not act as whitelists
 
 Some examples of using RBL:
 
@@ -97,16 +120,11 @@ rbls {
     blocklist {
       symbol = "BLOCKLIST";
       rbl = "blocklist.bl";
-      ipv6 = true;
-      received = true;
-      from = true;
+      checks = ['from', 'received'];
     }
     
     WHITELIST_BASE {
-      from = true;
-      ipv4 = true;
-      ipv6 = true;
-      received = true;
+      checks = ['from', 'received'];
       is_whitelist = true;
       rbl = "whitelist.wl";
       symbol = "WL_RBL_UNKNOWN";
@@ -117,10 +135,10 @@ rbls {
       }
     }
       
-      DNS_WL {
+    DNS_WL {
       symbol = "DNS_WL";
       rbl = "dnswl.test";
-      dkim = true;
+      checks = ['dkim'];
       dkim_domainonly = false;
       dkim_match_from = true;
       ignore_whitelist = true;
@@ -137,21 +155,6 @@ rbls {
   }
   
 ~~~
-
-The following extra settings are valid in the RBL subsection:
-
-- `disabled`: if set, the RBL is not used. Use this to disable specific RBLs in `local.d/rbl.conf`. For example:
-
-~~~ucl
-rbls {
-	spamhaus {
-		disabled = true;
-	}
-}
-~~~
-
-- `whitelist_exception`: (for whitelists) - symbols named as parameters for this setting will not be used for neutralising blacklists (set this multiple times to add multiple exceptions).
-
 
 ## URL rules
 
@@ -182,10 +185,9 @@ whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
 
   rules {
     "SURBL_MULTI" {
-      ignore_defaults = true;
+      ignore_defaults = true; # for compatibility with old defaults
       rbl = "multi.surbl.org";
-      dkim = true;
-      emails = true;
+      checks = ['emails', 'dkim', 'urls'];
       emails_domainonly = true;
       urls = true;
 
@@ -199,14 +201,12 @@ whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
     }
     
     "URIBL_MULTI" {
-      ignore_defaults = true;
+      ignore_defaults = true; # for compatibility with old defaults
       rbl = "multi.uribl.com";
-      dkim = true;
-      emails = true;
+      checks = ['emails', 'dkim', 'urls'];
       emails_domainonly = true;
-      urls = true;
 
-      returnbits {
+      returnbits = {
         URIBL_BLOCKED = 1;
         URIBL_BLACK = 2;
         URIBL_GREY = 4;
@@ -215,15 +215,14 @@ whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
     }
     
     "RSPAMD_URIBL" {
-      ignore_defaults = true;
+      ignore_defaults = true; # for compatibility with old defaults
       rbl = "uribl.rspamd.com";
-      dkim = true;
+      checks = ['emails', 'dkim', 'urls'];
       # Also check images
       images = true;
       # Сheck emails for URLs
-      emails = true;
       emails_domainonly = true;
-      urls = true;
+      # Hashed BL
       hash = 'blake2';
       hash_len = 32;
       hash_format = 'base32';
@@ -236,13 +235,11 @@ whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
     }
     
     "DBL" {
-      ignore_defaults = true;
+      ignore_defaults = true; # for compatibility with old defaults
       rbl = "dbl.spamhaus.org";
       no_ip = true;
-      dkim = true;
-      emails = true;
+      checks = ['emails', 'dkim', 'urls'];
       emails_domainonly = true;
-      urls = true;
 
       returncodes = {
         # spam domain
@@ -272,13 +269,11 @@ whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
     }
     
     "SEM_URIBL_UNKNOWN" {
-      ignore_defaults = true;
+      ignore_defaults = true; # for compatibility with old defaults
       rbl = "uribl.spameatingmonkey.net";
       no_ip = true;
-      dkim = true;
-      emails = true;
+      checks = ['emails', 'dkim', 'urls'];
       emails_domainonly = true;
-      urls = true;
       returnbits {
         SEM_URIBL = 2;
       }
@@ -303,15 +298,14 @@ It is also possible to check DKIM signatures domains, HTML images URLs and email
 
 ~~~ucl
     "RSPAMD_URIBL" {
-      ignore_defaults = true;
+      ignore_defaults = true; # for compatibility with old defaults
       rbl = "uribl.rspamd.com";
-      dkim = true;
+      checks = ['emails', 'dkim', 'urls'];
       # Also check images
       images = true;
       # Сheck emails for URLs
-      emails = true;
       emails_domainonly = true;
-      urls = true;
+      # Hashed BL
       hash = 'blake2';
       hash_len = 32;
       hash_format = 'base32';
@@ -328,7 +322,7 @@ In this example, we also enable privacy for requests by hashing all elements bef
 
 ## Monitoring
 
-By default, Rspamd checks each rule sanity by querying of `facebook.com` domain. URL black list must NOT reply by some positive result (other than NXDOMAIN) to such a query. However, sometimes you might need to change that to another domain (e.g. to `INVALID`), so you can use `monitored_domain` option from Rspamd 1.6:
+By default, Rspamd checks each RBL rule to be a valid DNS list as defined in [RFC 5782](https://datatracker.ietf.org/doc/html/rfc5782). This is done to avoid situations when some RBL blacklists the whole world or is irresponsive. For the IP based rules (meaning that an IP address is queried), Rspamd will query for `127.0.0.1` address as, per RFC, this must return `NXDOMAIN` response. However, some DNS lists are non RFC compatible, so you can disable monitoring for them as following:
 
 ~~~ucl
     "HOSTKARMA_URIBL" {
@@ -345,28 +339,13 @@ By default, Rspamd checks each rule sanity by querying of `facebook.com` domain.
         URIBL_HOSTKARMA_24_48H = "127.0.2.1";
         URIBL_HOSTKARMA_LAST_10D = "127.0.2.2";
         URIBL_HOSTKARMA_OLDER_10D = "127.0.2.3";
-    }
-    monitored_domain = "INVALID";
-}
-~~~
-
-It is also possible to check `Reply-to` header by using URL blacklists. Just specify `replyto = true`. You can also specify checking only domain part by option `emails_domainonly = true`:
-
-~~~ucl
-    RSPAMD_EMAILBL {
-      ignore_defaults = true;
-      emails_delimiter = ".";
-      hash_format = "base32";
-      hash_len = 32;
-      rbl = "email.rspamd.com";
-      emails_domainonly = true
-      replyto = true;
-      hash = "blake2";
-      returncodes = {
-        RSPAMD_EMAILBL = "127.0.0.2";
       }
+      disable_monitoring = true;
     }
 ~~~
+
+For non IP lists (DKIM, URL, Email and so on), Rspamd will just produce some long random string to query expecting that this random string will *very likely* return `NXDOMAIN` by its nature.
+
 
 ## Principles of operation
 
@@ -401,12 +380,12 @@ From Rspamd 2.5, there is also support for a custom composition rules per RBL ru
 ```lua
 -- First one is the input hostname, the second is the expected results
 cases = {
-	{'example.com', 'example.com'},
-	{'baz.example.com', 'baz.example.com'},
-	{'3.baz.example.com', 'baz.example.com'},
-	{'bar.example.com', 'example.com'},
-	{'foo.example.com', 'foo.example.com'},
-	{'3.foo.example.com', '3.foo.example.com'},
+  {'example.com', 'example.com'},
+  {'baz.example.com', 'baz.example.com'},
+  {'3.baz.example.com', 'baz.example.com'},
+  {'bar.example.com', 'example.com'},
+  {'foo.example.com', 'foo.example.com'},
+  {'3.foo.example.com', '3.foo.example.com'},
 }
 -- Just a domain means domain + 1 level
 -- *.domain means the full hostname if the last part matches
@@ -414,9 +393,9 @@ cases = {
 -- !*.domain means the same in fact :)
 -- More rules can be added easily...
 local excl_rules1 = {
-	'example.com',
-	'*.foo.example.com',
-	'!bar.example.com'
+  'example.com',
+  '*.foo.example.com',
+  '!bar.example.com'
 }
 ```
 
@@ -428,10 +407,8 @@ rules {
   EXAMPLE_RBL = {
       suffix = "example.url.bl.com";
       url_compose_map = "${CONFDIR}/maps.d/url_compose_map.list";
-      dkim = true;
-      emails = true;
+      checks = ['emails', 'dkim', 'urls'];
       emails_domainonly = true;
-      urls = true;
       ignore_defaults = true;
   }
 }
@@ -513,24 +490,24 @@ Selectors can be used to look up arbitrary values in RBLs.
 The `selector` field could be configured as a string in the rule settings if only one selector is needed:
 
 ~~~
-	selector = "from('mime'):addr";
-	replyto = true;
-	hash = "sha1";
-	symbols_prefixes {
-		replyto = "REPLYTO";
-		selector = "FROM";
-	}
+checks = ["replyto"];
+selector = "from('mime'):addr";
+hash = "sha1";
+symbols_prefixes {
+  replyto = "REPLYTO";
+  selector = "FROM";
+}
 ~~~
 
 Or they could be specified as a map of user-specified names to selectors if more than one is needed:
 
 ~~~
-	selector = {
-		mime_domain = "from('mime'):domain";
-		subject_digest = "header('subject').lower.digest('hex')";
-	}
-	symbols_prefixes {
-		mime_domain = "MIME_DOMAIN";
-		subject_digest = "SUBJECT_DIGEST"
-	}
+selector = {
+  mime_domain = "from('mime'):domain";
+  subject_digest = "header('subject').lower.digest('hex')";
+}
+symbols_prefixes {
+  mime_domain = "MIME_DOMAIN";
+  subject_digest = "SUBJECT_DIGEST"
+}
 ~~~

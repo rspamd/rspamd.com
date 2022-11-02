@@ -13,6 +13,19 @@ This document describes incompatible changes introduced in recent Rspamd version
   {:toc}
 </div>
 
+## Migration to Rspamd 3.3
+
+Please be cautious if you migrate to Rspamd 3.3 when you use custom passthrough rules (meaning the most of plugins that define `action` and not `least action`). Prior to 3.3, you could still process other rules, whilst in 3.3+ passthrough means exactly what it means: set the final action and skip directly to the idempotent stage.
+
+Users of the `neural` plugin can have a significant Redis storage leak introduced in the version 3.2. This issue is fixed in the version 3.3 since [the following commit](https://github.com/rspamd/rspamd/commit/f9cfbba2c84e01f18e65618587e6854681843ff1), however, this fix will not remove old stale keys. Unfortunately, those keys do not have any expire either. One of the possible sollutions to clean the database up is to remove all keys starting with `rn_` prefix. There are multiple options available to perform this action, so you can take a look at the [following conversation](https://stackoverflow.com/questions/4006324/how-to-atomically-delete-keys-matching-a-pattern-using-redis) on the Stackoverflow.
+
+Rspamd also requires **C++20** compatible compiler and toolchain to be built from this version. For ubuntu-bionic users it means that it is now necessary to include the llvm repo for the compatible C++20 standard library runtime. The steps required are described in the [downloads page](https://rspamd.com/downloads.html).
+
+## Migration to Rspamd 3.0
+
+Dmarc reporting stuff is no longer in the dmarc module: you need to run `rspamadm dmarc_report` command periodically to send DMARC reports. This could be done via cron. Configuration of the reporting has also changed in the incompatible matter, please check the [module documentation](modules/dmarc.html).
+
+
 ## Migration to Rspamd 2.6
 
 It is necessary to clear the browser cache and restart the browser for the GUI to work properly after upgrading to 2.6.

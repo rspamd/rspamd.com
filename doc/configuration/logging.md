@@ -22,7 +22,7 @@ Rspamd has a number of logging options. Firstly, there are three types of log ou
 | :-------------- | :-------------------------------- |
 | `error` | log only critical errors
 | `warning` | log errors and warnings
-| `notice` | log only important notices
+| `notice` | log only important notices + scan messages results
 | `info` | log all non-debug messages
 | `silent` | log at `info` level on start and then reduce to `notice` level when forking worker processes
 | `debug` | log all including debug messages (huge amount of logging)
@@ -51,12 +51,17 @@ Here is the summary of logging parameters, each of those can be redefined or def
 | `filename` | Path to log file for file logging (required for **file** type)
 | `facility` | Logging facility for **syslog** type (required if this type is used)
 | `level` | Defines logging level (error, warning, info or debug).
-| `log_buffer` | For file and console logging defines buffer size that will be used for logging output.
-| `log_urls` | Flag that defines whether all URLs in message should be logged. Useful for testing.
+| `log_buffered` | Flag that controls whether logging is buffered.
+| `log_buf_size` | For file and console logging defines buffer size that will be used for logging output.
+| `log_urls` | Flag that defines whether all URLs in message should be logged. Useful for testing. Default: `false`.
+| `log_re_cache` | Output regular expressions statistics after each message. Default: `true`.
 | `debug_ip` | List that contains IP addresses for which debugging should be turned on.
-| `color` | Turn on coloring for log messages. Default: `no`.
+| `color` | Turn on coloring for log messages. Default: `false`.
 | `systemd` | If `true` timestamps aren't prepended to log messages. Default: `false`.
 | `debug_modules` | A list of modules that are enabled for debugging.
+| `log_usec` | Log microseconds (e.g. `11:43:16.68071`). Default: `false`.
+| `log_severity` (2.8+) | Log severity explicitly (e.g. `[info]` or `[error]`). Default: `false`.
+
 
 ### Defined debug modules
 
