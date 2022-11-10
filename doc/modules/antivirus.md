@@ -44,6 +44,26 @@ For virus, encrypted and macro symbols you can use patterns to set a dedicated s
 ...
 ~~~
 
+From version 3.5, you are able to use two more types of mime part filters:
+
+~~~ucl
+...
+  mime_parts_filter_regex {
+    FILE1 = "^invoice\.xls$"
+    DOC1 = "application\/msword";
+    DOC2 = "application\/vnd\.ms-word.*";
+    GEN2 = "application\/vnd\.openxmlformats-officedocument.*";
+  }
+  # Mime-Part filename extension matching (no regex)
+  mime_parts_filter_ext {
+    doc = "doc";
+    docx = "docx";
+  }
+...
+~~~
+
+`mime_parts_filter_regex` matches the content-type detected by Rspamd, or mime part header, or the declared filename of an attachment (the former option also works for the files within an archive). `mime_parts_filter_ext` matches the extension of the declared filename or an archives file list.
+
 In the default configuration the complete mail will be send to the antivirus system. You can change this behavior by setting scan_mime_parts = true; to send all mime parts detected as attachments seperately. Set scan_text_mime or scan_image_mime to true if you also want text mimes and images send to the AV scanner.
 
 By default, given [Redis]({{ site.baseurl }}/doc/configuration/redis.html) is configured globally and `antivirus` is not explicitly disabled in redis configuration, results are cached in Redis according to message checksums.
