@@ -62,7 +62,7 @@ From version 3.5, you are able to use two more types of mime part filters:
 ...
 ~~~
 
-mime_parts_filter_regex will match on the content-type detected by rspamd or mime part header or the declared filename of an attachment or an archive file listing. mime_parts_filter_ext will only match the extension of the declared filename or an archives file list.
+`mime_parts_filter_regex` matches the content-type detected by Rspamd, or mime part header, or the declared filename of an attachment (the former option also works for the files within an archive). `mime_parts_filter_ext` matches the extension of the declared filename or an archives file list.
 
 In the default configuration the complete mail will be send to the antivirus system. You can change this behavior by setting scan_mime_parts = true; to send all mime parts detected as attachments seperately. Set scan_text_mime or scan_image_mime to true if you also want text mimes and images send to the AV scanner.
 
