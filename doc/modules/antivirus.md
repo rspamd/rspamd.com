@@ -44,7 +44,7 @@ For virus, encrypted and macro symbols you can use patterns to set a dedicated s
 ...
 ~~~
 
-Also you are able to use 2 types of mime part filters:
+From version 3.5, you are able to use two more types of mime part filters:
 
 ~~~ucl
 ...
