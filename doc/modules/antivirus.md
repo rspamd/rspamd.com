@@ -178,7 +178,7 @@ This engine uses HTTP [REST API version 1.0](https://help.kaspersky.com/ScanEngi
 # local.d/antivirus.conf
 kaspersky_se {
   symbol = "KAS_SE_VIRUS";
-  servers = "127.0.0.1:1234"; # Mandatory, supports Unix sockets as well
+  servers = "127.0.0.1:1234"; # Mandatory, dos not supports Unix sockets
   max_size = 2048000;
   timeout = 5.0; # Allow 5 seconds for scan
   scan_mime_parts = true; # Just attachments
