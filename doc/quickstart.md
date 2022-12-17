@@ -24,6 +24,7 @@ This guide describes the main steps to get and start working with Rspamd. In par
 * [An alternative introduction to rspamd configuration](https://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/){:target="&#95;blank"} - a detailed information about Rspamd configuration files and their purposes from the sysadmin point of view: concentrating on two main questions “What is there to configure?” and “How do I configure things?”.
 * [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/){:target="&#95;blank"} - a good example of all-in-one tutorial about how to setup your own mail server. Please bear in mind that the advice of adding `level = error` to /etc/rspamd/local.d/logging.inc is not correct. You should use the default `info` in the most of the cases or `silent` if you merely want important information to be logged.
 * [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://www.c0ffee.net/blog/mail-server-guide){:target="&#95;blank"} - similar to the previous guide but uses a different technologies stack. Here, you should ignore an advice about `url_tag` module.
+* [A introduction and guide to configuring Rspamd, including examples for Multimaps](https://blog.ohmysmtp.com/blog/how-to-catch-spam-with-rspamd/){:target="&#95;blank"} - an end to end example explaining and demonstrating how Rspamd can be configured, and how to add Multimap RegEx rules
 
 ## Preparation steps
 
