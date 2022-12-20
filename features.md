@@ -5,22 +5,15 @@ title: Rspamd features
 
 ## About Rspamd
 
-<abbr title="Rapid Spam Daemon"><a href="{{ site.url }}{{ site.baseurl }}">Rspamd</a></abbr> is an advanced spam filtering system that allows evaluation of messages by a number of
-rules including regular expressions, statistical analysis and custom services
-such as URL black lists. Each message is analysed by Rspamd and given a `spam score`.
+<abbr title="Rapid Spam Daemon"><a href="{{ site.url }}{{ site.baseurl }}">Rspamd</a></abbr>  is an advanced spam filtering system that uses various methods, such as regular expressions, statistical analysis, and custom services like URL blacklists, to evaluate messages. It assigns each message a "spam score" and based on this score and the user's settings, recommends an action for the MTA to take on the message, such as passing, rejecting, or adding a header. Rspamd is capable of processing hundreds of messages per second simultaneously and has many features available.
 
-According to this spam score and the user's settings Rspamd recommends an action for
-the MTA to apply to the message: for example, to pass, to reject or to add a header.
-Rspamd is designed to process hundreds of messages per second simultaneously and has a number of
-features available.
-
-You can watch the following [video](https://chemnitzer.linux-tage.de/2019/en/programm/beitrag/212) from the [Linux Chemnitz Days 2019](https://chemnitzer.linux-tage.de).
+For a brief introduction, you can watch the following [video](https://chemnitzer.linux-tage.de/2019/en/programm/beitrag/212) from the [Linux Chemnitz Days 2019](https://chemnitzer.linux-tage.de).
 
 You can also check the recent [performance analyse article](https://rspamd.com/misc/2019/05/16/rspamd-performance.html) to have a better impression about how fast Rspamd could be.
 
 <div><h2><img src="img/features.jpg" class="" height="50" width="50" style="position: relative; bottom: 10px;"> Unique features</h2></div>
 
-* [**Web interface**]({{ site.baseurl }}/webui/). Rspamd is shipped with the fully functional Ajax-based web interface that allows to monitor and configure Rspamd rules, scores, dynamic lists, to scan and learn messages and to view the history of scans. The web interface is self-hosted, requires zero configuration and follows the recent web applications standards. You don't need a web server or applications server to run web UI - you just need to run Rspamd itself and a web browser.
+* [**Web interface**]({{ site.baseurl }}/webui/). Rspamd includes a fully functional, Ajax-based web interface that allows users to monitor and configure Rspamd rules, scores, dynamic lists, scan and learn messages, and view scan history. The web interface is self-hosted, requires no configuration, and follows current web application standards. No web server or application server is needed to run the web UI - simply run Rspamd and a web browser.
 
 * [**Integration with MTA**]({{ site.baseurl }}/doc/integration.html). Rspamd can work with the most popular mail transfer systems, such as Postfix, Exim, Sendmail or Haraka.
 
@@ -30,11 +23,11 @@ You can also check the recent [performance analyse article](https://rspamd.com/m
 
 <div><h2><img src="img/envelope_loupe.jpg" class="" height="50" width="50" style="position: relative; bottom: 10px;"> Content scan features</h2></div>
 
-Content scan features are used to find certain patterns in messages, including text parts, headers and raw content. Content scan technologies are intended to filter the most common cases of spam messages and offer the static part of spam filtering. Rspamd supports various types of content scanning checks, such as:
+Content scan features allow Rspamd to search for specific patterns in messages, including text parts, headers, and raw content. These technologies are designed to filter out common spam messages and provide a static aspect of spam filtering. Rspamd supports various types of content scanning checks, including:
 
 * [**Regular expression filtering**]({{ site.baseurl }}/doc/modules/regexp.html) offers basic processing of messages, their textual parts, MIME headers and SMTP data received by MTA against a set of expressions that includes both normal regular expressions and message processing functions. Rspamd regular expressions are a powerful tool that allows to filter messages based on some pre-defined rules. Rspamd can also use SpamAssassin regular expressions via [plugin]({{ site.baseurl }}/doc/modules/spamassassin.html).
 
-* [**Fuzzy hashes**]({{ site.baseurl }}/doc/modules/fuzzy_check.html) are used by Rspamd to find similar messages. Unlike normal hashes, these structures are targeted to hide small differences between text patterns allowing to find common messages quickly. Rspamd has internal storage of such hashes and allows to block spam mass mails based on user's feedback that specifies message reputation. Moreover, fuzzy storage allows to feed Rspamd with data from [`honeypots`](http://en.wikipedia.org/wiki/Honeypot_(computing)#Spam_versions) without polluting the statistical module. You can read more about it in the following [document]({{ site.baseurl }}/doc/fuzzy_storage.html).
+* [**Fuzzy hashes**]({{ site.baseurl }}/doc/modules/fuzzy_check.html) are used by Rspamd to find similar messages. Unlike regular hashes, these structures are designed to ignore small differences between text patterns, allowing Rspamd to quickly identify common messages. Rspamd has an internal storage of these hashes and allows users to block spam mass emails based on the reputation of the message as indicated by user feedback. Additionally, the fuzzy storage allows Rspamd to incorporate data from ["honeypots"]((http://en.wikipedia.org/wiki/Honeypot_(computing)#Spam_versions) without contaminating the statistical module. You can read more about it in the following [document]({{ site.baseurl }}/doc/fuzzy_storage.html).
 
 * [**DCC**]({{ site.baseurl }}/doc/modules/dcc.html) is quite similar to the previous one but it uses the external service [DCC](http://www.rhyolite.com/dcc/) to check if a message is a bulk message (that is sent to many recipients simultaneously).
 
