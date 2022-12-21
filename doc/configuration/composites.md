@@ -63,7 +63,7 @@ Composites should not be recursive, but Rspamd usually detects and prevents this
 
 Note that symbols are removed **after** composites are applied. Therefore, you cannot rely on one composite to remove a symbol that is used in another composite.
 
-You can also set up policies for composites regarding the symbols that are included in their expression. By default, Rspamd **removes** sthe symbols and weights that trigger the composite and replaces them with the symbol and weight of the composite itself. However, you can change this behavior in two ways.
+You can also set up policies for composites regarding the symbols that are included in their expression. By default, Rspamd **removes** the symbols and weights that trigger the composite and replaces them with the symbol and weight of the composite itself. However, you can change this behavior in two ways.
 
 1. Set up removal policy for each symbol:
     * `~`: remove symbol only (weight is preserved)
