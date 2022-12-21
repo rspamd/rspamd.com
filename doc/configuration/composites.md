@@ -28,7 +28,7 @@ TEST_COMPOSITE {
 }
 ~~~
 
-In this case, if a message has both `SYMBOL1` and `SYMBOL2` then they are replaced by symbol `TEST_COMPOSITE`. The weights of `SYMBOL1` and `SYMBOL2` are subtracted from the metric accordingly.
+In this case, if a message contains both `SYMBOL1` and `SYMBOL2`, they will be replaced by the `TEST_COMPOSITE` symbol. The weights of `SYMBOL1` and `SYMBOL2` will be subtracted from the metric accordingly.
 
 ## Composite expressions
 
@@ -38,7 +38,7 @@ You can use the following operations in a composite expression:
 * `OR` `|` - matches true if any operands are true
 * `NOT` `!` - matches true if operand is false
 
-You also can use braces to define priorities. Otherwise operators are evaluated from left to right. For example:
+You can use braces to specify the priority of operations in composite rules. If braces are not used, the operators will be evaluated from left to right. For example:
 
 ~~~ucl
 TEST {
@@ -48,7 +48,7 @@ TEST {
 }
 ~~~
 
-Composite rule can include another composites in the body. There is no restriction on definition order:
+Composite rule can include another composites in the body. There is no restriction on the order in which composite rules are defined:
 
 ~~~ucl
 TEST1 {
@@ -59,11 +59,11 @@ TEST2 {
 }
 ~~~
 
-Composites should not be recursive; but this is normally detected and avoided by Rspamd automatically.
+Composites should not be recursive, but Rspamd usually detects and prevents this automatically.
 
-Please note, that symbols are removed **after** composites pass. Hence, you cannot rely in one composite that some symbol has been removed by another composite.
+Note that symbols are removed **after** composites are applied. Therefore, you cannot rely on one composite to remove a symbol that is used in another composite.
 
-It is also possible to setup policies for composites regarding symbols enclosed within a composite expression. By default Rspamd **removes** symbols and weights that trigger the composite and replaces them with the symbol and weight of the composite itself. However, it is possible to change this setting by 2 ways.
+You can also set up policies for composites regarding the symbols that are included in their expression. By default, Rspamd **removes** sthe symbols and weights that trigger the composite and replaces them with the symbol and weight of the composite itself. However, you can change this behavior in two ways.
 
 1. Set up removal policy for each symbol:
     * `~`: remove symbol only (weight is preserved)
@@ -90,14 +90,14 @@ TEST_COMPOSITE2 {
 
 ## Composite weight rules
 
-Composites can record symbols in a metric or record their weights. That could be used to create non-captive composites. For example, you have symbol `A` and `B` with weights `W_a` and `W_b` and a composite `C` with weight `W_c`.
+Composites can record symbols in a metric, which can be used to create non-captive composites. For example, you have symbol `A` and `B` with weights `W_a` and `W_b` and a composite `C` with weight `W_c`.
 
 * If `C` is `A & B` then if rule `A` and rule `B` matched then these symbols are *removed* and their weights are removed as well, leading to a single symbol `C` with weight `W_c`.
 * If `C` is `-A & B`, then rule `A` is preserved, but the symbol `C` is inserted. The weight of `A` is preserved as well, so the total weight of `-A & B` will be `W_a + W_c` (weight of `B` is still removed).
 * If `C` is `~A & B`, then rule `A` is removed, but it's weight is preserved,
   leading to the total weight of `W_a + W_c`
 
-When you have multiple composites which include the same symbol and a composite wants to remove the symbol and another composite wants to preserve it, then the symbol is preserved by default. Here are some more examples:
+If you have multiple composites that include the same symbol, and one composite wants to remove the symbol while another composite wants to preserve it, the symbol will be preserved by default. Here are some more examples:
 
 ~~~ucl
 COMP1 {
@@ -161,7 +161,7 @@ TEST2 {
 
 ## Disabling composites
 
-You can disable a composite by adding `enabled = false` to the rule; for example, to disable the `DKIM_MIXED` composite defined in the stock configuration, you could add the following to `local.d/composites.conf`:
+You can disable a composite rule by adding `enabled = false` to its definition. For example, to disable the `DKIM_MIXED` composite defined in the stock configuration, you can add the following to `local.d/composites.conf`:
 
 ~~~ucl
 DKIM_MIXED {
@@ -173,7 +173,7 @@ You can also disable composites from the [users settings](settings.html) from Rs
 
 ## Composites on symbol options
 
-From the version 2.0, it is also possible to augment composites conditions by adding required symbol options. For example, if a symbol `SYM` can insert options `opt1` and `opt2` one can create a composite expression that works merely if `opt2` option is presented:
+Starting from version 2.0, it is also possible to augment the conditions of composite rules by adding required symbol options. For example, if a symbol `SYM` can insert options `opt1` and `opt2`, you can create a composite expression that only triggers if the `opt2` option is presented:
 
 ~~~ucl
 TEST2 {
@@ -193,6 +193,6 @@ or a mix of both:
 
 `[/opt\d/i, foo]`
 
-In all cases **all** matches is required (not in a single option but in an options list for a symbol).
+In all cases, **all** matches are required (not just in a single option, but in an options list for a symbol).
 
-In future, this could be extended to a fully functional expressions if needed.
+In the future, this feature may be extended to support fully functional expressions if needed.
