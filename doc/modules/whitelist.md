@@ -55,7 +55,7 @@ baz.com wl:2.0 # vice-versa - return to the normal behaviour but with 2.0 multip
 ```
 
 You can also check maps shipped with Rspamd in the following repo: https://github.com/rspamd/maps/
-Reasonable pull requests are very wellcome.
+Reasonable pull requests are very welcome.
 
 ### Optional settings
 
