@@ -82,11 +82,11 @@ section {
 
 ## Improvements to the json notation. {#improvements-to-the-json-notation}
 
-There are various things that make ucl configuration more convenient for editing than strict json:
+There are several features that make the UCL configuration easier to edit than strict JSON formatting:
 
 ### General syntax sugar
 
-* Braces are not necessary to enclose a top object: it is automatically treated as an object:
+* Braces are not necessary to enclose a top object as it is automatically treated as an object:
 
 ~~~json
 "key": "value"
@@ -118,7 +118,7 @@ is equal to:
 }
 ~~~
 
-* No commas mess: you can safely place a comma or semicolon for the last element in an array or an object:
+* You can safely place a comma or semicolon after the last element in an array or object without causing any formatting issues:
 
 ~~~json
 {
@@ -148,7 +148,7 @@ is converted to:
 
 ### Named keys hierarchy
 
-UCL accepts named keys and organize them into objects hierarchy internally. Here is an example of this process:
+UCL allows for named keys and organizes them into a hierarchical object structure internally. For example, this process can be illustrated as follows:
 
 ~~~ucl
 section "blah" {
@@ -198,7 +198,7 @@ section {
     + `[kKmMgG]` - standard 10 base multipliers (so `1k` is translated to 1000)
     + `[kKmMgG]b` - 2 power multipliers (so `1kb` is translated to 1024)
     + `[s|min|d|w|y]` - time multipliers, all time values are translated to float number of seconds, for example `10min` is translated to 600.0 and `10ms` is translated to 0.01
-* Hexadecimal integers can be used by `0x` prefix, for example `key = 0xff`. However, floating point values can use decimal base only.
+* Hexadecimal integers can be represented using the `0x` prefix,  such as`key = 0xff`. However, floating point values can only be expressed in decimal base.
 * Booleans can be specified as `true` or `yes` or `on` and `false` or `no` or `off`.
 * It is still possible to treat numbers and booleans as strings by enclosing them in double quotes.
 
@@ -234,9 +234,7 @@ UCL supports external macros both multiline and single line ones:
 };
 ~~~
 
-Moreover, each macro can accept an optional list of arguments in braces. These
-arguments themselves are the UCL object that is parsed and passed to a macro as
-options:
+In addition, each macro can accept an optional list of arguments in braces. These arguments are themselves a UCL object that is parsed and passed to the macro as options:
 
 ~~~ucl
 .macro(param=value) "something";
@@ -247,8 +245,7 @@ param = [value1, value2]) "something";
 .macro(key="()") "something";
 ~~~
 
-UCL also provide a convenient `include` macro to load content from another files
-to the current UCL object. This macro accepts either path to file:
+UCL also provides a convenient `include` macro that allows you to load the contents of another file into the current UCL object. This macro accepts either a file path or URL as an argument:
 
 ~~~ucl
 .include "/full/path.conf"
@@ -282,21 +279,18 @@ the key already exists, it must be the correct type
 object or an array.
 * `priority` (default: 0) - specify priority for the include (see below).
 * `duplicate` (default: 'append') - specify policy of duplicates resolving:
-	- `append` - default strategy, if we have new object of higher priority then it replaces old one, if we have new object with less priority it is ignored completely, and if we have two duplicate objects with the same priority then we have a multi-value key (implicit array)
-	- `merge` - if we have object or array, then new keys are merged inside, if we have a plain object then an implicit array is formed (regardeless of priorities)
+	- `append` - this is the default strategy. If a new object of higher priority is encountered, it will replace the old object. If a new object with lower priority is encountered, it will be completely ignored. If two duplicate objects with the same priority are encountered, a multi-value key (implicit array) will be created
+	- `merge` - if an object or array is encountered, new keys are merged within it. If a plain object is encountered, an implicit array is created (regardless of priorities)
 	- `error` - create error on duplicate keys and stop parsing
 	- `rewrite` - always rewrite an old value with new one (ignoring priorities)
 
-Priorities are used by UCL parser to manage the policy of objects rewriting during including other files
-as following:
+UCL uses priorities to manage the policy of object rewriting during the inclusion of other files as follows:
 
-* If we have two objects with the same priority then we form an implicit array
-* If a new object has bigger priority then we overwrite an old one
-* If a new object has lower priority then we ignore it
+* If two objects have the same priority, an implicit array is formed
+* If a new object has a higher priority, it overwrites the old object
+* If a new object has a lower priority, it is ignored
 
-By default, the priority of top-level object is set to zero (lowest priority). Currently,
-you can define up to 16 priorities (from 0 to 15). Includes with bigger priorities will
-rewrite keys from the objects with lower priorities as specified by the policy.
+By default, the priority of top-level object is set to zero (lowest priority). You can currently define up to 16 priorities (ranging from 0 to 15). If an include has a higher priority, it will overwrite keys from objects with lower priorities according to the specified policy.
 
 ### Variables support
 
@@ -310,8 +304,7 @@ UCL currently does not support nested variables. To escape variables one could u
 * `$${VARIABLE}` is converted to `${VARIABLE}`
 * `$$VARIABLE` is converted to `$VARIABLE`
 
-However, if no valid variables are found in a string, no expansion will be performed (and `$$` thus remains unchanged). This may be a subject
-to change in future libucl releases.
+If no valid variables are found in a string, no expansion will be performed and `$$` remains unchanged. This may be subject to change in future releases of libucl.
 
 ### Multiline strings
 
@@ -351,14 +344,12 @@ Each UCL object can be serialized to one of the three supported formats:
 
 ## Validation {#validation}
 
-UCL allows validation of objects. It uses the same schema that is used for json: [json schema v4](http://json-schema.org). UCL supports the full set of json schema with the exception of remote references. This feature is unlikely useful for configuration objects. Of course, a schema definition can be in UCL format instead of JSON that simplifies schemas writing. Moreover, since UCL supports multiple values for keys in an object it is possible to specify generic integer constraints `maxValues` and `minValues` to define the limits of values count in a single key. UCL currently is not absolutely strict about validation schemas themselves, therefore UCL users should supply valid schemas (as it is defined in json-schema draft v4) to ensure that the input objects are validated properly.
+UCL allows for the validation of objects using the [json schema v4](http://json-schema.org). UCL supports the full set of JSON Schema, with the exception of remote references. This feature may not be useful for configuration objects. A schema definition can also be written in UCL format, which simplifies schema writing. Additionally, since UCL supports multiple values for keys in an object, it is possible to specify generic integer constraints `maxValues` and `minValues` to define the limits on the number of values for a single key. UCL is not strictly enforcing validation of the schema itself, so it is important for users to provide valid schemas according to the JSON Schema v4 specification to ensure proper validation of input objects.
 
 ## Performance {#performance}
 
-Are UCL parser and emitter fast enough? Well, there are some numbers.
-I got a 19Mb file that consist of ~700 thousands lines of json (obtained via
-http://www.json-generator.com/). Then I checked jansson library that performs json
-parsing and emitting and compared it with UCL. Here are results:
+Is the UCL parser and emitter fast enough? Here are some performance measurements.
+A 19Mb file consisting of approximately 700,000 lines of JSON (obtained from http://www.json-generator.com/) was used to compare the performance of the jansson library, which handles JSON parsing and emitting, with UCL. Here are the results::
 
     jansson: parsed json in 1.3899 seconds
     jansson: emitted object in 0.2609 seconds
@@ -369,7 +360,7 @@ parsing and emitting and compared it with UCL. Here are results:
     ucl: emitted compact json in 0.1811 seconds
     ucl: emitted yaml in 0.2489 seconds
 
-So far, UCL seems to be significantly faster than jansson on parsing and slightly faster on emitting. Moreover,
+So far, UCL seems to be significantly faster than jansson on parsing and slightly faster on emitting. Additionally,
 UCL compiled with optimizations (-O3) performs faster:
 
 
@@ -384,7 +375,4 @@ You can do your own benchmarks by running `make check` in libucl top directory.
 
 ## Conclusion {#conclusion}
 
-UCL has clear design that should be very convenient for reading and writing. At the same time it is compatible with
-JSON language and therefore can be used as a simple JSON parser. Macroes logic provides an ability to extend configuration
-language (for example by including some lua code) and comments allows to disable or enable the parts of a configuration
-quickly.
+UCL has a clear design that should make it easy to read and write. At the same time, it is compatible with the JSON language and can be used as a simple JSON parser. The macro logic allows for the extension of the configuration language (e.g. by including Lua code) and comments allow for quick enabling or disabling of parts of a configuration.
