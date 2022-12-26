@@ -18,16 +18,16 @@ DKIM signing currently works with Milter based MTAs (Sendmail, Postfix), Haraka 
 
 ## Principles of operation
 
-The DKIM signing module chooses signing domains and selectors according to a predefined policy which can be modified with various settings. Description of this default policy follows:
+The DKIM signing module uses a predefined policy to determine which domains and selectors to use for signing. This policy can be modified with various settings. Here is a description of the default policy:
 
- * To be eligible for signing, a mail must be received from an authenticated user OR a reserved (local) IP address OR an address in the `sign_networks` map (if defined)
- * If envelope from address is not empty, the effective second level domain must match the MIME header From
- * If authenticated user is present, this should be suffixed with @domain where domain is what's seen in the envelope/header From address
- * Selector and path to key are selected from the domain-specific config if present, falling back to global config
+1. In order to be eligible for signing, an email must either be received from an authenticated user, a reserved (local) IP address, or an address in the sign_networks map (if defined).
+2. If the envelope from address is not empty, the effective second-level domain must match the MIME header From.
+3. If there is an authenticated user, it should be suffixed with @domain, where domain is what is seen in the envelope/header From address.
+4. The selector and path to the key are selected from the domain-specific configuration, if present. If not, the global configuration is used as a fallback.
 
-The default global config (fallback mode) searches for keys at the defined `path`. The path is constructed using the eSLD normalized domain name of header from and the default selector defined with `selector` (dkim). So the search path for user@test.example.com would be `/var/lib/rspamd/dkim/example.com.dkim.key`. If a key is found the message will be signed.
+The default global configuration (fallback mode) searches for keys at the defined path. This path is constructed using the eSLD normalized domain name of the header from and the default selector defined with selector (dkim). For example, the search path for user@test.example.com would be /var/lib/rspamd/dkim/example.com.dkim.key. If a key is found, the message will be signed.
 
-When using file-based DKIM private keys, ensure that the Rspamd scanner processes (e.g. normal worker, controller or a proxy in self-scan mode) have at least **read** access to the signing keys, i.e. the keys should be accessible to the user/group `_rspamd`.
+**Important notice**: when using file-based DKIM private keys, make sure that the Rspamd scanner processes (e.g. normal worker, controller, or a proxy in self-scan mode) have at least read access to the signing keys. This means that the keys should be accessible to the user/group _rspamd.
 
 ## Configuration
 
@@ -186,9 +186,11 @@ domain {
 
 ## Verifying your private keys
 
-To verify any generated private RSA key with OpenSSL (and also Ed25519 keys if your OpenSSL >= 1.1.1):
+To verify any generated private RSA key with OpenSSL (and also Ed25519 keys if your OpenSSL >= 1.1.1) you can use the following command:
+
 ~~~
-openssl pkey -text -noout -in example.private
+$ openssl pkey -text -noout -in example.private
+
 Private-Key: (2048 bit)
 modulus:
     00:...
@@ -212,7 +214,7 @@ You can also configure `dkim_signing` module to verify the published pubkey reco
 
 ## DKIM keys in Redis
 
-To use DKIM keys stored in Redis you should add the following to configuration:
+To use DKIM keys stored in Redis, add the following to your configuration::
 
 ~~~ucl
 # local.d/dkim_signing.conf
@@ -380,22 +382,21 @@ rspamadm vault del example.com
 rspamadm vault rotate example.com
 ```
     
-During rotation, Rspamd creates a new set of keys for each algorithm represented in the vault. New selectors are chosen according to the current date and key type, e.g. `rsa-20190501`. Old keys are preserved but their expire date is set to stop their usage over `ttl` grace time (1 day by default). During this grace period, Rspamd will sign using **both** selectors.
+During rotation, Rspamd creates a new set of keys for each algorithm represented in the vault. The new selectors are chosen based on the current date and key type, e.g. rsa-20190501. The old keys are preserved, but their expiration date is set to stop their use after the ttl grace period (1 day by default). During this grace period, Rspamd will sign using both selectors.
 
-For example, if you have `rsa-20190501` and `ed25519-20190501` selectors and you want to roll them to `20190601` then two new keys will be created: `rsa-20190601` and `ed25519-20190601`. For the grace period, specifically to `20190602`, Rspamd will produce 4 DKIM signatures to allow DNS rollover for the new key.  This logic allows to have safe and secure keys rotation providing enough time to work around various DNS caches.
+For example, if you have rsa-20190501 and ed25519-20190501 selectors and you want to roll them to 20190601, two new keys will be created: rsa-20190601 and ed25519-20190601. For the grace period, specifically until 20190602, Rspamd will produce four DKIM signatures to allow DNS rollover for the new key. This logic allows for safe and secure key rotation, providing enough time to work around various DNS caches.
 
-Rotate subcommand can also remove all expired keys from the vault.
+The rotate subcommand can also remove all expired keys from the vault.
 
 
 ## Sign headers
+Rspamd allows you to change the headers that are required to be signed. From Rspamd 1.7.3, you can specify them using the sign_headers option. By default, Rspamd distinguishes between two types of headers:
 
-Rspamd allows to change headers that are required to be signed. From Rspamd 1.7.3, you can specify them as `sign_headers` option. By default, Rspamd distinguish two options:
+* Normal headers: These headers are signed as many times as you specify them. **Important security notice**: An attacker can add arbitrary headers with the same name before the signed headers and will still get a valid signature. This option is recommended for headers that are not visible to users, such as transport headers.
+* Oversigned headers: These headers are signed `N + 1` times **even if `N == 0`**. Oversigned headers cannot be appended to a message without signature breaking. Displayed or meaningful headers are usually oversigned.
+* Optionally oversigned headers (from 1.9.3): These headers are signed `N + 1` times **if `N != 0` only.** Optionally oversigned headers cannot be appended to a message without signature breaking, if at least one header with such a name is presented in the original message. Displayed but optional headers are usually oversigned in this way.
 
-* Normal headers: they are signed as many times as you specify them. **Important security notice**: an attacker can add arbitrary headers with the same name before the headers signed and will still get a valid signature. This option is thus recommended for headers that are non **visible** to users. We want **transport** headers to be treated as normal headers here.
-* Oversigned headers: these headers are signed `N + 1` times **even if `N==0`**. Oversigned headers cannot be appended to a message. We usually want displayed or meaningful headers to be oversigned here.
-* Optionally oversigned headers (from 1.9.3): these headers are signed `N + 1` times **if `N<>0` only**. Oversigned headers cannot be appended to a message. We usually want displayed but optional headers to be oversigned in this way.
-
-Oversigned headers are prefixed with `(o)` string. Optionally oversigned headers are prefixed with `(x)` string.
+Oversigned headers are prefixed with the (o) string. Optionally oversigned headers are prefixed with the (x) string.
 
 ### Default sign_headers (after 1.9.3)
 
