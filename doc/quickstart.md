@@ -568,7 +568,7 @@ There is a special module called `multimap` that allows you to define your maps 
 
 ## Configuring RBLs
 
-Though Rspamd is free to use for any purpose many of the RBLs used in the default configuration aren't & care should be taken to see that your use cases are not infringing. Notes about specific RBLs follow below (please follow the links for details):
+Although Rspamd is free to use for any purpose, some of the RBLs included in the default configuration may not be free to use. It is important to ensure that your use of these RBLs does not infringe on any rights. The following notes provide additional information about specific RBLs (follow the links for more details):
 
 [Abusix Mail Intelligence](https://abusix.com/products/abusix-mail-intelligence/){:target="&#95;blank"} - Free for home/non-commercial use up to 100k queries per day (requires registration), commercial use requires a subscription
 
@@ -628,7 +628,7 @@ rspamc -f 2 fuzzy_del file2.eml
 
 ### The rspamadm command
 
-Rspamadm is a new utility that is intended to manage rspamd directly. It comes with embedded help that can be displayed by typing:
+Rspamadm is a utility that allows you to manage rspamd directly. It includes an embedded help feature, which you can display by typing:
 
 ~~~
 % rspamadm help
@@ -703,14 +703,16 @@ Rspamd has a built-in WebUI which supports setting metric actions and scores; Ba
 
 ## Using Rspamd in large email systems
 
-Rspamd has been designed to be used in large scale email systems. It supports various features to simplify processing emails for thousands or millions of users. However, the default settings are quite conservative to provide a suitable experience for small grade systems.
+Rspamd was designed for use in large-scale email systems and offers various features to facilitate the processing of emails for thousands or millions of users. However, the default settings are conservative, making Rspamd suitable for smaller systems as well.
 
-First of all, you are strongly advised to get the official Rspamd packages from `rspamd.com` site if you use Debian derived Linux. They are heavily optimized in terms of performance and features. For users of other platforms, it is advised to ask Rspamd support (mailto://support@rspamd.com) about your specific demands. Maybe there are optimized packages for your specific platform that is not automatically built yet.
+We recommend obtaining the official Rspamd packages from the https://www.rspamd.com website if you are using a Debian-based Linux distribution. These packages are optimized for performance and feature sets. For users on other platforms, we advise contacting Rspamd support (mailto://support@rspamd.com) with your specific needs. There may be optimized packages available for your platform that have not yet been built.
 
-Secondly, you need to setup Redis. Normally, you need two types of Redis instances:
+In addition to obtaining optimized Rspamd packages, you should also set up Redis. Typically, you will need two types of Redis instances:
 
-* Master-slave replicated instances for `persistent` data: statistics, fuzzy hashes, neural networks. These instances are mostly read-only so you can split your load over read-only slaves.
-* Non-replicated but (probably) sharded instances for `volatile` data: greylisting, replies, IP reputation, and other temporary stuff. These instances are not required to be persistent and they could be scaled by sharding that is automatically performed by Rspamd if you specify multiple servers. These instances have mixed read-write payload.
+* Master-slave replicated instances for **persistent** data: statistics, fuzzy hashes, neural networks. These instances are mostly read-only, so you can distribute the load among read-only slaves.
+* Non-replicated but (possibly) sharded instances for **volatile** data: greylisting, replies, IP reputation, and other temporary data. These instances do not need to be persistent and can be scaled through sharding, which Rspamd will automatically perform if you specify multiple servers. These instances have a mixed read-write workload.
+
+If you require more advanced clustering options than Redis Sentinel offers, we recommend considering the [KeyDB](https://docs.keydb.dev/) project. KeyDB is a drop-in replacement for Redis that supports multi-master replication mode, while still being fully compatible with Redis (and Rspamd).
 
 You might also want to enable the following modules:
 
