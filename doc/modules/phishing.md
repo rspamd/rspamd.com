@@ -35,26 +35,30 @@ phishing {
 	# Check only domains from this list
 	domains = "file:///path/to/map";
 
-	# Make exclusions for known redirectors
-	# Entry format: URL/path for map, colon, name of symbol
-	redirector_domains = [
-		"${CONFDIR}/redirectors.map:REDIRECTOR_FALSE"
-	];
-	# For certain domains from the specified strict maps
-	# use another symbol for phishing plugin
-	strict_domains = [
-		"${CONFDIR}/paypal.map:PAYPAL_PHISHING"
-	];
+	# Make exceptions
+	exceptions = {
+		REDIRECTOR_FALSE = [
+			"$LOCAL_CONFDIR/local.d/redirectors.inc",
+		];
+		PHISHED_WHITELISTED = [
+			"$LOCAL_CONFDIR/local.d/phishing_whitelist.inc",
+		];
+	}
+	phishing_exceptions = {
+		OWN_DOMAINS = [
+			"$LOCAL_CONFDIR/local.d/own_domains.inc",
+		];
+	}
 }
 ~~~
 
 If an anchoring (actual as opposed to phished) domain is found in a map
-referenced by the `redirector_domains` setting then the related symbol is
+referenced by the maps in `exceptions` setting then the related symbol is
 yielded and the URL is not checked further. This allows making exclusions
 for known redirectors, especially ESPs.
 
 Further to this, if the phished domain is found in a map referenced by
-`strict_domains` the related symbol is yielded and the URL not checked
+`phishing_exceptions` the related symbol is yielded and the URL not checked
 further. This allows fine-grained control to avoid false positives and
 enforce some really bad phishing mails, such as bank phishing or other
 payments system phishing.
