@@ -5,7 +5,7 @@ title: Upgrading
 # Updating Rspamd
 {:.no_toc}
 
-This document describes incompatible changes introduced in recent Rspamd versions and details how to update your rules and configuration accordingly.
+This document outlines the modifications to Rspamd in recent versions, including any incompatible changes, and provides instructions for updating your rules and configuration accordingly.
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
@@ -15,51 +15,51 @@ This document describes incompatible changes introduced in recent Rspamd version
 
 ## Migration to Rspamd 3.3
 
-Please be cautious if you migrate to Rspamd 3.3 when you use custom passthrough rules (meaning the most of plugins that define `action` and not `least action`). Prior to 3.3, you could still process other rules, whilst in 3.3+ passthrough means exactly what it means: set the final action and skip directly to the idempotent stage.
+When migrating to Rspamd 3.3, exercise caution if you are utilizing custom passthrough rules, particularly those defined by plugins that utilize `action` rather than `least action`). In versions prior to 3.3, these rules would still allow for processing of additional rules. However, in Rspamd 3.3 and beyond, passthrough denotes a final action and skips directly to the idempotent stage.
 
-Users of the `neural` plugin can have a significant Redis storage leak introduced in the version 3.2. This issue is fixed in the version 3.3 since [the following commit](https://github.com/rspamd/rspamd/commit/f9cfbba2c84e01f18e65618587e6854681843ff1), however, this fix will not remove old stale keys. Unfortunately, those keys do not have any expire either. One of the possible sollutions to clean the database up is to remove all keys starting with `rn_` prefix. There are multiple options available to perform this action, so you can take a look at the [following conversation](https://stackoverflow.com/questions/4006324/how-to-atomically-delete-keys-matching-a-pattern-using-redis) on the Stackoverflow.
+Users of the `neural` plugin may experience a significant Redis storage leak in version 3.2. This issue is resolved in version 3.3 with [the following commit](https://github.com/rspamd/rspamd/commit/f9cfbba2c84e01f18e65618587e6854681843ff1), however, this fix will not remove any existing stale keys. These keys also do not have an expiration set. One solution to clean up the database is to remove all keys starting with the `rn_` prefix. There are various options available to accomplish this, such as exploring the [following conversation](https://stackoverflow.com/questions/4006324/how-to-atomically-delete-keys-matching-a-pattern-using-redis) on Stackoverflow.
 
-Rspamd also requires **C++20** compatible compiler and toolchain to be built from this version. For ubuntu-bionic users it means that it is now necessary to include the llvm repo for the compatible C++20 standard library runtime. The steps required are described in the [downloads page](https://rspamd.com/downloads.html).
+Starting from this version, building Rspamd requires a **C++20** compatible compiler and toolchain. For Ubuntu Bionic users, this means adding the LLVM repository for the compatible C++20 standard library runtime. The necessary steps are outlined on the [downloads page](https://rspamd.com/downloads.html).
 
 ## Migration to Rspamd 3.0
 
-Dmarc reporting stuff is no longer in the dmarc module: you need to run `rspamadm dmarc_report` command periodically to send DMARC reports. This could be done via cron. Configuration of the reporting has also changed in the incompatible matter, please check the [module documentation](modules/dmarc.html).
+The functionality for DMARC reporting is no longer included in the DMARC module. To send DMARC reports, you must now run the `rspamadm dmarc_report` command on a regular basis, such as through a cron job. Additionally, the configuration for reporting has undergone incompatible changes, so please refer to the [module documentation](modules/dmarc.html) for further information.
 
 
 ## Migration to Rspamd 2.6
 
-It is necessary to clear the browser cache and restart the browser for the GUI to work properly after upgrading to 2.6.
+To ensure proper functionality of the GUI after upgrading to 2.6, it is necessary to clear the browser cache and restart the browser.
 
-`Neural networks` plugin training data will also be lost as the internal structure of the NN has been reworked in an incompatible way. Further training should continue as usually.
+Additionally, the `Neural networks` plugin's training data will be lost as the internal structure of the NN has been redesigned in an incompatible manner. However, training can continue as normal.
 
-If you observe complains about `SENDER_REP_HAM` and `SENDER_REP_SPAM` symbols in Rspamd logs, then you might need to define the corresponding scores for these symbols (see more in the documentation: https://rspamd.com/doc/modules/reputation.html). This issue will be fixed in future Rspamd releases.
+If you encounter complaints about `SENDER_REP_HAM` and `SENDER_REP_SPAM` symbols in Rspamd logs, you may need to define scores for these symbols. Refer to the documentation https://rspamd.com/doc/modules/reputation.html). This issue will be fixed in future Rspamd releases.
 
 
 ## Migration to Rspamd 2.0
 
-RBL module has replaced both `emails` and `surbl` module unifying all Runtime Black Lists checks in a single place. The existing rules are normally automatically converted to `rbl` syntax which also includes even your `local.d` defines. `override.d` defines act as `local.d` overrides unfortunately. If you need to use overrides then please consider converting them to `override.d/rbl.conf` rules.
+The RBL module has replaced both the `emails` and `surbl` modules, consolidating all Runtime Black Lists checks in a single location. The existing rules are typically automatically converted to the`rbl` syntax, including those defined in `local.d`. However, `override.d` rules will only act as overrides for `local.d` and not for RBL module. If you need to use overrides, consider converting them to `override.d/rbl.conf` rules.
 
-`Emails` rules with maps instead of DNS RBLs are **NO LONGER SUPPORTED**. Please use `multimap` with selectors instead.
+Note that `emails` rules utilizing maps instead of DNS RBLs are **NO LONGER SUPPORTED**. Instead, use `multimap` with selectors.
 
-Default Bayes backend is also changed to Redis now whilst Sqlite backend is now marked as deprecated and is not recommended for use. Hence, if you have `sqlite` backend that was default before 2.0, you'd need to specify its' type manually or convert it to Redis (or even, relearn Redis backend from the scratch).
+In version 2.0, the default Bayes backend has been changed to Redis. The Sqlite backend is now considered deprecated and is not recommended for use. Therefore, if you were previously using the `sqlite` backend as default, you will need to specify its type manually or convert it to Redis (or even, start again and relearn Redis backend).
 
-`ip_score` module has been replaced by `reputation` module. The existing rules should be automatically converted to `reputation` rules. The name of symbol has also been changed to two symbols: `SENDER_REP_SPAM` and `SENDER_REP_HAM`. The scores of `IP_SCORE` should be automatically applied to new symbols. The data collected from `ip_score` plugin will be **LOST** unevitably. The main reason behind it was the significant flaw of the old plugin that caused reputation never expire.
+The `ip_score` module has been replaced by the `reputation` module, and the existing rules should be automatically converted to the new syntax. The symbol name has also been changed to two symbols: `SENDER_REP_SPAM` and `SENDER_REP_HAM`, and the scores for `IP_SCORE` should be automatically applied to these new symbols. However, it should be noted that any data collected by the `ip_score` plugin will be **IRRECOVERABLY LOST**. This change was necessary due to a significant flaw in the old plugin that caused the reputation to never expire.
 
-`neural` module has received a major update. No config incompatibilities have been introduced to our best knowledge, however, the existing network data will be **LOST** unevitably.
+The `neural` module has undergone a significant update. While no config incompatibilities have been identified, it should be noted that any existing network data will be **IRRECOVERABLY LOST**.
 
-If you build Rspamd from the sources, you now need **C++11** capable compiler as there are now bundled dependencies written in C++ (specifically, replxx library). You also need `libsodium` library. Rspamd now supports merely `clang` and `gcc` compilers. Other compilers might work as well but it is not guaranteed any longer.
+When building Rspamd from source, a **C++11** capable compiler is now required as there are bundled dependencies written in C++ (specifically, the replxx library). Additionally, the `libsodium` is also necessary. Rspamd now only supports the `clang` and `gcc` compilers. Other compilers may still work, but it is no longer guaranteed.
 
-Bayes expiry now always work in `lazy` mode and the default mode has been changed to `lazy` only.
+Additionally, Bayes expiry now always works in `lazy` mode and the default mode has been changed to `lazy` only.
 
-Log helper worker has been removed (but probably nobody have used it anyway).
+Furthermore, the Log helper worker has been removed, although it is unlikely that it was being used by anyone.
 
 ## Migration to Rspamd 1.9.1
 
 {% raw %}
 
-From version 1.9.1, Rspamd supports [Jinja2 templates](http://jinja.pocoo.org) provided by [Lupa Lua library](https://foicica.com/lupa/). You can read the basic syntax documnentation and the abilities provided by these templating engines using the links above. Rspamd itself uses a specific syntax for variable tags: `{=` and `=}` instead of the traditional `{{` and `}}` as these tags could mean, e.g. a table in table in Lua.
+From version 1.9.1, Rspamd supports [Jinja2 templates](http://jinja.pocoo.org) provided by [Lupa Lua library](https://foicica.com/lupa/). You can learn more about the basic syntax and capabilities of these templating engines by following the links provided. Rspamd uses a specific syntax for variable tags: `{=` and `=}` instead of the traditional `{{` and `}}` as these tags could represent, for example, a table within a table in Lua.
 
-As a consequence, from the version 1.9.1, your config files should be Jinja safe, meaning that there should be no special sequences like `{%` or `{=` anywhere in your configuration. Alternatively, you can escape them using `raw` and `endraw` tags as described [here](https://shopify.github.io/liquid/tags/raw/).
+Therefore, in version 1.9.1 and above, your config files must be Jinja safe, meaning that there should be no special sequences such as `{%` or `{=` anywhere in your configuration. Alternatively, you can escape them using `raw` and `endraw` tags as described [here](https://shopify.github.io/liquid/tags/raw/).
 
 {% endraw %}
 
@@ -82,17 +82,17 @@ This version should not generally be incompatible with the previous one aside of
   * `LIBDIR` = `${PREFIX}/lib/rspamd` - used to place shared libraries (included in RPATH and Lua CPATH)
   * `WWWDIR` = `${SHAREDIR}/www` - used to store static WebUI files
 
-For those who are using the default packages there should be no changes. Even in the case if you are using old `${PLUGINSDIR}` to store your custom plugins, Rspamd will look at the old location as a fallback in the plugins loading logic.
+For those who are using the default packages, there should be no changes. Even in the case if you are using old `${PLUGINSDIR}` to store your custom plugins, Rspamd will still check the old location as a fallback during the plugin loading process.
 
-Another incompatible change has been introduced for those who are using **`coroutines based`** Rspamd Lua API. From this version, you need to register symbols where coroutines are used with `coro` flag to allow them to be functional (otherwise they just crash Rspamd). More details are available in the following [issue](https://github.com/rspamd/rspamd/issues/2789).
+Additionally, an incompatible change has been introduced for users of the **`coroutines based`** Rspamd Lua API. Starting from this version, symbols utilizing coroutines must be registered with the `coro` lag to function properly, otherwise, they will cause Rspamd to crash. More information is available in the following [issue](https://github.com/rspamd/rspamd/issues/2789).
 
 ## Migration to Rspamd 1.8.1
 
-This version introduces several incompatibilities that mught be related to your setup.
+This version introduces several incompatibilities that may affect your setup.
 
 ### General configuration change
 
-[Libucl](https://github.com/vstakhov/libucl) that is used to parse configuration files for Rspamd has been changed in a way that prevented to load incomplete chunks of the data. It means, that each include file **MUST** be a valid configuration snippet as is. For example, you migh have the following artificial example:
+[Libucl](https://github.com/vstakhov/libucl) the library used to parse Rspamd's configuration files, has been modified in a way that prevents loading incomplete chunks of data. This means that each include file **MUST** be a valid configuration snippet on its own. For example, consider the following artificial example:
 
 ~~~ucl
 .include "top.conf"
@@ -113,9 +113,9 @@ Where top/bottom could have something like:
 }
 ~~~
 
-This will not work any longer: libucl requires that all braces are matching.
+The following will no longer be valid: libucl now requires that all braces are properly matched.
 
-However, it still allows implicit braces over the top object. So this file will still be **valid**:
+However, it still allows implicit braces on the top-level object. So the following file will still be **valid**:
 
 ~~~ucl
 # Some include
@@ -138,79 +138,79 @@ param = "value";
 
 ### Fuzzy and bayes misses for large text messages
 
-Due to bug introduced in 1.8.0, there algorithm used to deterministically skip words in large text parts was not deterministic. It means that the exact words pipelines produced by different Rspamd instances might be different. It could affect if your words_limit was reached (default: `words_decay = 200` words). Hence, for large text parts it was expected to have misses in fuzzy and in Bayes classification. Whilst bayes missing should not be significant, the fuzzy misses might be very severe and they might break fuzzy detection for large text parts.
+Due to a bug introduced in version 1.8.0, the algorithm used to deterministically skip words in large text parts was not functioning as intended, resulting in different words pipelines produced by different Rspamd instances. This could affect the accuracy of classification if the `words_limit` was reached (default: `words_decay = 200` words). For large text parts, it was possible to miss both fuzzy and Bayes classifications. While missing Bayes classification is not significant, missing fuzzy classification could be severe, potentially breaking fuzzy detection for large text parts.
 
-In 1.8.1, we have fixed this issue and, since we have already broken the compatibility with 1.7.9, we have decided to increase `words_decay` to 600. Please ensure that you don't override this parameter anywhere (e.g. in `local.d/options.inc`, `override.d/options.inc` or any other override or local file) or your compatibility with Rspamd fuzzy storage would be lost for messages with more than `words_decay` threshold words.
+In version 1.8.1, we have fixed this issue. Since we have already broken compatibility with version 1.7.9, we have decided to increase `words_decay`  to 600. Please ensure that you do not override this parameter in any local or override files, such as `local.d/options.inc` or `override.d/options.inc`, or else compatibility with Rspamd's fuzzy storage will be lost for messages with more than `words_decay` threshold words.
 
 ### Different `CONFDIR` and `LOCAL_CONFDIR` case
 
-In a very unlikely case if your custom build has different values for `CONFDIR` and `LOCAL_CONFDIR` build/startup variables, you might miss your custom Lua rules that were previously loaded from `$CONFDIR/rspamd.local.lua` and from this version they are loaded from `$LOCAL_CONFDIR/rspamd.local.lua`. To our very best knowledge, it doesn't affect any official packages nor any officially supported operation systems, such as FreeBSD or OpenBSD.
+In an extremely unlikely scenario, if your custom build uses different values for the `CONFDIR` and `LOCAL_CONFDIR` build/startup variables, you may experience missing custom Lua rules that were previously loaded from `$CONFDIR/rspamd.local.lua`, as they are now loaded from `$LOCAL_CONFDIR/rspamd.local.lua`. To the best of our knowledge, this does not affect any official packages or officially supported operating systems, such as FreeBSD or OpenBSD.
 
 ## Migration to Rspamd 1.8.0
 
-There are couple of slashing changes that might affect your setup, especially if you use one of the following:
+There are several changes that may impact your setup, particularly if you use any of the following:
 
 - **Clickhouse** module
 - **User settings**
 
 ### Clickhouse changes
 
-From the version 1.8, Rspamd stops usage of multiple tables and uses one table `rspamd` with all columns in it. It provides benefits in performance and helps to avoid joins that are not extremely efficient in Clickhouse. If you have used Clickhouse module before 1.8, then your **schemas** will be converted automatically. However, **the existing data** will **NOT** be converted and will remain in the old tables. It is sometimes required to enforce new schema application by using command
+Starting from version 1.8, Rspamd has stopped using multiple tables and now uses a single table, `rspamd`, with all columns. This improves performance and eliminates the need for inefficient joins in Clickhouse. If you have used the Clickhouse module prior to version 1.8, your **schemas** will be automatically converted. However, **the existing data** will **NOT** be converted and will remain in the old tables. It may be necessary to use a command to enforce the new schema:
 
 ```
 OPTIMIZE rspamd FINAL
 ```
 
-This command might take significant time to be completed if you store lots of historical data.
+Please note that this command may take a significant amount of time to complete if you have stored a large amount of historical data.
 
-You also need to update your **queries** that use additional Rspamd tables, such as `rspamd_urls`, `rspamd_asn`, `rspamd_attachments`, `rspamd_symbols` and others. All corresponding fields are now placed in `rspamd` table. It is impossible to migrate old data from those tables so far.
+Additionally, you need to update your **queries** that use the additional Rspamd tables, such as `rspamd_urls`, `rspamd_asn`, `rspamd_attachments`, `rspamd_symbols`, and others. All corresponding fields are now located in the `rspamd` table. At this time, it is not possible to migrate old data from these tables.
 
 ### Settings changes
 
-Rspamd now provides `settings.conf` which includes `local.d/settings.conf` and `override.d/settings.conf`. If you have used some of these files to store settings please ensure that they don't conflict with the new configuration layout.
+Rspamd now includes a `settings.conf` file, which incorporates `local.d/settings.conf` and `override.d/settings.conf`. If you have used these files to store settings, please ensure that they do not conflict with the new configuration layout.
 
 ## Migration to Rspamd 1.7.4
 
-The only potential issue is that now Rspamd listens on **localhost only** by default. It might break some configurations where you rely on the previous behaviour, specifically, on listening on all IP addresses (e.g. `*`).
+The only potential issue is that Rspamd now listens on **localhost only** by default. This could affect configurations that rely on the previous behavior of listening on all IP addresses (e.g. `*`).
 
-However, we think that we should keep the default settings as restrictive as possible to avoid potential security issues that proved to happen with other projects with 'open to all' defaults.
+However, we believe that it is important to keep the default settings as restrictive as possible to avoid potential security issues, which have occurred in other projects with 'open to all' defaults.
 
 ## Migration to Rspamd 1.7.0
 
-You should consider running of `rspamadm configwizard` to ensure that your configuration is compatible. From version 1.7, Rspamd does not support `metrics` concept. In fact, that was never supported in the past, however, you could see `metric "default"` in many places within Rspamd configuration and settings. 
+It is recommended to run `rspamadm configwizard` to ensure that your configuration is compatible with version 1.7. This version no longer supports the `metrics` concept, which was never officially supported in the past. However, you may have come across instances of `metric "default"` in various parts of the Rspamd configuration and settings.
 
-In this version, we still support old `metric` keyword and scores defined under this section, for instance in `rspamd.conf.local`. However, it is now recommended to define symbols scores in groups settings (`local.d/group_*.conf`). Groups configurations live in `etc/rspamd/scores.d` folder.
+In version 1.7, we will continue to support the old `metric` keyword and scores defined under this section, such as in `rspamd.conf.local`. However, it is now recommended to define symbol scores in group settings (`local.d/group_*.conf`), which can be found in the `etc/rspamd/scores.d` folder.
 
 There is no need to undertake any action if you have your custom scores defined in the legacy files. Rspamd will continue support of definitions in these files.
 
 ## Migrating to Rspamd 1.6.5
 
-Due to a couple of serious fixes in tokenization algorithms, it is be possible that statistics and fuzzy modules will loose their preciseness. In this cases you might try to relearn your databases to improve accuracy of filtering.
+As a result of several important fixes made to tokenization algorithms, it is possible that the statistics and fuzzy modules may lose some precision. In these cases, you may want to consider re-learning your databases to improve the accuracy of filtering.
 
 ## Migrating to Rspamd 1.6.0
 
-Due to implementation of the new milter interface, there is an important incompatible change that you might need to handle if you use `rmilter_headers` module. This module has been renamed to `milter_headers` and the according protocol section is now named `milter` instead of `rmilter`. If you configured this module inside `local.d/rmilter_headers.conf` or in `override.d/rmilter_headers.conf` then you don't need to undertake any actions: these files are still loaded by the renamed module. Otherwise, you need to change section name from `rmilter_headers` to `milter_headers`.
+In this version, due to the implementation of the new milter interface, there is an important incompatible change that you may need to address if you use the `rmilter_headers` module. This module has been renamed to `milter_headers` and the corresponding protocol section is now named `milter` instead of `rmilter`. If you have configured this module inside `local.d/rmilter_headers.conf` or in `override.d/rmilter_headers.conf`, then no action is required, as these files will still be loaded by the renamed module. Otherwise, you will need to change the section name from `rmilter_headers` to `milter_headers`.
 
-Milter_headers module now skips adding headers for local networks & authenticated users by default; this can be re-enabled by setting `skip_local = false` and/or `skip_authenticated = false` in the module configuration; or alternatively you could set `authenticated_headers` and/or `local_headers` to a list of headers that should not be skipped.
+The `milter_headers` module now skips adding headers for local networks and authenticated users by default. This behavior can be re-enabled by setting `skip_local = false` and/or `skip_authenticated = false` in the module configuration. Alternatively, you can set `authenticated_headers` and/or `local_headers` to a list of headers that should not be skipped.
 
-[Proxy worker]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html) has been added to the default configuration and listens on all interfaces on TCP port 11332. If you don't need it you can set `enabled = false` in `local.d/worker-proxy.inc`.
+Additionally, a [proxy worker]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html) has been added to the default configuration and listens on all interfaces on TCP port 11332. If you do not need it, you can set `enabled = false` in `local.d/worker-proxy.inc`.
 
-This release removes the config split for systemd/sysv platforms. If you have custom init scripts you should ensure that these use `rspamd.conf` rather than `rspamd.sysvinit.conf`. If you use systemd and prefer to log to the systemd journal, you should add the following to `local.d/logging.inc`:
+This release also eliminates the configuration split for systemd/sysv platforms. To ensure proper functionality, custom init scripts should utilize `rspamd.conf` instead of `rspamd.sysvinit.conf`. For those utilizing systemd and prefer logging to the systemd journal, the following should be added to `local.d/logging.inc`:
 
 ~~~ucl
 systemd = true;
 type = "console";
 ~~~
 
-A major rework of lua libraries has taken place in Rspamd 1.6. Some of the custom scripts might be broken if they are loaded **before** `rspamd.lua` or if you have edited `rspamd.lua` manually. To ensure that everything is fine you need to load vendor `rspamd.lua` before all of your custom scripts. It is a default behaviour, however, in some highly custiomised setups it might cause issues. In general, you need to ensure that the following line is somewhere in your code (it is at the very beginning of `rspamd.lua`):
+A significant overhaul of the Lua libraries has occurred in Rspamd 1.6. Some custom scripts may fail if they are loaded prior to `rspamd.lua` or if manual modifications have been made to `rspamd.lua`should be loaded before all custom scripts. This is the default behavior, however, in highly customized setups it may cause issues. In general, it is crucial to ensure that the following line is present in your code (found at the very beginning of `rspamd.lua`):
 
 ~~~lua
 require "global_functions" ()
 ~~~
 
-Rmilter tool is now **deprecated** in honor of milter protocol support in [rspamd proxy]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html). There are examples of some particular features that were previously implemented in Rmilter in [milter headers module]({{ site.url }}{{ site.baseurl }}/doc/modules/milter_headers.html). You should consider migrating from Rmilter as soon as possible since Rspamd 1.6 will be the last version that supports Rmilter tool. In future major releases (starting from 1.7), there are absolutely **no guarantees** of compatibility with Rmilter.
+The Rmilter tool is now deprecated in favor of milter protocol support in the [rspamd proxy]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html). Examples of some specific features previously implemented in Rmilter can be found in the [milter headers module]({{ site.url }}{{ site.baseurl }}/doc/modules/milter_headers.html). It is recommended to migrate from Rmilter as soon as possible, as Rspamd 1.6 will be the last version to support the Rmilter tool. In future major releases (starting from 1.7), there will be **no guarantees** of compatibility with Rmilter.
 
-For example, if you need the old behaviour for `extended_spam_headers` in Rmilter, then you can use the following snippet added to the `local.d/milter_headers.conf`:
+For example, if you need the old behaviour for `extended_spam_headers` in Rmilter is desired, the following snippet can be added to `local.d/milter_headers.conf`:
 
 ~~~ucl
 # local.d/milter_headers.conf
@@ -234,13 +234,11 @@ New configuration files have been added for the following modules which previous
 
 ## Migrating to Rspamd 1.5
 
-New configuration files have been added for the following modules which previously missed them: `greylist`, `metadata_exporter` and `metric_exporter.` If you have previously configured one of these modules in `rspamd.conf.local` please move your configuration to `rspamd.conf.override` to ensure that it is preserved verbatim or rework your configuration to use `local.d/[module_name].conf` instead.
+New configuration files have been added for the following modules which previously lacked them: `greylist`, `metadata_exporter` and `metric_exporter.` If you have previously configured one of these modules in `rspamd.conf.local`, it is recommended to move your configuration to `rspamd.conf.override` to ensure that it is preserved verbatim, or to rework your configuration to use `local.d/[module_name].conf` instead.
 
-If you have composites defined in `local.d/composites.conf` or `override.d/composites.conf` these will need to be moved to `rspamd.conf.local` or reworked to the new format, see `/etc/rspamd/composites.conf` for an example.
+Additionally, if composites have been defined in `local.d/composites.conf` or `override.d/composites.conf`, these should be moved to `rspamd.conf.local` or reworked to the new format. An example can be found in `/etc/rspamd/composites.conf`.
 
 You are also suggested to disable outdated and no longer supported features of Rmilter and switch them to Rspamd:
-
-The list of features includes the following ones:
 
 - Greylisting - provided by [greylisting module]({{ site.url }}{{ site.baseurl }}/doc/modules/greylisting.html)
 - Ratelimit - is done by [ratelimit module]({{ site.url }}{{ site.baseurl }}/doc/modules/ratelimit.html)
@@ -249,7 +247,7 @@ The list of features includes the following ones:
 - DCC checks - are now done in [dcc module]({{ site.url }}{{ site.baseurl }}/doc/modules/dcc.html)
 - Dkim signing - can be done now by using of [dkim module]({{ site.url }}{{ site.baseurl }}/doc/modules/dkim.html#dkim-signatures) and also by a more simple [dkim signing module]({{ site.url }}{{ site.baseurl }}/doc/modules/dkim_signing.html)
 
-All duplicating features are still kept in Rmilter for compatibility reasons. However, no further development or bug fixes will likely be done for them.
+All duplicate features are still present in Rmilter for compatibility purposes. However, it is unlikely that any further development or bug fixes will be applied to them.
 
 From version `1.9.1` it is possible to specify `enable` option in `greylisting` and `ratelimit` sections. It is also possible for `dkim` section since `1.9.2`. These options are `true` by default. Here is an example of configuration where greylisting and ratelimit are disabled:
 
@@ -266,28 +264,28 @@ dkim {
 }
 ~~~
 
-These options are in their default enabled states merely for compatibility purposes. In future Rmilter releases, they will be **DISABLED** by default.
+These options are enabled by default solely for compatibility reasons. In future Rmilter releases, they will be **DISABLED** by default.
 
 ## Migrating to Rmilter 1.10.0 and Rspamd 1.4.0
 
-The default passwords, namely `q1` and `q2` are no longer allowed to be used for remote authentication. This is done due to many misusages of these **example** passwords and dangerous security flaws introduced by some Rspamd users.
+TThe default passwords, specifically `q1` and `q2`, are no longer permitted for remote authentication. This change is a result of the widespread misuse of these **example** passwords and the potential security risks posed by some Rspamd users.
 
 ## Migrating to Rmilter 1.9.1 and Rspamd 1.3.1
 
-Systemd socket activation has been removed in these releases. Rmilter may not restart correctly on upgrade on Debian platforms. Please run `systemctl restart rmilter` after installing the package if necessary. Rspamd is expected to restart correctly on upgrade. Both Rspamd & Rmilter should be automatically configured to run on reboot post-upgrade.
+In these releases, systemd socket activation has been removed. Note that upon upgrading on Debian platforms, Rmilter may not restart correctly. To resolve this, please run `systemctl restart rmilter` after installing the package. On the other hand, Rspamd is expected to restart correctly upon upgrade. Additionally, both Rspamd and Rmilter should be configured to automatically run on reboot post-upgrade.
 
 ## Migrating from Rmilter 1.8 to Rmilter 1.9
 
-There are couple of things that are no longer supported:
+Please note that there are a few changes to the supported features in this release:
 
 * beanstalk support has been removed from Rmilter in honor of Redis [pub/sub](http://redis.io/topics/pubsub), you must remove the whole `beanstalk` section from the configuration file
 * auto whitelist for greylisting is no longer supported as it has been broken from the very beginning, you must remove all `awl` options from the greylisting section
 
-If you have used beanstalk for some purposes then you could move to Redis [pub/sub](http://redis.io/topics/pubsub). There are settings for sending spam (`spam_servers` and `spam_channel`) and for sending messages copies (`copy_servers`, `copy_prob` and `copy_channel`) in the `redis` section that allow you to reproduce beanstalk functions using Redis.
+If you have been using Beanstalk for certain purposes, you can transition to using Redis [pub/sub](http://redis.io/topics/pubsub). The `redis` section includes settings such as `spam_servers` and `spam_channel` for sending spam, and `copy_servers`, `copy_prob`, and `copy_channel` for sending message copies, which can help you reproduce Beanstalk functions using Redis.
 
-Rmilter now supports configuration override from `rmilter.conf.local` and from `rmilter.conf.d/*.conf` files. You should consider using these methods for your local configuration options.
+Rmilter now provides additional options for configuring your local settings. You can now use `rmilter.conf.local` and `rmilter.conf.d/*.conf` files to override the default configuration.
 
-Rmilter no longer adds several SpamAssassin-compatible headers: namely `X-Spam-Status`, `X-Spam-Level` and `X-Spamd-Bar`. Support has been added for adding/removing custom headers under instruction of Rspamd (Requires Rspamd 1.3.0+). Example script which restores the removed headers is shown below (to be added to `/etc/rspamd/rspamd.local.lua`):
+Additionally, Rmilter no longer includes several SpamAssassin-compatible headers such as `X-Spam-Status`, `X-Spam-Level`, and `X-Spamd-Bar`. Instead, Rmilter now supports adding and removing custom headers as instructed by Rspamd (version 1.3.0 or higher). To restore the removed headers, you can use the example script provided below, which should be added to `/etc/rspamd/rspamd.local.lua`:
 
 ~~~lua
 rspamd_config:register_symbol({
@@ -338,22 +336,22 @@ rspamd_config:register_symbol({
 
 ## Migrating from Rspamd 1.2 to Rspamd 1.3
 
-There are no incompatible changes introduced in Rspamd 1.3 version.
+Rspamd version 1.3 does not introduce any incompatible changes
 
 ## Migrating from Rspamd 1.1 to Rspamd 1.2
 
-There are no incompatible changes introduced in Rspamd 1.2 version.
+Rspamd version 1.2 does not introduce any incompatible changes
 
 ## Migrating from Rspamd 1.0 to Rspamd 1.1
 
-The only change here affects users with per-user statistics enabled. There is an incompatible change in `sqlite3` and per-user behaviour:
+Please note that there is an incompatible change in the per-user statistics behavior for users with per-user statistics enabled.
 
-Now both `redis` and `sqlite3` follow common principles for per-user statistics:
+Both `redis` and `sqlite3` now follow a consistent approach for per-user statistics:
 
 * If per-user statistics is enabled check per-user tokens **ONLY**
 * If per-user statistics is not enabled then check common tokens **ONLY**
 
-If you need the old behaviour, then you need to use a separate classifier for per-user statistics, for example:
+If the previous behavior is desired, a separate classifier for per-user statistics must be implemented, for example:
 
 ~~~ucl
     classifier {
@@ -395,7 +393,7 @@ If you need the old behaviour, then you need to use a separate classifier for pe
 
 ## Migrating from Rspamd 0.9 to Rspamd 1.0
 
-In Rspamd 1.0 the default settings for statistics tokenization have been changed to `modern`, meaning that tokens are now generated from normalized words and there are various improvements which are incompatible with the statistics model used in pre-1.0 versions. To use these new features you should either **relearn** your statistics or continue using your old statistics **without** new features by adding a `compat` parameter:
+Rspamd 1.0 has introduced changes to the default settings for statistics tokenization. The new default setting is `modern`, which generates tokens from normalized words and includes various improvements. However, these changes are not compatible with the statistics model used in pre-1.0 versions. To use these new features you should either **relearn** your statistics or continue using your old statistics **without** new features by adding a `compat` parameter:
 
 ~~~ucl
 classifier {
@@ -438,9 +436,9 @@ classifier {
 
 ### WebUI changes
 
-The Rspamd web interface is now a part of the Rspamd distribution. Moreover, all static files are now served by Rspamd itself so you won't need to set up a separate web server to distribute static files. At the same time, the WebUI worker has been removed and the controller acts as WebUI+old_controller which allows it to work with both a web browser and the rspamc client. However, you might still want to set up a full-featured HTTP server in front of Rspamd to enable, for example, TLS and access controls.
+The Rspamd web interface is now a part of the Rspamd distribution. Additionally, Rspamd itself now serves all static files, eliminating the need for a separate web server. As a result, the WebUI worker has been removed, and the controller now acts as both a web browser and the rspamc client. However, it is still recommended to set up a full-featured HTTP server in front of Rspamd for added security features such as TLS and access controls.
 
-Now there are two password levels for Rspamd: `password` for read-only commands and `enable_password` for data changing commands. If `enable_password` is not specified then `password` is used for both commands.
+Furthermore, there are now two levels of password protection for Rspamd: `password` for read-only commands and `enable_password` for commands that change data. If `enable_password` is not specified, `password` is used for both types of commands.
 
 Here is an example of the full configuration of the Rspamd controller worker to serve the WebUI:
 
@@ -458,11 +456,11 @@ worker {
 
 ### Settings changes
 
-The settings system has been completely reworked. It is now a lua plugin that registers pre-filters and assigns settings according to dynamic maps or a static configuration. Should you want to use the new settings system then please check the recent [documentation]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html). The old settings have been completely removed from Rspamd.
+The settings system in Rspamd has undergone a complete overhaul. It is now implemented as a Lua plugin that registers pre-filters and assigns settings based on dynamic maps or a static configuration. To use the new settings system, please refer to the updated [documentation]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html). The previous settings system has been entirely removed from Rspamd.
 
 ### Lua changes
 
-There are many changes in the lua API and some of them are, unfortunately, breaking ones.
+Please be aware that there have been significant changes to the Lua API in this release, some of which may result in compatibility issues.
 
 * many superglobals are removed: now Rspamd modules need to be loaded explicitly,
 the only global remaining is `rspamd_config`. This affects the following modules:
@@ -498,16 +496,16 @@ rspamd_config.SYMBOL = function(task)
 end
 ~~~
 
-`rspamd_message` is **removed** completely; you should use task methods to access message data. This includes such methods as:
+`rspamd_message` has been **removed** completely. Instead, task methods should be used to access message data. This includes methods such as:
 
-* `get_date` - this method can now return a date for task and message based on the arguments:
+* `get_date` - this method now returns a date for the task and message based on the provided arguments:
 
 ~~~lua
 local dm = task:get_date{format = 'message'} -- MIME message date
 local dt = task:get_date{format = 'connect'} -- check date
 ~~~
 
-* `get_header` - this function is totally reworked. Now `get_header` version returns just a decoded string, `get_header_raw` returns an undecoded string and `get_header_full` returns the full list of tables. Please consult the corresponding [documentation]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_task.html) for details. You also might want to update the old invocation of task:get_header to the new one.
+* `get_header` - this function has undergone significant changes. The new version of `get_header` returns a decoded string, `get_header_raw` returns an undecoded string, and `get_header_full` returns a full list of tables. For more information, please refer to the updated [documentation]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_task.html). You may need to update your existing code that uses the `task:get_header` method.
 Old version:
 
 ~~~lua
@@ -554,7 +552,7 @@ rspamd_config.FORGED_GENERIC_RECEIVED5 = function (task)
 end
 ~~~
 
-* `get_from` and `get_recipients` now accept optional numeric arguments that specifies where to get sender and recipients for a message. By default, this argument is `0` which means that data is initially checked in the SMTP envelope (meaning `MAIL FROM` and `RCPT TO` SMTP commands) and if the envelope data is inaccessible then it is grabbed from MIME headers. Value `1` means that data is checked on envelope only, while `2` switches mode to MIME headers. Here is an example from the `forged_recipients` module:
+* `get_from` and `get_recipients` now accept optional numeric arguments that determine where to retrieve the sender and recipients for a message. By default, this argument is set to `0`, which means that data is initially checked in the SMTP envelope (i.e., `MAIL FROM` and `RCPT TO` SMTP commands) and if the envelope data is not available, it is then obtained from MIME headers. A value of `1` means that data is checked in the envelope only, while `2` switches the mode to MIME headers. Here is an example from the `forged_recipients` module:
 
 ~~~lua
 -- Check sender
@@ -571,4 +569,4 @@ end
 
 ### Protocol changes
 
-Rspamd now uses `HTTP` protocols for all operations, therefore an additional client library is unlikely to be needed. The fallback to the old `spamc` protocol has also been implemented to be automatically compatible with `rmilter` and other software that uses the `rspamc` protocol.
+Rspamd now exclusively uses the HTTP protocol for all operations, making the use of additional client libraries unnecessary. Additionally, the fallback to the older `spamc` protocol has been implemented to ensure automatic compatibility with software such as `rmilter` and other programs that use the `rspamc` protocol.
