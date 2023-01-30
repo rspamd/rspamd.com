@@ -5,7 +5,7 @@ title: Antivirus module
 
 # Antivirus module
 
-Antivirus module (available from Rspamd 1.4) provides integration with virus scanners. Currently supported are:
+The Antivirus module, available from Rspamd version 1.4, seamlessly integrates with various virus scanners. Currently, the following scanners are supported:
 
 * [Avast Antivirus Rest API](https://businesshelp.avast.com/Content/Products/AfB_Antivirus/Linux/InstallingAvastBusinessAntivirusLinux.htm) (from 3.3)
 * [Avira](https://www.avira.com/de/oem-antivirus) (via SAVAPI)
@@ -23,13 +23,13 @@ Antivirus module (available from Rspamd 1.4) provides integration with virus sca
 
 ## Configuration
 
-The configuration for an antivirus setup is done by defining rules. If the antivirus reports one or more viruses the configured symbol will be set (e.g. CLAM_VIRUS) with the viruses as description and the if set the reset action will be triggered.
+The configuration for an antivirus setup is accomplished by defining rules. If the antivirus reports one or more viruses, the configured symbol (e.g. CLAM_VIRUS) will be set, with the viruses as the description. If set, the reset action will be triggered.
 
-When there is an error during the connection or the antivirus reports failures the fail symbol (e.g. CLAM_VIRUS_FAIL) will be set with the error message as description. It is possible to make a `soft reject` by using the [force_actions]({{ site.baseurl }}/doc/configuration/force_actions.html) plugin if the antivirus has failed to scan the email (for example during a database reloading)
+In case of errors during the connection or if the antivirus reports failures, the fail symbol (e.g. CLAM_VIRUS_FAIL) will be set, with the error message as the description. The [force_actions]({{ site.baseurl }}/doc/configuration/force_actions.html) plugin can be used to perform a `soft reject` if the antivirus has failed to scan the email, such as during a database reloading.
 
-Next to the `SYMBOLNAME` and `SYMBOLNAME_FAIL` symbols there are currently 2 special symbols indicating the scanner reports encrypted parts or parts with Office macros: `SYMBOLNAME_ENCRYPTED` and `SYMBOLNAME_MACRO`
+In addition to the `SYMBOLNAME` and `SYMBOLNAME_FAIL` symbols, there are currently two special symbols indicating that the scanner has reported encrypted parts or parts with Office macros: `SYMBOLNAME_ENCRYPTED` and `SYMBOLNAME_MACRO`
 
-For virus, encrypted and macro symbols you can use patterns to set a dedicated symbol for any virus name or error message. For the fail symbol you have to use patterns_fail:
+For virus, encrypted and macro symbols, patterns can be used to set a dedicated symbol for any virus name or error message. For the fail symbol, the `patterns_fail` option must be used.
 
 ~~~ucl
 ...
@@ -62,13 +62,13 @@ From version 3.5, you are able to use two more types of mime part filters:
 ...
 ~~~
 
-`mime_parts_filter_regex` matches the content-type detected by Rspamd, or mime part header, or the declared filename of an attachment (the former option also works for the files within an archive). `mime_parts_filter_ext` matches the extension of the declared filename or an archives file list.
+The `mime_parts_filter_regex` option matches the content-type detected by Rspamd, or a mime part header, or the declared filename of an attachment. The latter option also works for files within an archive. The `mime_parts_filter_ext` option matches the extension of the declared filename or an archive's file list.
 
-In the default configuration the complete mail will be send to the antivirus system. You can change this behavior by setting scan_mime_parts = true; to send all mime parts detected as attachments seperately. Set scan_text_mime or scan_image_mime to true if you also want text mimes and images send to the AV scanner.
+By default, the complete email will be sent to the antivirus system. This behavior can be changed by setting the `scan_mime_parts`option to true, which will send all detected attachments as separate mime parts. The options `scan_text_mime` or `scan_image_mime` can also be set to true if you want text mimes and images sent to the AV scanner.
 
-By default, given [Redis]({{ site.baseurl }}/doc/configuration/redis.html) is configured globally and `antivirus` is not explicitly disabled in redis configuration, results are cached in Redis according to message checksums.
+By default, if [Redis]({{ site.baseurl }}/doc/configuration/redis.html) is configured globally and the `antivirus` option is not explicitly disabled in the Redis configuration, the results will be cached in Redis according to message checksums.
 
-Settings should be added to `/etc/rspamd/local.d/antivirus.conf`:
+Settings should be added to `/etc/rspamd/local.d/antivirus.conf` file:
 
 ~~~ucl
 # local.d/antivirus.conf
@@ -116,21 +116,16 @@ clamav {
 
 ## Sophos SAVDI specific details
 
-Sophos SAVDI is a little daemon which extends Sophos Anti-Virus for Linux to be reachable via TCP sockets using the generic ICAP or the Sophos specific Sophie and SSSP protocols. You need to install both Sophos Anti-Virus for Linux and the Sophos SAVDI daemon.
+Sophos SAVDI is a daemon that extends Sophos Anti-Virus for Linux to be reachable via TCP sockets using the generic ICAP or the Sophos-specific Sophie and SSSP protocols. Both Sophos Anti-Virus for Linux and the Sophos SAVDI daemon need to be installed.
 
-Rspamd is using the SSSP protocol to communicate with SAVDI. For a SAVDI config example - maybe have a look here:
-[https://gist.github.com/c-rosenberg/671b0a5d8b1b5a937e3e161f8515c666](https://gist.github.com/c-rosenberg/671b0a5d8b1b5a937e3e161f8515c666)
+Rspamd uses the SSSP protocol to communicate with SAVDI. A sample SAVDI configuration can be found at [https://gist.github.com/c-rosenberg/671b0a5d8b1b5a937e3e161f8515c666](https://gist.github.com/c-rosenberg/671b0a5d8b1b5a937e3e161f8515c666)
 
-Note: Since 1.9.0 SAVDI errors  will be reported in the fail symbol (e.g. SOPHOS_VIRUS_FAIL). So the following configuration is obsolete.
+Note: Since version 1.9.0, SAVDI errors will be reported in the fail symbol (e.g. SOPHOS_VIRUS_FAIL), making the following configuration obsolete.
 
-From the version 1.7.2 up to 1.8.3, there are 2 special configuration parameters for handling SAVDI warnings / error messages
-in the sophos section: `savdi_report_encrypted` and `savdi_report_oversized`.
-When enabled pseudo virus names (SAVDI_FILE_OVERSIZED, SAVDI_FILE_ENCRYPTED) will be set in case
-Sophos reports encrypted file or the file is bigger than `maxscandata` in the scanprotocol section
-of the SAVDI configuration file.
+From version 1.7.2 up to 1.8.3, there are two special configuration parameters for handling SAVDI warnings/error messages in the `sophos` section: `savdi_report_encrypted` and `savdi_report_oversized`. When enabled, pseudo virus names (SAVDI_FILE_OVERSIZED, SAVDI_FILE_ENCRYPTED) will be set in case Sophos reports an encrypted file or if the file is bigger than `maxscandata` in the `scanprotocol` section of the SAVDI configuration file.
 
 If you don't want to handle those pseudo virus names like everything else you could use patterns to set
-a different symbol and maybe set a score or use the symbol in force_actions.
+a different symbol and maybe set a score or use the symbol in `force_actions`.
 
 ~~~ucl
 # local.d/antivirus.conf
@@ -151,13 +146,13 @@ sophos {
 
 ## SAVAPI specific details
 
-The default SAVAPI configuration has a listening unix socket. You should change this to a TCP socket. The option "ListenAddress" in savapi.conf shows some examples. Per default this module expects the socket at 127.0.0.1:4444. You can change this by setting it in the "servers" variable as seen above.
+The default configuration for SAVAPI uses a listening unix socket. However, it is recommended to change this to a TCP socket for better security and reliability. The `ListenAddress` option in savapi.conf provides examples on how to do this. By default, the module expects the socket to be located at 127.0.0.1:4444, but this can be changed by setting it in the `servers` variable.
 
-You also need to set the "product_id" that should match with the id for your HBEDV.key file. If you leave this, the default value is "0" and checking will fail with a log message that the given id was invalid.
+Additionally, it is important to set the `product_id` to match the id for your HBEDV.key file. Failure to do so will result in a log message indicating that the given id was invalid.
 
 ## Kaspersky specific
 
-You might want to use `clamav` socket to scan data. Since it is a Unix socket, you can only use it for local scan. It is also important that Rspamd should be able to write into Kaspersky Unix socket. For example, you can add Rspamd user (`_rspamd` on Linux most likely) into `klusers` group: `usermod -G klusers _rspamd` in Linux. Rspamd will also write data into some intermediate files that are normally placed in `/tmp` folder.
+In terms of Kaspersky specific configurations, it is possible to use the `clamav` socket for data scanning. However, it should be noted that it is a unix socket and can only be used for local scans. It is also important that Rspamd should be able to write into Kaspersky Unix socket. For example, you can add Rspamd user (`_rspamd` on Linux most likely) into `klusers` group: `usermod -G klusers _rspamd` in Linux. Rspamd will also write data into some intermediate files that are normally placed in `/tmp` folder.
 
 ~~~ucl
 # local.d/antivirus.conf
@@ -172,7 +167,7 @@ kaspersky {
 
 ## Kaspersky Scan Engine details
 
-This engine uses HTTP [REST API version 1.0](https://help.kaspersky.com/ScanEngine/1.0/en-US/181038.htm). Rspamd can work in files and TCP stream mode. Files mode could be useful if you have fast `tmpfs` that relies in memory and want to reduce the amount of data transferred over a socket for the local machine, however, this is definitely not recommended for any type of real storage (even SSD). Here are possible settings for this engine:
+The engine utilizes the HTTP REST API version 1.0, as outlined in the Kaspersky [documentation](https://help.kaspersky.com/ScanEngine/1.0/en-US/181038.htm). Rspamd can operate in both file and TCP stream modes. The file mode may be useful if you have a fast `tmpfs` in-memory storage and wish to reduce the amount of data transferred over a socket for the local machine. However, this mode is not recommended for any type of real storage, including SSDs. The following settings are available for this engine:
 
 ~~~ucl
 # local.d/antivirus.conf
@@ -189,11 +184,11 @@ kaspersky_se {
 
 ## Avast Antivirus Rest API details
 
-You need to install the Avast-rest package next to the Avast antivirus package itself. Maybe you want to adjust the default settings in /etc/avast/rest.conf. Rspamd can work in files and TCP stream mode. Files mode could be useful if you have fast `tmpfs` that relies in memory and want to reduce the amount of data transferred over a socket for the local machine, however, this is definitely not recommended for any type of real storage (even SSD).
+You need to install the Avast-rest package in addition to the Avast antivirus package. It is also recommended to adjust the default settings in /etc/avast/rest.conf. Rspamd can operate in both file and TCP stream modes. File mode can be useful if you have a fast `tmpfs` that relies on memory, but this is not recommended for any type of real storage, even SSD.
 
-Warnings like corrupt file or possible zip bomb are only logged. You can set `warnings_as_threat = true` if you want Rspamd to use warnings as pseudo virus. Maybe you should use patterns to avoid false positive.
+Warnings such as corrupt file or possible zip bomb are only logged. However, you can set `warnings_as_threat = true` if you want Rspamd to treat these warnings as pseudo viruses. It is recommended to use patterns to avoid false positives.
 
-Using the option `parameter` you can set any option for the rest-api from Rspamd.
+With the parameter option, you can set any option for the rest-api from Rspamd.
 
 Here are possible settings for this engine:
 
