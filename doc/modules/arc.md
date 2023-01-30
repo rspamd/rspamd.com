@@ -9,7 +9,7 @@ This module verifies [ARC](http://arc-spec.org/) and seals for scanned emails, w
 
 Rspamd, starting from version 1.6, offers support for both checking and signing ARC signatures and seals. It utilizes the [dkim](./dkim.html) module to manage signatures.
 
-The configuration of this module is comparable to the [dkim](./dkim.html) and [dkim_signing](./dkim_signing.html) modules.
+The configuration of this module is similar to the [dkim](./dkim.html) and [dkim_signing](./dkim_signing.html) modules.
 
 ## Configuration
 
