@@ -5,7 +5,7 @@ title: Antivirus module
 
 # Antivirus module
 
-he Antivirus module, available from Rspamd version 1.4, seamlessly integrates with various virus scanners. Currently, the following scanners are supported:
+The Antivirus module, available from Rspamd version 1.4, seamlessly integrates with various virus scanners. Currently, the following scanners are supported:
 
 * [Avast Antivirus Rest API](https://businesshelp.avast.com/Content/Products/AfB_Antivirus/Linux/InstallingAvastBusinessAntivirusLinux.htm) (from 3.3)
 * [Avira](https://www.avira.com/de/oem-antivirus) (via SAVAPI)
