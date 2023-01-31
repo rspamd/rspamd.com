@@ -48,7 +48,7 @@ sign_authenticated = true;
 # If false, messages from local networks are not selected for signing
 sign_local = true;
 # Symbol to add when message is signed
-symbol_signed = "ARC_SIGNED";
+sign_symbol = "ARC_SIGNED";
 # Whether to fallback to global config
 try_fallback = true;
 # Domain to use for ARC signing: can be "header" or "envelope"
