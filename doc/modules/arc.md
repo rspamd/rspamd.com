@@ -31,20 +31,30 @@ The ARC signing module follows a configurable policy for choosing signing domain
 ~~~ucl
 # local.d/arc.conf
 
+# Allowed settings id
+allowed_ids = nil;
 # If false, messages with empty envelope from are not signed
 allow_envfrom_empty = true;
 # If true, envelope/header domain mismatch is ignored
 allow_hdrfrom_mismatch = false;
+# Domain mismatch allowed for local IP
+allow_hdrfrom_mismatch_local = false;
+# Domain mismatch allowed for sign_networks
+allow_hdrfrom_mismatch_sign_networks = false;
 # If true, multiple from headers are allowed (but only first is used)
 allow_hdrfrom_multiple = false;
 # If true, username does not need to contain matching domain
 allow_username_mismatch = false;
+# Banned settings id
+forbidden_ids = nil;
 # Default path to key, can include '$domain' and '$selector' variables
 path = "${DBDIR}/arc/$domain.$selector.key";
 # Default selector to use
 selector = "arc";
 # If false, messages from authenticated users are not selected for signing
 sign_authenticated = true;
+# If false, inbound messages are not selected for signing
+sign_inbound = true;
 # If false, messages from local networks are not selected for signing
 sign_local = true;
 # Symbol to add when message is signed
@@ -59,6 +69,8 @@ use_esld = true;
 use_redis = false;
 # Hash for ARC keys in Redis
 key_prefix = "ARC_KEYS";
+# Reuse the existing authentication results
+reuse_auth_results = false;
 # map of domains -> names of selectors (since rspamd 1.5.3)
 #selector_map = "/etc/rspamd/arc_selectors.map";
 # map of domains -> paths to keys (since rspamd 1.5.3)
