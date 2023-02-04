@@ -6,9 +6,9 @@ title: Clickhouse module
 # Clickhouse module
 {:.no_toc}
 
-Clickhouse module pushes a variety of message-related metadata to an instance of [Clickhouse](https://clickhouse.yandex/), an open-source column-oriented DBMS useful for realtime analytics. Information that could be collected includes: senders/recipients/scores of scanned messages and metadata such as DKIM/DMARC/bayes/fuzzy status & information about URLs and attachments.
+The Clickhouse module pushes a range of message-related metadata to an instance of [Clickhouse](https://clickhouse.yandex/), an open-source column-oriented database management system for real-time analytics. Information that could be collected includes: senders/recipients/scores of scanned messages and metadata such as DKIM/DMARC/bayes/fuzzy status & information about URLs and attachments.
 
-You can also use [Redash](https://redash.io) to build your own analytical board using this module (similar to Elastic + Kibana).
+Additionally, this module enables you to construct your custom analytical dashboard using [Redash](https://redash.io), similar to using Elastic and Kibana.
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
@@ -111,7 +111,7 @@ subject_privacy_length = 16;
 
 ### Clickhouse retention
 
-Privacy is important for many email systems. Clickhouse dumps might store client sensitive data. Rspamd supports automatic cleanup of the outdated data using **retention policies**. By default, data is not expired in Clickhouse. However, you can set expiration as following (e.g. to comply with GDPR):
+Privacy is a crucial consideration in many email systems. The Clickhouse dumps may contain sensitive client data. Rspamd supports automatic cleanup of the outdated data using **retention policies**. By default, data is not expired in Clickhouse, but expiration can be set to comply with regulations such as the General Data Protection Regulation (GDPR) as follows:
 
 ~~~ucl
 # local.d/clickhouse.conf
@@ -131,7 +131,7 @@ To remove data for particular users, you might consider using of the [Clickhouse
 
 ### Subject privacy
 
-Similarly to previous, from the version 1.9, you can store email subject in Clickhouse (disabled by default). Here are settings available:
+Similarly to previous, from the version 1.9, you can store email subject in Clickhouse (disabled by default). The following settings are available:
 
 ~~~ucl
 insert_subject = false; 
@@ -238,7 +238,7 @@ LIMIT 5
 └────────┴──────────────────────────┘
 ~~~
 
-Rspamd can also send copies of data for specific domains to a separate tables to simplify analytics.
+Rspamd also provides the capability to send data copies for specific domains to separate tables, making analytics easier.
 
 For mailing lists, Rspamd sends list ids which allows to provide very precise statistics for each particular mailing list:
 
