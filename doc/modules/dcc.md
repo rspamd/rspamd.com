@@ -7,22 +7,22 @@ title: DCC module
 This modules performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine
 the *bulkiness* of a message (e.g. how many recipients have seen it).
 
-Identifying bulk messages is very useful in composite rules e.g. if a message is
-from a freemail domain *AND* the message is reported as bulk by DCC then you can
-be sure the message is spam and can assign a greater weight to it.
+This information, which indicates how many recipients have seen the message, is useful for identifying bulk messages in composite rules. 
+For example, if a message is from a freemail domain and is reported as bulk by DCC, it is likely to be spam and can be assigned a higher weight.
 
-Please view the License terms on the DCC website before you enable this module.
+Before enabling this module, please make sure to review the License terms on the DCC website.
 
 ## Module configuration
 
-This module requires that you have the `dccifd` daemon configured, running and
-working correctly.  To do this you must download and build the [latest DCC client]
-(https://www.dcc-servers.net/dcc/source/dcc.tar.Z).  Once installed, edit
-`/var/dcc/dcc_conf` set `DCCIFD_ENABLE=on` and set `DCCM_LOG_AT=NEVER` and
-`DCCM_REJECT_AT=MANY`, then start the daemon by running `/var/dcc/libexec/rcDCC start`.
+To use the `dccifd` module, you must have the `dccifd` daemon properly configured, installed, and running. To do this, follow these steps:
 
-Once the `dccifd` daemon is started it will listen on the UNIX domain socket /var/dcc/dccifd
-and all you have to do is tell the rspamd where `dccifd` is listening:
+1. Download and build the latest DCC client from the [latest DCC client](https://www.dcc-servers.net/dcc/source/dcc.tar.Z).  
+2. Edit the `/var/dcc/dcc_conf` file, setting `DCCIFD_ENABLE=on`, `DCCM_LOG_AT=NEVER` and
+`DCCM_REJECT_AT=MANY`.
+3. Start the daemon by running `/var/dcc/libexec/rcDCC start`.
+
+Once the `dccifd`, it will listen on the UNIX domain socket /var/dcc/dccifd.
+To complete the setup, simply inform rspamd of the location where the `dccifd` is listening:
 
 ~~~ucl
 # local.d/dcc.conf
@@ -45,7 +45,5 @@ log_clean = false;
 retransmits = 2;
 ~~~
 
-Alternatively you can configure DCC to listen to a TCP Socket on localhost or any remote server.
-For the detailed configuration have a look to the DCC manual. Here is the config line for having DCCIFD
-listening on localhost port 10045 and allowing 127.0.0.1/8 to query:
+If you prefer, you can configure DCC to listen to a TCP socket on localhost or any remote server. For detailed configuration instructions, refer to the DCC manual. The following configuration line sets up DCCIFD to listen on localhost port 10045 and allows queries from the IP range `127.0.0.1/8`:
 `DCCIFD_ARGS="-SHELO -Smail_host -SSender -SList-ID -p *,10045,127.0.0.0/8"`
