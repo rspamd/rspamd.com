@@ -4,18 +4,15 @@ title: DKIM module
 ---
 # DKIM module
 
-This module checks [DKIM](http://www.dkim.org/) signatures for emails scanned.
-DKIM signatures can establish that this specific message has been signed by a trusted
-relay. For example, if a message comes from `gmail.com` then a valid DKIM signature
-means that this message was definitely signed by `gmail.com` (unless gmail.com private
-key has been compromised, which is not a likewise case).
+This module verifies the authenticity of emails through the analysis of [DKIM](http://www.dkim.org/) signatures.
+The presence of a valid DKIM signature indicates that the message has been trusted and signed by a recognized source.
+For example, if a message comes from `gmail.com` then a valid DKIM signature means that this message was definitely signed by `gmail.com` (unless gmail.com private key has been compromised, which is not a likewise case).
 
 ## Supported features
 
-Rspamd can deal with many types of DKIM signatures and messages canonicalisation.
-The major difficulty with DKIM are line endings: many MTA treat them differently which
-leads to broken signatures. Basically, rspamd treats all line endings as `CR+LF` that
-is compatible with the most of DKIM implementations.
+Rspamd effectively handles a variety of DKIM signatures and message canonicalization techniques. 
+However, a common challenge in DKIM is the handling of line endings, as different mail transfer agents (MTAs) may treat them differently, resulting in invalid signatures. 
+To mitigate this issue, Rspamd treats line endings as `CR+LF` that which is compatible with the majority of DKIM implementations.
 
 ## Configuration
 
