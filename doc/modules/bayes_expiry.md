@@ -58,7 +58,7 @@ Disadvantages:
 ### Lazy expiration mode (1.7.4+)
 The `lazy` mode is the only expiration mode since Rspamd 2.0.
 
-This mode ensures that `significant` tokens with a TTL are persistently kept, while TTL of `insignificant` or `infrequent` tokens is reduced to the `expire` value if its current TTL exceeds `expire`. `Common` tokens are discriminated by resetting their TTL to a lower value of 10 days, if their TTL exceed this threshold.
+This mode ensures that `significant` tokens with a TTL are persistently kept (the module sets significant tokens TTLs to -1, i.e. makes them persistent if they are not), while TTL of `insignificant` or `infrequent` tokens is reduced to the `expire` value if its current TTL exceeds `expire`. `Common` tokens are discriminated by resetting their TTL to a lower value of 10 days, if their TTL exceed this threshold.
 
 The advantages of the "lazy" mode include:
 - The ability to keep statistics offline for an infinite period without the risk of losing `significant` tokens.
