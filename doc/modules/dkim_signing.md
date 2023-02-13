@@ -388,7 +388,7 @@ rspamadm vault del example.com
 rspamadm vault rotate example.com
 ```
     
-spamd generates a new set of keys for each algorithm stored in vault. The new selectors are determined based on the key type and current date, such as `rsa-20190501`. The previous keys are kept, but their expiration date is set to cease usage after the default ttl grace period of one day. During this grace period, Rspamd will sign messages using both the old and new selectors.
+Rspamd generates a new set of keys for each algorithm stored in vault. The new selectors are determined based on the key type and current date, such as `rsa-20190501`. The previous keys are kept, but their expiration date is set to cease usage after the default ttl grace period of one day. During this grace period, Rspamd will sign messages using both the old and new selectors.
 
 For example, if you have rsa-20190501 and ed25519-20190501 selectors and you want to roll them to 20190601, two new keys will be created: rsa-20190601 and ed25519-20190601. For the grace period, specifically until 20190602, Rspamd will produce four DKIM signatures to allow DNS rollover for the new key. This approach ensures a safe and secure key rotation process by providing ample time to address any DNS cache issues.
 
