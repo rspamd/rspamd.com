@@ -6,7 +6,7 @@ title: DKIM signing module
 # DKIM signing module
 {:.no_toc}
 
-The DKIM signing module has been added in Rspamd 1.5 to provide a relatively simple way to configure DKIM signing, the more flexible alternative being [sign_condition]({{ site.baseurl }}/doc/modules/dkim.html#dkim-signatures) in the DKIM module.
+The Rspamd 1.5 version has introduced a convenient method of configuring DKIM signing through the addition of the DKIM signing module. A more customizable option is available in the DKIM module through the [sign_condition]({{ site.baseurl }}/doc/modules/dkim.html#dkim-signatures).
 
 DKIM signing currently works with Milter based MTAs (Sendmail, Postfix), Haraka & Communigate. For DKIM signing to work, you must [scan outbound mail with rspamd]({{ site.baseurl }}/doc/tutorials/scanning_outbound.html).
 
@@ -27,7 +27,7 @@ The DKIM signing module uses a predefined policy to determine which domains and 
 
 The default global configuration (fallback mode) searches for keys at the defined path. This path is constructed using the eSLD normalized domain name of the header from and the default selector defined with selector (dkim). For example, the search path for user@test.example.com would be /var/lib/rspamd/dkim/example.com.dkim.key. If a key is found, the message will be signed.
 
-**Important notice**: when using file-based DKIM private keys, make sure that the Rspamd scanner processes (e.g. normal worker, controller, or a proxy in self-scan mode) have at least read access to the signing keys. This means that the keys should be accessible to the user/group _rspamd.
+**Important notice**: when using file-based DKIM private keys, ensure that the Rspamd scanner processes (e.g. normal worker, controller, or a proxy in self-scan mode) have at least read access to the signing keys. This requires the keys to be accessible by the user or group `_rspamd`.
 
 ## Configuration
 
@@ -128,9 +128,9 @@ enabled = false;
 
 ## DKIM key management
 
-Rspamd always uses `relaxed/relaxed` encoding with the `rsa-sha256` signature algorithm. This selection seems to be the most appropriate for all cases. Rspamd adds a special element called `DKIM-Signature` to the output when signing has been done.
+Rspamd always uses `relaxed/relaxed` encoding with the `rsa-sha256` signature algorithm, which is deemed to be the most suitable option for all cases. Upon successful signing, Rspamd adds a unique element, the `DKIM-Signature`, to the output.
 
-You can generate DKIM keys for your domain using the included `rspamadm dkim_keygen` utility:
+To generate DKIM keys for your domain, utilize the in-built `rspamadm dkim_keygen` utility:
 
 ~~~
 rspamadm dkim_keygen -s 'test' -d example.com
@@ -162,7 +162,7 @@ rspamadm dkim_keygen -s 'woosh' -d example.com -t ed25519 -k woosh-ed25519.priva
 * ```-t ed25519``` specifies key type Ed25519
 * Note: using ```-b``` together with Ed25519 has no effect. There is no variable key length with Ed25519. 
 
-Note that as of 2019-09, Ed25519 keys are not yet widely supported in software, so using this key-type exclusively in production is not yet recommended, and may result in mail being rejected. If you do use this key type, use it in combination with an RSA key also, in case a recipient domain is unable to parse Ed25519 keys/signatures - then it will have something to fall back to. 
+Please note that as of September 2019, Ed25519 keys are not widely supported in software, making it inadvisable to exclusively use this key type in a production environment, as this may result in rejected emails. If you choose to use Ed25519 keys, it is recommended to pair them with an RSA key, providing a fallback option in case a recipient domain is unable to parse Ed25519 keys or signatures.
 
 Example:
 
@@ -209,7 +209,7 @@ coefficient:
     00:...
 ~~~
 
-You can also configure `dkim_signing` module to verify the published pubkey record to match the selected private key by setting option `check_pubkey` to `true` (it is `false` by default). However, please be aware that it might cause an extra DNS request on signing.
+You have the option to configure the `dkim_signing` module to verify that the published pubkey record matches the selected private key by setting the `check_pubkey` option to `true` (the default setting is `false`). Please be advised that this may result in an additional DNS request during the signing process.
 
 
 ## DKIM keys in Redis
@@ -249,9 +249,9 @@ The selector will be chosen as per usual (a domain-specific selector will be use
 
 ## Using maps
 
-Since Rspamd 1.5.3, one or both of `selector_map` or `path_map` can be used to look up selectors and paths to private keys respectively (using the DKIM signing domain as the key). If entries are found, these will override default settings.
+Starting from Rspamd 1.5.3, the `selector_map` or `path_map` can be used to determine the selectors and paths to private keys, respectively, using the DKIM signing domain as the key. If entries are found, they will override the default settings.
 
-In the following configuration we define a templatised path for the DKIM signing key, a default selector, and a map which could be used for overriding the default selector (and hence effective path to the signing key as well). Any eligible mail will be signed given there is a suitably-named key on disk.
+The following configuration provides a templated path for the DKIM signing key, a default selector, and a map that can be used to override the default selector, which in turn affects the effective path to the signing key. Any eligible email will be signed if a key with the appropriate name exists on disk.
 
 ~~~ucl
 # local.d/dkim_signing.conf
@@ -285,15 +285,21 @@ From the version 1.9.2, Rspamd supports OpenDKIM compatible settings:
 
 - `signing_table`:
 
-Defines a table used to select one or more signatures to apply to a message based on the address found in the From: header field. Keys in this table vary depending on the type of table used; values in this data set should include one field that contains a name found in the KeyTable (see above) that identifies which key should be used in generating the signature, and an optional second field naming the signer of the message that will be included in the "i=" tag in the generated signature. Note that the "i=" value will not be included in the signature if it conflicts with the signing domain (the "d=" value).
+Defines a table used to select one or more signatures to apply to a message based on the address found in the `From:` header field. The keys in this table can vary based on the type of table used. 
+The values in this data set should include one field that contains a name found in the KeyTable (see above) that identifies which key should be used in generating the signature, and an optional second field naming the signer of the message that will be included in the `i=` tag in the generated signature. 
+Note that the `i=` value will not be included in the signature if it conflicts with the signing domain (the `d=` value).
 
-If the first field contains only a "%" character, it will be replaced by the domain found in the From: header field. Similarly, within the optional second field, any "%" character will be replaced by the domain found in the From: header field.
+If the first field in the data set contains only a `%` symbol, it will be replaced by the domain found in the `From:` header field. Similarly, the optional second field can include a `%` symbol that will be replaced by the domain found in the `From:` header field.
 
 In Rspamd, this table is treated as `refile`! So you should use **glob** style regular expressions to do matching.
 
 - `key_table`
 
-Gives the location of a file mapping key names to signing keys. If present, overrides any KeyFile setting in the configuration file. The data set named here maps each key name to three values: (a) the name of the domain to use in the signature’s "d=" value; (b) the name of the selector to use in the signature’s "s=" value; and (c) either a private key or a path to a file containing a private key. If the first value consists solely of a percent sign ("%") character, it will be replaced by the apparent domain of the sender when generating a signature. If the third value starts with a slash ("/") character, or "./" or "../", then it is presumed to refer to a file from which the private key should be read, otherwise it is itself a PEM-encoded private key or a base64-encoded DER private key; a "%" in the third value in this case will be replaced by the apparent domain name of the sender. The SigningTable (see below) is used to select records from this table to be used to add signatures based on the message sender.
+Gives the location of a file that maps key names to signing keys. This file, if present, overrides any KeyFile setting in the configuration file. The data set in this file associates each key name with three values: (a) the name of the domain to use in the signature’s "d=" value; (b) the name of the selector to use in the signature’s "s=" value; and (c) either a private key or a path to a file containing a private key. 
+
+If the first value consists solely of a percent sign ("%") character, it will be replaced by the apparent domain of the sender when generating a signature. If the third value starts with a slash ("/") character, or "./" or "../", then it is presumed to refer to a file from which the private key should be read, otherwise it is itself a PEM-encoded private key or a base64-encoded DER private key; a "%" in the third value in this case will be replaced by the apparent domain name of the sender. 
+
+The SigningTable (see below) is used to select records from this table to be used to add signatures based on the message sender.
 
 Rspamd also supports embedded tables as for all other maps in the config, e.g. here is a sample used for functional testing:
 
@@ -312,7 +318,7 @@ When using these options, they *passthrough* all mismatch checks. The only meani
 
 ## HTTP headers based DKIM signing
 
-To simplify REST services integration, Rspamd supports dkim signing based solely on HTTP request headers. To use this feature one can use the boolean setting called `use_http_headers`. When this mode is enabled Rspamd ignores all other ways to sign message and wait merely for the specified **request** headers (not email headers!):
+To simplify REST services integration, Rspamd offers the option of DKIM signing based solely on HTTP request headers. To utilize this feature, simply enable the `use_http_headers` setting. When this mode is activated, Rspamd disregards all other methods of signing messages and only looks for the designated **request** headers (not email headers!):
 
  Header | Definition
 ---------|-----------
@@ -322,15 +328,15 @@ To simplify REST services integration, Rspamd supports dkim signing based solely
 `DkimSelector` | Selector for signing
 `DkimPrivateKey` | Private key encoded in Base64
 
-All headers are mandatory. Dkim check dependency is automatically enabled but you need to ensure that `DKIM_CHECK` has been enabled in user settings. This mode is normally used in conjunction with `Setting` header that allows bypassing of the resting checks (see [Users settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html)) documentation for more details).
+To ensure proper functionality, it's crucial to follow the mandatory header requirements and enable the `DKIM_CHECK` in user settings. This will enable the automatic DKIM check dependency and allow for the use of the `Setting` header, which facilitates bypassing of other checks. For further information, refer to the (see [Users settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html)) documentation.
 
 ## DKIM signing using Vault
 
-From version 1.9.3, Rspamd can use [Hashicorp Vault](https://www.vaultproject.io) to store and manage DKIM keys. Vault usage provides secure and flexible storage of the private keys that can scale and use various backends to store sensible data (secrets).
+Starting from version 1.9.3, Rspamd has the capability to use [Hashicorp Vault](https://www.vaultproject.io) to securely store and manage DKIM keys. Vault usage provides secure and flexible storage of the private keys that can scale and use various backends to store sensible data (secrets).
 
-You need to create a KV storage version 1 to store DKIM keys. You can read more about it [here](https://learn.hashicorp.com/vault/getting-started/secrets-engines).
+To store DKIM keys using Vault, you must create a KV storage version 1. For more information, see the Vault Secrets Engine [guide](https://learn.hashicorp.com/vault/getting-started/secrets-engines).
 
-To use keys in Rspamd you could add the following lines to `local.d/dkim_signing.conf` (or `arc.conf` for [ARC signing](arc.html)):
+To integrate Vault-stored keys with Rspamd, simply add the following lines to your `local.d/dkim_signing.conf` (or `arc.conf` for [ARC signing](arc.html)):
 
 ~~~ucl
 use_vault = true;
@@ -382,9 +388,9 @@ rspamadm vault del example.com
 rspamadm vault rotate example.com
 ```
     
-During rotation, Rspamd creates a new set of keys for each algorithm represented in the vault. The new selectors are chosen based on the current date and key type, e.g. rsa-20190501. The old keys are preserved, but their expiration date is set to stop their use after the ttl grace period (1 day by default). During this grace period, Rspamd will sign using both selectors.
+Rspamd generates a new set of keys for each algorithm stored in vault. The new selectors are determined based on the key type and current date, such as `rsa-20190501`. The previous keys are kept, but their expiration date is set to cease usage after the default ttl grace period of one day. During this grace period, Rspamd will sign messages using both the old and new selectors.
 
-For example, if you have rsa-20190501 and ed25519-20190501 selectors and you want to roll them to 20190601, two new keys will be created: rsa-20190601 and ed25519-20190601. For the grace period, specifically until 20190602, Rspamd will produce four DKIM signatures to allow DNS rollover for the new key. This logic allows for safe and secure key rotation, providing enough time to work around various DNS caches.
+For example, if you have rsa-20190501 and ed25519-20190501 selectors and you want to roll them to 20190601, two new keys will be created: rsa-20190601 and ed25519-20190601. For the grace period, specifically until 20190602, Rspamd will produce four DKIM signatures to allow DNS rollover for the new key. This approach ensures a safe and secure key rotation process by providing ample time to address any DNS cache issues.
 
 The rotate subcommand can also remove all expired keys from the vault.
 
