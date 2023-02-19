@@ -61,7 +61,7 @@ sign_local = true;
 sign_symbol = "ARC_SIGNED";
 # Whether to fallback to global config
 try_fallback = true;
-# Domain to use for ARC signing: can be "header" or "envelope"
+# Domain to use for ARC signing: can be "header" (MIME From), "envelope" (SMTP From), "recipient" (SMTP To), "auth" (SMTP username) or directly specified domain name
 use_domain = "header";
 # Whether to normalise domains to eSLD
 use_esld = true;

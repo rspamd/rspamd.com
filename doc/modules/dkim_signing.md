@@ -67,7 +67,7 @@ symbol = "DKIM_SIGNED";
 # Whether to fallback to global config
 try_fallback = true;
 
-# Domain to use for DKIM signing: can be "header" (MIME From), "envelope" (SMTP From) or "auth" (SMTP username)
+# Domain to use for DKIM signing: can be "header" (MIME From), "envelope" (SMTP From), "recipient" (SMTP To), "auth" (SMTP username) or directly specified domain name
 use_domain = "header";
 
 # Domain to use for DKIM signing when sender is in sign_networks ("header"/"envelope"/"auth")
@@ -142,7 +142,7 @@ test._domainkey IN TXT ( "v=DKIM1; k=rsa; "
   "p=MIGJAoGBALBrq9K6yxAXHwircsTnDTsd2Kg426z02AnoKTvyYNqwYT5Dxa02lyOiAXloXVIJsyfuGOOoSx543D7DGWw0plgElHXKStXy1TZ7fJfbEtuc5RASIKqOAT1iHGfGB1SZzjt3a3vJBhoStjvLulw4h8NC2jep96/QGuK8G/3b/SJNAgMBAAE=" ) ;
 ~~~
 
-Between ```-----BEGIN PRIVATE KEY-----``` and ```-----END PRIVATE KEY-----``` is your DKIM private key (use the ```-k``` switch to save to file). The second part is the public DNS TXT record that you should place in your DNS zone file. This command can also save both private and public parts to files. 
+Between ```-----BEGIN PRIVATE KEY-----``` and ```-----END PRIVATE KEY-----``` is your DKIM private key (use the ```-k``` switch to save to file). The second part is the public DNS TXT record that you should place in your DNS zone file. This command can also save both private and public parts to files.
 
 For an RSA key of 2048 bits:
 ~~~
@@ -160,7 +160,7 @@ Or for an Ed25519 key:
 rspamadm dkim_keygen -s 'woosh' -d example.com -t ed25519 -k woosh-ed25519.private > woosh-ed25519.txt
 ~~~
 * ```-t ed25519``` specifies key type Ed25519
-* Note: using ```-b``` together with Ed25519 has no effect. There is no variable key length with Ed25519. 
+* Note: using ```-b``` together with Ed25519 has no effect. There is no variable key length with Ed25519.
 
 Please note that as of September 2019, Ed25519 keys are not widely supported in software, making it inadvisable to exclusively use this key type in a production environment, as this may result in rejected emails. If you choose to use Ed25519 keys, it is recommended to pair them with an RSA key, providing a fallback option in case a recipient domain is unable to parse Ed25519 keys or signatures.
 
@@ -285,8 +285,8 @@ From the version 1.9.2, Rspamd supports OpenDKIM compatible settings:
 
 - `signing_table`:
 
-Defines a table used to select one or more signatures to apply to a message based on the address found in the `From:` header field. The keys in this table can vary based on the type of table used. 
-The values in this data set should include one field that contains a name found in the KeyTable (see above) that identifies which key should be used in generating the signature, and an optional second field naming the signer of the message that will be included in the `i=` tag in the generated signature. 
+Defines a table used to select one or more signatures to apply to a message based on the address found in the `From:` header field. The keys in this table can vary based on the type of table used.
+The values in this data set should include one field that contains a name found in the KeyTable (see above) that identifies which key should be used in generating the signature, and an optional second field naming the signer of the message that will be included in the `i=` tag in the generated signature.
 Note that the `i=` value will not be included in the signature if it conflicts with the signing domain (the `d=` value).
 
 If the first field in the data set contains only a `%` symbol, it will be replaced by the domain found in the `From:` header field. Similarly, the optional second field can include a `%` symbol that will be replaced by the domain found in the `From:` header field.
@@ -295,9 +295,9 @@ In Rspamd, this table is treated as `refile`! So you should use **glob** style r
 
 - `key_table`
 
-Gives the location of a file that maps key names to signing keys. This file, if present, overrides any KeyFile setting in the configuration file. The data set in this file associates each key name with three values: (a) the name of the domain to use in the signature’s "d=" value; (b) the name of the selector to use in the signature’s "s=" value; and (c) either a private key or a path to a file containing a private key. 
+Gives the location of a file that maps key names to signing keys. This file, if present, overrides any KeyFile setting in the configuration file. The data set in this file associates each key name with three values: (a) the name of the domain to use in the signature’s "d=" value; (b) the name of the selector to use in the signature’s "s=" value; and (c) either a private key or a path to a file containing a private key.
 
-If the first value consists solely of a percent sign ("%") character, it will be replaced by the apparent domain of the sender when generating a signature. If the third value starts with a slash ("/") character, or "./" or "../", then it is presumed to refer to a file from which the private key should be read, otherwise it is itself a PEM-encoded private key or a base64-encoded DER private key; a "%" in the third value in this case will be replaced by the apparent domain name of the sender. 
+If the first value consists solely of a percent sign ("%") character, it will be replaced by the apparent domain of the sender when generating a signature. If the third value starts with a slash ("/") character, or "./" or "../", then it is presumed to refer to a file from which the private key should be read, otherwise it is itself a PEM-encoded private key or a base64-encoded DER private key; a "%" in the third value in this case will be replaced by the apparent domain name of the sender.
 
 The SigningTable (see below) is used to select records from this table to be used to add signatures based on the message sender.
 
@@ -375,19 +375,19 @@ rspamadm vault create example.com
 ```
 rspamadm vault create --algorithm eddsa example.com
 ```
-    
+
 * Delete keys
 
 ```
 rspamadm vault del example.com
 ```
-    
+
 * Perform safe keys rotation:
 
 ```
 rspamadm vault rotate example.com
 ```
-    
+
 Rspamd generates a new set of keys for each algorithm stored in vault. The new selectors are determined based on the key type and current date, such as `rsa-20190501`. The previous keys are kept, but their expiration date is set to cease usage after the default ttl grace period of one day. During this grace period, Rspamd will sign messages using both the old and new selectors.
 
 For example, if you have rsa-20190501 and ed25519-20190501 selectors and you want to roll them to 20190601, two new keys will be created: rsa-20190601 and ed25519-20190601. For the grace period, specifically until 20190602, Rspamd will produce four DKIM signatures to allow DNS rollover for the new key. This approach ensures a safe and secure key rotation process by providing ample time to address any DNS cache issues.
