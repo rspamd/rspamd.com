@@ -30,35 +30,6 @@ Symbols that the module adds are listed below:
 - `DMARC_POLICY_QUARANTINE`: Authentication failed- quarantine suggested by DMARC policy
 - `DMARC_POLICY_SOFTFAIL`: Authentication failed- no action suggested by DMARC policy
 
-Rspamd has the ability to store records in `redis`, which can be used to produce DMARC aggregate reports, but there are currently no tools available to generate such reports from these records. The format of the records stored in `redis` is as follows:
-
-    unixtime,ip,spf_result,dkim_result,dmarc_disposition
-
-In this format, the `spf_result` and `dkim_result` fields indicate whether an aligned SPF/DKIM identifier was found and are represented by `true` or `false`. The `dmarc_disposition` field shows the policy applied to the message and can have one of three values: `none`, `quarantine`, or `reject`.
-
-Records are inserted into a list named `$prefix$domain`, where `$domain` corresponds to the domain that has defined the policy for the reported message, and `$prefix` is determined by the `key_prefix` setting (or defaults to `dmarc_ `if `key_prefix` is not set).
-
-When a hash value is assigned to a sender's domain, the corresponding key is added to the Redis server.
-
-To enable the storage of report information, the `reporting` setting must be set to `true`. For more details, please refer to the reporting section in the documentation.
-
-The example configuration below illustrates how actions can be enforced for messages based on their DMARC disposition.
-
-~~~ucl
-dmarc {
-	# If Redis server is not configured below, settings from redis {} will be used
-	#servers = "127.0.0.1:6379"; # Servers to use for reads and writes (can be a list)
-	# Alternatively set read_servers / write_servers to split reads and writes
-	# To set custom prefix for redis keys:
-	#key_prefix = "dmarc_";
-	# Actions to enforce based on DMARC disposition (empty by default)
-	actions = {
-		quarantine = "add_header";
-		reject = "reject";
-	}
-        # Ignore "pct" setting for some domains
-        # no_sampling_domains = "/etc/rspamd/dmarc_no_sampling.domains";
-}
 ~~~
 
 ## Reporting
