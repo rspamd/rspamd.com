@@ -4,22 +4,24 @@ title: DMARC module
 ---
 # DMARC module
 
-DMARC is a technology leveraging SPF & DKIM, allowing domain owners to publish policies regarding how messages bearing their domain in the (RFC5322) From field should be handled.
-For example, DMARC can be configured to request that a receiving MTA quarantine or reject messages which do not have an aligned DKIM or SPF identifier.
-DMARC can also be configured to request reports from remote MTAs about such messages, to help identify abuse and/or misconfiguration, and to help make informed decisions about policy application.
+DMARC is a technology that uses SPF and DKIM to enable domain owners to publish policies regarding how email messages with their domain in the (RFC5322) `From` field should be handled.
+
+For instance, DMARC can be configured to require a receiving MTA to quarantine or reject messages which do not have an aligned DKIM or SPF identifier.
+
+DMARC can also be configured to request reports from remote MTAs about these messages to aid in identifying abuse and/or misconfiguration and to facilitate informed decisions about policy application.
 
 ## DMARC in rspamd
 
-The default configuration for the DMARC module in rspamd is an empty collection:
+By default, the DMARC module in rspamd is configured with an empty collection, as shown below:
 
 ~~~ucl
 dmarc {
 }
 ~~~
 
-This is enough to enable the module and check/apply DMARC policies.
+This minimal configuration is sufficient to activate the module and enforce DMARC policies.
 
-Symbols added by the module are as follows:
+Symbols that the module adds are listed below:
 
 - `DMARC_BAD_POLICY`: Policy was invalid or multiple policies found in DNS
 - `DMARC_NA`: Domain in From header has no DMARC policy or From header is missing
@@ -28,46 +30,17 @@ Symbols added by the module are as follows:
 - `DMARC_POLICY_QUARANTINE`: Authentication failed- quarantine suggested by DMARC policy
 - `DMARC_POLICY_SOFTFAIL`: Authentication failed- no action suggested by DMARC policy
 
-Rspamd is able to store records in `redis` which could be used to generate DMARC aggregate reports but there is as of yet no available tool to generate such reports from these. Format of the records stored in `redis` is as follows:
-
-    unixtime,ip,spf_result,dkim_result,dmarc_disposition
-
-where spf and dkim results are `true` or `false` indicating whether an aligned spf/dkim identifier was found and dmarc_disposition is one of `none`/`quarantine`/`reject` indicating policy applied to the message.
-
-These records are added to a list named $prefix$domain where $domain is the domain which defined policy for the message being reported on and $prefix is the value of the `key_prefix` setting (or "dmarc_" if this isn't set).
-
-Keys are inserted to redis servers when a server is selected by hash value from sender's domain.
-
-To enable storing of report information, `reporting` must be set to `true`. Please see the section on reporting in this document for more information.
-
-Actions can be forced for messages based on DMARC disposition as demonstrated in example config below.
-
-~~~ucl
-dmarc {
-	# If Redis server is not configured below, settings from redis {} will be used
-	#servers = "127.0.0.1:6379"; # Servers to use for reads and writes (can be a list)
-	# Alternatively set read_servers / write_servers to split reads and writes
-	# To set custom prefix for redis keys:
-	#key_prefix = "dmarc_";
-	# Actions to enforce based on DMARC disposition (empty by default)
-	actions = {
-		quarantine = "add_header";
-		reject = "reject";
-	}
-        # Ignore "pct" setting for some domains
-        # no_sampling_domains = "/etc/rspamd/dmarc_no_sampling.domains";
-}
 ~~~
 
 ## Reporting
 
-From Rspamd 3.0 the `rspamadm dmarc_report` command should be used with cron or systemd timers to send reports. This should be done either daily or hourly depending on traffic. This requires a working MTA running on a specific host that allows email to be sent with no authentication/ssl - preferrably the local MTA.
+Starting from Rspamd 3.0, the recommended way to send DMARC reports is to use the `rspamadm dmarc_report` command with cron or systemd timers. Depending on the amount of traffic, this should be scheduled either daily or hourly. A working MTA running on a specific host is required to send the reports. Ideally, the local MTA should allow email to be sent without authentication or SSL.
 
-When migrating from the previous versions, please ensure that you don't have `reporting = true;` in `rspamadm configdump dmarc`. That setting was intentionally converted to the new options schema to avoid misconfiguration. The line `reporting = true;` **must** be removed from the `local.d/dmarc.conf` if it is there.
+If you're upgrading from a previous version, make sure that you remove the `reporting = true;` setting from `rspamadm configdump dmarc`. This setting has been intentionally converted to the new options schema to prevent misconfiguration. The line `reporting = true;` **must** be removed from the `local.d/dmarc.conf` if it is there.
 
-DMARC reporting information is stored in Redis. See [this information]({{ site.baseurl }}/doc/configuration/redis.html) about configuring Redis.
+DMARC reporting information is stored in Redis. Please refer to [this guide]({{ site.baseurl }}/doc/configuration/redis.html) for instructions on how to configure Redis.
 
-Here are the configuration parameters for DMARC reporting, with corresponding comments:
+Below are the configuration parameters for DMARC reporting, along with corresponding comments:
 
 ~~~ucl
 # local.d/dmarc.conf
@@ -94,14 +67,14 @@ Here are the configuration parameters for DMARC reporting, with corresponding co
   }
 ~~~
 
-Prior to Rspamd 3.3 you can skip some domains from the reporting by setting `no_reporting_domains` that is a map of domains or eSLDs to be excluded. Rspamd 3.3 supports this option in `reporting` section, however, a legacy option `settings.no_reporting_domains` is also supported (but not preferred).
+In versions of Rspamd prior to 3.3, you could exclude certain domains from reporting by configuring the `no_reporting_domains` setting, which is a map of domains or eSLDs to be excluded. Starting from Rspamd 3.3, this option is also available in the `reporting` section. However, the legacy option `settings.no_reporting_domains` is still supported (although it's not recommended).
 
 ## DMARC Munging
 
-From version 3.0, Rspamd supports DMARC munging for mailing lists.
-In this mode, Rspamd will change the `From:` header to a pre-defined address (e.g. a mailing list address) for messages that have a **valid** DMARC policy with **reject/quarantine**, where delivery would otherwise fail during mailing list forwarding. An example of this technique is [documented](https://mailman.readthedocs.io/en/release-3.1/src/mailman/handlers/docs/dmarc-mitigations.html) for the Mailman mailing list management system.
+Starting from version 3.0, Rspamd supports DMARC munging for mailing lists. In this mode, Rspamd will modify the `From:` header of messages with a **valid** DMARC policy of **reject/quarantine** to a pre-defined address (such as a mailing list address) to prevent delivery failure during mailing list forwarding.
+An example of this technique is [documented](https://mailman.readthedocs.io/en/release-3.1/src/mailman/handlers/docs/dmarc-mitigations.html) for the Mailman mailing list management system.
 
-And here is an example for such a configuration in Rspamd:
+There is a configuration example below that demonstrates how to set up DMARC munging in Rspamd:
 
 ~~~ucl
 # local.d/dmarc.conf
