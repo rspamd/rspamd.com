@@ -5,17 +5,17 @@ title: External Relay module
 
 # External Relay module
 
-This plugin is intended for use by people who need to perform scanning after the MX has already handled a message (e.g. setups which receive mail over POP3 and forward them to a local MTA); most users can ignore it.
+This plugin is designed for users who need to conduct scans after the MX has processed a message, such as those who receive mail over POP3 and forward it to a local MTA. Most users can disregard it.
 
-Users of such setups should ensure [reject action is disabled]({{ site.baseurl }}/doc/faq.html#how-can-i-disable-some-rspamd-action) to avoid generating backscatter.
+For users with such setups, it is important to disable the reject action to prevent generating backscatter. Refer to [the FAQ]({{ site.baseurl }}/doc/faq.html#how-can-i-disable-some-rspamd-action) for instructions.
 
 If possible, it is better to run Rspamd on the MX.
 
 ## Strategies
 
-This plugin attempts to find the real point of hand-off of a message in its `Received` headers & set the sending IP & hostname appropriately (as well as an assumed value for `HELO`) - before other processing, such that other modules (such as [rbl]({{ site.baseurl }}/modules/rbl.html), [spf]({{ site.baseurl }}/modules/spf.html) etc) would see the corrected values.
+This plugin seeks to identify the real point of hand-off for a message in its `Received` headers and set the sending IP and hostname correctly, as well as an assumed `HELO` value. This correction occurs before any other processing, ensuring that other modules (such as [rbl]({{ site.baseurl }}/modules/rbl.html), [spf]({{ site.baseurl }}/modules/spf.html) etc) receive the updated values.
 
-Different strategies for identifying mail to tamper with and the point of hand-off are available. They can be configured in parallel but the general expectation is that you'd pick whichever is most appropriate to your setup and configure that. If multiple strategies are configured they are not mutually exclusive & you may wish to adjust `priority` of the rules.
+Different strategies for identifying mail to tamper with and the point of hand-off are available. While they can be configured in parallel, it is recommended that you select the most suitable strategy for your setup and configure it accordingly. If multiple strategies are configured they are not mutually exclusive & you may wish to adjust `priority` of the rules.
 
 If the strategies are too broad to be used in your setup you might limit them using `rspamd_config:add_condition()`, for example:
 ~~~lua
@@ -66,7 +66,7 @@ The following strategy-specific settings are defined:
 
 ### authenticated
 
- * `user_map` (optional): A [map]({{ site.baseurl }}/doc/faq.html#what-are-maps) containing a list of usernames. If set, the local sender is required to use a listed username for the rule to be applied.
+ * `user_map` (optional): A [map]({{ site.baseurl }}/doc/faq.html#what-are-maps) containing a list of usernames. The rule applies only if the local sender uses a username listed in the configuration.
 
 ### count
 
