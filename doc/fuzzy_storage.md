@@ -30,7 +30,6 @@ The source data for fuzzy hash storage includes both spam and legitimate (non-sp
 This page is intended for mail system administrators who want to create and maintain their own hash storage and for those who want to understand how rspamd.com serves as a third-party resource. More details can be found in other pages here, including:
 
 - [Fuzzy Check module]({{ site.baseurl }}/doc/modules/fuzzy_check.html)
-- [Fuzzy Collection module]({{ site.baseurl }}/doc/modules/fuzzy_collect.html)
 - [Fuzzy Storage Workers]({{ site.baseurl }}/doc/workers/fuzzy_storage.html)
 - [Rspamd.com infrastructure policies]({{ site.baseurl }}/doc/usage_policy.html)
 
