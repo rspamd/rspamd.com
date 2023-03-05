@@ -5,7 +5,7 @@ title: External Services module
 
 # External Services module
 
-External Services module (available from Rspamd 1.9.0) provides integration with various external services.
+The External Services module, which has been available since Rspamd 1.9.0, enables integration with a range of external services.
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
@@ -15,9 +15,9 @@ External Services module (available from Rspamd 1.9.0) provides integration with
 
 ## Configuration
 
-The configuration for an external service is done by defining rules. If a service reports one or more threats the configured symbol will be set (e.g. ICAP_VIRUS) with the threats as description and if set the reject action will be triggered.
+To configure an external service, rules must be defined. If the service detects one or more threats, the configured symbol (such as ICAP_VIRUS) will be set with a description of the threats. If this symbol is set, the reject action will be triggered.
 
-When there is an error during the connection or the external service reports failures the fail symbol (e.g. ICAP_VIRUS_FAIL) will be set with the error message as description. For both symbols you can use patterns to set a dedicated symbol for any threat name or error message:
+In case of connection errors or failures reported by the external service, the fail symbol (e.g. ICAP_VIRUS_FAIL) will be set with an error message as its description. Patterns can be used for both symbols to assign a dedicated symbol for any threat name or error message.
 
 ~~~ucl
 ...
@@ -32,9 +32,9 @@ When there is an error during the connection or the external service reports fai
 ...
 ~~~
 
-In the default configuration the complete mail will be send to the external service system. You can and you have to change this behavior for some services by setting scan_mime_parts = true; to send all mime parts detected as attachments seperately. Set scan_text_mime or scan_image_mime to true if you also want text mimes and images send to the AV scanner.
+By default, the complete email will be sent to the external service system. You can and you have to change this behavior for some services by setting `scan_mime_parts = true;` to send all mime parts detected as attachments seperately. If you also want to scan text mimes and images using the AV scanner, you can set the `scan_text_mime` or `scan_image_mime` parameter to "true".
 
-Also you are able to use 2 types of mime part filters:
+Furthermore, there are two types of MIME part filters available:
 
 ~~~ucl
 ...
@@ -52,13 +52,13 @@ Also you are able to use 2 types of mime part filters:
 ...
 ~~~
 
-mime_parts_filter_regex will match on the content-type detected by rspamd or mime part header or the declared filename of an attachment or an archive file listing. mime_parts_filter_ext will only match the extension of the declared filename or an archives file list.
+`mime_parts_filter_regex` will match on the content-type detected by rspamd or mime part header or the declared filename of an attachment or an archive file listing. `mime_parts_filter_ext` will only match the extension of the declared filename or an archives file list.
 
-Next to the defaults you normally have to set individual config options for each rule detailed below.
+Apart from the default settings, specific configuration options need to be set for each rule as described below.
 
-By default, given [Redis]({{ site.baseurl }}/doc/configuration/redis.html) is configured globally and `external_services` is not explicitly disabled in redis configuration, results are cached in Redis according to message checksums.
+By default, if [Redis]({{ site.baseurl }}/doc/configuration/redis.html) is configured globally and `external_services` is not disabled in the Redis configuration, the results will be cached in Redis based on message checksums.
 
-Settings should be added to `/etc/rspamd/local.d/external_services.conf`:
+To add settings, modify the `/etc/rspamd/local.d/external_services.conf` file:
 
 ~~~ucl
 # local.d/external_services.conf
@@ -118,11 +118,11 @@ icap {
 
 ## ICAP protocol specific details
 
-ICAP servers are normally used by http proxies or file servers to scan HTTP queries or files. Only the RESPMOD method is supported in Rspamd. Next to the X-Infection-Found and X-Virus-ID return headers Rspamd also tries to evaluate more unusual headers.
+ICAP servers are typically utilized by HTTP proxies or file servers to scan HTTP requests or files. In Rspamd, only the RESPMOD method is supported. In addition to the X-Infection-Found and X-Virus-ID headers, Rspamd also attempts to evaluate other uncommon headers.
 
-From Version 3.2 Rspamd supports the full ICAP protocol (with encapsulated HTTP headers) and is also capable to evaluate encapsulated HTTP return codes.
+Starting from version 3.2, Rspamd supports the complete ICAP protocol, which includes encapsulated HTTP headers. It is also capable of evaluating encapsulated HTTP return codes.
 
-This module was tested with these icap implementations:
+This module has been tested with the following ICAP implementations:
 
 * Checkpoint Sandblast
 * ClamAV (using c-icap server and squidclamav)
@@ -152,9 +152,9 @@ clamav_icap {
 
 ~~~
 
-Scan requests are send to an icap URL (e.g. icap://127.0.0.1:1344/squidclamav). So next to the host and port a scheme is needed to communicate with the icap server. Often icap servers have multiple schemes - so choose one with RESPMOD support.
+Scan requests are send to an icap URL (e.g. icap://127.0.0.1:1344/squidclamav). herefore, a scheme is required to communicate with the ICAP server in addition to the host and port. Since ICAP servers often have multiple schemes, it is necessary to choose one with RESPMOD support.
 
-Typical error responses like `X-Infection-Found: Type=2; Resolution=2; Threat=Encrypted container violation;` will be reported as symbol fail (e.g. CLAM_ICAP_FAIL(0.00){Encrypted container violation}).
+If typical error responses are encountered, such as `X-Infection-Found: Type=2; Resolution=2; Threat=Encrypted container violation;`, they will be reported as a fail symbol (e.g. CLAM_ICAP_FAIL(0.00){Encrypted container violation}).
 
 Depending on the ICAP software there are some extra options available:
 
@@ -272,21 +272,21 @@ trend_micro {
 
 ## oletools specific details
 
-Oletools is a great python module for scanning and analyzing office documents with macros. Typically a macro-virus uses an auto-exec function to be loaded when the document is opened next to functions for executing code in a shell or save files to the system. oletools classifies bad functions in AutoExec and Suspicious. In the default mode the oletools module will set the result when at least one AutoExec and one Suspicious function is used.
+Oletools is an excellent Python module for scanning and analyzing office documents containing macros. Macro-viruses typically use an auto-exec function to load when the document is opened, as well as functions for executing code in a shell or saving files to the system. Oletools classifies harmful functions as either AutoExec or Suspicious. In the default mode, the Oletools module sets the result when at least one AutoExec and one Suspicious function are used.
 
-Please take in mind oletools is not an antivirus scanner. It just analyzes a macro. There are also legit office files with AutoExec and Suspicious functions. Also we have seen some macro viruses not using AutoExec functions. If you want a more detailed control over the oletools modules behavior, have a look to the extended mode below. Maybe you also want to have a look to the olevba documentation: [https://github.com/decalage2/oletools/wiki/olevba](https://github.com/decalage2/oletools/wiki/olevba)
+Please keep in mind that Oletools is not an antivirus scanner. It only analyzes macros. Additionally, there are legitimate office files that contain AutoExec and Suspicious functions. Furthermore, some macro viruses do not use AutoExec functions. If you want more detailed control over the behavior of the Oletools module, please refer to the extended mode below. You may also want to refer to the olevba documentation at [https://github.com/decalage2/oletools/wiki/olevba](https://github.com/decalage2/oletools/wiki/olevba)
 
-The oletools default behavior is useful if you don't want to block all office files with macros, but files with macros using functions often seen in macro viruses.
+The default behavior of Oletools is useful if you do not want to block all office files with macros, but rather files with macros that use functions typically seen in macro viruses.
 
-**Note**: There are some Word files with .doc extension but internally using the RTF (Rich Text Format). RTF has also security vulnerabilities. oletools currently returns RETURN_OPEN_ERROR for RTF files. This will be fixed in a future release.
+**Note**: Some Word files may have the .doc extension but actually use the Rich Text Format (RTF), which has its own security vulnerabilities. Currently, oletools returns a RETURN_OPEN_ERROR for RTF files, but this issue will be resolved in a future release.
 
-To use oletools with Rspamd you have to install a wrapper daemon: [olefy](https://github.com/HeinleinSupport/olefy).
+To use oletools with Rspamd, you need to install a wrapper daemon called [olefy](https://github.com/HeinleinSupport/olefy).
 
-olefy communicates with Rspamd over TCP and calls olevba to get the report of an office file.
+Olefy communicates with Rspamd over TCP and utilizes olevba to generate a report on an office file.
 
 ### oletools default mode
 
-In order to send only office files to the olevba analyzer enable scan_mime_parts (needed for versions < 1.9.5) set mime_parts_filter_regex and mime_parts_filter_ext like shown below (maybe this list is still incomplete). Sometimes office files are sent with the generic content-type `application/octet-stream`. You can enable UNKNOWN to catch these, but this will also catch non-office file attachments like images, pdf etc. Sending non-office files to olevba will result in error messages.
+In order to send only office files to the olevba analyzer enable scan_mime_parts (needed for versions < 1.9.5) set mime_parts_filter_regex and mime_parts_filter_ext like shown below (maybe this list is still incomplete). It is worth noting that sometimes office files may be sent with the generic content-type `application/octet-stream`. You can enable the `UNKNOWN` option to capture these, but this may also capture non-office file attachments such as images, PDFs, and so on. Attempting to send non-office files to olevba will result in error messages.
 
 ~~~ucl
 # local.d/external_services.conf
@@ -342,17 +342,13 @@ oletools {
 
 ~~~
 
-In the default mode the oletools module will set a symbol description like this: `OLETOOLS(1.00)[AutoExec + Suspicious (Document_open,Shell,Chr)]`. The words inside the brackets are the macro functions reported by olevba.
+By default, when using the oletools module, a symbol description will be set as `OLETOOLS(1.00)[AutoExec + Suspicious (Document_open,Shell,Chr)]`. The words inside the brackets are the macro functions reported by olevba.
 
 If you enable debug mode for external_services the oletools module will also report the description of a function as reported by olevba.
 
 ### oletools extended mode
 
-In the extended mode the oletools module will not trigger on specific categories, but will *always* set a threat string with all found flags when at least a macro was found. Those flags are sorted alphabetically and always displayed at the same position when set. Next to the flags all reported functions will be set as individual threats:
-
-`OLETOOLS (4.00)[A----MS-, Document_open, Shell, Chr]`
-
-In this example 4 threats will be reported, one for the flag list, and one for each reported function (and the symbol score will be counted 4 times). You can use `one_shot = true` change this behavior.
+In extended mode, the oletools module does not trigger on specific categories but always sets a threat string with all the found flags whenever a macro is detected. These flags are sorted alphabetically and displayed at the same position every time they are set. Additionally, all reported functions are set as individual threats. For instance, `OLETOOLS (4.00)[A----MS-, Document_open, Shell, Chr]`indicates four threats reported: one for the flag list and one for each reported function. Note that the symbol score is counted four times. If you want to modify this behavior, you can use `one_shot = true`.
 
 ~~~ucl
 # local.d/external_services_group.conf
@@ -365,7 +361,7 @@ In this example 4 threats will be reported, one for the flag list, and one for e
 ...
 ~~~
 
-With having the flags and all functions exposed as individual threats you can now use the pattern configuration to convert the reported threats into symbols and use them in force_actions or composites.
+By having the flags and functions as individual threats, it becomes possible to use the pattern configuration to convert the reported threats into symbols that can be utilized in force_actions or composites.
 
 ~~~ucl
 # local.d/external_services.conf
@@ -430,11 +426,9 @@ Note that in versions <= 2.7, flags were ordered but stacked to the right in the
 This modules performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine
 the *bulkiness* of a message (e.g. how many recipients have seen it).
 
-Identifying bulk messages is very useful in composite rules e.g. if a message is
-from a freemail domain *AND* the message is reported as bulk by DCC then you can
-be sure the message is spam and can assign a greater weight to it.
+This is particularly valuable in composite rules, such as when a message is from a freemail domain AND it is identified as bulk by DCC, making it easier to classify it as spam and assign a higher weight to it. 
 
-Please view the License terms on the DCC website before you enable this module.
+Before enabling this module, kindly review the License terms on the DCC website.
 
 ### Module configuration
 
@@ -470,13 +464,11 @@ value) will cause the symbol `DCC_REJECT` to fire. `DCC_BULK` will be calculated
 
 `Requires rspamd >2.8`
 
-Pyzor is, like Razor2 and DCC, a bulk email scanner that doesn't detect spam but how often a message (hash) has been seen, or how "bulky" a message is.
+Pyzor is a bulk email scanner similar to Razor2 and DCC, which doesn't identify spam but instead identifies how often a message (hash) has been seen or how "bulky" a message is.
 
-Pyzor will be exposed to rspamd through a systemd socket, a wrapper isn't needed.
+To integrate Pyzor with Rspamd, a wrapper isn't needed as it will be exposed to Rspamd through a systemd socket. To install Pyzor on CentOS/Rocky Linux, run the command `yum install pyzor`.
 
-Install Pyzor e.g. on CentOS/Rocky Linux `yum install pyzor`
-
-Enable the module:
+After installing Pyzor, enable the module by:
 
 ~~~ucl
 # local.d/external_services.conf
@@ -540,17 +532,17 @@ Reload systemd `systemctl daemon-reload` and enable/start pyzor socket `systemct
 
 Since Pyzor is executed as `_rspamd` you probably have to create the Pyzor home directory `mkdir /var/lib/rspamd/.pyzor`, alternatively create a dedicated Pyzor user and edit `pyzor@.service`.
 
-The `PYZOR` symbole weight is calculated dynamically based on the number of times a message has been seen and whitelisted by Pyzor (Count - WL-Count of default_score in percent)
+Once Pyzor is running, the `PYZOR` symbol weight is calculated dynamically based on the number of times a message has been seen and whitelisted by Pyzor (Count - WL-Count of default_score in percent)
 
 ## Razor specific details
 
 Razor is, like Pyzor and DCC, a bulk email scanner that doesn't detect spam but how often a message (hash) has been seen, or how "bulky" a message is.
 
-Razor will be exposed to rspamd through a systemd socket, a wrapper isn't needed.
+To expose Razor to rspamd, a systemd socket is used, and a wrapper is not required.
 
-Install Razor e.g. on CentOS/Rocky Linux `yum install perl-Razor-Agent`
+To install Razor on CentOS/Rocky Linux, run the command yum install `perl-Razor-Agent`.
 
-Enable the module:
+After installation, enable the module by modifying the configuration file.
 
 ~~~ucl
 # local.d/external_services.conf
@@ -616,9 +608,9 @@ The `RAZOR` symbole will be added based on the exit code of Razor (0 = SPAM or 1
 
 ## VadeSecure specific details
 
-You need a valid VadeSecure [Filterd](https://www.vadesecure.com/en/email-content-filtering-isp/) installation. Please [contact VadeSecure](https://www.vadesecure.com) to obtain a valid trial or commercial license to get this product.
+To use the VadeSecure module, a valid installation of Filterd from [VadeSecure](https://www.vadesecure.com/en/email-content-filtering-isp/) is required. Please [contact VadeSecure](https://www.vadesecure.com) to obtain a valid trial or commercial license to get this product.
 
-After that, you can use VadeSecure to adjust symbols according to the category returned by filterd. Here are the default settings for this module (you can redefine them in `local.d/external_services.conf` file as usual):
+Once installed, you can use VadeSecure to adjust symbols based on the category returned by Filterd. The default settings for this module are listed below and can be redefined in the `local.d/external_services.conf` file as needed:
 
 ~~~ucl
 vadesecure {
@@ -709,19 +701,19 @@ You can define subcategories for symbols if needed (see `spam` example above).
 
 ## SpamAssassin specific details
 
-SpamAssassin is supported by using the spamd daemon. Please take in mind there is also a dedicated spamassassin module with different benefits. The dedicated spamassassin module is able to load spamassassin rules directly into the Rspamd environment whereas the External Services SpamAssassin module communicates to a full separate spamassassin installation.
+Note that the SpamAssassin module in External Services requires the use of the spamd daemon. However, please keep in mind that there is also a dedicated SpamAssassin module for Rspamd, which offers different benefits. The dedicated module can load SpamAssassin rules directly into the Rspamd environment, whereas the External Services module communicates with a separate SpamAssassin installation.
 
-Just a warning - compared to Rspamd SpamAssassin is much more CPU-hungry and will maybe slow down your server. If you just want to use your existing spamassassin rules you should go with the dedicated spamassassin module or even tranfer your rules into multimaps and/or composites.
+It's worth noting that compared to Rspamd, SpamAssassin is much more CPU-intensive and may slow down your server. If you only need to use your existing SpamAssassin rules, the dedicated module is a better option, or you could transfer your rules into multimaps and/or composites.
 
-The benefit of this module is the support of all spamassassin features and plugins (e.g. iXHash). Also if you are using the Neural Network plugin you maybe don't want to import thousands of extra symbols into Rspamd. Another approach is maybe the soft migration from a SpamAssassin setup to Rspamd.
+However, the External Services module offers the benefit of supporting all SpamAssassin features and plugins, such as iXHash. If you're using the Neural Network plugin, you may not want to import thousands of extra symbols into Rspamd. Additionally, this module could be a good choice for a soft migration from a SpamAssassin setup to Rspamd.
 
 ### Spamd setup
 
-Enable the spamassassin spamd daemon to listen on a socket or a TCP port. You might want to disable all unused plugins or even all remote checks by editing the config files in /etc/mail/spamassassin.
+Enable the spamassassin spamd daemon to listen on a socket or a TCP port. To improve performance, you may want to consider disabling any unused plugins or remote checks by editing the configuration files located in /etc/mail/spamassassin.
 
 ### spamassassin module default setup
 
-In the default setup no special configuration is needed. The module will set all reported spamassassin symbols as string into the Rspamd SPAMD symbol. The score reported by spamd will be set as dynamic score. If you set the weight of the symbol it will be used as a mutliplier - so `dynamic_score * weight = total score`.
+By default, no special configuration is required for this module. It will automatically set all reported SpamAssassin symbols as strings into the Rspamd SPAMD symbol, and the score reported by spamd will be set as the dynamic score. If you specify a weight for the symbol, it will be used as a multiplier. So, the total score will be calculated as `dynamic_score * weight`.
 
 ~~~ucl
 # local.d/external_services.conf
@@ -745,7 +737,7 @@ spamassassin {
 }
 ~~~
 
-When setting `extended = true` the module will set all reported symbols as dedicated threats. Be aware in the extended configuration the score calculation is `number of threats * dynamic_score * weight = total score`. You can use `one_shot = true` change this behavior.
+When setting `extended = true` the module will set all reported symbols as dedicated threats. However, keep in mind that in the extended configuration, the score is calculated by multiplying the number of threats with the dynamic score and weight, resulting in the total score. If you want to change this behavior, you can `set one_shot = true`.
 
 ~~~ucl
 # local.d/external_services_group.conf
@@ -778,7 +770,7 @@ spamassassin {
 
 ## Virustotal details
 
-Rspamd uses [`file/report`](https://developers.virustotal.com/reference#file-report) endpoint to receive results. Since Virustotal policies are quite strict, you need to ensure that you have set your own key in the plugin configuration:
+To receive results, Rspamd utilizes the [`file/report`](https://developers.virustotal.com/reference#file-report) endpoint of Virustotal. However, due to the strict policies of Virustotal, it is crucial that you have set your own key in the plugin configuration:
 
 ~~~ucl
 # local.d/antivirus.conf
@@ -794,4 +786,4 @@ virustotal {
 }
 ~~~
 
-Rspamd will also not return the full result by the same reasons: merely number of engine matched and the md5 hash that you can use to view the full report on the Virustotal site.
+Due to the strict policies of Virustotal, Rspamd does not return the full result. Instead, it only provides the number of engines that matched and the MD5 hash, which can be used to view the full report on the Virustotal website.
