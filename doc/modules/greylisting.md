@@ -6,7 +6,7 @@ title: Greylisting module
 # Greylisting module
 {:.no_toc}
 
-This module is intended to delay messages that have spam score above `greylisting` action threshold.
+The purpose of this module is to delay messages that have a spam score above the `greylisting` action threshold.
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
@@ -16,7 +16,7 @@ This module is intended to delay messages that have spam score above `greylistin
 
 ## Principles of work
 
-Greylisting module saves 2 hashes for each message in Redis:
+When the Greylisting module is enabled, two hashes are saved for each message in Redis:
 
 * **meta** hash is based on triplet `from`:`to`:`ip`
 * **data** hash is taken from the message's body if it has enough length for it
@@ -30,11 +30,11 @@ The hashes lifetime is depicted in the following scheme:
 
 <img class="img-responsive" width="75%" src="{{ site.baseurl }}/img/greylisting.png">
 
-This module produces `soft reject` action on greylisting which **SHOULD** be treated as temporary rejection by MTA (usually via Milter interface).  Exim can recognise it with configuration - refer to the [integration guide]({{ site.baseurl }}/doc/integration.html#integration-with-exim-mta) for details. Haraka supports it from v2.9.0.
+The greylisting module triggers a `soft reject` action, which is intended to be interpreted by the MTA as a temporary rejection (typically through the Milter interface). For Exim, you can configure it to recognize `soft reject` using the guidelines provided in the [integration guide]({{ site.baseurl }}/doc/integration.html#integration-with-exim-mta) for details. For Haraka, support is available from version 2.9.0 onward.
 
 ## Module configuration
 
-First of all, you need to setup Redis server for storing hashes. This procedure is described in detail in the [following document]({{ site.baseurl }}/doc/configuration/redis.html). Thereafter, you can modify a couple of options specific for greylisting module. It is recommended to define these options in `local.d/greylist.conf`:
+To use the greylisting module, you must first set up a Redis server to store hashes. You can find detailed instructions on how to do this in the [following document]({{ site.baseurl }}/doc/configuration/redis.html). Once the Redis server is set up, you can modify a few specific options for the greylisting module. It is recommended that you define these options in `local.d/greylist.conf`:
 
 * **`expire`**: setup hashes expire time (1 day by default)
 * **`greylist_min_score`**: messages with scores below this threshold are not greylisted (default unset)
@@ -49,9 +49,9 @@ First of all, you need to setup Redis server for storing hashes. This procedure 
 * **`report_time`**: tell when greylisting is epired (appended to `message`)
 * **`whitelist_symbols`**: skip greylisting when specific symbols have been found (from 1.9.1)
 
-If you need to skip greylisting based on other conditions disabling the `GREYLIST_CHECK` and `GREYLIST_SAVE` symbols with [settings module]({{ site.baseurl }}/doc/configuration/settings.html) might suffice.
+If you want to skip greylisting based on other conditions, you can simply disable the `GREYLIST_CHECK` and `GREYLIST_SAVE` symbols using the [settings module]({{ site.baseurl }}/doc/configuration/settings.html).
 
-To enable the module with default settings you need to define at least [redis]({{ site.baseurl }}/doc/configuration/redis.html) servers to store greylisting data:
+To enable the module with its default settings, you must define at least one [redis]({{ site.baseurl }}/doc/configuration/redis.html) server to store greylisting data. You can do this by adding the following lines to `local.d/greylist.conf`:
 
 ~~~ucl
 # local.d/greylist.conf
