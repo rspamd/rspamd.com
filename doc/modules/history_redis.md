@@ -5,7 +5,7 @@ title: Redis history module
 
 # Redis history module
 
-This module is intended to store history in Redis list with more fine-grained control over fields, optional compression and out-of-the box cluster support.
+The purpose of this module is to enable the storage of history in Redis lists with increased precision, thanks to its finer control over fields, optional compression, and out-of-the-box cluster support.
 
 ## Storage model
 
@@ -15,11 +15,11 @@ This module stores keys as following:
 2. Append hostname
 3. Append `_zst` if history is compressed
 
-There is also a special set where suffixes are stored, keyname for it is just `key_prefix`. For example, if there is a host `example.local` and it stores compressed history entries then it will save the following element if `key_prefix` set: `example.local_zst`.
+In addition, there is a special set where suffixes are stored, and the keyname for this set is simply `key_prefix`. For example, if there is a host `example.local` and it stores compressed history entries then it will save the following element if `key_prefix` set: `example.local_zst`.
 
 ## Compression
 
-Rspamd uses [zstd](https://zstd.net) compression. It is very fast for both compression and decompression and provides typically 50% compression rate for history elements. It should be used whenever you have enough computational power as it allows to reduce Redis memory footprint when storing elements.
+Rspamd uses [zstd](https://zstd.net) compression, which is highly efficient for both compression and decompression, offering a typical compression rate of 50% for history elements. As long as you have sufficient computational power, it is recommended to use zstd in order to minimize Redis memory usage when storing elements.
 
 ## WebUI support
 
