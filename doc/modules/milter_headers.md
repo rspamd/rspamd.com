@@ -6,7 +6,7 @@ title: Milter headers module
 # Milter headers module
 {:.no_toc}
 
-The `milter headers` module (formerly known as `rmilter headers`) has been added in Rspamd 1.5 to provide a relatively simple way to configure adding/removing of headers via Rmilter (the alternative being to use the [API]({{ site.baseurl }}/doc/lua/rspamd_task.html#me7351)). Despite its namesake it also works with [Haraka](https://haraka.github.io) and Communigate.
+The `milter headers` module (formerly known as `rmilter headers`) has been added in Rspamd 1.5 to provide a relatively simple way to configure adding/removing of headers via Rmilter (the alternative being to use the [API]({{ site.baseurl }}/doc/lua/rspamd_task.html#me7351)). Despite its name, the module also functions with other mail servers such as [Haraka](https://haraka.github.io) and Communigate.
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
@@ -16,7 +16,7 @@ The `milter headers` module (formerly known as `rmilter headers`) has been added
 
 ## Principles of operation
 
-The `milter headers` module provides a number of routines to add common headers which can be selectively enabled and configured. User-defined routines can also be added to configuration.
+The `milter headers` module offers several routines for adding common headers, which can be selectively enabled and configured according to specific needs. Additionally, users have the flexibility to add their own custom routines to the configuration.
 
 ## Configuration
 
@@ -77,7 +77,7 @@ authenticated_headers = ["authentication-results"];
 
 ### remove_upstream_spam_flag (1.7.1+)
 
-Set `false` to keep pre-existing spam flag added by an upstream spam filter (default `true`). Enables `remove-spam-flag`.
+Set `false` to keep pre-existing spam flag added by an upstream spam filter (default `true`). This will enable the `remove-spam-flag` option.
 
 ~~~ucl
 remove_upstream_spam_flag = true;
@@ -307,7 +307,7 @@ SpamAssassin-style X-Spam-Status header indicating spam status.
   symbols = ["CLAM_VIRUS", "FPROT_VIRUS"];
 ~~~
 
-Adds a header containing names of virii detected by scanners configured in [Antivirus module]({{ site.baseurl }}/doc/modules/antivirus.html) in case that virii are detected in a message.
+If the [Antivirus module]({{ site.baseurl }}/doc/modules/antivirus.html) detects any viruses in an email, the module adds a header that contains the names of the viruses detected by the configured scanners.
 
 ## Custom routines
 
@@ -327,9 +327,9 @@ EOD;
   }
 ~~~
 
-The key `my_routine` could then be referenced in the `use` setting like other routines.
+You can reference the key `my_routine` in the `use` setting, just like you would with other routines.
 
-A slightly more complex example that adds an extra header when a specified symbol has been added:
+Here's a more complex example: If a specific symbol is added, the module will add an additional header:
 
 ~~~ucl
 custom {
@@ -356,20 +356,21 @@ EOD;
 
 ## Scan results exposure prevention
 
-To prevent exposing scan results in outbound mail, extended Rspamd headers routines (`x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`) add headers only if messages is **NOT** originated from authenticated users or `our_networks`.
+To avoid exposing scan results in outbound email, the extended Rspamd headers routines (`x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`) only add headers if the message is **NOT** originated from authenticated users or `our_networks`.
 
-The [`extended_headers_rcpt`](#extended_headers_rcpt-162) option can be used to add extended Rspamd headers also to messages sent to specific recipients or domains (e.g. a list of domains the mail server responsible for).
+If desired, the [`extended_headers_rcpt`](#extended_headers_rcpt-162) option can be used to include the extended Rspamd headers in messages sent to specific recipients or domains, such as a list of domains the mail server is responsible for.
 
 ### Disabling DSN
 
-Delivery status notification (DSN) reports of *successful* delivery can contain the original message headers including Rspamd headers. The only way to prevent it is to stop offering DSN to foreign servers.
+Delivery status notification (DSN) reports for *successful* demail deliveries can include the original message headers, including Rspamd headers. The only way to prevent this is to stop offering DSN to foreign servers. 
 
-Besides, disabling DSN prevents backscatter generation.
+Additionally, disabling DSN can prevent the generation of backscatter.
 
 ### Postfix example
 
-The following configuration example allows DSN requests from local subnets and authenticated users only. The `smtpd_discard_ehlo_keyword_address_maps` is applied to `smtp` service only, `smtps` and `submission` are not affected.
-Please ensure you modify the example below to match your subnet(s).
+The following configuration example restricts DSN requests to local subnets and authenticated users only. Note that the `smtpd_discard_ehlo_keyword_address_maps` setting is applied to the `smtp` service only, and not to `smtps` or `submission`.
+
+Make sure to modify the example below to match your subnet(s) accordingly.
 
 esmtp_access:
 ```conf
