@@ -33,12 +33,12 @@ title: Downloads
     <!-- Tab - pane content -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="system1">
-            <h3>CentOS, Fedora</h3>
+            <h3>CentOS</h3>
 <div markdown="1">
 Supported distributions:
 
-- **CentOS 7** (x86_64), requires EPEL. Hyperscan and LuaJIT are enabled.
-- **CentOS 8** (x86_64), requires EPEL. Hyperscan and LuaJIT are enabled.
+- **CentOS 7** (x86_64), requires EPEL.
+- **CentOS 8** (x86_64), requires EPEL.
 
 Please note that `CentOS` rpm packages **requires** [EPEL](https://fedoraproject.org/wiki/EPEL) to be installed in your system as many dependencies are missing from the base CentOS repositories. You can learn how to install EPEL from their site: <https://fedoraproject.org/wiki/EPEL>.
 `Fedora` packages do not require EPEL or any other third-party repository. Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-debug` package and could be safely installed even in the production environment.
@@ -100,18 +100,18 @@ sudo apt-get update
 sudo apt-get --no-install-recommends install rspamd
 ~~~
 
-To obtain your distributive's codename, you could use the command `lsb_release -s -c` from the package called `lsb-release`.
 	
 If you have `ubuntu-bionic`, then you might need to add llvm repository as Rspamd now requires compatible standard c++ library that supports C++ 20 standard. To enable this repo you can use the following commands:
 
 ~~~bash
+add-apt-repository ppa:ubuntu-toolchain-r/test # For ubuntu-bionuc
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-13 main" | sudo tee /etc/apt/sources.list.d/llvm-13.list
-echo "deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-13 main"  | sudo tee -a /etc/apt/sources.list.d/llvm-13.list
+echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-16 main" | sudo tee /etc/apt/sources.list.d/llvm-13.list
+echo "deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-16 main"  | sudo tee -a /etc/apt/sources.list.d/llvm-13.list
 sudo apt-get update
 ~~~
 
-This step is required for ubuntu-bionic only.
+This step might be needed for other distributives when their libraries are getting incompatible with Rspamd. Please check the [llvm apt documentation](https://apt.llvm.org/) about how to install those for your system.
 
 For [Hyperscan](https://www.hyperscan.io/) and [LuaJIT](https://luajit.org) information see the [FAQ]({{ site.url }}{{ site.baseurl }}/doc/faq.html).
 
@@ -128,29 +128,14 @@ sudo apt-get update
 sudo apt-get --no-install-recommends install rspamd
 ~~~
 
-For <a class="undecor" href="#asanSys2">ASAN<sup>2</sup></a> branch replace `apt-stable` or `apt` with `apt-stable-asan` and `apt-asan` correspondingly:
+For <a class="undecor" href="#asanSys2">ASAN<sup>2</sup></a> branch install `rspamd-asan` package instead of `rspamd` (since 3.5).
 
-~~~bash
-sudo apt-get install -y lsb-release wget # optional
-CODENAME=`lsb_release -c -s`
-sudo mkdir -p /etc/apt/keyrings
-wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-asan/ $CODENAME main" | sudo tee /etc/apt/sources.list.d/rspamd.list
-echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.com/apt-asan/ $CODENAME main"  | sudo tee -a /etc/apt/sources.list.d/rspamd.list
-sudo apt-get update
-sudo apt-get --no-install-recommends install rspamd
-~~~
-
-
-Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-dbg` package and could be safely installed even in the production environment.
+Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-dbg` (or `rspamd-asan-dbg`) package and could be safely installed even in the production environment.
 Check [quick start]({{ site.baseurl }}/doc/quickstart.html#rspamd-installation) for further steps.
 
 ### Debian `standard` repos notes
 
-Please **DO NOT** use those packages.
-
-Rspamd is also available in some versions of Debian and Ubuntu.
-Please **DO NOT** use those packages, as they are not supported in any way. Any issues or feature requests related to the packages from Debian provided distros will be closed with no feedback (or even rage feedback). Just don't do it, you are warned! 
+Please **DO NOT** use those packages, as they are likely outdated and are not supported by Rspamd project in any way (so any associated issue will likely be closed automaticall). If you decide to use those packages then please address any issues to the Debian package maintainers. 
 
 </div>
 <hr>
