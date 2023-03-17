@@ -109,8 +109,8 @@ If you have `ubuntu-bionic` or `debian-buster`, then you might need to add llvm 
 sudo apt-get install software-properties-common # For ubuntu-bionic only
 add-apt-repository ppa:ubuntu-toolchain-r/test # For ubuntu-bionic only
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-16 main" | sudo tee /etc/apt/sources.list.d/llvm-16.list
-echo "deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-16 main"  | sudo tee -a /etc/apt/sources.list.d/llvm-16.list
+echo "deb http://apt.llvm.org/$CODENAME/ llvm-toolchain-$CODENAME-16 main" | sudo tee /etc/apt/sources.list.d/llvm-16.list
+echo "deb-src http://apt.llvm.org/$CODENAME/ llvm-toolchain-$CODENAME-16 main"  | sudo tee -a /etc/apt/sources.list.d/llvm-16.list
 sudo apt-get update
 ~~~
 
