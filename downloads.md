@@ -90,7 +90,9 @@ Rspamd supports the following .deb based distributives:
 To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
 
 ~~~bash
-sudo apt-get install -y lsb-release wget # optional
+#apt update # if running a minimal system
+#apt-get install sudo # if running a minimal system
+sudo apt-get install -y lsb-release wget gpg  # optional
 CODENAME=`lsb_release -c -s`
 sudo mkdir -p /etc/apt/keyrings
 wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
@@ -101,13 +103,14 @@ sudo apt-get --no-install-recommends install rspamd
 ~~~
 
 	
-If you have `ubuntu-bionic`, then you might need to add llvm repository as Rspamd now requires compatible standard c++ library that supports C++ 20 standard. To enable this repo you can use the following commands:
+If you have `ubuntu-bionic` or `debian-buster`, then you might need to add llvm repository as Rspamd now requires compatible standard c++ library that supports C++ 20 standard. To enable this repo you can use the following commands:
 
 ~~~bash
-add-apt-repository ppa:ubuntu-toolchain-r/test # For ubuntu-bionuc
+sudo apt-get install software-properties-common # For ubuntu-bionic only
+add-apt-repository ppa:ubuntu-toolchain-r/test # For ubuntu-bionic only
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-16 main" | sudo tee /etc/apt/sources.list.d/llvm-13.list
-echo "deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-16 main"  | sudo tee -a /etc/apt/sources.list.d/llvm-13.list
+echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-16 main" | sudo tee /etc/apt/sources.list.d/llvm-16.list
+echo "deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-16 main"  | sudo tee -a /etc/apt/sources.list.d/llvm-16.list
 sudo apt-get update
 ~~~
 
@@ -118,7 +121,9 @@ For [Hyperscan](https://www.hyperscan.io/) and [LuaJIT](https://luajit.org) info
 For <a class="undecor" href="#experimentalSys2">experimental<sup>2</sup></a> branch replace `apt-stable` with just `apt`:
 
 ~~~bash
-sudo apt-get install -y lsb-release wget # optional
+#apt update # if running a minimal system
+#apt-get install sudo # if running a minimal system
+sudo apt-get install -y lsb-release wget gpg  # optional
 CODENAME=`lsb_release -c -s`
 sudo mkdir -p /etc/apt/keyrings
 wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
