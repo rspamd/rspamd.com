@@ -82,8 +82,6 @@ For <a class="undecor" href="#asanSys1">asan<sup>2</sup></a> branch packages, do
 Rspamd supports the following .deb based distributives:
 
 - **Debian bullseye**
-- **Debian buster**
-- **Ubuntu bionic**
 - **Ubuntu focal** (since 2.5)
 - **Ubuntu jammy** (since 3.3)
 
@@ -103,7 +101,7 @@ sudo apt-get --no-install-recommends install rspamd
 ~~~
 
 	
-If you have `ubuntu-bionic` or `debian-buster`, then you might need to add llvm repository as Rspamd now requires compatible standard c++ library that supports C++ 20 standard. To enable this repo you can use the following commands:
+If you have `ubuntu-bionic` or `debian-buster`, then you might need to add llvm repository as Rspamd now requires a compatible standard c++ library that supports C++ 20 standard since version 3.5. To enable this repo you can use the following commands:
 
 ~~~bash
 sudo apt-get install software-properties-common # For ubuntu-bionic only
