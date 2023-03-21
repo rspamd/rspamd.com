@@ -70,9 +70,6 @@ acl_check_spam:
   # +relay_from_hosts is assumed to be a list of hosts in configuration
   accept hosts = +relay_from_hosts
 
-  # do not scan messages from submission port (or maybe you want to?)
-  accept condition = ${if eq{$interface_port}{587}}
-
   # skip scanning for authenticated users (if desired?)
   accept authenticated = *
 
