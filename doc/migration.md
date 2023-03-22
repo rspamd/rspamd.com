@@ -13,6 +13,30 @@ This document outlines the modifications to Rspamd in recent versions, including
   {:toc}
 </div>
 
+## Efficient Rspamd Cluster Upgrade Guide
+
+Discover a reliable step-by-step process for upgrading your Rspamd cluster while maintaining stability and minimizing downtime. This guide emphasizes a cautious approach with extensive testing to ensure a seamless transition between versions.
+
+1. Ensure that you have a backup of the current stable configuration files, as well as any custom rules, maps, or other settings specific to your cluster.
+
+2. Use stable packages on a stable cluster. Always use the latest stable release of Rspamd in your production environment.
+
+3. Add a node or multiple nodes to an experimental cluster using the experimental repository. This will allow you to test the new version in a controlled environment without affecting the stable cluster.
+
+4. Mirror traffic from the stable cluster to the experimental cluster using the `rspamd_proxy` module. This will help you identify any potential issues or differences between the two versions of Rspamd.
+
+5. Monitor the experimental cluster for any discrepancies, crashes, or other issues. Address these problems as they arise.
+
+6. When a new release is cut, update the experimental cluster to the stable version.
+
+7. Repeat steps 4-5 one more time to ensure that any previously identified issues have been resolved.
+
+8. Once you are confident that the new version is stable and compatible with your environment, update the stable cluster to the next version.
+
+9. Continue to monitor the stable cluster to ensure smooth operation and resolve any issues that may arise after the upgrade.
+
+10. Repeat the entire process starting from `step 1` for future updates. This approach ensures a smooth and controlled upgrade process that minimizes potential downtime and issues in your production environment.
+
 ## Migration to Rspamd 3.3
 
 When migrating to Rspamd 3.3, exercise caution if you are utilizing custom passthrough rules, particularly those defined by plugins that utilize `action` rather than `least action`). In versions prior to 3.3, these rules would still allow for processing of additional rules. However, in Rspamd 3.3 and beyond, passthrough denotes a final action and skips directly to the idempotent stage.
