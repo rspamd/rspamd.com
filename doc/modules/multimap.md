@@ -5,7 +5,7 @@ title: Multimap module
 # Multimap module
 {:.no_toc}
 
-Multimap module is designed to handle rules that are based on different types of lists that are dynamically updated by Rspamd and called `maps`. This module is useful for whitelists, blacklists and other lists to be organized via files. It can also load remote lists using `HTTP` and `HTTPS` protocols or `RESP` (REdis Serialization Protocol). This article explains in detail all configuration options and features of this module.
+The Multimap module has been specifically designed to handle rules that are based on various types of lists which are dynamically updated by Rspamd, and are referred to as `maps`. This module is particularly useful for organizing whitelists, blacklists, and other lists via files. Additionally, it is capable of loading remote lists using the `HTTP` and `HTTPS` protocols or the `RESP` (REdis Serialization Protocol). This article provides a detailed explanation of all the configuration options and features available in this module.
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
@@ -15,21 +15,19 @@ Multimap module is designed to handle rules that are based on different types of
 
 ## Principles of work
 
-Maps in Rspamd are files or HTTP links that are automatically monitored and reloaded
-if changed. For example, maps can be defined as following:
+Maps in Rspamd refer to files or HTTP links that are automatically monitored and reloaded if any changes occur. The following are examples of how maps can be defined:
 
 	map = "http://example.com/file";
 	map = "file:///etc/rspamd/file.map";
 	map = "/etc/rspamd/file.map";
 
+Rspamd offers the option to save traffic for HTTP maps using cached maps, while also respecting `304 Not modified responses`, Cache-Control headers, and ETags. Additionally, the maps data is shared between workers, and only the first controller worker is allowed to fetch remote maps.
 
-Rspamd allows to save traffic for HTTP maps using cached maps and respecting `304 Not modified` responce as well as Cache-Control headers and ETag. Maps data is shared between workers and the only worker that is allowed to fetch remote maps is the first controller worker.
-
-The default configuration of this module actively uses `compound maps` where a map is defined as an array of sources (+ local fallback location). For user defined maps this redundancy is typically unnecessary details. However, that is described in the following [FAQ section](https://rspamd.com/doc/faq.html#what-are-maps).
+By default, the configuration of this module actively utilises compound maps, which define a map as an array of sources with a local fallback location. While this redundancy may be unnecessary for user-defined maps, further details are available in the following [FAQ section](https://rspamd.com/doc/faq.html#what-are-maps).
 
 ## Configuration
 
-The module itself contains a set of rules in form:
+The module includes a set of rules in the following format:
 
 ~~~ucl
 MAP_SYMBOL1 { 
@@ -46,7 +44,7 @@ MAP_SYMBOL2 {
 ...
 ~~~
 
-You should normally define your own rules in the file `/etc/rspamd/local.d/multimap.conf`. 
+To define your own rules, it is advisable to do so in the `/etc/rspamd/local.d/multimap.conf`. 
 
 ### Map attributes
 
@@ -68,11 +66,11 @@ Optional map configuration attributes:
 * `require_symbols` - expression of symbols that have to match for a specific message: [learn more](#conditional-maps)
 * `filter` - match specific part of the input (for example, email domain): [here](#map-filters) is the complete definition of maps filters
 
-For header maps, you also need to specify the exact header using `header` option.
+When using header maps, it is essential to specify the exact `header` by utilizing the header option.
 
-**Important notice:** there is a common confusion between `type` and `filter` parameters for multimap module. The main rule of thumb is that `type` means *what information* is checked in the map, for example, urls, IPs, headers. `filter` attribute means *how this information is transformed* before checking, for example extracting domain.
+It is important to note that there is often confusion between the `type` and `filter` parameters for the multimap module. The general rule of thumb is that `type` refers to *what information* is checked in the map, such as URLs, IPs, and headers. On the other hand, the `filter` attribute refers to *how this information is transformed* before being checked, such as extracting domains.
 
-**Selector** maps are using [selectors](../configuration/selectors.html) framework which defines both extraction and transformation. Hence, this type of maps could be considered as the most basic and flexible map types. All other types of maps could be expressed by some selector map. Furthermore, it is possible to store [dependent maps](#dependent-maps) in Redis using selectors framework.
+**Selector** maps are using [selectors](../configuration/selectors.html), which defines both extraction and transformation. Consequently, this type of map can be considered as the most basic and flexible. All other types of maps can be expressed using a selector map. Furthermore, it is possible to store [dependent maps](#dependent-maps) in Redis using the selectors framework.
 
 ### Map field syntax
 
@@ -86,8 +84,8 @@ For header maps, you also need to specify the exact header using `header` option
 | `redis://<hashkey>` | Redis map, read field in the hash stored at key
 | `redis+selector://selector` | (from version 2.0) similar to the former one Redis map where a hash key is acquired by application of some [selector](../configuration/selectors.html) that allows to create dependent maps
 
-A combination of files and http where the resulting map is a joint list of its elements:
-  
+A combination of files and HTTP can be used to create a resulting map that is a joint list of its elements, as shown in the following example:
+
 ~~~ucl
 map = [
   "https://maps.rspamd.com/rspamd/mime_types.inc.zst",
@@ -96,12 +94,11 @@ map = [
 ]
 ~~~
 
-You cannot combine redis nor cdb maps with generic maps.
+It is important to note that redis or cdb maps cannot be combined with generic maps.
 
 ### Maps flaws
 
-Maps content could be augmented by using of flaws, for example `map = regexp;/path/to/file.re`. This feature is available from the version 2.0.
-
+Maps content can be augmented by using flaws, for instance, `map = regexp;/path/to/file.re`. This feature has been available since version 2.0.
 
 ~~~lua
   local known_types = {
@@ -176,9 +173,9 @@ Type attribute means what is matched with this map. The following types are supp
 | `url` | matches URLs in messages against maps
 | `user` | matches authenticated username against maps
 
-DNS maps are legacy and are not encouraged to use in new projects (use [rbl](rbl.html) for that).
+DNS maps are considered legacy and it is not encouraged to use them in new projects. Instead, [rbl](rbl.html) should be used for that purpose.
 
-Maps can also be specified as [CDB](http://www.corpit.ru/mjt/tinycdb.html) databases that might somehow be useful for large maps:
+Maps can also be specified as [CDB](http://www.corpit.ru/mjt/tinycdb.html) databases, which might be useful for large maps:
 
 ~~~ucl
 SOME_SYMBOL {
@@ -189,7 +186,7 @@ SOME_SYMBOL {
 
 ## Regexp maps
 
-All maps with the exception of `ip` and `dnsbl` maps support `regexp` mode. In this mode, all keys in maps are treated as regular expressions, for example:
+All maps, except for `ip` and `dnsbl` maps, support the `regexp` mode. In this mode, all keys in maps are treated as regular expressions. For example:
 
 ```
 # Sole key
@@ -199,9 +196,9 @@ All maps with the exception of `ip` and `dnsbl` maps support `regexp` mode. In t
 # Comments are still enabled
 ```
 
-For performance considerations, use only expressions supported by [Hyperscan](http://intel.github.io/hyperscan/dev-reference/compilation.html#pattern-support) as this engine provides blazing performance at no additional cost. Currently, there is no way to distinguish what particular regexp was matched in case if multiple regexp were matched.
+For performance considerations, it is recommended to use only expressions supported by [Hyperscan](http://intel.github.io/hyperscan/dev-reference/compilation.html#pattern-support) as this engine provides fast performance without any additional cost. Currently, there is no way to distinguish which particular regexp was matched in case of multiple regexps being matched.
 
-To enable regexp mode, you should set `regexp` option to `true`:
+To enable the `regexp` mode, you should set the `regexp` option to `true`:
 
 ~~~ucl
 # local.d/multimap.conf
@@ -214,12 +211,11 @@ SENDER_FROM_WHITELIST {
 
 ## Map filters
 
-It is also possible to apply a filtering expression before checking value against some map. This is mainly useful
-for `header` rules. Filters are specified with `filter` option. Rspamd supports the following filters so far:
+In Rspamd, it is also possible to apply filtering expressions before checking the value against a particular map. This is particularly useful for `header` rules. Filters can be specified using the `filter` option, and the following filters are supported:
 
 ### Content filters
 
-Content maps support the following filters:
+For content maps, the following filters are supported:
 
 | Content filter            | Description                       |
 | :-------------- | :-------------------------------- |
@@ -232,9 +228,9 @@ Content maps support the following filters:
 
 ### Filename filters
 
-Filename maps checks also include detected filename match from version 2.0. For example, if some attachment has `.png` extension but it has real type detected as `image/jpeg` then two checks would be performed: for the original attachment and for the detected one. This does not include files in archives as Rspamd does not extract them.
+Since version 2.0, Filename maps also check for detected filename matches. For instance, if an attachment has a `.png` extension, but its real type is detected as `image/jpeg`, two checks will be performed - one for the original attachment and one for the detected one. It is worth noting that Rspamd does not extract files in archives, so these files are not included in the checks.
 
-Filename maps support this filters set:
+Filename maps support the following set of filters:
 
 | Filter            | Description                       |
 | :-------------- | :-------------------------------- |
@@ -335,7 +331,7 @@ following values:
 * `greylist` - greylist the message
 * `reject` - drop the message
 
-No filters will be processed for a message if such a map matches. Multiple symbols or symbol conditions are not supported for prefilter maps by design.
+If a map matches, no filters will be processed for a message. It is important to note that prefilter maps do not support multiple symbols or symbol conditions by design.
 
 ~~~ucl
 # local.d/multimap.conf
@@ -357,7 +353,7 @@ SPAMHAUS_PBL_BLACKLIST {
 
 ## Multiple symbol maps
 
-From the version 1.3.1, it is possible to define multiple symbols and scores using multimap module. To do that, you should define all possible symbols using `symbols` option in multimap:
+Starting from version 1.3.1, it is now possible to define multiple symbols and scores using the multimap module. To achieve this, all possible symbols should be defined using the `symbols` option in the multimap:
 
 ~~~ucl
 # local.d/multimap.conf
@@ -387,7 +383,7 @@ the map:
 /re3/
 ~~~
 
-Symbols that are not defined in the `symbols` attribute but used in the map are ignored and replaced by the default map symbol. If the value of a key-value pair is missing, then Rspamd just inserts the default symbol with dynamic weight equal to `1.0` (which is multiplied by metric score afterwards).
+If symbols used in a map are not defined in the `symbols` attribute, they will be ignored and replaced with the default map symbol. In case the value of a key-value pair is missing, Rspamd will insert the default symbol with a dynamic weight of `1.0`. This weight is then multiplied by the metric score.
 
 ### Get all matches
 
@@ -407,7 +403,7 @@ CONTENT_BLACKLISTED {
 
 ## Conditional maps
 
-From version 1.3.1, it is possible to set up maps that depends on other rules and check map if some certain condition is satisfied. In particular, you can check that a message has a valid `SPF` policy to perform some whitelisting. However, you don't want to bother about mailing lists. Then you can write the following map condition:
+Starting from version 1.3.1, it is possible to create maps that depend on other rules and are only checked if certain conditions are met. For example, you may want to perform some whitelisting based on whether a message has a valid SPF policy, but not for messages that are sent to a mailing list. In this case, you can use the following map condition:
 
 ~~~ucl
 # local.d/multimap.conf
@@ -418,11 +414,12 @@ FROM_WHITELISTED {
 }
 ~~~
 
-You can use any logic expression of other symbols within `require_symbols` definition. Rspamd automatically inserts dependency for a multimap rule on all symbols that are required by this particular rule. You cannot use symbols added by post-filters here, however, pre-filter and normal filter symbols are allowed.
+In the `require_symbols` definition, any logical expression of other symbols can be used. Rspamd automatically adds a dependency for a multimap rule on all symbols required by that rule. Symbols added by post-filters cannot be used here, but pre-filter and normal filter symbols are allowed.
+
 
 ## Redis for maps
 
-From version 1.3.3, it is possible to work with maps which are stored in Redis backend. You can use any external application to put data into Redis database using HSET command (e.g HSET hashkey test@example.org 1). After you can define map as protocol `redis://` and specify hash key to read. Redis settings can be defined inside `multimap` module also.
+Starting from version 1.3.3, Rspamd allows working with maps stored in a Redis backend. Any external application can put data into the Redis database using the HSET command, for example:  `HSET hashkey test@example.org 1`. Once the data is in Redis, you can define a map using the protocol `redis://` and specify the hash key to read. Redis settings can be defined inside the `multimap` module as well.
 
 ## Combined maps
 
@@ -465,7 +462,7 @@ Combined maps support merely **selectors** syntax, not general multimap rules.
 
 ## Dependent maps
 
-Version 2.0 also allows to create dependent maps in Redis where map key depends on some other data extracted from the same message. For example, per user based whitelist.
+Version 2.0 introduces the capability to create dependent maps in Redis, where the map key is dependent on some other data extracted from the same message. This allows for the creation of per-user based whitelists, among other use cases.
 
 TODO: write more
 
