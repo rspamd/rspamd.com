@@ -30,8 +30,6 @@ Symbols that the module adds are listed below:
 - `DMARC_POLICY_QUARANTINE`: Authentication failed- quarantine suggested by DMARC policy
 - `DMARC_POLICY_SOFTFAIL`: Authentication failed- no action suggested by DMARC policy
 
-~~~
-
 ## Reporting
 
 Starting from Rspamd 3.0, the recommended way to send DMARC reports is to use the `rspamadm dmarc_report` command with cron or systemd timers. Depending on the amount of traffic, this should be scheduled either daily or hourly. A working MTA running on a specific host is required to send the reports. Ideally, the local MTA should allow email to be sent without authentication or SSL.
@@ -66,6 +64,24 @@ Below are the configuration parameters for DMARC reporting, along with correspon
     #exclude_domains = ["example.com", "another.com"]; # Alternative, use array to exclude reports from domains or eSLDs
   }
 ~~~
+
+Here is the list of options explained:
+
+* `enabled` (Required): Set to 'true' to enable DMARC reports. If 'false', no reports will be generated.
+* `email` (Required): The email address where DMARC reports will be sent.
+* `domain` (Required): The domain for which DMARC reports will be generated.
+* `org_name` (Required): The name of the organization generating the reports.
+* `bcc_addrs` (Optional): An array of additional email addresses to receive a copy of the DMARC reports.
+* `report_local_controller` (Optional): If set to 'true', stores reports for local/controller scans, which is useful for testing purposes only.
+* `helo` (Optional): The HELO identifier used in the SMTP dialog.
+* `smtp` (Optional): The IP address of the SMTP server used for sending reports.
+* `smtp_port` (Optional): The port number of the SMTP server.
+* `from_name` (Optional): The name that appears in the 'FROM' field in the SMTP messages.
+* `msgid_from` (Optional): The message ID format used in SMTP messages.
+* `max_entries` (Optional): The maximum number of entries allowed per domain in the DMARC report.
+* `keys_expire` (Optional): The expiration time for Redis keys storing report data.
+* `only_domains` (Optional): A path to a map file containing a list of domains or eSLDs for which reports should be stored. Reports from other domains will be ignored.
+* `exclude_domains` (Optional): A path to a map file containing a list of domains or eSLDs to be excluded from the reports. Alternatively, an array of domains can be used for the same purpose.
 
 In versions of Rspamd prior to 3.3, you could exclude certain domains from reporting by configuring the `no_reporting_domains` setting, which is a map of domains or eSLDs to be excluded. Starting from Rspamd 3.3, this option is also available in the `reporting` section. However, the legacy option `settings.no_reporting_domains` is still supported (although it's not recommended).
 
