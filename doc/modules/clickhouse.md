@@ -109,6 +109,37 @@ subject_privacy_length = 16;
 #}
 ~~~
 
+#### Main options
+
+1. `limit = 1000;`: Set the push update limit to 1000 records (default is 1000).
+2. `server = "localhost:8123";`: Set the ClickHouse server's IP and port (default is "localhost:8123").
+3. `timeout = 5;`: Set the timeout for waiting for a response (default is 5 seconds).
+4. `ipmask = 19;`: Set the number of bits to mask in logs for IPv4 sender IPs (default is 19).
+5. `ipmask6 = 48;`: Set the number of bits to mask in logs for IPv6 sender IPs (default is 48).
+6. `full_urls = false;`: Disable recording URL paths (default is false).
+7. `from_tables`: (Commented) Points to a map of domain names to record general metadata in a table named after the domain.
+8. `enable_digest = false;`: Disable storing the email's digest/hash (default is false).
+9. `enable_symbols = false;`: Disable storing Symbols.Names, Symbols.Scores, Symbols.Options, Groups.Names, and Groups.Scores (default is false).
+
+#### Other options:
+1. `database`: Set the ClickHouse database name to be used for storing data (default is 'default').
+2. `use_https`: Set this option to 'true' to enable HTTPS communication with the ClickHouse server (default is 'false').
+3. `use_gzip`: Set this option to 'true' to enable transport compression when sending data to the ClickHouse server (default is 'false').
+4. `allow_local`: Set this option to 'true' to store data for local scans (default is 'false').
+5. `user`: Set the username for basic authentication when connecting to the ClickHouse server (default is 'null', which means no authentication).
+6. `password`: Set the password for basic authentication when connecting to the ClickHouse server (default is 'null', which means no authentication).
+7. `no_ssl_verify`: Set this option to 'true' to disable SSL certificate verification when connecting to the ClickHouse server over HTTPS (default is 'false', which means SSL certificate verification is enabled).
+
+
+#### Limits section (from Rspamd 2.1):
+
+1. `max_rows`: Set the maximum number of rows allowed before sending the collected data to the ClickHouse server. If this limit is reached, the data will be sent immediately. A value of 0 disables this limit (default is not set).
+2. `max_memory`: Set the maximum amount of memory the collected data should occupy before sending it to the ClickHouse server. If this memory limit is reached, the data will be sent immediately. Use a value with a unit like '50mb' or '1gb' (default is not set).
+3. `max_interval`: Set the maximum time interval between sending collected data to the ClickHouse server. After this interval is reached, the data will be sent regardless of the number of rows or the amount of memory occupied. Use a value with a unit like '60s', '5m', or '1h' (default is not set).
+
+These options allow you to control how often Rspamd sends data to the ClickHouse server based on the number of rows, memory usage, and time interval. By configuring these limits, you can optimize the performance and resource usage of your Rspamd and ClickHouse instances.
+
+
 ### Clickhouse retention
 
 Privacy is a crucial consideration in many email systems. The Clickhouse dumps may contain sensitive client data. Rspamd supports automatic cleanup of the outdated data using **retention policies**. By default, data is not expired in Clickhouse, but expiration can be set to comply with regulations such as the General Data Protection Regulation (GDPR) as follows:
