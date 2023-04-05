@@ -45,5 +45,18 @@ log_clean = false;
 retransmits = 2;
 ~~~
 
+1. `enabled = true;`: Enable the DCC plugin (default is disabled).
+2. `servers`: Define local socket or TCP servers in the upstream syntax.
+   a. `servers = "/var/dcc/dccifd";`: Specify the Unix socket for communication with the DCC server.
+   b. `#servers = "127.0.0.1:10045"`: (Commented) Alternative TCP upstream for communication with the DCC server.
+3. `body_max`, `fuz1_max`, and `fuz2_max`: Set bulkiness thresholds for body, fuz1, and fuz2, respectively (all set to 999999).
+4. `symbol_fail = 'DCC_FAIL';`: Set symbol for a failed DCC check.
+5. `symbol = 'DCC_REJECT';`: Set symbol for a successful DCC check with spam result.
+6. `symbol_bulk = 'DCC_BULK';`: Set symbol for a successful DCC check with bulk result.
+7. `timeout = 5.0;`: Set timeout for DCC checks (5 seconds).
+8. `log_clean = false;`: Disable logging for clean emails (not spam or bulk) that pass the DCC check.
+9. `retransmits = 2;`: Set the number of allowed retransmits for the DCC check.
+
+
 If you prefer, you can configure DCC to listen to a TCP socket on localhost or any remote server. For detailed configuration instructions, refer to the DCC manual. The following configuration line sets up DCCIFD to listen on localhost port 10045 and allows queries from the IP range `127.0.0.1/8`:
 `DCCIFD_ARGS="-SHELO -Smail_host -SSender -SList-ID -p *,10045,127.0.0.0/8"`
