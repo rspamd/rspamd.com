@@ -5,9 +5,9 @@ title: RBL module
 # RBL module
 {:.no_toc}
 
-The RBL module provides support for checking various messages elements, such as senders IP addresses, URLs, Emails, Received headers chains, SMTP data (such as HELO domain) and so on, against the set of Runtime Black Lists (RBL) usually provided by means of dedicated DNS zones.
+The RBL module offers support for checking various message elements, such as the sender's IP addresses, URLs, emails, Received headers chains, SMTP data (e.g. HELO domain), and more, against a set of Runtime Black Lists (RBL) typically provided through dedicated DNS zones.
 
-By default, Rspamd comes with a set of RBL rules configured to the popular resources that are usually free for non-profit usage (including fair usage policies). Should you require a different level of support and access then please contact the relevant vendors.
+By default, Rspamd comes with a set of RBL rules pre-configured for popular resources that are often free for non-profit usage, subject to fair usage policies. If you require a different level of support or access, please contact the relevant vendors.
 
 For example, you can use [Abusix Mail Intelligence](https://docs.abusix.com/105726-setup-abusix-mail-intelligence/rspamd-configuration) or [Spamhaus DQS](https://github.com/spamhaus/rspamd-dqs) or any other RBL provider that suits your needs. 
 
@@ -72,7 +72,7 @@ The required parameters `rbl` and `checks` set the address used for testing and 
 - `replyto` - address from the `Reply-To` header of a message
 - `urls` - URLs extracted from message body
 
-Selectors can be used to lookup up arbitrary data; see the section on selectors for more information.
+You can use selectors to look up arbitrary data. Please refer to the section on selectors for more information.
 
 ~~~ucl
 # /etc/rspamd/local.d/rbl.conf
@@ -158,21 +158,15 @@ rbls {
 
 ## URL rules
 
-From version 2.0, both `Emails` and `SURBL` modules are deprecated in honor of the rules for RBL module. Old rules are
-automatically converted by Rspamd on start. If you have your custom rules in either `SURBL` or `Emails` module then they are
-converted in a way to have priority over RBL modules to allow smooth migration. However, the new rules should be written for
-RBL module only as `SURBL` and `Emails` modules transition phase will not last forever.
+Starting from version 2.0, both the `Emails` and `SURBL` modules are deprecated in favour of the rules for the RBL module. Rspamd automatically converts the old rules on start. If you have custom rules in either the `SURBL` or `Emails` module, they are converted to have priority over RBL modules for a smooth transition. However, new rules should only be written for the RBL module, as the transition phase for the `SURBL` and `Emails` modules will not last forever.
 
-`SURBL` module was previously responsible for scanning of URLs found in messages against a list of known RBLs. However, these functions are now transferred to this module.
+Previously, the `SURBL` module was responsible for scanning URLs found in messages against a list of known RBLs. However, these functions are now transferred to the RBL module.
 
 ## URL rules configuration
 
-By default, Rspamd defines a set of URL lists in the configuration. However, their terms
-of usage normally disallows commercial or very extensive usage without purchasing
-a specific sort of license.
+Rspamd defines a set of URL lists in the configuration by default. However, their terms of usage typically prohibit commercial or extensive usage without purchasing a specific type of license. 
 
-Nonetheless, they can be used by personal services or low volume requests free
-of charge.
+Nevertheless, these lists can be used free of charge by personal services or low-volume requests.
 
 Here are the default lists specified:
 
@@ -281,10 +275,9 @@ whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
   }
 ~~~
 
-Each list should have a `suffix` parameter that defines the list itself and optionally for some replies processing logic
-either by `returnbits` or `returncodes` sections.
+Each list should have a `suffix` parameter that defines the list itself, and optionally, some replies processing logic either by `returnbits` or `returncodes` sections.
 
-Since some URL lists do not accept `IP` addresses, it is also possible to disable sending of URLs with IP address in the host to such lists. That could be done by specifying `no_ip = true` option:
+As some URL lists do not accept `IP` addresses, it is possible to disable the sending of URLs with IP addresses in the host to such lists. This can be done by specifying the `no_ip = true` option.
 
 ~~~ucl
 "DBL" {
@@ -294,7 +287,7 @@ Since some URL lists do not accept `IP` addresses, it is also possible to disabl
 }
 ~~~
 
-It is also possible to check DKIM signatures domains, HTML images URLs and email addresses (domain part) in mail's body part for URLs by using URL blacklists:
+URL blacklists can also be used to check DKIM signature domains, HTML image URLs, and email addresses (domain part) in the mail's body part for URLs.
 
 ~~~ucl
     "RSPAMD_URIBL" {
@@ -318,11 +311,11 @@ It is also possible to check DKIM signatures domains, HTML images URLs and email
     }
 ~~~
 
-In this example, we also enable privacy for requests by hashing all elements before sending. It is supported by a limited number of RBLs (e.g. Rspamd URL blacklist or by MSBL EBL).
+In this example, we also enable privacy for requests by hashing all elements before sending. This feature is supported by a limited number of RBLs, such as Rspamd URL blacklist or MSBL EBL.
 
 ## Monitoring
 
-By default, Rspamd checks each RBL rule to be a valid DNS list as defined in [RFC 5782](https://datatracker.ietf.org/doc/html/rfc5782). This is done to avoid situations when some RBL blacklists the whole world or is irresponsive. For the IP based rules (meaning that an IP address is queried), Rspamd will query for `127.0.0.1` address as, per RFC, this must return `NXDOMAIN` response. However, some DNS lists are non RFC compatible, so you can disable monitoring for them as following:
+Rspamd checks each RBL rule to ensure it's a valid DNS list as defined in [RFC 5782](https://datatracker.ietf.org/doc/html/rfc5782) by default. This is done to avoid situations where a single RBL blacklists the entire world or becomes unresponsive. For the IP-based rules, meaning that an IP address is queried, Rspamd will query for the `127.0.0.1` address, as per the RFC, this must return an `NXDOMAIN` response. However, some DNS lists are non RFC compatible, so you can disable monitoring for them as follows:
 
 ~~~ucl
     "HOSTKARMA_URIBL" {
@@ -375,7 +368,8 @@ Here are new composition rules:
     
 ### Specific URL composition rules
 
-From Rspamd 2.5, there is also support for a custom composition rules per RBL rules. This is provided by `lua_urls_compose` library. Here is a basic explanation of the composition rules used:
+Starting from Rspamd 2.5, it is now possible to define custom composition rules per RBL rule, using the `lua_urls_compose` library. Below is a basic explanation of how these composition rules work:
+
 
 ```lua
 -- First one is the input hostname, the second is the expected results
@@ -399,7 +393,7 @@ local excl_rules1 = {
 }
 ```
 
-To define a specific map for these rules one can use the following syntax
+To define a specific map for these rules, the following syntax can be used:
 
 ~~~ucl
 # local.d/rbl.conf
@@ -448,28 +442,26 @@ to decode reply:
      127.0.0.2 -> LISTB only
      127.0.0.1 -> LISTA only
 
-This encoding can save DNS requests to query multiple lists one at a time.
+The use of this encoding can reduce DNS requests needed to query multiple lists individually.
 
-Some other lists use direct encoding of lists by some specific addresses. In this
-case you should define results decoding principle in `ips` section not `bits` since
-bitwise rules are not applicable to these lists. In `ips` section you explicitly
-match the IP returned by a list and its meaning.
+However, some lists use a direct encoding method where specific addresses are assigned to each list. In such cases, the decoding principle for the results should be defined in the `ips` section instead of the `bits` section since bitwise rules do not apply to these lists. In the `ips` section, the IP address returned by a list is explicitly matched with its corresponding meaning.
 
 ## IP lists
 
-From rspamd 1.1 it is also possible to do two step checks:
+Starting from rspamd 1.1, it is also possible to perform two-step checks:
 
 1. Resolve IP addresses of each URL
 2. Check each IP resolved against SURBL list
 
-In general this procedure could be represented as following:
+In general, this procedure can be represented as follows:
 
 * Check `A` or `AAAA` records for `example.com`
 * For each IP address resolve it using reverse octets composition: so if IP address of `example.com` is `1.2.3.4`, then checks would be for `4.3.2.1.uribl.tld`
 
 ## Disabling rules
 
-Rules can be disabled by setting the `enabled` setting to `false`. This allows for easily disabling SURBLs without overriding the full default configuration. The example below could be added to `/etc/rspamd/local.d/surbl.conf` to disable the `RAMBLER_URIBL` URIBL.
+To disable a rule in SURBL, you can set the `enabled` setting to `false`. This makes it easy to disable specific SURBLs without overriding the entire default configuration. For instance, if you want to disable the `RAMBLER_URIBL` URIBL, you can add the following example to `/etc/rspamd/local.d/surbl.conf`:
+
 
 ~~~ucl
 rules {
@@ -481,7 +473,7 @@ rules {
 
 ## Use of URL redirectors
 
-SURBL module is designed to work with [url_redirector module](./url_redirector.html) which can help to resolve some known redirectors and extract the real URL to check with this module. Please refer to the module's documentation about how to work with it. SURBL module will automatically use that results.
+The SURBL module is designed to work in conjunction with the [url_redirector module](./url_redirector.html) which is capable of resolving known redirectors and extracting the actual URL for the SURBL module to check. You can refer to the url_redirector module's documentation for more information on how to use it. Once the url_redirector module has resolved the actual URL, the SURBL module will automatically use the results to perform its checks.
 
 ## Selectors
 
