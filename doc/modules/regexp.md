@@ -16,36 +16,31 @@ This is a core module that deals with regular expressions, internal functions an
 
 ## Principles of work
 
-Regexp module operates with `expressions` - a logical sequence of different `atoms`. Atoms
-are elements of the expression and could be represented as regular expressions, rspamd
-functions and lua functions. Rspamd supports the following operators in expressions:
+The Regexp module operates using `expressions`, which consist of a logical sequence of different `atoms`. Atoms are the individual elements of the expression and can be represented as regular expressions, Rspamd functions, or Lua functions. Rspamd offers support for a range of operators within expressions, including:
 
 * `&&` - logical AND (can be also written as `and` or even `&`)
 * `||` - logical OR (`or` `|`)
 * `!` - logical NOT (`not`)
 * `+` - logical PLUS, usually used with comparisons:
-	- `>` more than
-	- `<` less than
-	- `>=` more or equal
-	- `<=` less or equal
+  - `>` more than
+  - `<` less than
+  - `>=` more or equal
+  - `<=` less or equal
 
-Whilst logical operators are clear for understanding, PLUS is not so clear. In rspamd,
-it is used to join multiple atoms or subexpressions and compare them to a specific number:
+While logical operators are easily understandable, the PLUS operator may not be as clear. In Rspamd, it is used to connect multiple atoms or subexpressions and compare them to a specific number:
 
-	A + B + C + D > 2 - evaluates to `true` if at least 3 operands are true
-	(A & B) + C + D + E >= 2 -  evaluates to `true` if at least 2 operands are true
+  A + B + C + D > 2 - evaluates to `true` if at least 3 operands are true
+  (A & B) + C + D + E >= 2 -  evaluates to `true` if at least 2 operands are true
 
 Operators has their own priorities:
-	
+  
 1. NOT
 2. PLUS
 3. COMPARE
 4. AND
 5. OR
 
-You can change priorities by braces, of course. All operations are *right* associative in rspamd.
-While evaluating expressions, rspamd tries to optimize their execution time by reordering and does not evaluate
-unnecessary branches.
+Changing priorities is possible by using braces. In Rspamd, all operations are *right* associative. During expression evaluation, Rspamd optimizes execution time by reordering and avoids evaluating unnecessary branches.
 
 ## Expressions components
 
@@ -66,8 +61,7 @@ In Rspamd, regular expressions can be used to examine different parts of the mes
 * URLs
 * Strings returned by a selector (`re_selector_name=/regexp/iumxs{selector}`)
 
-The match type is defined by a special flag (after the last `/` symbol).
-It can be either a single letter or a long type in curly braces (from Rspamd 1.3):
+The match type is defined by a flag that appears after the last `/` symbol. This can be a single letter or a long type enclosed in curly braces, which has been available since Rspamd 1.3:
 
 | Type | Long type       | Tested content |
 | ---- | --------------- | -------------- |
@@ -91,9 +85,9 @@ Each regexp also supports the following modifiers:
 
 * `i` - ignore case
 * `u` - use utf8 regexp
-* `m` - multiline regexp - treat string as multiple lines. That is, change "^" and "$" from matching the start of the string's first line and the end of its last line to matching the start and end of each line within the string
-* `x` - extended regexp - this flag tells the regular expression parser to ignore most whitespace that is neither backslashed nor within a bracketed character class. You can use this to break up your regular expression into (slightly) more readable parts. Also, the # character is treated as a metacharacter introducing a comment that runs up to the pattern's closing delimiter, or to the end of the current line if the pattern extends onto the next line.
-* `s` - dotall regexp - treat string as single line. That is, change `.` to match any character whatsoever, even a newline, which normally it would not match. Used together, as `/ms`, they let the `.` match any character whatsoever, while still allowing `^` and `$` to match, respectively, just after and just before newlines within the string.
+* `m` - multiline regular expression - this flag causes the string to be treated as multiple lines. This means that the `^` and `$` symbols match the start and end of each line within the string, rather than just the start and end of the first and last lines.
+* `x` - extended regular expression - this flag instructs the regular expression parser to ignore most whitespace that is not backslashed or within a bracketed character class. This makes it possible to break up the regular expression into more readable parts. Additionally, the `#` character is treated as a metacharacter that introduces a comment which runs up to the pattern's closing delimiter or to the end of the current line if the pattern extends onto the next line.
+* `s` - dotall regular expression - this flag causes the string to be treated as a single line. This means that the `.` symbol matches any character whatsoever, including a newline, which it would not normally match. When used together as `/ms`, they allow the `.` to match any character while still allowing `^` and `$` to respectively match just after and just before newlines within the strin
 * `O` - do not optimize regexp (rspamd optimizes regexps by default)
 * `r` - use non-utf8 regular expressions (raw bytes). This is default `true` if `raw_mode` is set to `true` in the options section.
 * `A` - return and process all matches (useful for Lua prefilters)
@@ -141,13 +135,11 @@ Many of these functions are just legacy but they are supported in terms of compa
 
 ## Lua atoms
 
-Lua atoms now can be lua global functions names or callbacks. This is 
-a compatibility feature for previously written rules.
+Lua atoms can now be either the names of Lua global functions or callbacks. This is a compatibility feature for rules that were written previously.
 
 ## Regexp objects
 
-From rspamd 1.0, it is possible to add more power to regexp rules by using of
-table notation while writing rules. A table can have the following fields:
+Starting from Rspamd 1.0, the power of regular expression rules can be enhanced by using table notation. When writing rules, a table can contain the following fields:
 
 - `callback`: lua callback for the rule
 - `re`: regular expression (mutually exclusive with `callback` option)
@@ -173,7 +165,7 @@ config['regexp']['RE_TEST'] = {
 
 ## Lua functions
 
-From version `1.8.4`, there is also support of using local Lua functions from regexp atoms using Regexp objects notation. These functions need to be defined in `functions` element that, in turn, should be a table of functions:
+Starting from version `1.8.4`, Rspamd also supports the use of local Lua functions in regular expression atoms using Regexp object notation. These functions must be defined in the `functions` element, which should be a table of functions:
 
 ~~~lua
 config.regexp.BLA = {
@@ -185,11 +177,11 @@ config.regexp.BLA = {
 }
 ~~~
 
-Please bear in mind that you **cannot** use asynchronous functions (including those with [coroutines](../lua/sync_async.html)) in these Lua snippets as Rspamd will not wait for them to be finished. The only way to use such functions in Regexp expressions is to create a dedicated rule that performs async stuff and then register dependency for regexp symbol: `rspamd_config:register_dependency('RE_SYMBOL', 'ASYNC_SYMBOL')` and then call `task:has_symbol('ASYNC_SYMBOL')` in Lua function defined in Regexp expression.
+Please note that you **cannot** use asynchronous functions, including those with  [coroutines](../lua/sync_async.html), in these Lua snippets, as Rspamd will not wait for them to finish. The only way to use such functions in Regexp expressions is to create a dedicated rule that performs asynchronous tasks, register the dependency for the regexp symbol using `rspamd_config:register_dependency('RE_SYMBOL', 'ASYNC_SYMBOL')`, and then call `task:has_symbol('ASYNC_SYMBOL')` in the Lua function defined in the Regexp expression.
 
 ## Regexp prefilters
 
-Rspamd supports lua filters for regular expressions from version 2.6. The idea is to allow fast pre-filter with regular expressions and slow Lua postprocessing for the cases where this processing is needed. Here is how it's used in bitcoin library:
+Rspamd has supported Lua filters for regular expressions since version 2.6. The concept is to enable quick pre-filtering using regular expressions and slower Lua post-processing when necessary. Here is an example of how it's used in the Bitcoin library:
 
 ~~~lua
 config.regexp['RE_POSTPROCESS'] = {
@@ -218,4 +210,4 @@ config.regexp['RE_POSTPROCESS'] = {
 }
 ~~~
 
-This allows to add accelerated rules that are enabled merely if some relatively rare regular expression matches. In this particular case this feature is used to do BTC wallet verification and validation.
+This feature enables the addition of accelerated rules that are only enabled when relatively rare regular expressions match. In this particular case, the feature is used for Bitcoin wallet verification and validation.
