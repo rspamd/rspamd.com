@@ -5,7 +5,7 @@ title: Replies module
 
 # Replies module
 
-This module collects the `message-id` header of messages sent by authenticated users and stores corresponding hashes to Redis, which are set to expire after a configurable amount of time (by default 1 day). Furthermore, it hashes `in-reply-to` headers of all received messages & checks for matches (ie. messages sent in response to messages our system originated) and yields a symbol which could be used to adjust scoring or forces an action (most likely "no action" to accept) according to configuration.
+This module gathers the `message-id` header of emails that authenticated users have sent and saves the corresponding hashes to Redis. These hashes expire after a predetermined length of time, which can be set to a maximum of 24 hours by default. Additionally, the module creates hashes of the `in-reply-to` headers of all received messages and checks them for matches, i.e., messages that were sent in response to messages that our system initiated. The module then generates a symbol that can be used to adjust the scoring or force an action, such as accepting the message with no action taken, depending on the configuration.
 
 
 ## Configuration
@@ -17,7 +17,7 @@ Settings for the module are described below (default values are indicated in bra
 - `key_prefix`: string prefixed to keys in Redis (default `rr`)
 - `symbol`: symbol yielded on messages identified as replies.
 
-You also need to set Redis servers to store data (e.g. `servers` or `read_servers` and `write_servers`). You can specify all standard Redis arguments, such as password, timeout, database and so on.
+Additionally, you will need to set up Redis servers to store data, such as `servers` or `read_servers` and `write_servers`. You can specify all standard Redis arguments, including password, timeout, database, and so on.
 
 ## Example
 
