@@ -81,6 +81,7 @@ For <a class="undecor" href="#asanSys1">asan<sup>2</sup></a> branch packages, do
 
 Rspamd supports the following .deb based distributives:
 
+- **Debian bookworm** (since 3.5)
 - **Debian bullseye**
 - **Ubuntu focal** (since 2.5)
 - **Ubuntu jammy** (since 3.3)
