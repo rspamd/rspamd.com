@@ -195,7 +195,7 @@ Users of NetBSD (and other systems with pkgsrc) can use [pkgsrc](https://pkgsrc.
 
 OpenBSD users can use [ports](https://openports.se/mail/rspamd).
 
-macOS users can install from [MacPorts](https://github.com/macports/macports-ports/blob/master/mail/rspamd/Portfile):
+macOS users can install from [MacPorts](https://ports.macports.org/port/rspamd):
 ```
 sudo port install rspamd
 sudo port load rspamd
