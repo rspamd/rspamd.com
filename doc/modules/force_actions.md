@@ -7,7 +7,7 @@ title: Force Actions module
 
 The purpose of this module is to force an action to be applied if particular symbols are found/not found and optionally return a specified SMTP message. It is available in version 1.5.0 and greater.
 
-# Configuration
+## Configuration
 
 Configuration should be added to `/etc/rspamd/local.d/force_actions.conf`
 
@@ -25,6 +25,14 @@ Only one of `honor_action` or `require_action` should be set on a given rule.
 [Composite expressions]({{ site.url }}{{ site.baseurl }}/doc/configuration/composites.html#composite-expressions) can be used for `expression`.
 
 [Selectors](../configuration/selectors.html) can be used to generate dynamic `message`. The selector expression must be enclosed in `${}`.
+
+### Execution Order
+
+If neither `require_action` nor `honor` is specified, the respective force action symbol is registered as a normal filter with a dependency on all symbols referenced in `expression`.
+If at least one of `require_action` or `honor` is specified, the respective force action symbol is registered as a post filter.
+For example, this is important if you want to revert an action that is decided upon the total score, as the action is only updated once all normal filters are completed.
+
+### Examples
 
 ~~~ucl
 # Rules are defined in the rules {} block
