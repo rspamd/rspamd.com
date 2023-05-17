@@ -4,32 +4,19 @@ title: SPF module
 ---
 # SPF module
 
-SPF module performs checks of the sender's [SPF](http://www.open-spf.org/) policy.
-Many mail providers uses SPF records to define which hosts are eligible to send email
-for this specific domain. In fact, there are many possibilities to create and use
-SPF records, however, all they check merely the sender's domain and the sender's IP.
+The SPF module checks the sender's [SPF](http://www.open-spf.org/) Many mail providers use SPF records to determine eligible hosts for sending email on a specific domain. There are various ways to create and use SPF records, but they all primarily verify the sender's domain and IP.
 
-The specific case are automated messages from the special mailer daemon address:
-`<>`. In this case Rspamd uses `HELO` to grab domain information as specified in the
-standard.
+A specific scenario involves automated messages from the special mailer daemon address: `<>`. In this case, Rspamd utilizes `HELO` to retrieve domain information according to the standard.
 
 ## Principles of work
 
-`SPF` can be a powerful tool when properly used. However, it is very fragile in many
-cases: when a message is somehow redirected or reconstructed by mailing lists software.
+When used correctly, `SPF` can be a valuable tool. However, it often becomes vulnerable in situations where a message is redirected or modified by mailing list software.
 
-Moreover, many mail providers have no clear understanding of this technology and
-misuse the SPF technique. Hence, the scores for SPF symbols are relatively small
-in Rspamd.
+Furthermore, numerous mail providers lack a proper understanding of this technology, resulting in the misuse of SPF techniques. As a result, the scores for SPF symbols in Rspamd tend to be relatively low.
 
-SPF uses DNS service extensively, therefore Rspamd maintain the cache of SPF records.
-This cache operates on principle of `least recently used` expiration. All cached item
-lifetimes are accordingly limited by the matching DNS record time to live.
+The cache follows the principle of `least recently used` expiration, meaning that the lifetime of each cached item is determined by the time to live of the corresponding DNS record.
 
-You can manually specify the size and max expire of this cache by configuring SPF module.
-In addition, you can assign some parameters such as maximum number of recursive DNS subrequests (e.g. includes chain
-length), maximum count of DNS requests per record, minimum TTL enforced for all elements in SPF records, disable all IPv6
-lookups.
+To configure the SPF module, you have the option to manually specify the cache size and maximum expiration time. Additionally, you can define parameters such as the maximum number of recursive DNS subrequests (including chain length), the maximum count of DNS requests per record, the minimum TTL enforced for all elements in SPF records, and the ability to disable all IPv6 lookups.
 
 ## Example configuration
 
