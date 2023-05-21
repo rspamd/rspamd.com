@@ -6,14 +6,12 @@ title: Trie module
 # Trie plugin
 
 ### Deprecation warning
-This plugin is obsoleted since all it's functionality is now covered by [multimap module](multimap.html). Multimap module supports regexp and patterns based rules that completely cover features listed below. It is also safe to use regular expressions module for the same purposes as these expressions are normally accelerated by multi-pattern lookup engine. However, for some platforms, such as arm/mips or everything that is non x86, this module can still be useful. Hence, there are no plans to remove it from Rspamd.
+This plugin is obsolete as all its functionality is now provided by the [multimap module](multimap.html). The multimap module supports regular expressions and pattern-based rules that fully encompass the features listed below. Additionally, using the regular expressions module for the same purposes is safe, as these expressions are typically accelerated by a multi-pattern lookup engine. However, this module can still be valuable for certain platforms, such as arm/mips or non-x86 systems. Therefore, there are no plans to remove it from Rspamd.
 
 ## Module description
-Trie plugin is designed to search multiple strings within raw messages or text parts
-doing this blazingly fast. In fact, it uses aho-corasic algorithm that performs incredibly
-good even on large texts and many input strings.
+The Trie plugin is specifically designed for efficiently searching multiple strings within raw messages or text parts. It achieves this with remarkable speed by utilizing the aho-corasick algorithm, which performs exceptionally well even with large texts and numerous input strings.
 
-This module provides a convenient interface to the search trie structure.
+This module offers a user-friendly interface for working with the search trie structure.
 
 ## Configuration
 
@@ -41,8 +39,4 @@ trie {
 }
 ~~~
 
-Despite of the fact that aho-corasic trie is very fast, it supports merely plain
-strings. Moreover, it cannot distinguish words boundaries, for example, a string
-`test` will be found in texts `test`, `tests` or even `123testing`. Therefore, it
-might be used to search some concrete and relatively specific patterns and should
-not be used for words match.
+Despite the Aho-Corasick trie's impressive speed, it only supports plain strings and lacks the ability to differentiate word boundaries. For instance, the string `test` would be found in texts such as `test`, `tests` or even `123testing`. As a result, it is more suitable for searching for specific and relatively precise patterns, rather than for matching whole words.
