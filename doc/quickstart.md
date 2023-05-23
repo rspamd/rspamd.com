@@ -1,5 +1,73 @@
 ---
-layout: doc
+layout: docToggle navigation
+Toggle navigation
+SuperTool Beta7
+onlinebank.com
+mx:onlinebank.com     
+Pref
+Hostname
+IP Address
+TTL
+5
+orcc-pop1.onlinebank.com
+12.188.33.93
+AT&T Services, Inc. (AS7018)
+15 min
+Blacklist Check      SMTP Test
+10
+service5.onlinebank.com
+65.246.31.94
+Verizon Business (AS701)
+15 min
+Blacklist Check      SMTP Test
+Test
+Result
+Status Problem
+DMARC Record Published
+No DMARC Record found
+Information More Info
+Status Warning
+DMARC Policy Not Enabled
+DMARC Quarantine/Reject policy not enabled
+Information More Info
+Status Ok
+DNS Record Published
+DNS Record found
+dns lookup	dns check	dmarc lookup	spf lookup	dns propagation
+Reported by ns6.onefiserv.com on 5/23/2023 at 11:03:58 AM (UTC -5), just for you.  Transcript
+ABOUT THE SUPERTOOL!
+All of your MX record, DNS, blacklist and SMTP diagnostics in one integrated tool.  Input a domain name or IP Address or Host Name. Links in the results will guide you to other relevant tools and information.  And you'll have a chronological history of your results. 
+
+If you already know exactly what you want, you can force a particular test or lookup.  Try some of these examples:
+
+(e.g. "blacklist: 127.0.0.2" will do a blacklist lookup)
+
+Command	 	Explanation
+blacklist:	 	Check IP or host for reputation
+smtp:	 	Test mail server SMTP (port 25)
+mx:	 	DNS MX records for domain
+a:	 	DNS A record IP address for host name
+spf:	 	Check SPF records on a domain
+txt:	 	Check TXT records on a domain
+ptr:	 	DNS PTR record for host name
+cname:	 	DNS canonical host name to IP address
+whois:	 	Get domain registration information
+arin:		Get IP address block information
+soa:		Get Start of Authority record for a domain
+tcp:		Verify an IP Address allows tcp connections
+http:		Verify a URL allows http connections  
+https:		Verify a URL allows secure http connections  
+ping:		Perform a standard ICMP ping
+trace:		Perform a standard ICMP trace route
+dns:		Check your DNS Servers for possible problems  New!
+ 	 	 
+Other tools
+
+Feedback: If you run into any problems with the site or have an idea that you think would make it better, we would appreciate your feedback. Please leave us some Feedback.
+
+Your IP is: 105.112.56.8|  Contact Terms & Conditions Site Map API Privacy Phone: (866)-MXTOOLBOX / (866)-698-6652 |  © Copyright 2004-2021, MXToolBox, Inc, All rights reserved. US Patents 10839353 B2 & 11461738 B2
+ 
+burritos@banana-pancakes.com braunstrowman@banana-pancakes.com finnbalor@banana-pancakes.com ricflair@banana-pancakes.com randysavage@banana-pancakes.com
 title: Quickstart
 ---
 
