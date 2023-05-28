@@ -6,11 +6,11 @@ title: Scanning outbound mail
 
 ## Why and how to scan outbound mail
 
-Sending outbound spam can have serious negative impacts on the ability of your system to deliver mail effectively. To prevent these issues, it is important to avoid sending spam. If an outbound spam outbreak is detected, it may be necessary to take incident response measures, such as changing the passwords of affected accounts. It may also be helpful to verify the authenticity of the spam through human analysis, though this may violate privacy laws or company policies. It is important to consult with legal counsel and relevant stakeholders to determine the appropriate course of action for handling suspected outbound spam. Please note that this document does not provide specific guidance on how to handle such mail (though it may be expanded in the future to include example strategies).
+Sending outbound spam can have severe negative consequences on your system's email delivery capabilities. It is crucial to prevent the occurrence of spam and its associated issues. In the event of an outbreak of outbound spam, it may become necessary to initiate incident response measures, such as changing the passwords of affected accounts. Conducting human analysis to verify the authenticity of the spam may also be beneficial, but it is essential to consider privacy laws and company policies, as this analysis could potentially infringe upon them. To determine the appropriate actions for dealing with suspected outbound spam, it is advisable to seek advice from legal experts and involve relevant stakeholders. Please be aware that this document does not offer specific guidance on handling such emails, although it may be expanded in the future to include illustrative strategies.
 
 ## Scanning outbound with Rspamd
 
-Rspamd is designed to be easily configured for outbound scanning. With proper [integration]({{ site.url }}{{ site.baseurl }}/doc/integration.html) Rspamd  can identify the authenticated user and IP address that a mail was sent from. If mail was received from an authenticated user or an IP address listed in [local_addrs]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html) several checks are automatically disabled: 
+Rspamd is specifically designed to facilitate straightforward configuration for outbound scanning. With proper [integration]({{ site.url }}{{ site.baseurl }}/doc/integration.html) Rspamd  can identify the authenticated user and IP address that a mail was sent from. If mail was received from an authenticated user or an IP address listed in [local_addrs]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html) several checks are automatically disabled: 
 
  - [ASN]({{ site.url }}{{ site.baseurl }}/doc/modules/asn.html): checking is disabled for local IPs, unless `check_local` is set to `true`
  - [DKIM]({{ site.url }}{{ site.baseurl }}/doc/modules/dkim.html): checking is disabled; signing is **enabled** on the contrary if the appropriate key and rule are found
@@ -28,7 +28,7 @@ Additionally, it is possible to disable/enable checks selectively and/or rescore
 
 ### MTA with milter support (e.g. Postfix or Sendmail)
 
-You might want to add `non_smtpd_milters` setting to point Rspamd proxy worker for scanning of the emails that are sent directly via `sendmail` or other local delivery agent. Here is an example for Postfix MTA:
+To enable Rspamd to scan emails sent directly via `sendmail` or other local delivery agents, you can include the `non_smtpd_milters` setting in the configuration. This will direct the Rspamd proxy worker to perform the scanning. Here is an example configuration for Postfix MTA:
 
 ~~~
 # postfix/main.cf
