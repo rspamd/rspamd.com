@@ -5,13 +5,13 @@ title: ASN module
 
 # ASN module
 
-ASN module looks up ASN numbers and some related information: namely country code of ASN owner & subnet in which IP is announced and makes these available to other plugins as mempool variables.
+The ASN module retrieves ASN numbers and related information such as the country code of the ASN owner and the IP's announced subnet. These details are then made available to other plugins as mempool variables.
 
-The module exports `asn`, `country` and `ipnet` as mempool variables.
+The module exports `asn`, `country` and `ipnet`<sup>[1](#fn)</sup> as mempool variables available from Lua after prefilters stage.
 
 ### Configuration
 
-ASN module is enabled in the default configuration. Settings could be added to `/etc/rspamd/local.d/asn.conf`.
+The ASN module is enabled by default and its settings can be found in `/etc/rspamd/local.d/asn.conf`.
 
 ~~~ucl
 # Provider: just "rspamd" for now
@@ -24,3 +24,5 @@ provider_info {
 # If defined, insert symbol with lookup results
 symbol = "ASN";
 ~~~
+
+<a name="fn"><sup>1:</sup></a> till version 2.0 as it is a dup of ASN

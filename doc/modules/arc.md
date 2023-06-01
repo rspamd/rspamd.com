@@ -2,54 +2,66 @@
 layout: doc
 title: ARC module
 ---
+
 # ARC module
 
-This module checks [ARC](http://arc-spec.org/) signatures and seals for emails scanned.
-ARC signatures can establish that this specific message has been signed and then forwarded by a number of  a trusted relays. There is a good overview of the `ARC` standard here: <https://dmarc.org/presentations/ARC-Overview-2016Q2-v03.pdf>.
+This module verifies [ARC](http://arc-spec.org/) signatures and seals for scanned emails, which demonstrate the message's authenticity through a series of trusted relays. The ARC standard is explained in detail at <https://dmarc.org/presentations/ARC-Overview-2016Q2-v03.pdf>.
 
-Rspamd (from 1.6) supports both checking and signing for ARC signatures and seals. Internally, it uses [dkim](./dkim.html) module for dealing with signatures.
+Rspamd, starting from version 1.6, offers support for both checking and signing ARC signatures and seals. It utilizes the [dkim](./dkim.html) module to manage signatures.
 
-The configuration of this module is very similar to both  [dkim](./dkim.html) and  [dkim_signing](./dkim_signing.html) modules.
+The configuration of this module is similar to the [dkim](./dkim.html) and [dkim_signing](./dkim_signing.html) modules.
 
 ## Configuration
 
-- `whitelist` - a map of domains that should not be checked with ARC (e.g. if that domains have totally broken ARC signer)
+- `whitelist` - a map of domains that are exempt from ARC checking (e.g. due to broken ARC signers)
+- `whitelisted_signers_map` - a map of the trusted ARC forwarders
+- `adjust_dmarc` (**true** by default) - a boolean flag that enables fixing of DMARC issues when a trusted ARC forwarder is in the chain. This is useful in situations where a domain, `X`, uses a signer, `Y`, to forward emails, but `X` has a strict DMARC policy while `Y` alters the message in a legitimate way. By trusting `Y`, this option allows fixing DMARC rejection for `X`
 
-# Principles of operation
+## Principles of operation
 
-The ARC signing module chooses signing domains and selectors according to a predefined policy which can be modified with various settings. Description of this policy follows:
+The ARC signing module follows a configurable policy for choosing signing domains and selectors. The policy can be modified using various settings, as described below:
 
- * To be eligible for signing, a mail must be received from an authenticated user OR a reserved IP address OR an address in the `sign_networks` map (if defined)
- * If envelope from address is not empty, the effective second level domain must match the MIME header From
- * If authenticated user is present, this should be suffixed with @domain where domain is what's seen is envelope/header From address
+ * A mail is eligible for signing if it is received from an authenticated user, a reserved IP address, or an address in the `sign_networks` map (if defined)
+ * If the envelope from address is not empty, the second-level domain must match the MIME header From
+ * If an authenticated user is present, it must be suffixed with @domain, where domain is the envelope/header From address
  * Selector and path to key are selected from domain-specific config if present, falling back to global config
 
-# Configuration
+## Configuration
 
 ~~~ucl
 # local.d/arc.conf
 
+# Allowed settings id
+allowed_ids = nil;
 # If false, messages with empty envelope from are not signed
 allow_envfrom_empty = true;
 # If true, envelope/header domain mismatch is ignored
 allow_hdrfrom_mismatch = false;
+# Domain mismatch allowed for local IP
+allow_hdrfrom_mismatch_local = false;
+# Domain mismatch allowed for sign_networks
+allow_hdrfrom_mismatch_sign_networks = false;
 # If true, multiple from headers are allowed (but only first is used)
 allow_hdrfrom_multiple = false;
 # If true, username does not need to contain matching domain
 allow_username_mismatch = false;
-# If false, messages from authenticated users are not selected for signing
-auth_only = true;
+# Banned settings id
+forbidden_ids = nil;
 # Default path to key, can include '$domain' and '$selector' variables
 path = "${DBDIR}/arc/$domain.$selector.key";
 # Default selector to use
 selector = "arc";
+# If false, messages from authenticated users are not selected for signing
+sign_authenticated = true;
+# If false, inbound messages are not selected for signing
+sign_inbound = true;
 # If false, messages from local networks are not selected for signing
 sign_local = true;
 # Symbol to add when message is signed
-symbol_signed = "ARC_SIGNED";
+sign_symbol = "ARC_SIGNED";
 # Whether to fallback to global config
 try_fallback = true;
-# Domain to use for ARC signing: can be "header" or "envelope"
+# Domain to use for ARC signing: can be "header" (MIME From), "envelope" (SMTP From), "recipient" (SMTP To), "auth" (SMTP username) or directly specified domain name
 use_domain = "header";
 # Whether to normalise domains to eSLD
 use_esld = true;
@@ -57,10 +69,18 @@ use_esld = true;
 use_redis = false;
 # Hash for ARC keys in Redis
 key_prefix = "ARC_KEYS";
+# Reuse the existing authentication results
+reuse_auth_results = false;
 # map of domains -> names of selectors (since rspamd 1.5.3)
 #selector_map = "/etc/rspamd/arc_selectors.map";
 # map of domains -> paths to keys (since rspamd 1.5.3)
 #path_map = "/etc/rspamd/arc_paths.map";
+# map of trusted domains. Symbol ARC_ALLOW_TRUSTED is added to messages
+# with valid ARC chains from these domains. A failed DMARC result is removed/ignored.
+# whitelisted_signers_map = ["example.org", "example.com"]
+
+# From version 1.8.4, Rspamd uses a different set of sign_headers for ARC:
+sign_headers = "(o)from:(o)sender:(o)reply-to:(o)subject:(o)date:(o)message-id:(o)to:(o)cc:(o)mime-version:(o)content-type:(o)content-transfer-encoding:resent-to:resent-cc:resent-from:resent-sender:resent-message-id:(o)in-reply-to:(o)references:list-id:list-owner:list-unsubscribe:list-subscribe:list-post:dkim-signature"
 
 # Domain specific settings
 domain {
@@ -84,7 +104,7 @@ key_prefix = "ARC_KEYS";
 selector = "myselector";
 ~~~
 
-... and populate the named hash with ARC keys; for example the following Lua script could be run with `redis-cli --eval`:
+... and populate the hash with the ARC keys. For example, you can run the following Lua script using `redis-cli --eval`:
 
 ~~~lua
 local key = [[-----BEGIN PRIVATE KEY-----
@@ -106,13 +126,13 @@ aTRkxEKrxPWWLNM=
 redis.call('HMSET', 'ARC_KEYS', 'myselector.example.com', key)
 ~~~
 
-The selector will be chosen as per usual (a domain-specific selector will be used if configured, otherwise the global setting is used).
+The selector will be selected according to the usual process. If a domain-specific selector is configured, it will be used; otherwise, the global setting will be applied.
 
 ## Using maps
 
-One or both of `selector_map` or `path_map` can be used to look up selectors and paths to private keys respectively (using the ARC signing domain as the key). If entries are found, these will override default settings.
+You can use either `selector_map` or `path_map` to access selectors and private key paths respectively, with the ARC signing domain serving as the key. If a match is found, it will override the default settings.
 
-In the following configuration we define a templatised path for the ARC signing key, a default selector, and a map which could be used for overriding the default selector (and hence effective path to the signing key as well). Any eligible mail will be signed given there is a suitably-named key on disk.
+Our configuration defines a templated path for the ARC signing key, a default selector, and an optional selector map that can override the default. All eligible emails will be signed if a key with the appropriate name is present on the disk.
 
 ~~~ucl
 # local.d/arc.conf

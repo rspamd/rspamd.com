@@ -21,6 +21,9 @@ h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6,
 {
     font-family: Tahoma, Arial, sans-serif;
 }
+html.hasFontSmoothing-false code,kbd,pre,samp {
+    font-family: Courier New, monospace;
+}
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 1024px) {
   /* Remove padding from wrapping element since we kick in the grid classes here */
@@ -223,6 +226,7 @@ tr.info th{
 table.table{
   margin-bottom: 0 !important;
 }
+
 /* Anchors for headings */
 .header-link {
   position: relative;
@@ -449,8 +453,38 @@ h1 {
   background-color: #e8e7e7;
   border-radius: 5px;
   padding: 4px 10px;
-  position: absolute;
+  position: sticky;
   top: 10px;
   right: 0;
   outline: none;
+}
+
+.button-fixed-bottom {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  border-radius: 50%;
+  background: #dc4813;
+  color: white;
+  border: none;
+  padding: 12px 15.5px;
+}
+.button-fixed-bottom:hover {
+  background: #ca3e0c;
+  color: white;
+}
+
+.term {
+  background-color: black;
+  background-image: radial-gradient(rgba(0, 150, 0, 0.75), black 120%);
+  margin: 0;
+  overflow: hidden;
+  padding: 2rem;
+  color: white;
+  font: 1.3rem Inconsolata, monospace;
+  text-shadow: 0 0 5px #c8c8c8;
+}
+.term::selection {
+  background: #0080ff;
+  text-shadow: none;
 }

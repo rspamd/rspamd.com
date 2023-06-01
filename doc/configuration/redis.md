@@ -62,6 +62,8 @@ read_servers = "127.0.0.1,10.0.0.1";
 write_servers = "127.0.0.1";
 ~~~
 
+Please bear in mind that you should either use `servers` for both `read_servers` and `write_servers` or define `read_servers` and `write_servers` separately. So it is **either** `servers` or `read_servers`+`write_servers` **together**.
+
 It is also possible to redefine Redis options inside `redis` section for the specific module or modules:
 
 ~~~ucl
@@ -128,6 +130,7 @@ sentinel_watch_time = 1min; # How often Rspam will query sentinels for masters a
 sentinel_masters_pattern = "^mymaster.*$"; # Defines masters pattern to match in Lua syntax (no pattern means all masters)
 ~~~
 
-Then, Rspamd will query sentinels for the current masters that will be used as `write_servers` and slaves that will be used as `read_servers`. Since multi-master is not really supported by Redis sentinel, it is not very useful for volatile data (e.g. all caches). However, this feature might be useful for switching masters when accessing non-volatile data, e.g. statistics, fuzzy storage or neural networks data.
+Rspamd will then use sentinels to determine which servers should be used as write_servers and which should be used as read_servers. While Redis sentinel does not fully support multi-master configurations, this feature can still be useful for switching masters when accessing non-volatile data such as statistics, fuzzy storage, or neural network data. However, it should be noted that you must still configure an initial set of servers to be used in the event that no sentinel is accessible.
 
-Please bear in mind that you still need to configure the initial set of servers that would be used if no sentinel can be accessed.
+## Other clustering options
+If you require more advanced clustering options than Redis Sentinel offers, we recommend considering the [KeyDB](https://docs.keydb.dev/) project. KeyDB is a drop-in replacement for Redis that supports multi-master replication mode, while still being fully compatible with Redis (and Rspamd).

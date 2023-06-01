@@ -22,7 +22,7 @@ This schema is displayed in the following picture:
 <img class="img-responsive" width="50%" src="{{ site.baseurl }}/img/rspamd-schemes.004.png">
 
 The main disadvantage is the amount of tokens which is multiplied by size of window. In Rspamd, we use a window of 5 tokens that means that
-the number of tokens is about 5 times larger than the amount of words.
+the number of tokens is around **5 times larger** than the amount of words.
 
 Statistical tokens are stored in statfiles which, in turn, are mapped to specific backends. This architecture is displayed in the following image:
 
@@ -30,236 +30,60 @@ Statistical tokens are stored in statfiles which, in turn, are mapped to specifi
 
 ## Statistics Configuration
 
-Starting from Rspamd 1.0, we propose to use `sqlite3` as backed and `osb` as tokenizer. That also enables additional features, such as tokens normalization and
-metainformation in statistics. The following configuration demonstrates the recommended statistics configuration:
+Starting from Rspamd 2.0, we propose to use `redis` as backed and `osb` as tokenizer and that are the default settings. Here are the default settings placed in `$CONFDIR/statistic.conf`
 
 ~~~ucl
-# Classifier's algorithm is BAYES
 classifier "bayes" {
-    tokenizer {
-        name = "osb";
-    }
+  tokenizer {
+    name = "osb";
+  }
+  cache {
+  }
+  new_schema = true; # Always use new schema
+  store_tokens = false; # Redefine if storing of tokens is desired
+  signatures = false; # Store learn signatures
+  #per_user = true; # Enable per user classifier
+  min_tokens = 11;
+  backend = "redis";
+  min_learns = 200;
 
-    # Unique name used to learn the specific classifier
-    name = "common_bayes";
+  statfile {
+    symbol = "BAYES_HAM";
+    spam = false;
+  }
+  statfile {
+    symbol = "BAYES_SPAM";
+    spam = true;
+  }
+  learn_condition = 'return require("lua_bayes_learn").can_learn';
 
-    cache {
-        path = "${DBDIR}/learn_cache.sqlite";
-    }
+  # Autolearn sample
+  # autolearn {
+  #  spam_threshold = 6.0; # When to learn spam (score >= threshold)
+  #  ham_threshold = -0.5; # When to learn ham (score <= threshold)
+  #  check_balance = true; # Check spam and ham balance
+  #  min_balance = 0.9; # Keep diff for spam/ham learns for at least this value
+  #}
 
-    # Minimum number of words required for statistics processing
-    min_tokens = 11;
-    # Minimum learn count for both spam and ham classes to perform classification
-    min_learns = 200;
-
-    backend = "sqlite3";
-    languages_enabled = true;
-    statfile {
-        symbol = "BAYES_HAM";
-        path = "${DBDIR}/bayes.ham.sqlite";
-        spam = false;
-    }
-    statfile {
-        symbol = "BAYES_SPAM";
-        path = "${DBDIR}/bayes.spam.sqlite";
-        spam = true;
-    }
+  .include(try=true; priority=1) "$LOCAL_CONFDIR/local.d/classifier-bayes.conf"
+  .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/classifier-bayes.conf"
 }
+
+.include(try=true; priority=1) "$LOCAL_CONFDIR/local.d/statistic.conf"
+.include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/statistic.conf"
 ~~~
 
-It is also possible to organize per-user statistics using SQLite3 backend. However, you should ensure that Rspamd is called at the
+It is also possible to organize per-user statistics, however, you should ensure that Rspamd is called at the
 finally delivery stage (e.g. LDA mode) to avoid multi-recipients messages. In case of a multi-recipient message, Rspamd would just use the
-first recipient for user-based statistics which might be inappropriate for your configuration (however, Rspamd prefers SMTP recipients over MIME ones and prioritize
+first recipient for user-based statistics which might be inappropriate for your configuration (Rspamd prefers SMTP recipients over MIME ones and prioritize
 the special LDA header called `Delivered-To` that can be appended by `-d` options for `rspamc`). To enable per-user statistics, just add `users_enabled = true` property
-to the **classifier** configuration. You can use per-user and per-language statistics simultaneously. For both types of statistics, Rspamd also
-looks to the default language and default user's statistics allowing to have the common set of tokens shared for all users/languages.
+to the **classifier** configuration.
 
 ### Classifier and headers
-The classifer will only learn headers that are defined in `classify_headers` in the `options.inc` file.  It is therefore not necessary to remove any headers added (such as X-Spam or others) before learning, as these headers will not be used for classification.
 
-## Using Lua scripts for `per_user` classifier
-
-It is also possible to create custom Lua scripts to use customized user or language for a specific task. Here is an example
-of such a script for extracting domain names from recipients organizing thus per-domain statistics:
-
-~~~ucl
-classifier "bayes" {
-    tokenizer {
-        name = "osb";
-    }
-
-    name = "bayes2";
-
-    min_tokens = 11;
-    min_learns = 200;
-
-    backend = "sqlite3";
-    per_language = true;
-    per_user = <<EOD
-return function(task)
-    local rcpt = task:get_recipients(1)
-
-if rcpt then
-    one_rcpt = rcpt[1]
-    if one_rcpt['domain'] then
-        return one_rcpt['domain']
-    end
-end
-
-return nil
-end
-EOD
-    statfile {
-        path = "/tmp/bayes2.spam.sqlite";
-        symbol = "BAYES_SPAM2";
-    }
-    statfile {
-        path = "/tmp/bayes2.ham.sqlite";
-        symbol = "BAYES_HAM2";
-    }
-}
-~~~
-
-## Applying per-user and per-language statistics
-
-From version 1.1, Rspamd uses independent statistics for users and joint statistics for languages. That means the following:
-
-* If `per_user` is enabled then Rspamd looks for users statistics **only**
-* If `per_language` is enabled then Rspamd looks for language specific statistics **plus** language independent statistics
-
-It is different from 1.0 version where the second approach was used for both cases.
-
-## Using multiple classifiers
-
-Rspamd allows to learn and to check multiple classifiers for a single messages. This might be useful, for example, if you have common and per user statistics. It is even possible to use the same statfiles for these purposes. Classifiers **might** have the same symbols (thought it is not recommended) and they should have a **unique** `name` attribute that is used for learning. Here is an example of such a configuration:
-
-~~~ucl
-classifier "bayes" {
-    tokenizer {
-        name = "osb";
-    }
-
-    name = "users";
-    min_tokens = 11;
-    min_learns = 200;
-    backend = "sqlite3";
-    per_language = true;
-    per_user = true;
-
-    statfile {
-        path = "/tmp/bayes.spam.sqlite";
-        symbol = "BAYES_SPAM_USER";
-    }
-    statfile {
-        path = "/tmp/bayes.ham.sqlite";
-        symbol = "BAYES_HAM_USER";
-    }
-}
-
-classifier "bayes" {
-    tokenizer {
-        name = "osb";
-    }
-
-    name = "common";
-    min_tokens = 11;
-    min_learns = 200;
-    backend = "sqlite3";
-    per_language = true;
-
-    statfile {
-        path = "/tmp/bayes.spam.sqlite";
-        symbol = "BAYES_SPAM";
-    }
-    statfile {
-        path = "/tmp/bayes.ham.sqlite";
-        symbol = "BAYES_HAM";
-    }
-}
-~~~
-
-To learn specific classifier, you can use `-c` option for `rspamc` (or `Classifier` HTTP header):
-
-	rspamc -c bayes learn_spam ...
-	rspamc -c bayes_user -d user@example.com learn_ham ...
+The classifier will only learn headers that are defined in `classify_headers` in the `options.inc` file.  It is therefore not necessary to remove any headers added (such as X-Spam or others) before learning, as these headers will not be used for classification. Rspamd also uses `Subject` that is tokenized according to the rules above and several meta-tokens, such as size or number of attachments that are extracted from the messages.
 
 ## Redis statistics
-
-From version 1.1, it is also possible to specify Redis as a backend for statistics and cache of learned messages. Redis is recommended for clustered configurations as it allows simultaneous learn and checks and, besides, is very fast. To setup Redis, you could use redis backend for a classifier (cache is set to the same servers accordingly).
-
-The following configuration is a full featured example of how you can set up redis for the statistics. Please edit `/etc/rspamd/local.d/statistic.conf` and paste the code.
-
-For a redis classifier, you need to set the backend to `redis`. If you want to have bayes auto learning, you need to tell it to the configuration file. See below for further explanations on this parameter.
-
-Bayes tokens can be stored per user when you define a LUA function.
-
-The statfile parameters are used for the key names in redis. You should also specify, which symbol is spam and which is for ham.
-
-At the end of this configuration file, you find a learning condition LUA function. It keeps track of already learned tokens.
-
-~~~ucl
-classifier "bayes" {
-    tokenizer {
-    name = "osb";
-    }
-
-    backend = "redis";
-    servers = "127.0.0.1:6379";
-    min_tokens = 11;
-    min_learns = 200;
-    autolearn = true;
-
-    per_user = <<EOD
-return function(task)
-    local rcpt = task:get_recipients(1)
-
-if rcpt then
-    one_rcpt = rcpt[1]
-    if one_rcpt['domain'] then
-        return one_rcpt['domain']
-    end
-end
-
-return nil
-end
-EOD
-
-    statfile {
-        symbol = "BAYES_HAM";
-        spam = false;
-    }
-    statfile {
-        symbol = "BAYES_SPAM";
-        spam = true;
-    }
-    learn_condition =<<EOD
-return function(task, is_spam, is_unlearn)
-    local prob = task:get_mempool():get_variable('bayes_prob', 'double')
-
-    if prob then
-        local in_class = false
-        local cl
-        if is_spam then
-            cl = 'spam'
-            in_class = prob >= 0.95
-        else
-            cl = 'ham'
-            in_class = prob <= 0.05
-        end
-
-        if in_class then
-            return false,string.format('already in class %s; probability %.2f%%',
-            cl, math.abs((prob - 0.5) * 200.0))
-        end
-    end
-
-    return true
-end
-EOD
-}
-~~~
-
-`per_languages` is not supported by Redis - it just stores everything in the same place. `write_servers` are used in the master-slave rotation by default and used for learning, whilst read-only servers are selected randomly each time:
 
 Supported parameters for the redis backend are:
 
@@ -268,13 +92,15 @@ Supported parameters for the redis backend are:
 - `servers`: IP or hostname with port for the redis server. Use an IP for the loopback interface, if you have defined localhost in /etc/hosts for both IPv4 and IPv6, or your redis server will not be found!
 - `write_servers` (optional): If needed, define dedicated servers for learning
 - `password` (optional): Password for the redis server
-- `database` (optional): Database to use (though it is recommended to use dedicated redis instances and not databases in redis)
+- `db` (optional): Database to use (though it is recommended to use dedicated redis instances and not databases in redis)
 - `min_tokens` : minimum number of words required for statistics processing
 - `min_learns` (optional): minimum learn count for **both** spam and ham classes to perform  classification
 - `autolearn` (optional): see below for details
 - `per_user` (optional): enable per users statistics. See above
 - `statfile`: Define keys for spam and ham mails.
-- `learn_condition` (optional): Lua function for autoleraning as described below.
+- `learn_condition` (optional): Lua function for autolearning as described below.
+ 
+You are also recommended to use [`bayes_expiry` module](https://rspamd.com/doc/modules/bayes_expiry.html) to maintain your statistics database.
 
 ## Autolearning
 

@@ -2,12 +2,19 @@
 layout: doc
 title: SURBL module
 ---
+
 # SURBL module
 
 This module performs scanning of URL's found in messages against a list of known
 DNS lists. It can add different symbols depending on the DNS replies from a 
 specific DNS URL list. It is also possible to resolve domains of URLs and then
 check the IP addresses against the normal `RBL` style list.
+
+<div id="toc" markdown="1">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 ## Module configuration
 

@@ -6,11 +6,11 @@ title: Bayesian statistics and fuzzy storage replication with multi-instance Red
 
 This step-by-step tutorial will explain how to establish statistics and fuzzy storage replication on FreeBSD. Configuration procedures for other operating systems are very similar. 
 
-This tutorial describes a centralized model when Bayesian classifier and fuzzy storage learning is performed on one host and distributed among Rspamd installations at remote locations. For simplicity, the tutorial only covers replication to one `slave` database for each of the `masters`.
+This tutorial describes a centralized model when Bayesian classifier and fuzzy storage learning is performed on one host and distributed among Rspamd installations at remote locations. For simplicity, the tutorial only covers replication to one `replica` database for each of the `masters`.
 
 To accomplish this we should replicate bayes and fuzzy storage backend data to the remote host. As the rest of the Redis cache should not be mirrored we need to use dedicated Redis instances. Probably separating bayes and fuzzy is good idea as well.
 
-We will create 3 Redis instances on both `master` and `slave` sides: `bayes`, `fuzzy` and `redis` for the rest of the cache:
+We will create 3 Redis instances on both `master` and `replica` sides: `bayes`, `fuzzy` and `redis` for the rest of the cache:
 
 |instance|Redis socket|
 |---|---|
@@ -50,13 +50,13 @@ Enable Redis logs rotation by creating a newsyslog configuration file `/usr/loca
 
 ## Configuration
 
-Create the default configuration on both `master` and `slave` (common for all of the instances):
+Create the default configuration on both `master` and `replica` (common for all of the instances):
 
 ```sh
 # cp /usr/local/etc/redis.conf.sample /usr/local/etc/redis.conf
 ```
 
-Since it is not safe to expose Redis to external interfaces, configure Redis to listen on loopbacks and use `stunnel` to create TLS tunnels between `slave` and `master` hosts. As this approach has security vulnerabilities as well, **you should not setup replication** if the slave host's users cannot be trusted.
+Since it is not safe to expose Redis to external interfaces, configure Redis to listen on loopbacks and use `stunnel` to create TLS tunnels between `replica` and `master` hosts. As this approach has security vulnerabilities as well, **you should not setup replication** if the replica host's users cannot be trusted.
 
 Set listening sockets and memory limit (optional) as follows:
 
@@ -74,7 +74,7 @@ Set listening sockets and memory limit (optional) as follows:
 +maxmemory 200M
 ```
 
-Configure the `redis` instance on both `master` and `slave` in a manner to keep it compatible with a single instance configuration. So if you already had a single instance database it will keep working.
+Configure the `redis` instance on both `master` and `replica` in a manner to keep it compatible with a single instance configuration. So if you already had a single instance database it will keep working.
 
 `/usr/local/etc/redis-redis.conf`:
 
@@ -122,7 +122,7 @@ If needed, the `maxmemory` is adjusted for specific instances according to expec
 
 Please refer to the [Setting up encrypted tunnel using stunnel](./stunnel_setup.html) guide.
 
-## Slave instances configuration
+## Replica instances configuration
 
 `/usr/local/etc/redis-bayes.conf`:
 
@@ -136,7 +136,7 @@ logfile /var/log/redis/bayes.log
 dbfilename bayes.rdb
 dir /var/db/redis/bayes/
 
-slaveof localhost 6478
+replicaof localhost 6478
 
 maxmemory 600M
 ```
@@ -153,18 +153,18 @@ logfile /var/log/redis/fuzzy.log
 dbfilename fuzzy.rdb
 dir /var/db/redis/fuzzy/
 
-slaveof localhost 6477
+replicaof localhost 6477
 ```
 
-As `slaves` do not connect to `masters` directly, `stunnel's` sockets are specified in the `slaveof` directives.
+As `replicas` do not connect to `masters` directly, `stunnel's` sockets are specified in the `replicaof` directives.
 
-## Starting Redis on the slave
+## Starting Redis on the replica
 
 `# service redis start`
 
 ## Checking
 
-Check slave instances logs. If resynchronization with the masters was successful, you are done.
+Check replica instances logs. If resynchronization with the masters was successful, you are done.
 
 ## Rspamd configuration on the master
 
@@ -190,9 +190,9 @@ backend = "redis";
 servers = "localhost:6377";
 ```
 
-## Rspamd configuration on the slave
+## Rspamd configuration on the replica
 
-On the `slave` side Rspamd should use local `redis` instance for both reading and writing as it is not replicated.
+On the `replica` side Rspamd should use local `redis` instance for both reading and writing as it is not replicated.
 
 `local.d/redis.conf`:
 
@@ -200,7 +200,7 @@ On the `slave` side Rspamd should use local `redis` instance for both reading an
 servers = "localhost";
 ```
 
-Since local `bayes` and `fuzzy` Redis instances are slaves, Rspamd should use them for reading, but write to the replication `master`.
+Since local `bayes` and `fuzzy` Redis instances are replicas, Rspamd should use them for reading, but write to the replication `master`.
 
 `local.d/classifier-bayes.conf`:
 

@@ -5,9 +5,9 @@ title: Metadata exporter
 
 # Metadata exporter
 
-Metadata exporter processes a set of rules which identify interesting messages and push information based on these to an external service (currently supported are Redis Pub/Sub, HTTP POST & SMTP; user-defined backends can also be used).
+The Metadata exporter operates on a set of rules that identify interesting messages, and subsequently sends information based on these rules to an external service. The exporter supports Redis Pub/Sub, HTTP POST, and SMTP as built-in backends, while also allowing users to define custom backends as desired.
 
-Possible applications include quarantines, logging, alerting & feedback loops.
+Potential applications of the Metadata exporter include quarantining, logging, alerting, and feedback loops.
 
 ### Theory of operation
 
@@ -73,6 +73,7 @@ metadata_exporter {
  - `is_spam_authed`: matches messages with `reject` or `add header` action from authenticated users
  - `is_reject`: matches messages with `reject` action
  - `is_reject_authed`: matches messages with `reject` action from authenticated users
+ - `is_not_soft_reject`: matches all messages except those with `soft reject` action
 
 ### Stock formatters
 
@@ -104,18 +105,23 @@ See [here]({{ site.baseurl }}/doc/configuration/redis.html) for information on c
 
 ### Settings: `send_mail` backend
 
-When `send_mail` backend is used in conjunction with default formatter, the original spam message content will be analysed by Rspamd and highly likely matched as spam.
+If the `send_mail` backend is used with the default formatter, the original spam message content will be analyzed by Rspamd and is highly likely matched as spam.
 
 When `send_mail` backend is used in conjunction with `email_alert` formatter, the URLs found in the symbols options will be analysed by Rspamd and the report will be matched as spam possibly.
 
-<mark>To avoid <b>looping</b> make sure e-mail messages from the metadata exporter are <b>not scanned</b> by Rspamd.</mark> You could either setup a specific Postfix Transport to bypass rspamd or allow the `email_alert` recipient to receive spam.
+<mark>To prevent <b>looping</b>, it is essential to ensure that email messages from the Metadata exporter are <b>not scanned</b> by Rspamd.</mark> This can be achieved by setting up a specific Postfix Transport to bypass Rspamd, or by allowing the recipient of the `email_alert` to receive spam.
 
  - `smtp` (required): hostname of SMTP server
  - `mail_to` (required): recipient of e-mail alert
  - `mail_from`: Sender address (default empty)
+ - `email_alert_user` (1.7.0+, default false): Send a copy of the alert to the authenticated SMTP username
+ - `email_alert_sender` (1.7.0+, default false): Send a copy of the alert to the SMTP sender (NB: please ensure that it can be trusted)
+ - `email_alert_recipients` (1.7.0+, default false): Send a copy of the alert to SMTP recipients (NB: please ensure they can be trusted; don't use this?)
+ - `email_template`: template used for alert (default shown below)
  - `helo`: HELO to send (default 'rspamd')
  - `smtp_port`: SMTP port if not 25
- - `email_template`: template used for alert (default shown below):
+
+The default value for `email_template` is as follows:
 
 ~~~
 From: "Rspamd" <$mail_from>

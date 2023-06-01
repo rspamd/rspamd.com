@@ -1,39 +1,44 @@
 ---
 layout: doc
-title: Quick start
+title: Quickstart
 ---
 
-<div><h1>Rspamd quick start</h1></div>
+# Rspamd quick start
+{:.no_toc}
 
-## Introduction
-
-This guide describes the main steps to get and start working with Rspamd. In particular, we describe the following setup:
+This guide outlines the primary procedures for obtaining and initiating work with Rspamd. Specifically, we will cover the following setup:
 
 - Ubuntu Bionic (or another OS with systemd)
 - Postfix MTA
 - Redis cache
 - Dovecot with Sieve plugin to sort mail and learn by moving messages to `Junk` folder
 
+<div id="toc" markdown="1">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
+
 ## Alternative guides (3rd party)
 
-* [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/) - a good example of all-in-one tutorial about how to setup your own mail server
-* [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://www.c0ffee.net/blog/mail-server-guide) - similar to the previous guide but uses a different technologies stack
-* [An alternative introduction to rspamd configuration](http://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/)
+* [An alternative introduction to rspamd configuration](https://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/){:target="&#95;blank"} - this guide delves into the intricacies of Rspamd configuration files and their significance from a sysadmin perspective, focusing on the crucial inquiries of "What can be configured?" and "How do I go about configuring it?".
+* [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/){:target="&#95;blank"} - this manual serves as a comprehensive tutorial for setting up your own mail server. It is important to note that the suggestion of adding `level = error` to /etc/rspamd/local.d/logging.inc is not correct. In most cases, it is advisable to utilize the default `info` level or opt for `silent` if you only wish to log crucial information.
+* [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://www.c0ffee.net/blog/mail-server-guide){:target="&#95;blank"} - similar to the previous guide but uses a different technologies stack. It is important to note that the recommendation regarding the `url_tag` module should be disregarded.
 
 ## Preparation steps
 
-First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. In this guide, we describe the setup of the [Postfix MTA](http://www.postfix.org/). However, Rspamd can work with other MTA software - you can find details in the [integration document]({{ site.baseurl }}/doc/integration.html).
+First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. This guide covers the setup of the [Postfix MTA](http://www.postfix.org/){:target="&#95;blank"}, but note that Rspamd can also work with other MTA software. For more information, see the [integration document]({{ site.baseurl }}/doc/integration.html). Keep in mind that Exim MTA has limited support for Rspamd, so it's not recommended to run them together.
 
 You should also consider to setup your own [local  DNS resolver]({{ site.baseurl }}/doc/faq.html#resolver-setup).
 
 ### TLS Setup
 
-It is strongly recommended to setup TLS for your mail system. We suggest to use certificates issued by [Let’s&nbsp; Encrypt](https://letsencrypt.org) as they are free to use and are convenient to manage. You can read more about this topic in one of the quides available in the Internet, for instance, [this one](https://www.upcloud.com/support/secure-postfix-using-lets-encrypt/).
-In this guide, we assume that all services have the same certificate which might not be desired if you want greater levels of security.
+It is highly recommended to set up Transport Layer Security (TLS) for your mail system. To make it easy to manage, we suggest using certificates issued by [Let’s&nbsp; Encrypt](https://letsencrypt.org){:target="&#95;blank"}. For more information on this topic, you can refer to online guides such as [this one](https://www.upcloud.com/support/secure-postfix-using-lets-encrypt/){:target="&#95;blank"}.
+Please note that this guide assumes that all services have the same certificate, which might not be optimal for higher security needs.
 
 ### Postfix setup
 
-We assume that you are installing Postfix with your OS's package manager (e.g. `apt install postfix`). Here is the desired configuration for Postfix:
+It is assumed that you are using your operating system's package manager (e.g. `apt install postfix`) to install Postfix. The following configuration is desired for Postfix:
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-block btn-code" data-toggle="collapse" data-target="#main_cf">
@@ -42,7 +47,7 @@ We assume that you are installing Postfix with your OS's package manager (e.g. `
     </a>
 <div id="main_cf" class="collapse collapse-block">
 <pre><code>
-# SSL setup (we assume the same certs for IMAP and SMTP here)
+# TLS setup (we assume the same certs for IMAP and SMTP here)
 smtpd_tls_cert_file = /etc/letsencrypt/live/your.domain/fullchain.pem
 smtpd_tls_key_file = /etc/letsencrypt/live/your.domain/privkey.pem
 smtpd_use_tls = yes
@@ -126,13 +131,13 @@ You also need to create maps for access control and virtual aliases:
 
 ### Dovecot setup
 
-For <abbr title="Internet Mail Access Protocol">IMAP</abbr> we recommend to install Dovecot. For Debian based systems you can use the following packages:
+For <abbr title="Internet Mail Access Protocol">IMAP</abbr> we recommend to install Dovecot.  If you're using a Debian-based system, you can use the following packages:
 
-	apt install dovecot-imapd dovecot-sieve
+    apt install dovecot-imapd dovecot-sieve
 
-Configuration of Dovecot (especially its authentication mechanisms) is a bit out of the scope for this guide but you can find many good guides at the [Dovecot main site](http://dovecot.org). By default, Dovecot uses Unix users in system and place mail into the standard mailbox `/var/mail/username`.
+Configuring Dovecot, particularly its authentication mechanisms, is beyond the scope of this guide. However, you can find many helpful guides on the [Dovecot main site](http://dovecot.org){:target="&#95;blank"}. By default, Dovecot uses Unix users in system and place mail into the standard mailbox `/var/mail/username`.
 
-However, you should setup Postfix authentication. This lives in `/etc/dovecot/conf.d/10-master.conf`: make sure that you have uncommented the following lines in this file:
+It is important to set up Postfix authentication as well. This is located in `/etc/dovecot/conf.d/10-master.conf`. Ensure that the following lines in this file are uncommented:
 
 ~~~
   # Postfix smtp-auth
@@ -141,7 +146,7 @@ However, you should setup Postfix authentication. This lives in `/etc/dovecot/co
   }
 ~~~
 
-Furthermore, it might be useful to setup TLS to avoid passwords and other sensible information to be passed throughout insecure connections.
+Additionally, it is recommended to set up Transport Layer Security (TLS) to protect passwords and other sensitive information from being transmitted over insecure connections.
 
 ~~~
 # /etc/dovecot/conf.d/10-ssl.conf
@@ -153,77 +158,68 @@ ssl_key = </etc/letsencrypt/live/<your.domain>/privkey.pem
 
 ## Caching setup
 
-Rspamd uses [Redis](https://redis.io) as a storage and caching system. In particular, Redis is used for the following purposes:
-
+Rspamd uses [Redis](https://redis.io){:target="&#95;blank"} as a storage for non-volatile data:
 - a backend for tokens storage and cache of learned messages by [statistical module](configuration/statistic.html) (BAYES classifier)
 - a fuzzy storage backend (optional)
-- a key-value cache storage by [many Rspamd modules](configuration/redis.html#introduction)
+
+and as a cache for volatile data:
+
+- key-value cache storage by [many Rspamd modules](configuration/redis.html#introduction)
 - greylisting (delaying of suspicious emails)
-- rate limiting
+- rate-limiting
 - whitelisting of reply messages (storing reply message IDs to avoid certain checks for replies to our own sent messages)
 
-Installation of Redis is quite straightforward: install it using the preferred way for your OS (e.g. from packages), start redis-server with the default settings (it should listen on local interface using port 6379) and you are done. You might also want to limit memory used by Redis at some sane value:
+Installation of Redis is quite straightforward: install it using the preferred way for your OS (e.g. from packages), start redis-server with the default settings (it should listen on the local interface using port 6379) and you are done.
+
+We highly recommend using separate Redis **instance** for each module that stores non-volatile data, specifically for the statistical module (BAYES classifier) and fuzzy storage. This multi-instance Redis configuration simplifies administration tasks such as backup and restore, and allows for setting memory limits and eviction policies, as well as establishing data replication between Rspamd installations. For more information on configuring multiple Redis instances, refer to the [Redis replication](tutorials/redis_replication.html) tutorial.
+
+It may also be a good idea to limit the memory used by Redis to a reasonable value, such as:
 
     maxmemory 500mb
+
+Additionally, for Redis instances storing non-volatile data, you might consider setting the `volatile-ttl` eviction policy:
+
     maxmemory-policy volatile-ttl
 
-Please bear in mind that Redis could listen for connections from all network interfaces. This is potentially dangerous and in most cases should be limited to the loopback interfaces, with the following configuration directive:
+Keep in mind that eviction of volatile data keys can cause undesirable effects.
+
+It's important to note that Redis may listen for connections from all network interfaces by default, which can be a security risk. To limit this to the loopback interfaces, use the following configuration directive:
 
     bind 127.0.0.1 ::1
 
-For saving data to disk, it is also useful to setup overcommit memory behavior which might be useful for loaded systems. It could be done in Linux by using the following command:
+To ensure data is saved to disk, it may also be beneficial to set up overcommit memory behavior, especially for systems under heavy load. This can be done in Linux using the following command:
 
     echo 1 > /proc/sys/vm/overcommit_memory
 
 ## Rspamd installation
 
-The download process is described in the [downloads page]({{ site.baseurl }}/downloads.html) where you can find how to get Rspamd, how to install it in your system, and, alternatively, how to build Rspamd from the sources.
+Instructions for downloading Rspamd can be found on the [downloads page]({{ site.baseurl }}/downloads.html). This page includes information on how to obtain Rspamd, how to install it on your system, and an alternative method of building Rspamd from source.
 
 ## Running Rspamd
 
-### Platforms with systemd (Arch, CentOS 7, Debian Jessie, Fedora, Ubuntu Xenial)
+### Platforms with systemd (Arch, CentOS 7, Debian, Fedora, Ubuntu)
 
-Packaging should start rspamd and configure it to run on startup on installation.
+Packaging should include starting Rspamd and configuring it to run automatically on startup during installation.
 
-You can verify it's running as follows:
+To confirm that Rspamd is running, you can use the following command:
 
 ```
 systemctl status rspamd
 ```
 
-### Old Debian based systems (Ubuntu before xenial, Debian before jessie)
-
-To enable run on startup:
-
-	update-rc.d rspamd defaults
-
-To start once:
-
-	/etc/init.d/rspamd start
-
-### CentOS/RHEL 6
-
-To enable run on startup:
-
-	chkconfig rspamd on
-
-To start once:
-
-	/etc/init.d/rspamd start
-
 ## Configuring Rspamd
 
-Though Rspamd's default config aims to be useful for most purposes you may wish to make some adjustments to suit your environment/tastes.
+While Rspamd's default configuration is designed to be suitable for most use cases, you may want to make some adjustments to better suit your specific needs or preferences.
 
 ### Using of configwizard
 
-From version 1.7, there is a configuration wizard available as `rspamadm` subcommand. This wizard can help you to configure the most commonly used features in Rspamd, for instance:
+Starting from version 1.7, a configuration wizard is available as an `rspamadm` subcommand. This wizard can assist you in configuring popular features in Rspamd, such as:
 
 * Redis server
 * Controller password
 * DKIM signing for outbound
 
-To run wizard, use the following command:
+To run the wizard, use the following command:
 
 ```
 rspamadm configwizard
@@ -233,9 +229,9 @@ This tool will guide you interactively throughout the configuration process usin
 
 ### Manual configuration
 
-First of all, please read the basic configuration principles [here](configuration/index.html).
+Firstly, refer to the principles of basic configuration [here](configuration/index.html) for further reading.
 
-It is recommended to use the special include files that are referenced in the stock configuration. Conventionally every configuration file in `/etc/rspamd/` will include two such includes:
+Additionally, it is advisable to utilize the specialized include files as referenced in the default configuration. Typically, each configuration file located in the directory `/etc/rspamd/` will incorporate two such includes:
 
 ~~~ucl
 # /etc/rspamd/modules.d/imaginary_module.conf
@@ -246,13 +242,13 @@ imaginary_module {
 }
 ~~~
 
-Settings in `local.d` will be merged with stock configuration (where possible: ie. the setting is a list `[]` or collection `{}`) where-as settings in `override.d` will always replace the stock configuration. Unlike `rspamd.conf.local` and `rspamd.conf.override`, these includes are effective *inside* a given block of configuration (`{}`). Similarly to `rspamd.conf.override` settings in `override.d` have higher priority than settings generated by the web interface, unlike `local.d` and `rspamd.conf.local`.
+Settings in `local.d` will be merged with stock configuration (where possible: ie. the setting is a list `[]` or collection `{}`) where-as settings in `override.d` will always replace the stock configuration. Unlike `rspamd.conf.local` and `rspamd.conf.override`, these include directives are effective *inside* a given block of configuration (`{}`). Similarly to `rspamd.conf.override` settings in `override.d` have higher priority than settings generated by the web interface, unlike `local.d` and `rspamd.conf.local`.
 
 ### Overriding symbols scores and actions thresholds
 
-You can read more about actions, scores and these configuration parameters in this [explanation]({{ site.url }}{{ site.baseurl }}/doc/faq.html#what-are-rspamd-actions).
+You can gain further insight on actions, scores, and related configuration parameters by reading this [explanation]({{ site.url }}{{ site.baseurl }}/doc/faq.html#what-are-rspamd-actions).
 
-Since Rspamd 1.7, you can edit `local.d/actions.conf` for thresholds setup:
+Starting from Rspamd version 1.7, the thresholds setup can be edited in the file `local.d/actions.conf`:
 
 ~~~ucl
 # local.d/actions.conf
@@ -277,9 +273,9 @@ For symbols scores, you should redefine scores defined in `scores.d/` directory 
 * `subject_group.conf` - subject checks
 * `surbl_group.conf` - URL blackslists symbols
 
-You can also change weight of rules using the WebUI. To get the current information about symbols and scores, you can use `rspamc counters` command.
+The weights of rules can also be modified through the Rspamd WebUI. To obtain current information about symbols and scores, the command `rspamc counters` can be utilized.
 
-If you want to add your own rule or just change the score without taking extra care about groups, you can still use file `local.d/groups.conf` in the following way:
+For those who wish to create their own rule or simply adjust the score without considering groups, the file `local.d/groups.conf` can be used in the following manner:
 
 ~~~ucl
 # /etc/rspamd/local.d/groups.conf
@@ -294,7 +290,7 @@ symbols = {
   }
 }
 
-# Your own symbols and groups
+# Custom user defined symbols and groups
 group "mygroup" {
   symbols =  {
     "FOO" {
@@ -312,23 +308,21 @@ There are two components of the final score in Rspamd:
 score = runtime_score * static_score
 ```
 
-Runtime score is a concept used to express confidence. For example, you
-have IP reputation and it changes in range `[-1;1]` smoothly. Then you
-tell that static score for IP reputation is `3.0`. Hence,
+Runtime score is a term used to indicate the level of confidence. For example, if you have an IP reputation that varies within the range of `[-1;1]`, and you set the static score for IP reputation to `3.0`, then the resulting score would be:
 
 ```
 score = runtime_score * static_score = 0.5 * 3.0 = 1.5
 ```
 
-And you don't need to define something like
+This eliminates the need to define specific scores such as
 
 - IP_SCORE_TOO_BAD
 - IP_SCORE_BAD
 - IP_SCORE_SOMEHOW_BAD
 
-... and so on to achieve this distinction.
+... etc. to differentiate the level of reputation.
 
-### Other configuration advices
+### Other configuration advice
 
 You should notice that individual files are included **within** sections:
 
@@ -350,18 +344,18 @@ In addition to equivalents to files in `/etc/rspamd/modules.d` the following inc
 
 Rspamd's normal worker will, by default, listen on all interfaces on port 11333. **From Rspamd `1.7.4`, it has changed to `localhost` by default**. 
 
-If you're running Rspamd on the same machine as your mailer (or whatever will be querying it) you might want to set this to 'localhost' instead. This option should be defined in `/etc/rspamd/local.d/worker-normal.inc`:
+If Rspamd is running on the same machine as the mailer or any other application that will be querying it, it is recommended to set this option to 'localhost'. This option should be defined in `/etc/rspamd/local.d/worker-normal.inc`:
 
 ~~~ucl
 # /etc/rspamd/local.d/worker-normal.inc
 bind_socket = "localhost:11333";
 ~~~
 
-If you plan to leave this as is you may wish to use a firewall to restrict access to your machine. Please review the [worker documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/) for more information about `bind_socket` and related settings.
+If you choose to keep the default settings, it is recommended to use a firewall to restrict access to the machine. For further information on `bind_socket` and related settings, please refer to the [worker documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/).
 
-Rspamd controller worker listens on the port `11334` by default, and the proxy worker uses port `11332` accordingly.
+By default, the Rspamd controller worker listens on port `11334`, and the proxy worker uses port `11332`.
 
-Because Rspamd skip some checks for local networks, you may want to tune global `local_addrs` map.
+As Rspamd does not perform certain checks for local networks, it may be necessary to adjust the global `local_addrs` map accordingly.
 
 ~~~ucl
 # /etc/rspamd/local.d/options.inc
@@ -372,70 +366,37 @@ local_addrs = "192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, fd00::/8, 169.254.0.0/
 
 Please review the [global options documentation]({{ site.url }}{{ site.baseurl }}/doc/configuration/options.html) for other global settings you may want to use.
 
-## Using of Milter protocol (for Rspamd >= 1.6)
-
-From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introducing of this feature also finally obsoletes the [Rmilter](https://rspamd.com/rmilter/) project in honor of the new integration method. Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
-
-* Proxy mode (for large instances) with a dedicated scan layer
-* Self-scan mode (for small instances)
-
-Here, we describe the simplest `self-scan` option:
-
-<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
-
-In this mode, `rspamd_proxy` scans messages itself and talk to MTA directly using Milter protocol. The advantage of this mode is its simplicity. Here is a sample configuration for this mode:
-
-~~~ucl
-# local.d/worker-proxy.inc
-milter = yes; # Enable milter mode
-timeout = 120s; # Needed for Milter usually
-upstream "local" {
-  default = yes; # Self-scan upstreams are always default
-  self_scan = yes; # Enable self-scan
-}
-count = 4; # Spawn more processes in self-scan mode
-max_retries = 5; # How many times master is queried in case of failure
-discard_on_reject = false; # Discard message instead of rejection
-quarantine_on_reject = false; # Tell MTA to quarantine rejected messages
-spam_header = "X-Spam"; # Use the specific spam header
-reject_message = "Spam message rejected"; # Use custom rejection message
-~~~
-
-For more advanced proxy usage, please see the corresponding [documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html).
-
 ### Setting the controller password
 
-Rspamd requires a password when queried from non-trusted IPs, except for scanning messages which is unrestricted (the default config trusts the loopback interface). This is configured in the file `/etc/rspamd/local.d/worker-controller.inc`.
+Rspamd requires a password when queried from non-trusted IP addresses, with the exception of scanning messages which are unrestricted (the default configuration trusts the loopback interface). This is configured in the file `/etc/rspamd/local.d/worker-controller.inc`.
 
-You should store an encrypted password for better security. To generate such a password just type
+For better security, it is recommended to store an encrypted password. To generate such a password, you can use the following command:
 
     $ rspamadm pw
     Enter passphrase:
     $2$g95ywihfinjqx4r69u6mgfs9cqbfq1ay$1h4bm5uod9njfu3hdbwd3w5xf5d9u8gb7i9xnimm5u8ddq3c5byy 
 
-The config to be modified is shown below (replace 'q1' with your chosen password):
+The configuration to be modified is shown below, you should replace the password with the output generated from your chosen password:
 
 ~~~ucl
 # /etc/rspamd/local.d/worker-controller.inc
 password = "$2$g95ywihfinjqx4r69u6mgfs9cqbfq1ay$1h4bm5uod9njfu3hdbwd3w5xf5d9u8gb7i9xnimm5u8ddq3c5byy";
 ~~~
 
-Optionally you may set `enable_password` - if set, data-changing operations (such as Bayes training or fuzzy storage) will require this password. For example:
+By setting the `enable_password` option, data-changing operations, such as Bayes training or fuzzy storage, will require a password for execution. For example:
 
 ~~~ucl
 # /etc/rspamd/local.d/worker-controller.inc
 enable_password = "$2$qda98oexjhcf6na4mfujqjwf4qmbi545$ijkrmjx96iyj56an9jfzbba6mf1iezpog4axpeym9qhtf6nhjswy";
 ~~~
 
-From version 1.7, setting of passwords is also suggested by `rspamadm configwizard`.
+From version 1.7, the setting of passwords is also suggested by `rspamadm configwizard`.
 
-**Important information**: the default passwords (namely, `q1` and `q2`) are **BANNED**, so you cannot use them in your installation. Please set the appropriate passwords before using of the controller.
-
-Then you can copy this string and store it in the configuration file.
+**Important information**: the default passwords (namely, `q1` and `q2`) are **BANNED**, so you cannot use them in your installation. Please set the appropriate passwords before using the controller. This is done to prevent an occasional data leak caused by misconfiguration.
 
 ### Setting up the WebUI
 
-WebUI is managed by a controller worker but you might want to proxy its requests using nginx, for example, to add `TLS` support. Here is a minimal setup required for nginx to do that:
+The WebUI is managed by a controller worker, but for added functionality such as `TLS` support, it may be beneficial to proxy its requests through a tool like Nginx. Below is a minimal configuration needed to accomplish this using Nginx:
 
 <div>
 <a class="btn btn-info btn-block btn-code" data-toggle="collapse" data-target="#nginx_cf"><i class="fa fa-caret-square-o-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf" class="collapse collapse-block"><pre><code>
@@ -473,27 +434,26 @@ http {
         ssl_certificate_key /etc/letsencrypt/live/your.domain/privkey.pem;
 
         server_name example.com;
-
         location / {
+            root /usr/share/rspamd/www/;
+            try_files $uri @proxy;
+        }
+        location @proxy {
                 proxy_pass  http://127.0.0.1:11334;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header Host $http_host;
         }
         ssl on;
-		ssl_protocols TLSv1.2 TLSv1.1 TLSv1;
+        ssl_protocols TLSv1.2 TLSv1.3;
 
-		ssl_ciphers "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EDH+aRSA+AESGCM:EDH+aRSA+SHA256:EDH+aRSA:EECDH:!aNULL:!eNULL:!MEDIUM:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED";
-		ssl_prefer_server_ciphers on;
-		ssl_session_cache builtin;
-		ssl_session_timeout 1m;
-		ssl_stapling on;
-		ssl_stapling_verify on;
-		server_tokens off;
-		# Do not forget to generate custom dhparam using
-		# openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
-		ssl_dhparam /etc/nginx/dhparam.pem;
-		ssl_ecdh_curve prime256v1;
-	}
+        ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305;
+        ssl_prefer_server_ciphers on;
+        ssl_session_cache shared:TLS:10m;
+        ssl_session_timeout 1d;
+        ssl_stapling on;
+        ssl_stapling_verify on;
+        server_tokens off;
+    }
 }
 {% endhighlight %}
 </code>
@@ -501,7 +461,7 @@ http {
 </div>
 </div>
 
-You might also use subdirs, as suggested by [@julienmalik](https://github.com/julienmalik):
+You might also use subdirs, as suggested by [@julienmalik](https://github.com/julienmalik){:target="&#95;blank"}:
 
 <div>
 <a class="btn btn-info btn-block btn-code" data-toggle="collapse" data-target="#nginx_cf1"><i class="fa fa-caret-square-o-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf1" class="collapse collapse-block"><pre><code>
@@ -518,11 +478,42 @@ location /rspamd/ {
 </div>
 </div>
 
-Alternatively, you could setup HTTP authentication in nginx itself.
+Alternatively, you could set up HTTP authentication in Nginx itself.
+
+## Using of Milter protocol (for Rspamd >= 1.6)
+
+"Starting with Rspamd 1.6, the rspamd proxy worker supports the `milter` protocol, which is supported by popular MTAs such as Postfix and Sendmail. This feature also renders the `rmilter` project obsolete in favor of the new integration method. The `milter` protocol is available **only** in `rspamd_proxy`, however, there are two ways to use this protocol:
+
+* Proxy mode (for large instances) with a dedicated scan layer
+* Self-scan mode (for small instances)
+
+Here, we describe the simplest `self-scan` option:
+
+<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
+
+In this mode, `rspamd_proxy` scans messages itself and talks to MTA directly using the Milter protocol. The advantage of this approach is its simplicity. Here is a sample configuration for this mode:
+
+~~~ucl
+# local.d/worker-proxy.inc
+milter = yes; # Enable milter mode
+timeout = 120s; # Needed for Milter usually
+upstream "local" {
+  default = yes; # Self-scan upstreams are always default
+  self_scan = yes; # Enable self-scan
+}
+count = 4; # Spawn more processes in self-scan mode
+max_retries = 5; # How many times master is queried in case of failure
+discard_on_reject = false; # Discard message instead of rejection
+quarantine_on_reject = false; # Tell MTA to quarantine rejected messages
+spam_header = "X-Spam"; # Use the specific spam header
+reject_message = "Spam message rejected"; # Use custom rejection message
+~~~
+
+For more advanced proxy usage, please see the corresponding [documentation]({{ site.url }}{{ site.baseurl }}/doc/workers/rspamd_proxy.html).
 
 ## Setup Redis statistics
 
-From version 1.1, it is also possible to specify Redis as a backend for statistics and caching of learned messages. Redis is recommended for clustered configurations as it allows simultaneous learning and checking and, besides, is very fast. To setup Redis, you could specify `redis` backend for a classifier (cache is set to the same servers accordingly).
+Starting with version 1.1, it is now possible to utilize Redis as a backend for statistics and caching of learned messages. Redis is particularly recommended for clustered configurations as it enables concurrent learning and checking, and also performs very quickly. To configure Redis, you can specify the `redis` backend for a classifier, and the cache will automatically be set to the same servers.
 
 {% highlight ucl %}
 # /etc/rspamd/local.d/classifier-bayes.conf
@@ -534,14 +525,35 @@ Please review the full [statistics documentation]({{ site.baseurl }}/doc/configu
 
 
 ## Configuring maps
-
-Another feature of Rspamd is maps support. Maps are lists of values, for example, domain names or ip/networks listed in an external file or by HTTP that are periodically monitored by Rspamd and reloaded in case of updates. This technique is useful for writing your own rules, whitelisting or blacklisting some networks and so on. The important difference with maps is that rspamd restart is not required when those lists are changed. Maps are defined as `URI` strings:
+Rspamd also boasts dynamic map support, which allows for lists of values such as domain names or IP/networks to be stored in external files or accessed via HTTP and periodically monitored by Rspamd for updates. This feature is useful for creating custom rules, whitelisting or blacklisting specific networks, among other use cases. An important aspect of maps is that they do not require a Rspamd restart to take effect when the lists are modified. Maps are defined as `URI` strings:
 
 * `http://example.com/file.map` - HTTP map (server should respect `If-Modified-Since` header to avoid unnecessary updates)
 * `file:///path/to/map` - file map
 * `/path/to/map` - alternative syntax for file map
 
-Within maps you can use whitespace or comments. For example, here is an example of ip/network map:
+All maps behaves in the same way so you can have some choices about how to define a map:
+
+1. Plain path to file or http (like `map = "http://example.com/file.txt"` or `map = "/tmp/mymap"`)
+2. Composite path like `map = ["http://example.com/file.txt", "/tmp/mymap"]`. Maps data is concatenated from the sources.
+3. An embedded map like `map = ["foo bar"];` or `map = ["foo 1", "bar b", "baz bababa"]` or `map = ["192.168.1.1/24", "10.0.0.0/8"]`
+4. A fully decomposed object with lots of options
+
+For the second option it is also possible to have a composite path with a fallback:
+
+~~~ucl
+exceptions = [
+  "https://maps.rspamd.com/rspamd/2tld.inc.zst",
+  "${DBDIR}/2tld.inc.local",
+  "fallback+file://${CONFDIR}/2tld.inc"
+];
+~~~
+
+In the example above `fallback+file://${CONFDIR}/2tld.inc` will be used when the first composite backend is somehow unreachable (e.g. when the first load of Rspamd or all elements are invalid).
+
+Bear in mind that (1) and (3) can only be distinguished by making an array-like `map = ["192.168.1.1/24"]`
+Historically just for the radix map (IP network ones) you could also use `map = "192.168.1.1/24"` but it is not recommended.
+
+Within maps, you can use whitespace or comments. For example, here is an example of IP/network map:
 
     # Example map
     127.0.0.1 # localhost
@@ -549,33 +561,33 @@ Within maps you can use whitespace or comments. For example, here is an example 
     10.0.0.0/8
     fe80::/64
 
-There is a special module called `multimap` that allows you to define your own maps without writing lua rules. You can check the module's [documentation]({{ site.baseurl }}/doc/modules/multimap.html) and create your configuration in `local.d/multimap.conf`.
+There is a special module called `multimap` that allows you to define your maps without writing Lua rules. You can check the module's [documentation]({{ site.baseurl }}/doc/modules/multimap.html) and create your configuration in `local.d/multimap.conf`.
 
 ## Configuring RBLs
 
-Though Rspamd is free to use for any purpose many of the RBLs used in the default configuration aren't & care should be taken to see that your use cases are not infringing. Notes about specific RBLs follow below (please follow the links for details):
+While Rspamd is free to use for any purpose, it is important to note that some of the RBLs included in the default configuration may require a fee or have usage restrictions. It is crucial to ensure that your use of these RBLs does not violate any rights. The following notes provide additional information about specific RBLs (you can follow the links for more details):
 
-[Spamhaus](https://www.spamhaus.org/organization/dnsblusage/) - Commercial use forbidden (see link for definition); Limit of 300k queries or 100k SMTP connections per day
+[Abusix Mail Intelligence](https://abusix.com/products/abusix-mail-intelligence/){:target="&#95;blank"} - Free for home/non-commercial use up to 100k queries per day (requires registration), commercial use requires a subscription
 
-[URIBL](http://uribl.com/about.shtml) - Requires a commercial subscription if 'excessive queries' are sent (numbers unclear).
+[DNSWL](https://www.dnswl.org/?page_id=9){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 100k queries per day
 
-[SURBL](http://www.surbl.org/usage-policy) - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
+[Mailspike](http://mailspike.org/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
 
-[DNSWL](https://www.dnswl.org/?page_id=9) - Commercial use forbidden (see link for definition); Limit of 100k queries per day
+[Rspamd URIBL](http://www.rspamd.com/doc/usage_policy.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
 
-[SpamEatingMonkey](http://spameatingmonkey.com/faq.html#query-limits) - Limit of 100k queries per day or more than 5 queries per second for more than a few minutes
+[SORBS](http://www.sorbs.net/general/using.shtml#largesites){:target="&#95;blank"} - Limit of 100k users or more than 5 messages per second sustained
 
-[SORBS](http://www.sorbs.net/general/using.shtml#largesites) - Limit of 100k users or more than 5 messages per second sustained
+[SpamEatingMonkey](http://spameatingmonkey.com/faq.html#query-limits){:target="&#95;blank"} - Limit of 100k queries per day or more than 5 queries per second for more than a few minutes
 
-[Mailspike](http://mailspike.net/usage.html) - Limit of 100k messages or queries per day
+[Spamhaus](https://www.spamhaus.org/organization/dnsblusage/){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 300k queries or 100k SMTP connections per day
 
-[UCEProtect](http://www.uceprotect.net/en/index.php?m=6&s=11) - If you're sending 100k queries or more per day you should use the (free) Rsync service.
+[SURBL](http://www.surbl.org/usage-policy){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
 
-[SURBL](http://www.surbl.org/usage-policy) - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
+[UCEProtect](http://www.uceprotect.net/en/index.php?m=6&s=11){:target="&#95;blank"} - If you're sending 100k queries or more per day you should use the (free) Rsync service.
 
-[Rspamd URIBL](http://www.rspamd.com/feed-policies.html) - Commercial use forbidden (see link for definition); Limit of 250k queries per day
+[URIBL](http://uribl.com/about.shtml){:target="&#95;blank"} - Requires a commercial subscription if 'excessive queries' are sent (numbers unclear).
 
-Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) and [SURBL]({{ site.url }}{{ site.baseurl }}/doc/modules/surbl.html) module documentation for information about disabling RBLs/SURBLs.
+Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) module documentation for information about disabling RBLs/SURBLs.
 
 ## Using Rspamd
 
@@ -613,27 +625,34 @@ rspamc -f 2 fuzzy_del file2.eml
 
 ### The rspamadm command
 
-Rspamadm is a new utility that is intended to manage rspamd directly. It comes with embedded help that can be displayed by typing:
+Rspamadm is a utility that enables direct management of Rspamd. It includes an embedded help feature, which can be accessed by typing:
 
 ~~~
 % rspamadm help
-Rspamadm 1.5.0
+Rspamadm 2.6
 Usage: rspamadm [global_options] command [command_options]
 
 Available commands:
-pw                 Manage rspamd passwords
-keypair            Create encryption key pairs
-configtest         Perform configuration file test
-fuzzy_merge        Merge fuzzy databases
-configdump         Perform configuration file dump
-control            Manage rspamd main control interface
-confighelp         Shows help for configuration options
-statconvert        Convert statistics from sqlite3 to redis
-fuzzyconvert       Convert statistics from sqlite3 to redis
-grep               Search for patterns in rspamd logs
-signtool           Sign and verify files tool
-lua                Run LUA interpreter
-dkim_keygen        Create dkim key pairs
+  configdump         Perform configuration file dump
+  configgraph        Produces graph of Rspamd includes
+  confighelp         Shows help for configuration options
+  configtest         Perform configuration file test
+  configwizard       Perform guided configuration for Rspamd daemon
+  control            Manage rspamd main control interface
+  cookie             Produces cookies or message ids
+  corpustest         Create logs files from email corpus
+  dkim_keygen        Create dkim key pairs
+  dnstool            DNS tools provided by Rspamd
+  fuzzyconvert       Convert fuzzy hashes from sqlite3 to redis
+  grep               Search for patterns in rspamd logs
+  keypair            Manages keypairs for Rspamd
+  lua                Run LUA interpreter
+  mime               Mime manipulations provided by Rspamd
+  pw                 Manage rspamd passwords
+  signtool           Sign and verify files tool
+  statconvert        Convert statistics from sqlite3 to redis
+  template           Apply jinja templates for strings/files
+  vault              Perform Hashicorp Vault management
 ~~~
 
 For example, it is possible to get help for a specific configuration option by typing something like
@@ -654,22 +673,19 @@ if header :is "X-Spam" "Yes" {
 }
 {% endhighlight %}
 
-You can also setup rspamc to learn via passing messages to a certain email address. I recommend using `/etc/aliases` for these purposes and `mail-redirect` command (e.g. provided by [Mail Redirect addon](https://addons.mozilla.org/en-GB/thunderbird/addon/mailredirect/) for `Thunderbird` MUA). The desired aliases could be the following:
+It is also possible to set up Rspamc to learn by forwarding messages to a specific email address. I recommend using `/etc/aliases` for these purposes and `mail-redirect` command (e.g. provided by [Mail Redirect addon](https://addons.mozilla.org/en-GB/thunderbird/addon/mailredirect/){:target="&#95;blank"} for `Thunderbird` MUA). The desired aliases could be the following:
 
     learn-spam123: "| rspamc learn_spam"
     learn-ham123: "| rspamc learn_ham"
 
-You'd need some less predictable aliases to avoid sending messages to such addresses by some adversary or just by a mistake to prevent statistics pollution.
+It is important to use less predictable aliases to prevent messages from being sent to these addresses by an adversary or accidentally, in order to avoid contamination of the statistics.
 
-There is also an add-on for Thunderbird MUA written by Alexander Moisseev to visualise Rspamd stats. You can download it from its [homepage](https://addons.mozilla.org/en-GB/thunderbird/addon/rspamd-spamness/). You'd need to add extended spam headers (`X-Spamd-Result`) with Rmilter and/or (from add-on's version 0.8.0) `X-Spam-Score` and `X-Spam-Report` headers with Exim to make the whole setup work.
+There is also an add-on for Thunderbird MUA written by Alexander Moisseev to visualise Rspamd stats. You can download the latest version from its [homepage](https://github.com/moisseev/rspamd-spamness/){:target="&#95;blank"} or a version reviewed by `moz://a` from  [Tunderbird Add-ons page](https://addons.thunderbird.net/thunderbird/addon/rspamd-spamness/){:target="&#95;blank"}. You'd need to add extended spam headers (`X-Spamd-Result`) with Rspamd proxy worker and/or (from add-on's version 0.8.0) `X-Spam-Score` and `X-Spam-Report` headers with Exim to make the whole setup work.
 
-To enable extended spam headers in Rmilter add the following line to `rmilter.conf`:
+To enable extended spam headers in [Milter headers module]({{ site.baseurl }}/doc/modules/milter_headers.html) add the following line to `local.d/milter_headers.conf`:
 
 {% highlight ucl %}
-spamd {
-...
-        extended_spam_headers = yes;
-}
+extended_spam_headers = true;
 {% endhighlight %}
 
 To enable headers in Exim refer to the "Integration with Exim MTA" section of the [MTA integration]({{ site.baseurl }}/doc/integration.html) document.
@@ -684,37 +700,39 @@ Rspamd has a built-in WebUI which supports setting metric actions and scores; Ba
 
 ## Using Rspamd in large email systems
 
-Rspamd has been designed to be used in large scale email systems. It supports various of features to simplify processing emails for thousands or millions of users. However, the default settings are quite conservative to provide suitable experience for small grade systems.
+Rspamd, designed for large-scale email systems, offers various features to facilitate the processing of emails for thousands or millions of users. Despite this, its default settings are conservative, making it suitable for smaller systems as well.
 
-First of all, you are strongly adviced to get the official Rspamd packages from `rspamd.com` site if you use debian derived Linux. They are heavily optimized in terms of performance and features. For users of other platforms it is adviced to ask Rspamd support (mailto://support@rspamd.com) about your specific demands. Maybe there are optimized packages for your specific platform that is not automatically built yet.
+We recommend obtaining official Rspamd packages from the https://www.rspamd.com website if you are using a Debian-based Linux distribution. These packages are optimized for performance and feature sets. For users on other platforms, we advise contacting Rspamd support (mailto://support@rspamd.com) with your specific needs. There may be optimized packages available for your platform that have not yet been built.
 
-Secondly, you need to setup Redis. Normally, you need two types of Redis instances:
+In addition to obtaining optimized Rspamd packages, it is also recommended to set up  Redis. Typically, two types of Redis instances are needed:
 
-* Master-slave replicated instances for `persistent` data: statistics, fuzzy hashes, neural networks. These instances are mostly read-only so you can split your load over read-only slaves.
-* Non-replicated but (probably) sharded instances for `volatile` data: greylisting, replies, ip reputation and other  temporary stuff. These instances are not required to be persistent and they could be scaled by sharding that is automatically performed by Rspamd if you specify multiple servers. These instances have mixed read-write payload.
+* Master-slave replicated instances for **persistent** data: statistics, fuzzy hashes, neural networks. These instances are mostly read-only, so you can distribute the load among read-only slaves.
+* Non-replicated but (possibly) sharded instances for **volatile** data: greylisting, replies, IP reputation, and other temporary data. These instances do not need to be persistent and can be scaled through sharding, which Rspamd will automatically perform if you specify multiple servers. These instances have a mixed read-write workload.
+
+For advanced clustering options beyond what Redis Sentinel offers, we recommend considering the [KeyDB](https://docs.keydb.dev/) project. KeyDB is a drop-in replacement for Redis that supports multi-master replication mode, while maintaining full compatibility with Redis (and Rspamd).
 
 You might also want to enable the following modules:
 
-* [IP score]({{ site.baseurl }}/doc/modules/ip_score.html): IP reputation module, requires volatile Redis instance (or shared volatile Redis instance). In some cases it can provide your results common to the expensive IP DNS black lists. However, it also depends on the quality of your rules and your scale.
-* [Neural networks]({{ site.baseurl }}/doc/modules/neural.html): this module provides significant improvement for your filtering quality but it requires CPU resources (SandyBridge or newer Intel CPUs are strongly adviced) and somehow good rules set. It also requires some setup and a persistent Redis instance. From the version 1.7 Rspamd uses `torch` for neural networks which demonstrates better performance and preciseness than the pre 1.7 implementation based on `libfann`. Here is a minimal setup for neural networks module:
+* [IP score]({{ site.baseurl }}/doc/modules/ip_score.html): IP reputation module, requires volatile Redis instance (or shared volatile Redis instance). In some cases, it can provide your results common to the expensive IP DNS blacklists. However, it also depends on the quality of your rules and your scale.
+* [Neural networks]({{ site.baseurl }}/doc/modules/neural.html): this module provides significant improvement for your filtering quality but it requires CPU resources (SandyBridge or newer Intel CPUs are strongly adviced) and somehow good rules set. It also requires some setup and a persistent Redis instance. From version 2.0 Rspamd uses `libkann` for neural networks which demonstrates better performance and preciseness than the pre 1.7 implementations based on `libfann`. Here is a minimal setup for neural networks module:
 
 ```ucl
-# local.d/fann_redis.conf
+# local.d/neural.conf
  servers = "redis:6384";
 timeout = 25s; # Sometimes ANNs are very large
 train {
-  max_train = 1k; # Number ham/spam samples needed to start train
+  max_trains = 1k; # Number ham/spam samples needed to start train
   max_usages = 20; # Number of learn iterations while ANN data is valid
   spam_score = 8; # Score to learn spam
   ham_score = -2; # Score to learn ham
   learning_rate = 0.01; # Rate of learning
-  max_iterations = 25; # Maximum iterations of learning (better preciseness but also lower speed of learning)
+  max_iterations = 100; # Maximum iterations of learning (better preciseness but also lower speed of learning)
 }
 
 ann_expire = 2d; # For how long ANN should be preserved in Redis
 ```
 
-* [Ratelimit]({{ site.baseurl }}/doc/modules/ratelimit.html): this module is very useful to limit spam waves as it allows to temporary delay senders that have either bad reputation or send email too agressively without somehow a good reputation. Requires a volatile Redis instance.
+* [Ratelimit]({{ site.baseurl }}/doc/modules/ratelimit.html): this module is highly effective in limiting spam waves, as it allows for temporarily delaying senders with poor reputation or those sending messages too aggressively without a good reputation. A volatile Redis instance is required for its use.
 * [Replies]({{ site.baseurl }}/doc/modules/replies.html): whitelists replies to your user's mail. It is very useful to provide users instant communication with known recipients. Requires a volatile Redis instance.
 * [URL redirector]({{ site.baseurl }}/doc/modules/url_redirector.html): resolves URL redirects on some common redirectors and URLs shorteners, e.g. `t.co` or `goo.gl`. Requires a volatile Redis instance.
-* [Clickhouse]({{ site.baseurl }}/doc/modules/clickhouse.html): saves analytical data to the [Clickhouse](https://clickhouse.yandex) server. Clickhouse server can be used thereafter to create new filtering rules or maintaining blacklists. You can treat it as an advanced syslog with indexes and complex analytics queries. There are also graphical interfaces available for Clickhouse, e.g. [Redash](https://redash.io/)
+* [Clickhouse]({{ site.baseurl }}/doc/modules/clickhouse.html): saves analytical data to the [Clickhouse](https://clickhouse.yandex){:target="&#95;blank"} server. Clickhouse server can be used thereafter to create new filtering rules or maintaining blacklists. It serves as an advanced Syslog with indexes and complex analytics queries. Additionally, there are graphical interfaces available for Clickhouse, such as [Redash](https://redash.io/){:target="&#95;blank"}

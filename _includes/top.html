@@ -107,12 +107,13 @@
                                 <li><a href="{{ site.baseurl }}/doc/integration.html">MTA integration</a></li>
                                 <li><a href="{{ site.baseurl }}/doc/migration.html">Upgrading notes</a></li>
                                 <li><a href="{{ site.baseurl }}/webui/">Rspamd WebUI</a></li>
+                                <li><a href="{{ site.baseurl }}/doc/gtube_patterns.html">GTUBE-like test patterns</a></li>
                                 <li><a href="{{ site.baseurl }}/doc/tutorials/migrate_sa.html">Migrating from SA</a></li>
                                 <li><a href="{{ site.baseurl }}/doc/tutorials/site_contributing.html">Contributing to rspamd.com web-site</a></li>
                                 <li><a href="{{ site.baseurl }}/doc/configuration/redis.html">Using Redis in Rspamd</a></li>
                                 <li><a href="{{ site.baseurl }}/doc/tutorials/redis_replication.html">Replication in Redis</a></li>
                                 <li><a href="{{ site.baseurl }}/doc/tutorials/scanning_outbound.html">How to scan outbound emails</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/tutorials/stunnel_setup.html">Setup stunnel to protect WebUI</a></li>
+                                <li><a href="{{ site.baseurl }}/doc/tutorials/stunnel_setup.html">Setup stunnel to protect Redis</a></li>
                               </ul>
                             </li>
                             <li>Configuration guide
@@ -131,12 +132,14 @@
                                 <li><a href="{{ site.baseurl }}/doc/modules/">Modules documentation</a></li>
                                 <li><a href="{{ site.baseurl }}/doc/workers/">Workers documentation</a></li>
                                 <li><a href="{{ site.baseurl }}/doc/rspamadm.html">Rspamadm utilities</a></li>
+                                <li><a href="{{ site.baseurl }}/doc/usage_policy.html">Rspamd data usage policies</a></li>
                                 <li><a href="{{ site.baseurl }}/doc/configuration/upstream.html">Upstreams article</a></li>
                               </ul>
                             </li>
                             <li>Developers documentation</a>
                               <ul>
                                 <li><a href="{{ site.baseurl }}/doc/lua/">Lua API reference</a></li>
+                                <li><a href="{{ site.baseurl }}/doc/lua/examples.html">Lua rules examples</a></li>
                                 <li><a href="{{ site.baseurl }}/doc/tutorials/writing_rules.html">Writing Rspamd rules</a></li>
                                 <li><a href="{{ site.baseurl }}/doc/fuzzy_storage.html">Creating your fuzzy storage</a></li>
                                 <li><a href="{{ site.baseurl }}/doc/architecture/index.html">Architecture information</a></li>
@@ -156,7 +159,7 @@
                         <a href="{{ site.baseurl }}/blog/">News</a>
                     </li>
                     <li>
-                        <a href="{{ site.baseurl }}/changes.html">Changes</a>
+                        <a href="{{ site.baseurl }}/doc/usage_policy.html">Usage policies</a>
                     </li>
                     <li>
                         <a href="{{ site.baseurl }}/support.html">Support</a>
@@ -168,8 +171,11 @@
                         <a href="https://github.com/rspamd/rspamd" target="_blank"><i class="fa fa-lg fa-github" aria-hidden="true"></i>&nbsp;Github</a>
                     </li>
                 </ul>
-                <!-- Login link -->
                 <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn" target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/{{ page.path }}"
+                            title="Edit the current page and create a pull request on GitHub"><i class="fa fa-lg fa-pencil"></i>&nbsp;Edit</a>
+                    </li>
                     <li>
                         <form class="donate" action="https://www.paypal.com/cgi-bin/webscr" method="post">
                             <fieldset>

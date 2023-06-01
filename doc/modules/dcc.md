@@ -7,75 +7,56 @@ title: DCC module
 This modules performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine
 the *bulkiness* of a message (e.g. how many recipients have seen it).
 
-Identifying bulk messages is very useful in composite rules e.g. if a message is
-from a freemail domain *AND* the message is reported as bulk by DCC then you can
-be sure the message is spam and can assign a greater weight to it.
+This information, which indicates how many recipients have seen the message, is useful for identifying bulk messages in composite rules. 
+For example, if a message is from a freemail domain and is reported as bulk by DCC, it is likely to be spam and can be assigned a higher weight.
 
-Please view the License terms on the DCC website before you enable this module.
+Before enabling this module, please make sure to review the License terms on the DCC website.
 
 ## Module configuration
 
-This module requires that you have the `dccifd` daemon configured, running and
-working correctly.  To do this you must download and build the [latest DCC client]
-(https://www.dcc-servers.net/dcc/source/dcc.tar.Z).  Once installed, edit
-`/var/dcc/dcc_conf` set `DCCIFD_ENABLE=on` and set `DCCM_LOG_AT=NEVER` and
-`DCCM_REJECT_AT=MANY`, then start the daemon by running `/var/dcc/libexec/rcDCC start`.
+To use the `dccifd` module, you must have the `dccifd` daemon properly configured, installed, and running. To do this, follow these steps:
 
-Once the `dccifd` daemon is started it will listen on the UNIX domain socket /var/dcc/dccifd
-and all you have to do is tell the rspamd where `dccifd` is listening:
+1. Download and build the latest DCC client from the [latest DCC client](https://www.dcc-servers.net/dcc/source/dcc.tar.Z).  
+2. Edit the `/var/dcc/dcc_conf` file, setting `DCCIFD_ENABLE=on`, `DCCM_LOG_AT=NEVER` and
+`DCCM_REJECT_AT=MANY`.
+3. Start the daemon by running `/var/dcc/libexec/rcDCC start`.
+
+Once the `dccifd`, it will listen on the UNIX domain socket /var/dcc/dccifd.
+To complete the setup, simply inform rspamd of the location where the `dccifd` is listening:
 
 ~~~ucl
 # local.d/dcc.conf
 
-enabled = true;
+enabled = true; # Required as default is to disable DCC plugin
 
 # Define local socket or TCP servers in upstreams syntax
 # When sockets and servers are definined - servers is used!
 
-socket = "/var/dcc/dccifd"; # Unix socket (1.8.1+)
-# host = "/var/dcc/dccifd"; # Unix socket (Before 1.8.1)
-
-#servers = "127.0.0.1:10045" # OR TCP upstreams (1.8.1+)
-timeout = 2s; # Timeout to wait for checks
-
+servers = "/var/dcc/dccifd"; # Unix socket
+#servers = "127.0.0.1:10045" # OR TCP upstreams
+body_max = 999999; # Bulkness threshold for body
+fuz1_max = 999999; # Bulkness threshold for fuz1
+fuz2_max = 999999; # Bulkness threshold for fuz2
+symbol_fail = 'DCC_FAIL';
+symbol = 'DCC_REJECT';
+symbol_bulk = 'DCC_BULK';
+timeout = 5.0; # Timeout to wait for checks
+log_clean = false;
+retransmits = 2;
 ~~~
 
-Alternatively you can configure DCC to listen to a TCP Socket on localhost or any remote server.
-For the detailed configuration have a look to the DCC manual. Here is the config line for having DCCIFD
-listening on localhost port 10045 and allowing 127.0.0.1/8 to query:
+1. `enabled = true;`: Enable the DCC plugin (default is disabled).
+2. `servers`: Define local socket or TCP servers in the upstream syntax.
+   a. `servers = "/var/dcc/dccifd";`: Specify the Unix socket for communication with the DCC server.
+   b. `#servers = "127.0.0.1:10045"`: (Commented) Alternative TCP upstream for communication with the DCC server.
+3. `body_max`, `fuz1_max`, and `fuz2_max`: Set bulkiness thresholds for body, fuz1, and fuz2, respectively (all set to 999999).
+4. `symbol_fail = 'DCC_FAIL';`: Set symbol for a failed DCC check.
+5. `symbol = 'DCC_REJECT';`: Set symbol for a successful DCC check with spam result.
+6. `symbol_bulk = 'DCC_BULK';`: Set symbol for a successful DCC check with bulk result.
+7. `timeout = 5.0;`: Set timeout for DCC checks (5 seconds).
+8. `log_clean = false;`: Disable logging for clean emails (not spam or bulk) that pass the DCC check.
+9. `retransmits = 2;`: Set the number of allowed retransmits for the DCC check.
+
+
+If you prefer, you can configure DCC to listen to a TCP socket on localhost or any remote server. For detailed configuration instructions, refer to the DCC manual. The following configuration line sets up DCCIFD to listen on localhost port 10045 and allows queries from the IP range `127.0.0.1/8`:
 `DCCIFD_ARGS="-SHELO -Smail_host -SSender -SList-ID -p *,10045,127.0.0.0/8"`
-
-The Rspamd dcc.conf now looks like this:
-
-~~~ucl
-# local.d/dcc.conf
-
-enabled = true;
-
-# Define local socket or TCP servers in upstreams syntax
-# When sockets and servers are definined - servers is used!
-#socket = "/var/dcc/dccifd"; # Unix socket
-
-servers = "127.0.0.1:10045" # OR TCP upstreams (1.8.1+)
-
-#host = "127.0.0.1:10045" # OR TCP upstreams (Before 1.8.1)
-#port= "10045" # OR TCP upstream (Before 1.8.1)
-
-timeout = 2s; # Timeout to wait for checks
-
-~~~
-
-Using servers not sockets you are able to configure all [upstreams](https://rspamd.com/doc/configuration/upstream.html) features.
-
-
-Once this module is configured it will write the DCC output to the rspamd as each
-message is scanned:
-
-
-~~~
-2018-09-28 13:35:17 #2998(normal) <37f431>; lua; dcc.lua:169: sending to 127.0.0.1:10045
-2018-09-28 13:35:17 #2998(normal) <37f431>; dcc; dcc.lua:136: DCC result=R disposition=R header="X-DCC--Metrics: srv.ncxs.de 1481; bulk Body=2 Fuz1=2 Fuz2=many"
-~~~
-
-Any messages that DCC returns a *reject* result for (based on the configured `DCCM_REJECT_AT`
-value) will cause the symbol `DCC_BULK` to fire.

@@ -3,9 +3,11 @@ layout: doc
 title: Sync and Async API comparison
 ---
 
-{::options parse_block_html="true" /}
+# Rspamd asynchronous calls
 
-<div id="toc">
+This guide describes how to make asynchronous calls from Rspamd plugins and rules.
+
+<div id="toc" markdown="1">
   * this unordered seed list will be replaced by toc as unordered list
   {:toc}
 </div>
@@ -42,7 +44,7 @@ Rspamd 1.8.0 is introducing a new pseudo-synchronous API. Now you can write code
 Each potentially blocking operation creates a yielding-point. In turn, this means the code is suspended until the operation is done (just like blocking) and resumes only when there is some result. Meanwhile, other tasks are processed as usual.
 
 <small>
-**Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
+**Please note** that synchronous mode requires symbol to be registered with **`coro`** flag from the version 1.9 (see "full example").
 </small>
 
 ~~~lua
@@ -67,6 +69,7 @@ It returns two values:
   - content `string` Response body
   - headers `table` (header -> value) list of response headers
 
+
 #### Asynchronous HTTP request
 {:.no_toc}
 
@@ -87,7 +90,6 @@ It returns two values:
   })
 ~~~~~
 
-{::options parse_block_html="false" /}
 
 <div>
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#async_http">
@@ -130,14 +132,13 @@ rspamd_config:register_symbol({
 {% endhighlight %}
 
 </div></div>
-{::options parse_block_html="true" /}
 
 
 #### Synchronous HTTP request
 {:.no_toc}
 
 <small>
-**Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
+**Please note** that synchronous mode requires symbol to be registered with **coro** flag (see "full example").
 </small>
 
 ~~~ lua
@@ -151,7 +152,6 @@ rspamd_config:register_symbol({
   end
   ...
 ~~~~~~~~~~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#sync_http">
@@ -188,13 +188,12 @@ rspamd_config:register_symbol({
   name = 'SIMPLE_HTTP',
   score = 1.0,
   callback = http_symbol,
-  -- Symbol using Synchronous API should have "no_squeeze" flag.
-  no_squeeze = true
+  -- Symbol using Synchronous API should have "coro" flag.
+  flags = 'coro',
 })
 
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
 
 
 ### DNS module {#API-example-DNS-module}
@@ -217,7 +216,6 @@ task:get_resolver():resolve_a({
   ...
 })
 ~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#async_dns">
@@ -254,14 +252,13 @@ rspamd_config:register_symbol({
 })
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
 
 
 #### Synchronous DNS request
 {:.no_toc}
 
 <small>
-**Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
+**Please note** that synchronous mode requires symbol to be registered with **coro** flag (see "full example").
 </small>
 
 ~~~lua
@@ -274,7 +271,6 @@ rspamd_config:register_symbol({
     task:insert_result('DNS_SYNC', 1.0, tostring(results[1]))
   end
 ~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#sync_dns">
@@ -309,12 +305,11 @@ rspamd_config:register_symbol({
   name = 'SIMPLE_DNS_SYNC',
   score = 1.0,
   callback = dns_sync_symbol,
-  -- Symbol using Synchronous API should have "no_squeeze" flag.
-  no_squeeze = true
+  -- Symbol using Synchronous API should have "coro" flag.
+  flags = 'coro',
 })
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
 
 
 ### TCP module {#API-example-TCP-module}
@@ -335,7 +330,6 @@ It is recommended to use `lua_tcp_sync` module to work TCP.
     ...
   })
 ~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#async_tcp">
@@ -370,18 +364,18 @@ rspamd_config:register_symbol({
   name = 'SIMPLE_TCP_ASYNC_TEST',
   score = 1.0,
   callback = http_simple_tcp_async_symbol,
-  no_squeeze = true
+  -- Symbol using Synchronous API should have "coro" flag.
+  flags = 'coro',
 })
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
 
 
 #### Synchronous TCP request
 {:.no_toc}
 
 <small>
-**Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
+**Please note** that synchronous mode requires symbol to be registered with **coro** flag (see "full example").
 </small>
 
 ~~~lua
@@ -404,7 +398,6 @@ rspamd_config:register_symbol({
   is_ok, data = connection:read_once(); 
   task:insert_result('HTTP_RESPONSE', 1.0, data or err)
 ~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#sync_tcp">
@@ -485,11 +478,11 @@ rspamd_config:register_symbol({
   name = 'HTTP_TCP_TEST',
   score = 1.0,
   callback = http_tcp_symbol,
-  no_squeeze = true
+  -- Symbol using Synchronous API should have "coro" flag.
+  flags = 'coro',
 })
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
 
 
 ### Redis module {#API-example-Redis-module}
@@ -512,7 +505,6 @@ rspamd_config:register_symbol({
   local request = {...}
   redis_lua.request(redis_params, attrs, request)
 ~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#async_redis">
@@ -554,18 +546,18 @@ rspamd_config:register_symbol({
   name = 'SIMPLE_REDIS_ASYNC_TEST',
   score = 1.0,
   callback = redis_simple_async_api,
-  no_squeeze = true
+  -- Symbol using Synchronous API should have "coro" flag.
+  flags = 'coro',
 })
 
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
 
 #### Synchronous Redis request
 {:.no_toc}
 
 <small>
-**Please note** that synchronous mode requires symbol to be registered with **no_squeeze** = `true` (see "full example").
+**Please note** that synchronous mode requires symbol to be registered with **coro** flag (see "full example").
 </small>
 
 ~~~lua
@@ -586,7 +578,6 @@ rspamd_config:register_symbol({
   end
   ...
 ~~~
-{::options parse_block_html="false" /}
 
 <div><!-- Do not change the DOM structure -->
     <a class="btn btn-info btn-code" data-toggle="collapse" data-target="#sync_redis">
@@ -645,10 +636,9 @@ rspamd_config:register_symbol({
   name = 'REDIS_TEST',
   score = 1.0,
   callback = redis_symbol,
-  no_squeeze = true
+  -- Symbol using Synchronous API should have "coro" flag.
+  flags = 'coro',
 })
 
 {% endhighlight %}
 </div></div>
-{::options parse_block_html="true" /}
-

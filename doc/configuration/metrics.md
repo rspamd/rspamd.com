@@ -2,66 +2,45 @@
 layout: doc
 title: Rspamd Metrics
 ---
-# Rspamd metrics settings
+# Rspamd actions and scores
 
 ## Introduction
 
-The metrics section configures weights for symbols and actions applied to a message by Rspamd. You can imagine a metric as a decision made by Rspamd for a specific message by a set of rules. Each rule can insert a `symbol` into the metric, which means that this rule is true for this message. Each symbol can have a floating point value called a `weight`, which means the significance of the corresponding rule. Rules with a positive weight increase the spam factor, while rules with negative weights increase the ham factor. The result is the overall message score.
+Unlike SpamAssassin, Rspamd **suggests** the desired action for a specific message scanned. This could be treated as a recommendation to MTA what it should do with this message. Here is a list of possible choices that are sent by Rspamd:
 
-After a score is evaluated, Rspamd selects an appropriate `action` for a message. Rspamd defines the following actions, ordered by spam factor, in ascending order:
+- `discard`: drop an email but return success for sender (should be used merely in special cases)
+- `reject`: ultimately reject message
+- `rewrite subject`: rewrite subject to indicate spam
+- `add header`: add specific header to indicate spam
+- `no action`: allow message
+- `soft reject`: temporarily delay message (this is used, for instance, to greylist or ratelimit messages)
 
-1. `no action` - a message is likely ham
-2. `greylist` - a message should be greylisted to ensure sender's validity
-3. `add header` - add the specific `spam` header indicating that a message is likely spam
-4. `rewrite subject` - add spam subject to a message
-5. `soft reject` - temporarily reject a message
-6. `reject` - permanently reject a message
+From version 1.9, there are also some more actions:
 
-Actions are assumed to be applied simultaneously, meaning that the `add header` action implies, for example, the `greylist` action. `add header` and `rewrite subject` are equivalent to Rspamd. They are just two options with the same purpose: to mark a message as probable spam. The `soft reject` action is mainly used to indicate temporary issues in mail delivery, for instance, exceeding a rate limit.
+- `quarantine`: push a message to quarantine (must be supported by MTA)
+- `discard`: silently discard a message
 
-There is also a special purpose metric called `default` that acts as the main metric to treat a message as spam or ham. Actually, all clients that use Rspamd just check the default metric to determine whether a message is spam or ham. Therefore, the default configuration just defines the `default` metric.
+From version 1.9, you can also define any action you'd like with it's own threshold or use that in `force_actions` module:
 
-## Configuring metrics
-Each metric is defined by a `metric` object in the Rspamd configuration file. This object has one mandatory attribute - `name` - which defines the name of the metric:
-
-~~~ucl
-metric {
-   # Define default metric
-   name = "default";
+```ucl
+actions {
+  # Generic threshold
+  my_action = {
+    score = 9.0;
+  },
+  # Force action only
+  phishing = {
+    flags = ["no_threshold"],
+  }
 }
-~~~
-It is also possible to define some generic attributes for the metric:
+```
 
-* `grow_factor` - the multiplier applied for the subsequent symbols inserting by the following rule:
+Only one action could be applied to a message. Hence, it is generally useless to define two actions with the same threshold.
 
-$$
-score = score + grow\_factor * symbol\_weight
-$$
 
-$$
-	grow\_factor = grow\_factor * grow\_factor
-$$
+## Configuring scores and actions
 
-By default this value is `1.0` meaning that no weight growing is defined. By increasing this value you increase the effective score of messages with multiple `spam` rules matched. This value is not affected by negative score values.
-
-* `subject` - string value that replaces the message's subject if the `rewrite subject` action is applied. Original subject can be included with `%s`.
-* `unknown_weight` - weight for unknown rules. If this parameter is specified, all rules can add symbols to this metric. If such a rule is not specified by this metric then its weight is equal to this option's value. Please note, that adding this option means that all rules will be checked by Rspamd, on the contrary, if no `unknown_weight` metric is specified then rules that are not registered anywhere are silently ignored by Rspamd.
-
-The content of this section is in two parts: symbols and actions. Actions is an object of all actions defined by this metric. If some actions are skipped, they won't be ever suggested by Rspamd. The Actions section looks as follows:
-
-~~~ucl
-metric {
-...
-	actions {
-		reject = 15;
-		add_header = 6;
-		greylist = 4;
-	};
-...
-}
-~~~
-
-You can use an underscore (`_`) instead of white space in action names to simplify the configuration.
+### Symbols
 
 Symbols are defined by an object with the following properties:
 
@@ -79,29 +58,67 @@ symbol "RWL_SPAMHAUS_WL_IND" {
 }
 ~~~
 
-A single metric can contain multiple symbols definitions.
-
-
-## Symbol groups
-
-Symbols can be grouped to specify their common functionality. For example, one could group all `RBL` symbols together. Moreover, from Rspamd version 0.9 it is possible to specify a group score limit, which could be useful, for instance, if a specific group should not unconditionally send a message to the `spam` class. Here is an example of such a functionality:
+Rspamd rules are usually groupped into groups. Each symbol can belong to multiple groups. For example, `DKIM_ALLOW` symbol belongs to `dkim` group and to `policies` metagroup. You can group or not group your own rules. To redefine scores of your symbols, you can use `local.d/groups.conf` as following:
 
 ~~~ucl
-metric {
-	name = default; # This is mandatory option
-	
-	group "RBL group" {
-		max_score = 6.0;
-		
-		symbol "RBL1" {
-			weight = 1;
-		}
-		symbol "RBL2" {
-			weight = 4;
-		}
-		symbol "RBL3" {
-			weight = 5;
-		}
-	}
+# local.d/groups.conf
+
+symbols {
+  "SOME_SYMBOL" {
+    weight = 1.0; # Define your weight
+  }
 }
 ~~~
+
+Or, for grouped symbols: 
+
+~~~ucl
+group "mygroup" {
+  max_score = 10.0;
+  
+  symbols {
+    "MY_SYMBOL" {
+      weight = 1.0; # Define your weight
+    }
+  }
+}
+~~~
+
+To redefine symbols for the existing groups, it is recommended to use a specific `local.d` or `override.d` file, for example, `local.d/rbl_group.conf` to add your custom RBLs. To get the full list of such files, you can take a look over the `groups.conf` file in the main Rspamd configuration directory (e.g. `/etc/rspamd/groups.conf`).
+
+### Actions
+
+Actions thresholds and configuration are defined in `local.d/actions.conf`:
+
+```ucl
+# local.d/actions.conf
+# Generic threshold
+my_action = {
+	score = 9.0;
+},
+# Force action only
+phishing = {
+	flags = ["no_threshold"],
+},
+greylist = {
+ score = 2.0,
+ flags = ["no_action"],
+}
+```
+
+It is also possible to define some generic attributes for actions applications:
+
+* `grow_factor` - the multiplier applied for the subsequent symbols inserting by the following rule:
+
+$$
+score = score + grow\_factor * symbol\_weight
+$$
+
+$$
+	grow\_factor = grow\_factor * grow\_factor
+$$
+
+By default this value is `1.0` meaning that no weight growing is defined. By increasing this value you increase the effective score of messages with multiple `spam` rules matched. This value is not affected by negative score values.
+
+* `subject` - string value that replaces the message's subject if the `rewrite subject` action is applied. Original subject can be included with `%s`. Message score can be filled using `%d` extension.
+* `unknown_weight` - weight for unknown rules. If this parameter is specified, all rules can add symbols to this metric. If such a rule is not specified by this metric then its weight is equal to this option's value. Please note, that adding this option means that all rules will be checked by Rspamd, on the contrary, if no `unknown_weight` metric is specified then rules that are not registered anywhere are silently ignored by Rspamd.

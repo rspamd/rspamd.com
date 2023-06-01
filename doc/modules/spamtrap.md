@@ -4,22 +4,15 @@ title: Spamtrap module
 ---
 # Spamtrap module
 
-With the spamtrap module you can catch spam trapped emails or even a catch-all domain.
-It is intended for learning bayes spam and, if you run your own fuzzy storage, for learning
-a fuzzy flag with a fuzzy weight. You can also add a score for this symbol in the metrics,
-if you only want to tag such emails. You can use this later in other modules like
-force_actions or metadata_exporter. Examples will be given below.
+The spamtrap module enables you to catch trapped spam emails, and even those from a catch-all domain. Its main purpose is to facilitate learning bayes spam, and if you operate your own fuzzy storage, to learn a fuzzy flag with a fuzzy weight. If you only wish to tag these emails, you may add a score for this symbol in the metrics. Later on, you can use this information in other modules, such as force_actions or metadata_exporter. Some examples are provided below.
 
 ## Spamtrap setup
 
-The spamtrap plugin may either use a map containing regular expressions that represent
-email addresses or domains, or Redis, where addresses are stored as keys and values can
-be anything. You can use one or the other method. By setting a map parameter, Redis is
-automatically turned off.
+The spamtrap plugin can utilise either a map comprising regular expressions representing email addresses or domains, or Redis, where addresses are stored as keys with values that can take any form. You may opt to use either method. When specifying a map parameter, Redis is automatically disabled.
 
 To use Redis - [see here]({{ site.baseurl }}/doc/configuration/redis.html) for information about configuring Redis.
 
-An example of a map is hown below.
+An example of a map is shown below.
 
 ### Module settings
 
@@ -51,7 +44,7 @@ action = "no action";
 score = 1.0;
 learn_fuzzy = true;
 learn_spam = true;
-map = file://$LOCAL_CONFDIR/maps.d/spamtrap.map;
+map = file://$LOCAL_CONFDIR/local.d/maps.d/spamtrap.map;
 
 enabled = true;
 ~~~
@@ -60,10 +53,14 @@ An example of a map file is:
 
 ~~~text
 /^test@example\.test$/
-/^.*@catchalldomain.test$/
+/^.*@catchalldomain\.test$/
 ~~~
 
 The first is a full email address, while the second is a catch-all domain.
+
+## User settings
+
+Please see [settings module documentation]({{ site.baseurl }}/doc/configuration/settings.html) for more information about using this module; some examples are provided below for convenience.
 
 ### Advanced: settings_redis example
 
@@ -99,9 +96,7 @@ EOD;
 
 ### Advanced: Adding emails and domains to Redis
 
-There are several way to add emails or domains to the Redis store. One would be to add
-it directly with the 'redis-cli'. But if you have more than one entry to add, a simple
-shell script will help you:
+There are various methods to add emails or domains to the Redis store. One approach would be to add them directly through 'redis-cli'. However, if you need to add multiple entries, a straightforward shell script could be useful:
 
 ~~~bash
 #!/bin/bash
@@ -122,7 +117,4 @@ done
 exit 0
 ~~~
 
-We disable certain groups here, as we can speed up tests. We do not ask for RBLs, checking
-for viruses or doing some kind of SPF, DKIM and DMARC tests, as most of the spam trapped
-emails would already be caught by these rules. Our goal is primarily on learning fuzzy and
-bays spam, so we skip these tests. Feel free to add whatever you want.
+We disable specific groups to expedite testing. We do not request RBLs, check for viruses, or perform SPF, DKIM, and DMARC tests, as the majority of trapped spam emails would have already been identified by these rules. Our primary aim is to learn about fuzzy and bayes spam, hence these tests are omitted. You are welcome to include any other tests you deem appropriate.

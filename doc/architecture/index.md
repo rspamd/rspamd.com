@@ -22,7 +22,7 @@ Rspamd supports two main types of modules: internal modules written in C and ext
 
 ~~~ucl
 options {
- filters = "regexp,surbl,spf,dkim,fuzzy_check,chartable,email";
+ filters = "chartable,dkim,surbl,regexp,fuzzy_check";
  ...
 }
 ~~~

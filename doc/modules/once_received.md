@@ -4,11 +4,11 @@ title: Once received module
 ---
 # Once received module
 
-This module is intended to do simple checks for mail with one `Received` header. The idea behind these checks is that legitimate mail likely has more than one received and some bad patterns, such as `dynamic` or `broadband` are common for spam from hacked users' machines.
+This module is intended to do simple checks for mail with one `Received` header. The underlying concept is that genuine emails tend to have multiple received headers, whereas spam originating from compromised user devices often exhibit certain negative characteristics, such as the use of `dynamic` or `broadband` IP addresses.
 
 ## Configuration
 
-The configuration of this module is pretty straightforward: specify `symbol` for generic one received mail, specify `symbol_strict` for emails with bad patterns or with unresolvable hostnames and add **good** and **bad** patterns. Patterns can contain [lua patterns](http://lua-users.org/wiki/PatternsTutorial). `good_host` lines are used to negate this module for certain hosts, `bad_host` lines are used to specify certain bad patterns. It is also possible to specify `whitelist` to define a list of networks for which `once_received` checks should be excluded.
+Configuring this module is quite straightforward: you simply need to define a `symbol` for generic emails with only one received header, specify a `symbol_strict` for emails that exhibit negative patterns or have unresolved hostnames, and include **good** and **bad** patterns, which can utilise [lua patterns](http://lua-users.org/wiki/PatternsTutorial). Use `good_host` lines to exclude certain hosts from this module, and `bad_host` lines to identify specific negative patterns. Additionally, you can create a `whitelist` to define a list of networks for which the `once_received` checks should be excluded.
 
 ## Example
 
@@ -23,4 +23,4 @@ once_received {
 }
 ~~~
 
-IP map can contain, as usually, IP's (both v4 and v6), networks (in CIDR notation) and optional comments starting from `#` symbol.
+As is typical, the IP map can include both IPv4 and IPv6 addresses, as well as networks in CIDR notation. You may also add optional comments to the map, indicated by a `#` symbol.

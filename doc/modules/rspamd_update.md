@@ -4,16 +4,14 @@ title: Rspamd updates module
 ---
 # Rspamd update module
 
-This module allows to load rspamd rules, adjust symbols scores and actions without full daemon restart.
-`rspamd_update` provides method to backport new rules and scores changing without updating rspamd itself. This might be useful, for example, if you want to use the stable version of rspamd but would like to improve filtering quality at the same time.
+This module enables you to load rspamd rules, adjust symbol scores, and implement actions without restarting the full daemon. The `rspamd_update` method facilitates the backporting of new rules and score changes without the need to update rspamd itself. This feature can be particularly useful if you wish to use the stable version of rspamd while simultaneously improving the quality of filtering.
 
 ## Security considerations
 
-Rspamd update module can execute lua code which is executed with scanner's privilleges - usually `_rspamd` or `nobody` user. Therefore, you should not use untrusted sources of updates.
-Rspamd supports digital signatures to check the validity of updates downloaded using [EdDSA](http://ed25519.cr.yp.to/) signatures scheme.
+The Rspamd update module can execute Lua code, which is run with the scanner's privileges, typically under the `_rspamd` or `nobody` user. Therefore, it's important to avoid using untrusted sources of updates. Rspamd supports digital signatures to validate the authenticity of updates downloaded using the using [EdDSA](http://ed25519.cr.yp.to/) signatures scheme.
 For your own updates that are loaded from the filesystem or from some trusted network you might use unsigned files, however, signing is recommended even in this case.
 
-To sign a map you can use `rspamadm signtool` and to generate signing keypair - `rspamadm keypair -s -u`:
+For your own updates that are loaded from the file system or a trusted network, you might be able to use unsigned files. However, we recommend that you sign even in this scenario. To sign a map, you can use `rspamadm signtool`, and to generate a signing keypair, use `rspamadm keypair -s -u`.
 
 ~~~ucl
 keypair {
@@ -56,7 +54,7 @@ The module itself has very few parameters:
 
 * `key`: use this key (base32 encoded) as trusted key
 
-All other keys are threated as rules to load maps. By default, rspamd tries to load signed updates from `rspamd.com` site using trusted key `qxuogdh5eghytji1utkkte1dn3n81c3y5twe61uzoddzwqzuxxyb`:
+All other keys are threated as rules to load maps. By default, Rspamd tries to load signed updates from `rspamd.com` site using trusted key `qxuogdh5eghytji1utkkte1dn3n81c3y5twe61uzoddzwqzuxxyb`:
 
 ~~~ucl
 rspamd_update {

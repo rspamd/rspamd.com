@@ -1,71 +1,52 @@
 {% include top.html %}
 
 <style>
+	.btn-support-group {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.btn-support {
+		display: block;
+		margin: 0 10px 10px 0;
+		padding: 8px 12px;
+		font-size: 14px;
+		border-radius: 4px;
+		text-decoration: none;
+		width: 125px;
+		text-align: center;
+		border-width: 1px;
+		border-style: solid;
+		position: relative;
+		height: 38px;
+		outline: none;
+	}
+
+	.btn-support:hover {
+		text-decoration: none;
+	}
+
+	.btn-support .btn-submit {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		border: none;
+		border-radius: 4px;
+		color: inherit;
+		background-color: inherit;
+		outline: none;
+	}
+
 	.r-container {
 		width: calc(100vw - 44px);
 		margin: auto;
-	}
-
-	.r-support {
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 20px;
-	}
-
-	.r-support:last-of-type {
-		margin-bottom: 0;
-	}
-
-	.r-support-btn {
-		width: 280px;
-		max-width: 100%;
-	}
-
-	.r-support-content {
-		width: calc(100% - 300px);
-	}
-
-	.r-support-content pre {
-		border: none;
-		padding: 0;
-		margin-bottom: 0;
-	}
-
-	.r-support-content > p {
-		margin-bottom: 0;
+		max-width: 1200px;
 	}
 
 	h1 {
 		margin: 40px 0 20px;
-	}
-
-	.r-support-btn.r-support-btn-pp {
-		position: relative;
-		height: 38px;
-	}
-
-	.r-support-btn.r-support-btn-pp:before {
-		content: '';
-		position: absolute;
-		background-image: url(img/pp.png);
-		background-size: 28px;
-		background-repeat: no-repeat;
-		background-position: center;
-		width: 33px;
-		height: 38px;
-		z-index: 100;
-		border-right: 1px solid #ff981f;
-	}
-
-	@media screen and (max-width: 768px) {
-		.r-support {
-			display: block;
-		}
-
-		.r-support-content {
-			width: 100%;
-			margin-top: 5px;
-		}
 	}
 </style>
 <div class="r-container">

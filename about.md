@@ -87,7 +87,7 @@ expensive rules (rules with negative weights are always checked first).
 simultaneously increasing the efficiency of shared DNS caches and other system resources. Moreover, event-driven system normally scales automatically and you won't need to do any
 tuning in most cases.
 
-* **Hyperscan regular expressions engine** - rspamd utilizes [hyperscan](https://01.org/hyperscan) engine to match multiple regular expressions at the same time. You can read the following [presentation](https://highsecure.ru/rspamd-hyperscan.pdf) where the main benefits of hyperscan are described.
+* **Hyperscan regular expressions engine** - rspamd utilizes [hyperscan](https://www.hyperscan.io/) engine to match multiple regular expressions at the same time. You can read the following [presentation](https://highsecure.ru/rspamd-hyperscan.pdf) where the main benefits of hyperscan are described.
 
 * **Clever choice of data structures** - rspamd tries to use the optimal data structure for each task. For example it uses very efficient suffix tries for fast matching of a text
 against a set of multiple patterns & radix bit trie for storing IP addresses information which provides O(1) access time complexity.

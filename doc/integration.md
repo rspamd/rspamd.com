@@ -11,16 +11,18 @@ This document describes several methods of integrating rspamd with some popular 
 * [Exim](http://exim.org)
 * [Sendmail](http://sendmail.org)
 * [Haraka](https://haraka.github.io/)
+* [EmailSuccess](https://www.emailsuccess.com)
+* [Apache James](https://james.apache.org)
 
-This document also describes the rspamd LDA proxy mode that can be used for any MTA.
+In addition, this document delves into the Rspamd LDA proxy mode, a versatile tool that can be employed with any MTA.
 
 ## Using Rspamd with Postfix MTA
 
-From version 1.6, you should use [rspamd proxy worker](./workers/rspamd_proxy.html) in Milter mode to integrate Rspamd in Postfix. 
+Starting with version 1.6, for integrating Rspamd with Postfix, it is recommended to utilize the Rspamd proxy worker in Milter mode, as described in [rspamd proxy worker](./workers/rspamd_proxy.html). 
 
 ### Configuring Postfix
 
-Postfix configuration to scan messages on Rspamd daemon via milter protocol is very simple:
+Configuring Postfix to scan messages using the milter protocol with the Rspamd daemon is straightforward:
 
 ```sh
 #smtpd_milters = unix:/var/lib/rspamd/milter.sock
@@ -37,17 +39,17 @@ milter_default_action = accept
 
 ## Integration with exim MTA
 
-Starting from Exim 4.86, you can use Rspamd directly just like SpamAssassin:
+Starting with version 4.86, Exim can integrate with Rspamd in a similar fashion as SpamAssassin. The diagram below illustrates the interaction between Exim and Rspamd:
 
 ![exim scheme](../img/rspamd_exim.png "Rspamd and Exim interaction")
 
-For versions 4.70 through 4.84, a patch can be applied to enable integration. In the exim source directory run `patch -p1 < ../rspamd/contrib/exim/patch-exim-src_spam.c.diff`.
+For versions 4.70 through 4.84, integration can be enabled by applying a patch. In the Exim source directory, run the command: `patch -p1 < ../rspamd/contrib/exim/patch-exim-src_spam.c.diff`.
 
-For version 4.85, run the following from `contrib/exim` in the rspamd source directory:
+For version 4.85, the following command should be run from the `contrib/exim` directory in the Rspamd source directory:
 `patch patch-exim-src_spam.c.diff < patch-exim-src_spam.c.diff.exim-4.85.diff`
-And then follow the steps above to apply the patch.
+Then, follow the steps above to apply the patch.
 
-For versions 4.86 and 4.87 it is recommended to apply a patch to disable half-closed sockets:
+For versions 4.86 and 4.87, it is advisable to apply a patch to disable half-closed sockets. Run the command:
 `patch -p1 < ../rspamd/contrib/exim/shutdown.patch`
 
 Alternatively, you can set `enable_shutdown_workaround = true` in `$LOCAL_CONFDIR/local.d/options.inc`
@@ -67,9 +69,6 @@ acl_check_spam:
   # do not scan messages submitted from our own hosts
   # +relay_from_hosts is assumed to be a list of hosts in configuration
   accept hosts = +relay_from_hosts
-
-  # do not scan messages from submission port (or maybe you want to?)
-  accept condition = ${if eq{$interface_port}{587}}
 
   # skip scanning for authenticated users (if desired?)
   accept authenticated = *
@@ -100,8 +99,9 @@ acl_check_spam:
     add_header = X-Spam-Report: $spam_report
 
   # add x-spam-status header if message is not ham
+  # do not match when $spam_action is empty (e.g. when rspamd is not running)
   warn
-    ! condition  = ${if match{$spam_action}{^no action\$|^greylist\$}}
+    ! condition  = ${if match{$spam_action}{^no action\$|^greylist\$|^\$}}
     add_header = X-Spam-Status: Yes
 
   # add x-spam-bar header if score is positive
@@ -112,31 +112,40 @@ acl_check_spam:
   accept
 ```
 
-For further information please refer to the [Exim specification](http://www.exim.org/exim-html-current/doc/html/spec_html), especially the [chapter about content scanning](http://www.exim.org/exim-html-current/doc/html/spec_html/ch-content_scanning_at_acl_time.html).
+For further information please refer to the [Exim specification](http://www.exim.org/exim-html-current/doc/html/spec_html){:target="&#95;blank"}, especially the [chapter about content scanning](http://www.exim.org/exim-html-current/doc/html/spec_html/ch-content_scanning_at_acl_time.html){:target="&#95;blank"}.
 
 ## Using Rspamd with Sendmail MTA
 
-Sendmail can use rspamd via milter and configuration is just like for postfix. sendmail configuration could be like:
+Sendmail can also utilize Rspamd through the milter protocol and the configuration process is similar to that of Postfix. An example of the Sendmail configuration is as follows:
 
-	MAIL_FILTER(`rspamd', `S=inet:localhost:11332, F=T')
+	MAIL_FILTER(`rspamd', `S=inet:11332@localhost, F=T')
 	define(`confINPUT_MAIL_FILTERS', `rspamd')
 
-Then compile m4 to cf in the usual way.
+Once this is done, the standard procedure of compiling m4 to cf should be followed.
 
 ## Integration with Haraka MTA
 
-Support for rspamd is available in haraka v2.7.0+: <http://haraka.github.io/manual/plugins/rspamd.html>.
+The Haraka email server, version 2.7.0 and above, offers support for Rspamd through the [Haraka Rspamd plugin](https://haraka.github.io/plugins/rspamd/){:target="&#95;blank"}.
 
-To enable: add `rspamd` to the `DATA` section of your `config/plugins` file and edit `config/rspamd.ini` to suit your preferences.
+To activate this feature, add `rspamd` to the `DATA` section of your `config/plugins` file and customize the `config/rspamd.ini` file to suit your needs.
 
+## Integration with EmailSuccess MTA
+
+Support for rspamd is available from [EmailSuccess v11.19](https://www.emailsuccess.com/emailsuccess-introduces-rspamd-integration){:target="&#95;blank"}.
+
+To enable it, navigate to the administration console and type `filter-module-set rspamd enabled true`. Customize your filtering options using the `filter-module-show rspamd` and `filter-module-set rspamd` commands to suit your preferences.
+
+Additionally, you will need to enable the filter for each input interface (both SMTP and API) using the `input-set INPUT1 filter enabled`, `ws-set rest_filter true` and `ws-set soap_filter true` commands.
+
+For further information, refer to the [EmailSuccess documentation](https://doc.emailsuccess.com){:target="&#95;blank"}.
 
 ## LDA mode
 
-In LDA mode, the MTA calls the rspamd client `rspamc` which scans a message with `rspamd` and appends scan results to the source message. The overall scheme is demonstrated in the following picture:
+In LDA (Local Delivery Agent) mode, the MTA (Mail Transfer Agent) invokes the Rspamd client, `rspamc`, a message using Rspamd and appends the scan results to the source message. The overall process is illustrated in the following image:
 
 ![lda scheme](../img/rspamd_lda.png "rspamd as LDA")
 
-To enable LDA mode, `rspamc` has the following options implemented:
+To enable LDA mode, `rspamc` has the following options available:
 
 - `--exec "/path/to/lda params"`: executes the binary specified to deliver modified message
 - `--mime`: modify message instead of printing scan results only
@@ -153,4 +162,14 @@ In this mode, `rspamc` cannot reject or greylist messages, but it appends the fo
 - `X-Spam-Action`: the desired action for a message (e.g. `no action`, `add header` or `reject`)
 - `X-Spam-Result`: contains base64 encoded `JSON` reply from rspamd if `--json` option was given to `rspamc`
 
-Please note that despite the fact that this method can be used with any MTA (or even without an MTA), it has more overhead than other methods and it cannot apply certain actions, like greylisting (however, that could also be implemented using external tools).
+It's important to note that while this method can be used with any MTA (or even without an MTA), it has more overhead than other methods and cannot apply certain actions such as greylisting. However, greylisting could also be implemented using external tools.
+
+## Integration with Apache James
+
+Apache James can integrate Rspamd as an extension by customizing its mailbox listeners and mailet processing. 
+
+Specifically, James utilizes the HTTP API to communicate with Rspamd, allowing it to query Rspamd during email processing (receiving or sending) and then decide whether to reject or accept the email. 
+
+Additionally, James can also be used as a feedback source for enriching Rspamd's spam/ham database, through live feedback (via mailbox listener) or through a CRON batch job (by calling web-admin tasks). 
+
+For further information, please refer to the James' extensions for Rspamd documentation on [GitHub](https://github.com/apache/james-project/tree/master/third-party/rspamd)

@@ -1,14 +1,25 @@
 name: Rspamd - rapid spam filtering system.
-gems: [jekyll-paginate]
 highlighter: rouge
-paginate: 3
-paginate_path: "blog/page:num"
-description: Rspamd home.
-url: http://rspamd.com
-keep_files: ["CentOS/6/os/x86_64/"]
+plugins:
+  - jekyll-paginate
+  - jekyll-seo-tag
+
+# Explicitly turn off the old code
+paginate: 5
+paginate_path: "/blog/page:num/"
+
+description: Rspamd is an advanced spam filtering system and email processing framework that allows evaluation of messages by a number of rules including regular expressions, statistical analysis and custom services such as URL black lists. 
+tagline: Rspamd spam filter and messages processing framework
+url: https://rspamd.com
+twitter:
+  username: rspamd
+social:
+  links:
+    - https://github.com/rspamd/rspamd
+logo: https://rspamd.com/img/rspamd_logo_black.png
 future: true
 markdown: kramdown
 
 kramdown:
   input: GFM
-  syntax_highlighter: rouge
+  Syntax_highlighter: rouge

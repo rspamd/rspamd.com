@@ -4,16 +4,11 @@ title: Phishing module
 ---
 # Phishing module
 
-This module is designed to report about potentially phished URL's.
+The purpose of this module is to identify potentially phished URLs.
 
 ## Principles of phishing detection
 
-Rspamd tries to detect phished URL's merely in HTML text parts. First,
-it get URL from `href` or `src` attribute and then tries to find the text enclosed
-within this link tag. If some url is also enclosed in the specific tag then
-rspamd decides to compare whether these two URL's are related, namely if they
-belong to the same top level domain. Here are examples of urls that are considered
-to be non-phished:
+Rspamd tries to detect phished URLs within HTML text parts. Firstly, it extracts the URL from either the `href` or `src` attribute and then searches for the text contained within the link tag. If a URL is enclosed within a specific tag, Rspamd compares it to the main URL to determine if they belong to the same top-level domain. URLs that belong to the same top-level domain are considered non-phished. Here are some examples of URLs that are not considered phished:
 
     <a href="http://sub.example.com/path">http://example.com/other</a>
     <a href="https://user:password@sub.example.com/path">http://example.com/</a>
@@ -35,47 +30,39 @@ phishing {
 	# Check only domains from this list
 	domains = "file:///path/to/map";
 
-	# Make exclusions for known redirectors
-	# Entry format: URL/path for map, colon, name of symbol
-	redirector_domains = [
-		"${CONFDIR}/redirectors.map:REDIRECTOR_FALSE"
-	];
-	# For certain domains from the specified strict maps
-	# use another symbol for phishing plugin
-	strict_domains = [
-		"${CONFDIR}/paypal.map:PAYPAL_PHISHING"
-	];
+	# Make exceptions
+	exceptions = {
+		REDIRECTOR_FALSE = [
+			"$LOCAL_CONFDIR/local.d/redirectors.inc",
+		];
+		PHISHED_WHITELISTED = [
+			"$LOCAL_CONFDIR/local.d/phishing_whitelist.inc",
+		];
+	}
+	phishing_exceptions = {
+		OWN_DOMAINS = [
+			"$LOCAL_CONFDIR/local.d/own_domains.inc",
+		];
+	}
 }
 ~~~
 
-If an anchoring (actual as opposed to phished) domain is found in a map
-referenced by the `redirector_domains` setting then the related symbol is
-yielded and the URL is not checked further. This allows making exclusions
-for known redirectors, especially ESPs.
+If an actual (as opposed to phished) domain is detected in a map referred to by the `exceptions` setting, then the associated symbol is returned, and the URL is not checked further. This feature allows exclusions to be made for known redirectors, particularly ESPs.
 
-Further to this, if the phished domain is found in a map referenced by
-`strict_domains` the related symbol is yielded and the URL not checked
-further. This allows fine-grained control to avoid false positives and
-enforce some really bad phishing mails, such as bank phishing or other
-payments system phishing.
+In addition, if a phished domain is detected in a map referred to by `phishing_exceptions`, the associated symbol is returned, and the URL is not checked further. This feature allows for fine-grained control to prevent false positives and to identify highly dangerous phishing emails, such as those targeting banks or payment systems.
 
 Finally, the default symbol is yielded- if `domains` is specified then
 only if the phished domain is found in the related map.
 
-Maps for this module can consist of effective second level domain parts (eSLD)
-or whole domain parts of the URLs (FQDN) as well.
+The maps used in this module can consist of either effective second-level domain parts (eSLD) or whole domain parts of the URLs (FQDN).
 
 ## Openphish support
 
-Since version 1.3, there is [openphish](https://openphish.com) support in rspamd.
-Now rspamd can load this public feed as a map (using HTTPS) and check URLs in messages using
-openphish list. If any match is found, then rspamd adds symbol `PHISHED_OPENPHISH`.
+Starting from version 1.3, Rspamd provides support for [openphish](https://openphish.com)  This public feed can be loaded as a map in Rspamd using HTTPS and utilized to check URLs in messages against the openphish list. In case of any match, Rspamd adds the symbol `PHISHED_OPENPHISH`.
 
-If you use research or commercial data feed, rspamd can also use its data and gives
-more details about URLs found: their sector (e.g. 'Finance'), brand name (e.g.
-'Bank of Zimbabwe') and other useful information.
+Moreover, if you are using a research or commercial data feed, Rspamd can also leverage its data to provide more details about the URLs detected, such as their sector (e.g., "Finance"), brand name (e.g., "Bank of Zimbabwe"), and other relevant information.
 
-There are couple of options available to configure openphish module:
+To configure the openphish module, there are a couple of available options:
 
 ~~~ucl
 phishing {
@@ -93,40 +80,35 @@ phishing {
 
 ## Phishtank support
 
-There is also [phishtank](https://phishtank.com) support in rspamd since 1.3. Since 1.8 phishtank is enabled in stock configuration and queries phishtank.rspamd.com via DNS.
-
-On previous versions, you have to set up `phishtank_map`. This feed is quite large (about 50Mb) so you might want to setup some reverse proxy (e.g. nginx) to cache that data among rspamd instances:
-
-~~~nginx
-proxy_cache_path /data/nginx/cache levels=1:2 keys_zone=phish:10m;
-
-server {
-    listen 8080;
-    location / {
-        proxy_pass http://data.phishtank.com:80;
-        proxy_cache phish;
-        proxy_cache_lock on;
-        proxy_cache_valid 200 302 10m;
-    }
-}
-~~~
-
-
-To enable phishtank feed, you can edit `local.d/phishing.conf` file and add the following lines there:
-
-~~~ucl
-# Enable phishtank (default disabled)
-phishtank_enabled = true;
-# Where nginx is installed
-phishtank_map = "http://localhost:8080/data/online-valid.json";
-~~~
-
-Rspamd also provides local mirror of phishtank updated hourly. This mirror is compressed using `zstd` which is supported since 1.4. Compression helps to save both memory and bandwidth while it doesn't significantly affect the loading time. To use Rspamd local mirror, you can use the default configuration for 1.4:
+Rspamd has included support for [phishtank](https://phishtank.com) ssince version 1.3. Starting from version 1.8, phishtank is enabled by default in the stock configuration, and queries the phishtank.rspamd.com via DNS. If you wish to disable the phishtank feed, you can modify the `local.d/phishing.conf` file by adding the following lines:
 
 ~~~ucl
 # local.d/phishing.conf
-phishtank_enabled = true;
-phishtank_map = "https://rspamd.com/phishtank/online-valid.json.zst";
+phishtank_enabled = false
 ~~~
 
-Please note that compressed maps are **NOT** supported prior to Rspamd `1.4`.
+## Generic feed support
+
+To enable support for custom phishing maps from a local file or online URL catalog, you need to enable the generic service support by creating and enabling a service definition. You'll also need to have a local file or URL containing the map data. For instance, you can use a local map from the [CaUMa](https://cauma.pop-ba.rnp.br/about.html) URLs catalog.
+
+
+~~~ucl
+# local.d/phishing.conf
+generic_service_enabled = true;
+generic_service_name = 'CaUMa';
+generic_service_symbol = "PHISHED_CAUMA";
+generic_service_map = "file:///var/tmp/cauma-online-urls.txt";
+~~~
+
+The following definition is also necessary to define a weight value to the symbol.
+
+~~~ucl
+# local.d/phishing_group.conf
+symbols {
+    "PHISHED_CAUMA" {
+        weight = 5.0;
+        description = "Phished URL";
+        one_shot = true;
+    }
+}
+~~~

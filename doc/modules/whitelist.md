@@ -2,22 +2,21 @@
 layout: doc
 title: Whitelist module
 ---
+
 # Whitelist module
 
-Whitelist module is intended to negate or increase scores for some messages that are known to
-be from the trusted sources. Due to `SMTP` protocol design flaws, it is quite easy to
-forge sender. Therefore, rspamd tries to validate sender based on the following additional
-properties:
+Whitelist module is intended to decrease or increase scores for some messages that are known to
+be from the trusted sources **based on DKIM/SPF/DMARC policies** (for generic lists please use [multimap module](multimap.html)). 
 
-- `DKIM`: a message has a valid DKIM signature for this domain
+This module exists because the design flaws in the `SMTP` protocol make it relatively simple to forge a sender. Consequently, rspamd endeavors to verify the sender's authenticity by considering the following supplementary policies:
+
+- `DKIM`: a message has a valid DKIM signature for this domain (similar to DMARC alignment but for DKIM only)
 - `SPF`: a message matches SPF record for the domain
-- `DMARC`: a message satisfies domain's DMARC policy (implies SPF or DKIM)
+- `DMARC`: a message satisfies domain's DMARC policy (implies *aligned* SPF **or** DKIM according to the DMARC standard)
 
 ## Whitelist setup
 
-Whitelist configuration is quite straightforward. You can define a set of rules within
-`rules` section. Each rule **must** have `domains` attribute that specifies either
-map of domains (if specified as a string) or a direct list of domains (if specified as an array).
+Configuring the Whitelist is a simple and straightforward process. Within the `rules` section, you can define a collection of rules. Each rule **must** include the `domains` attribute, which can be defined as either a string representing a map of domains or an array directly listing the domains.
 
 ### Whitelist constraints
 
@@ -35,11 +34,25 @@ Each whitelist rule can work in 3 modes:
 - `blacklist`: add symbol when a domain has been found and one of constraints defined is *NOT* satisfied (e.g. `valid_dmarc`)
 - `strict`: add symbol with negative (ham) score when a domain has been found and one of constraints defined is satisfied (e.g. `valid_dmarc`) and add symbol with **POSITIVE** (spam) score when some of constraints defined has failed
 
-If you do not define any constraints, then all both `strict` and `whitelist` rules just insert result for all mail from the specified domains. For `blacklist` rules the result has normally positive score.
+If no constraints are defined, both the `strict` and `whitelist` rules will apply to all emails from the specified domains. For `blacklist` rules, a positive score is typically assigned to the result.
 
-These options are combined using `AND` operator for `whitelist` and using `OR` for `blacklist` and `strict` rules. Therefore, if `valid_dkim = true` and
-`valid_spf = true` would require both DKIM and SPF validation to whitelist domains from
-the list. On the contrary, for blacklist and strict rules any violation would cause positive score symbol being inserted.
+These options are combined using the `AND` operator for `whitelist` rules and the `OR` operator for `blacklist` and `strict` rules. Therefore, if both `valid_dkim = true` and `valid_spf = true` are specified, both DKIM and SPF validation are required to whitelist domains from the list. Conversely, for blacklist and strict rules, any violation will result in a positive score symbol being assigned.
+
+### Whitelist values
+
+In a map, each whitelist entry can have a value override, allowing you to modify the default rule policy and even adjust the score multiplier. This enables you to create a whitelist for DMARC while specifying certain entries to adhere to a `strict` policy, which adds a spam symbol in the event of a DMARC policy failure. To achieve this, you can utilize the following values in your map:
+
+
+```
+example.com # normal whitelist entry: whitelisting on hit, nothing on no hit
+bank.com both:1.0 # strict whitelist entry: spam symbol on policy failure and ham symbol on policy success
+foo.com both:2.0 # same as previous but with 2.0 multiplier for score
+bar.com bl:1.0 # add spam symbol on failure but do not enable ham symbol on success
+baz.com wl:2.0 # vice-versa - return to the normal behaviour but with 2.0 multiplier for policy success
+```
+
+You can also check maps shipped with Rspamd in the following repo: https://github.com/rspamd/maps/
+Reasonable pull requests are very welcome.
 
 ### Optional settings
 
@@ -50,9 +63,7 @@ You can also set the default metric settings using the ordinary attributes, such
 - `one_shot`: default one shot mode
 - `description`: default description
 
-Within lists, you can also use optional `multiplier` argument that defines additional
-multiplier for the score added by this module. For example, let's define twice bigger
-score for `github.com`:
+In lists, you also have the option to include an optional `multiplier` argument, which specifies an additional multiplier for the score assigned by this module. For instance, if you want to assign a score twice as large for `github.com`, you can define it as follows:
 
     ["github.com", 2.0]
 
@@ -62,7 +73,7 @@ or if using map:
     
 ### Note with regard to DKIM whitelist
 
-The `valid_dkim = true` check verifies more than just `R_DKIM_ALLOW` has been triggered.  It also verifies that the DKIM domain being validated is equal to the domain in the FROM envelop.  Thus a message sent by a sender `x.com` that has been DKIM signed by `mailchimp.app` will not set `valid_dkim` to true and the whitelist rule will not fire.
+The `valid_dkim = true` check goes beyond verifying the triggering of just `R_DKIM_ALLOW`. It also ensures that the DKIM domain being validated matches the domain in the FROM envelope. Therefore, if a message is sent by a sender with the domain `x.com` but has been DKIM signed by `mailchimp.app`, the `valid_dkim` flag will not be set to true, and the whitelist rule will not be triggered
 
 ## Configuration example
 
@@ -124,4 +135,4 @@ whitelist {
 }
 ~~~
 
-Rspamd also comes with a set of pre-defined whitelisted domains that could be useful for start.
+Rspamd also provides a collection of pre-defined whitelisted domains that can be beneficial for getting started.

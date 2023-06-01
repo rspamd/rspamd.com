@@ -5,26 +5,26 @@ title: Reputation module
 
 # Reputation plugin
 
-This plugin is intended to track reputation of different objects and perform adjustments of scores depending on that. 
+This plugin is designed to monitor the reputation of various objects and adjust scores accordingly.
 
-For example, you have a DKIM domain that is proven to be used for spam. Then, this module will let you to reduce negative score of the DKIM_ALLOW symbol (or even add some score).
+For instance, if you have a DKIM domain that is known to be used for spam, this module enables you to decrease the negative score of the DKIM_ALLOW symbol, or even add some score.
 
-Or, vice versa, if a domain have high reputation, then DKIM_ALLOW score would have more negative score (like auto whitelisting) and increase score for DKIM_REJECT score accordingly (as a message looks like a phishing).
+Conversely, if a domain has a high reputation, the DKIM_ALLOW score will have a more negative score (like auto-whitelisting) and increase the score for DKIM_REJECT accordingly (since the message looks like a phishing attempt).
 
-This module also covers functionality of the following modules:
+Additionally, this module encompasses the functionality of the following modules:
 
 * [ip_score](ip_score.html) - by means of `ip` component
 * [url_reputation](url_reputation.html) - by means of `url` component
 
 ## Configuration and principles of work
 
-This module like many others requires to define a set of rules. In turn, each rule consists of the following parts:
+Like many other modules, this module requires a set of rules to be defined. Each rule comprises the following components:
 
-* Selector configuration - defines what data needs to be extracted from a message and defines data processing logic
-* Backend configuration - defines where to store and query reputational tokens, for example, Redis could be used for both storing and extracting whilst DNS can be used as a read-only storage
-* Common configuration - defines, for example, a symbol or other generic rule parameters not related neither to backend nor to selector
+* Selector configuration - specifies the data to be extracted from a message and defines data processing logic
+* Backend configuration - determines where reputational tokens should be stored and queried. For instance, Redis can be used for both storing and extracting, while DNS can only be used as a read-only storage
+* Common configuration - defines generic rule parameters, such as a symbol, that are not related to either the backend or the selector
 
-Here are some examples of the configuration:
+Below are a few examples of such configurations:
 
 ~~~ucl
 # local.d/reputation.conf
@@ -69,24 +69,57 @@ rules {
 }
 ~~~
 
-The picture below demonstrates how reputation tokens are being processed:
+You also need to **define the scores** for symbols added by this module:
+
+~~~ucl
+# local.d/groups.conf
+group "reputation" {
+    symbols = {
+        "IP_REPUTATION_HAM" {
+            weight = 1.0;
+        }
+        "IP_REPUTATION_SPAM" {
+            weight = 4.0;
+        }
+
+        "DKIM_REPUTATION" {
+            weight = 1.0;
+        }
+
+        "SPF_REPUTATION_HAM" {
+            weight = 1.0;
+        }
+        "SPF_REPUTATION_SPAM" {
+            weight = 2.0;
+        }
+
+        "GENERIC_REPUTATION" {
+            weight = 1.0;
+        }
+    }
+}
+~~~
+
+The weight assigned to these symbols are merely examples and you should adjust them to fit your particular situation.
+
+The image below illustrates the process of reputation token handling:
 
 <center><img class="img-responsive" src="{{ site.baseurl }}/img/reputation1.png" width="50%"></center>
 
 ### Backends configuration and principles of work
 
-Selectors provide so called tokens for backends. For example, in case of IP reputation, that could be `asn`, `ipnet` and `country`. Each token is mapped to some key in the backend. If we talk about Redis backend, then there is a concept of **buckets**. Each bucket has a set of counters that represents count of messages with some specific action:
+Selectors provide what are known as tokens for backends. For instance, in the case of IP reputation, these tokens could be `asn`, `ipnet`, and `country`. Each token is mapped to a particular key in the backend. In the case of Redis backend, there is a concept of **buckets**, with each bucket containing a set of counters that indicate the number of messages with a specific action:
 
 * number of spam messages
 * number of ham messages
 * number of probable spam (junk) messages
 
-Score might also be considered when filling these buckets. Each bucket has also two more attributes:
+When filling these buckets, the score may also be taken into account. Additionally, each bucket has two other attributes:
 
 * time window;
 * score multiplier;
 
-Each buckets uses discrete windows of the specified time. By default, there are two buckets defined (for Redis):
+Each bucket uses discrete time windows that are specified. By default, two buckets are defined for Redis:
 
 ~~~ucl
 buckets = [
@@ -126,3 +159,6 @@ There are couple of pre-defined selector types, specifically:
 * Generic reputation based on [selectors framework](../configuration/selectors.html) - `generic` selector
 
 All selector types but `generic` requires no explicit configuration. `Generic` selector requires a `selector` attribute to be set. For the advanced configuration of the selectors, you can check the source code of the module.
+Here's an improved version in British-English:
+
+All selector types except for `generic` do not require explicit configuration. The `generic` selector, on the other hand, necessitates the setting of a selector attribute. For more advanced `selector` configurations, you may refer to the module's source code.

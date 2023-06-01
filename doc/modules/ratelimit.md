@@ -2,18 +2,25 @@
 layout: doc
 title: Ratelimit module
 ---
+
 # Ratelimit plugin
+{:.no_toc}
 
 Ratelimit plugin is designed to limit messages coming from certain senders, to
 certain recipients from certain IP addresses combining these parameters into
 a separate limits.
 
-All limits are stored in [Redis](http://redis.io) server (or servers cluster) to enable
-shared cache between different scanners.
+To enable a shared cache across multiple scanners, all the established limits are securely stored within a [Redis server](http://redis.io) (or a cluster of servers).
+
+<div id="toc" markdown="1">
+  <h2 class="toc-header">Contents</h2>
+  * TOC
+  {:toc}
+</div>
 
 ## Module configuration
 
-In the default configuration, there are no cache servers specified, hence, **the module won't work** unless you add this option to the configuration.
+By default, no cache servers are specified in the configuration, meaning that the module **will not work** until this option is added.
 
 `Ratelimit` module supports the following configuration options:
 
@@ -27,8 +34,6 @@ the value of this option is 'postmaster, mailer-daemon'. Supported entries are:
 - `whitelisted_ip` - a map of ip addresses or networks whitelisted
 - `whitelisted_user` - a map of usernames which are excluded from user ratelimits
 - `expiry` - maximum lifetime for any limit bucket (2 days by default)
-- `max_rcpt` - do not apply ratelimit if it contains more than this value of recipients (5 by default). This
-option allows to avoid too many work for setting buckets if there are a lot of recipients in a message).
 - `ham_factor_rate` - multiplier for rate when a ham message arrives (default: 1.01) 
 - `spam_factor_rate` - multiplier for rate when a spam message arrives (default: 0.99)
 - `ham_factor_burst` - multiplier for burst when a ham message arrives (default: 1.02)
@@ -40,8 +45,8 @@ option allows to avoid too many work for setting buckets if there are a lot of r
 
 ### Ratelimit record
 
-From the version 1.8.2, you can use [selectors framework](../configuration/selectors.html) to define ratelimit buckets. 
-Hence, you can use either selector or one of the predefined ratelimits:
+Starting from version 1.8.2, it is possible to define ratelimit buckets using the [selectors framework](../configuration/selectors.html). 
+This means that you can opt to use either a selector or one of the predefine ratelimits:
 
 - `bounce_to`: limit bounces per recipient
 - `bounce_to_ip`: limit bounces per recipient per ip
@@ -87,24 +92,18 @@ Hence, you can use either selector or one of the predefined ratelimits:
 
 ## Principles of work
 
-The basic principle of ratelimiting in Rspamd is called `leaked bucket`. It could
-be visually represented as a bucket that has some capacity, and a small hole in a bottom.
-Messages comes to this bucket and leak through the hole over time (it doesn't delay messages, just count them). If the capacity of
-a bucket is exhausted, then a temporary reject is sent. This happens unless the capacity
-of bucket is enough to accept more messages (and since messages are leaking then after some
-time, it will be possible to process new messages).
+In Rspamd, the fundamental concept of ratelimiting is known as the leaked bucket principle. This approach can be illustrated as a bucket with a limited capacity and a small hole at the bottom. As messages are received, they accumulate in the bucket and are gradually released through the hole, without any delay but instead are counted. Once the bucket's capacity has been reached, a temporary rejection is triggered, unless the remaining space is adequate for additional messages to be accepted. Since the messages are continuously leaking, the bucket's capacity is eventually restored, enabling the processing of new messages after a certain amount of time.
 
-The bucket operations are the following:
+The `leaked bucket` principle operates using the following actions:
 
-1. On check phase do a leak from bucket at the specified rate, if a burst is still higher than limit, then a message is temporary delayed (soft reject action)
-2. If a message has been delivered (or rejected), Rspamd updates burst information for each ratelimit bucket indicating that a message has passed the rate buckets. Dynamic multipliers are also updated on this phase.
+1. During the check phase, a leak occurs from the specified rate bucket. If the number of messages exceeds the limit, then the message is temporarily delayed (resulting in a soft reject action).
+2. After a message has been delivered or rejected, Rspamd updates the burst information for each ratelimit bucket, indicating that a message has passed the rate buckets. Additionally, dynamic multipliers are updated during this phase.
 
-To demonstrate dynamic multipliers, here is a sample graph that shows how burst multiplier depends on number of ham (x > 0) and spam (x < 0) messages being received:
+To better illustrate the concept of dynamic multipliers, refer to the sample graph below. It demonstrates how the burst multiplier varies depending on the number of received ham messages (x > 0) and spam messages (x < 0):
 
 <img class="img-responsive" width="75%" src="{{ site.baseurl }}/img/ratelimit.png">
 
-For bounce messages there are special buckets that lack `from` component and have more
-restricted limits. Rspamd treats the following senders as bounce senders:
+Regarding bounce messages, there are special buckets that lack a `from` component and have more restricted limits. Rspamd identifies the following senders as bounce senders:
 
 - 'postmaster',
 - 'mailer-daemon'
@@ -113,26 +112,24 @@ restricted limits. Rspamd treats the following senders as bounce senders:
 - 'fetchmail-daemon'
 - 'mdaemon'
 
-Each recipient has its own triple of buckets, hence it is useful
-to limit number of recipients to check.
+Each recipient has its own set of three buckets, making it advantageous to limit the number of recipients that are being checked.
 
-Each bucket has four parameters:
-- `capacity` - how many messages could go into a bucket before a limit is reached
-- `leak` - how many messages per second are leaked from a bucket.
-- `dynamic_rate` - the current dynamic rate multiplier
-- `dynamic_burst` - the current dynamic burst multiplier
+Each bucket is defined by four parameters:
+- `capacity` - determines the maximum number of messages that can be accepted before the limit is reached
+- `leak` - specifies the rate at which messages are leaked from a bucket, measured in messages per second
+- `dynamic_rate` - indicates the current dynamic rate multiplier
+- `dynamic_burst` - specifies the current dynamic burst multiplier
 
-For example, a bucket with capacity `100` and leak `1` can accept up to 100 messages but then
-will accept not more than a message per second.
+For instance, a bucket with a capacity of `100` and a leak rate of `1` can accommodate up to 100 messages before accepting no more than one message per second.
 
-By default, ratelimit module does not define any rates that efficiently disables the module.
+It is important to note that the ratelimit module does not define any rates that could effectively disable the module by default.
 
 
 ### User-defined ratelimits
 
-The user can define their own keywords to compose ratelimits with.
+Users can define their own keywords to create ratelimits by following these steps:
 
-To create a custom keyword, we add `custom_keywords` setting to config pointing at a Lua script which we will create:
+First, add the `custom_keywords` setting to the configuration file, pointing to a Lua script that will be created:
 
 ~~~ucl
 ratelimit {
@@ -141,7 +138,7 @@ ratelimit {
 }
 ~~~
 
-The file should return a table containing our custom function(s). For example, here is a table ("custom_keywords") to contain a function ("customrl") which applies ratelimits to users only when the user is found in a map:
+Next, create a Lua script that returns a table containing the custom function(s). For instance, the following table ("custom_keywords") contains a function ("customrl") that applies ratelimits to users only when the user is found in a map:
 
 ~~~lua
 local custom_keywords = {}
@@ -175,17 +172,17 @@ end
 return custom_keywords
 ~~~
 
-A "custom_keywords" table should define one or more functions which are passed the [task object]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_task.html). Each function should return a Redis hash _and_ a limit (for example `return my_redis_hash, "10 / 1m"`) or `nil` to indicate that the ratelimit should not be applied. A returned ratelimit can be in simplified form or a bucket config table.
+The "custom_keywords" table should define one or more functions that receive the [task object]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_task.html) as input. Each function should return a Redis hash _and_ a limit, for example `return my_redis_hash, "10 / 1m"`. Alternatively, a function can return `nil` to indicate that the ratelimit should not be applied. The ratelimit returned can be in simplified form or a bucket config table.
 
 ### Legacy ratelimit record
 
-This format is used before Rspamd 1.8
+The format used before Rspamd 1.8 for defining a ratelimit was:
 
 ```
 type = [burst,leak];
 ```
 
-Where `type` could be one of the following:
+Where `type` refers to the type of ratelimit and could be one of the following:
 
 - `bounce_to`: limit bounces per recipient
 - `bounce_to_ip`: limit bounces per recipient per ip
@@ -194,15 +191,13 @@ Where `type` could be one of the following:
 - `to_ip_from`: limit per triplet: recipient, sender's envelope from and sender's IP
 - `user`: limit per authenticated user (useful for outbound limits)
 
-`burst` is a capacity of a bucket and `leak` is a rate in messages per second.
-Both these attributes are floating point values.
+The `burst` attribute represents the capacity of a bucket, while `leak` indicates the rate at which messages are processed in messages per second. Both values are expressed as floating point numbers.
 
-From version `1.5` it is also possible to define limits in a simplified form:
-`bounce_to = "2 / 5m";`
+Beginning with version `1.5`, it's possible to define limits using a simplified form. For example, `bounce_to = "2 / 5m"` specifies a bucket with a capacity of 2 messages and a leak rate of 2 messages per 5-minute period.
 
 The line above defines a bucket with a size of 2 and a leak rate of 2 message in 5 minutes (so 2 messages will be allowed per 5 minute period).
 
-You can use suffixes for both time and amount of messages.
+You can use suffixes to specify both time and message quantities.
 
 Valid suffixes for periods are:
 - `s`: seconds
@@ -215,3 +210,14 @@ Valid suffixes for amounts are:
 - `m`: millions
 - `g`: billions
 
+## Changes in the module
+
+**From version 3.1**, buckets can also define their custom symbols or messages, for example like this:
+
+~~~ucl
+# local.d/ratelimit.conf
+rates = {
+  my_bucket = { symbol = "SOME_NAME"; selector = ...; rate = ...;}  # inserts SOME_NAME symbol
+  my_other_bucket = { symbol = "OTHER_NAME"; selector = ...; rate = ...;}  # inserts OTHER_NAME symbol
+}
+~~~

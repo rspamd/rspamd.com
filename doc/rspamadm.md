@@ -10,30 +10,89 @@ The `rspamadm` command is a container for various utility functions.
 To see available commands we could invoke `rspamadm -l`:
 
 ~~~
-Rspamadm 1.5.1
+Rspamadm 2.5
 Usage: rspamadm [global_options] command [command_options]
 
 Available commands:
-  pw                 Manage rspamd passwords
-  keypair            Create encryption key pairs
-  configtest         Perform configuration file test
-  fuzzy_merge        Merge fuzzy databases
+  clickhouse         Retrieve information from Clickhouse
   configdump         Perform configuration file dump
-  control            Manage rspamd main control interface
+  configgraph        Produces graph of Rspamd includes
   confighelp         Shows help for configuration options
-  statconvert        Convert statistics from sqlite3 to redis
+  configtest         Perform configuration file test
+  configwizard       Perform guided configuration for Rspamd daemon
+  control            Manage rspamd main control interface
+  cookie             Produces cookies or message ids
+  corpustest         Create logs files from email corpus
+  dkim_keygen        Create dkim key pairs
+  dnstool            DNS tools provided by Rspamd
   fuzzyconvert       Convert fuzzy hashes from sqlite3 to redis
   grep               Search for patterns in rspamd logs
-  signtool           Sign and verify files tool
+  keypair            Manages keypairs for Rspamd
   lua                Run LUA interpreter
-  dkim_keygen        Create dkim key pairs
+  mime               Mime manipulations provided by Rspamd
+  pw                 Manage rspamd passwords
+  signtool           Sign and verify files tool
+  statconvert        Convert statistics from sqlite3 to redis
+  template           Apply jinja templates for strings/files
+  vault              Perform Hashicorp Vault management
 ~~~
 
 To see the help text for a command we can run `rspamadm [command-name] --help`.
 
+## Rspamadm clickhouse
+
+*This is a work-in-progress*.
+
+This command fetches information from Clickhouse - so far it is intended to generate profiles of symbols to be used for neural networks.
+
+It will try fetch Clickhouse details from configuration if not specified.
+
+~~~
+Options:
+   -h, --help                 Show this help message and exit.
+         -c config_file,      Path to config file (default: /etc/rspamd/rspamd.conf)
+   --config config_file
+           -d database,       Name of Clickhouse database to use (default: default)
+   --database database
+   --no-ssl-verify            Disable SSL verification
+           -p password,       Password to use for Clickhouse
+   --password password
+   -a, --ask-password         Ask password from the terminal
+         -s server,           Address[:port] to connect to Clickhouse with
+   --server server
+       -u user,               Username to use for Clickhouse
+   --user user
+   --use-gzip use_gzip        Use Gzip with Clickhouse
+   --use-https                Use HTTPS with Clickhouse
+
+Commands:
+   neural_profile             Generate symbols profile using data from Clickhouse
+~~~
+
+### Rspamadm clickhouse neural_profile
+
+~~~
+Usage: rspamadm clickhouse neural_profile [-h] [-w where] [-j]
+       [--days days] [--limit limit] [--settings-id settings_id]
+
+Generate symbols profile using data from Clickhouse
+
+Options:
+   -h, --help                 Show this help message and exit.
+        -w where,             WHERE clause for Clickhouse query
+   --where where
+   -j, --json                 Write output as JSON
+   --days days                Number of days to collect stats for (default: 7)
+   --limit limit,             Maximum rows to fetch per day
+        -l limit
+   --settings-id settings_id  Settings ID to query (default: )
+~~~
+
+The neural_profile subcommand deals with generating profiles of symbols to be used for neural networks. User-specified conditions can be added to the `WHERE` clause using the `-w` flag to filter the data which is queried. 
+
 ## Rspamadm configdump
 
-This command shows the effective configuration of rspamd after configuration files are merged. Usually you would just run `rspamadm configdump` or `rspamadm configdump [modulename]` or `rspamadm configdump [modulename].[option]` to show part of configuration.
+This command shows the effective configuration of rspamd after configuration files are merged. Usually you would just run `rspamadm configdump` or `rspamadm configdump [modulename]` or `rspamadm configdump [options] [modulename]` to show part of configuration.
 
 ~~~
 Application Options:
@@ -42,18 +101,14 @@ Application Options:
   -c, --config            Config file to test
   -h, --show-help         Show help as comments for each option
   -s, --show-comments     Show saved comments from the configuration file
+  -m, --modules-state     Show modules state only
+  -g, --groups            Show symbols groups only
+  -T, --skip-template     Do not apply Jinja templates
 ~~~
 
 ## Rspamadm confighelp
 
 This command shows available options & configuration hints for core configuration options. Run simply as `rspamadm confighelp` it shows all options, run as `rspamadm confighelp [modulename]` or `rspamadm confighelp [modulename].[option]` it shows configuration options beneath that object, for example `rspamadm confighelp surbl.rule`.
-
-~~~
-Application Options:
-  -j, --json        Output json
-  -c, --compact     Output compacted
-  -k, --keyword     Search by keyword
-~~~
 
 ## Rspamadm configtest
 
@@ -61,9 +116,10 @@ This command tests that the configuration file is syntactically valid and can be
 
 ~~~
 Application Options:
-  -q, --quiet      Suppress output
-  -c, --config     Config file to test
-  -s, --strict     Stop on any error in config
+  -q, --quiet             Suppress output
+  -c, --config            Config file to test
+  -s, --strict            Stop on any error in config
+  -T, --skip-template     Do not apply Jinja templates
 ~~~
 
 ## Rspamadm control
@@ -100,6 +156,7 @@ Application Options:
   -s, --selector     Use the specified selector
   -k, --privkey      Save private key in the specified file
   -b, --bits         Set key length to N bits (1024 by default)
+  -t, --type         Key type: rsa or ed25519 (rsa by default)
 ~~~
 
 ## Rspamadm fuzzyconvert
@@ -113,17 +170,6 @@ Application Options:
   -h, --host         Output redis ip (in format ip:port)
   -D, --dbname       Database in redis (should be numeric)
   -p, --password     Password to connect to redis
-~~~
-
-## Rspamadm fuzzy_merge
-
-Merges fuzzy databases in SQLite format. Typical invocation would be `rspamadm fuzzy_merge -s [source.db.file] -d [destination.db.file]`.
-
-~~~
-Application Options:
-  -s, --source          Source for merge (can be repeated)
-  -d, --destination     Destination db
-  -q, --quiet           Suppress output
 ~~~
 
 ## Rspamadm grep
@@ -152,12 +198,131 @@ The `rspamadm lua` command provides a Lua REPL and interpreter with access to th
 ~~~
 Application Options:
   -s, --script           Load specified scripts
-  -p, --path             Add specified paths to lua paths
+  -P, --path             Add specified paths to lua paths
   -H, --history-file     Load history from the specified file
   -m, --max-history      Store this number of history entries
   -S, --serve            Serve http lua server
   -b, --batch            Batch execution mode
+  -e, --exec             Execute specified script
   -a, --args             Arguments to pass to Lua
+~~~
+
+## Rspamadm mime
+
+This command is used to extract or modify mime messages. It supports multiple subcommands:
+
+| command          | purpose     |
+| ---------------- | ------------ |
+| extract, ex, e   |          Extracts data from MIME messages
+| stat, st, s      |          Extracts statistical data from MIME messages
+| urls, url, u     |          Extracts URLs from MIME messages
+| modify, mod, m   |          Modifies MIME message
+| sign             |          Performs DKIM signing
+
+### Rspamadm mime extract
+
+Extracts stuff from a mime message:
+
+~~~
+Arguments:
+   file                       File to process
+
+Options:
+   -h, --help                 Show this help message and exit.
+   -t, --text                 Extracts plain text data from a message
+   -H, --html                 Extracts htm data from a message
+         -o <type>,           Output format ('raw', 'content', 'oneline', 'decoded', 'decoded_utf') (default: content)
+   --output <type>
+   -w, --words                Extracts words
+   -p, --part                 Show part info
+   -s, --structure            Show structure info (e.g. HTML tags)
+               -F <type>,     Words format ('stem', 'norm', 'raw', 'full') (default: stem)
+   --words-format <type>
+~~~
+
+### Rspamadm mime stat
+
+Extracts statistical data from MIME messages
+
+~~~
+Arguments:
+   file                       File to process
+
+Options:
+   -h, --help                 Show this help message and exit.
+   -m, --meta                 Lua metatokens
+   -b, --bayes                Bayes tokens
+   -F, --fuzzy                Fuzzy hashes
+   -s, --shingles             Show shingles for fuzzy hashes
+~~~
+
+### Rspamadm mime urls
+
+Extracts urls data from MIME messages
+
+~~~
+Arguments:
+   file                       File to process
+
+Options:
+   -h, --help                 Show this help message and exit.
+   -t, --tld                  Get TLDs only
+   -H, --host                 Get hosts only
+   -f, --full                 Show piecewise urls as processed by Rspamd
+   -u, --unique               Print only unique urls
+   -s, --sort                 Sort output
+   --count                    Print count of each printed element
+   -r, --reverse              Reverse sort order
+~~~
+
+### Rspamadm mime modify
+
+Modifies mime message and write data to stdout. Currently supported features are:
+
+* headers alteration
+* adding footer to text parts preserving message structure (and skipping signed parts)
+
+~~~
+Arguments:
+   file                       File to process
+
+Options:
+   -h, --help                 Show this help message and exit.
+             -a <header=value>,
+   --add-header <header=value>
+                              Adds specific header
+                -r <header>,  Removes specific header (all occurrences)
+   --remove-header <header>
+                 -R <header=pattern>,
+   --rewrite-header <header=pattern>
+                              Rewrites specific header, uses Lua string.format pattern
+              -t <file>,      Adds footer to text/plain parts from a specific file
+   --text-footer <file>
+              -H <file>,      Adds footer to text/html parts from a specific file
+   --html-footer <file>
+~~~
+
+### Rspamadm mime sign
+
+Performs messages signing for DKIM/ARC.
+
+~~~
+Arguments:
+   file                       File to process
+
+Options:
+   -h, --help                 Show this help message and exit.
+         -d <domain>,         Use specific domain
+   --domain <domain>
+           -s <selector>,     Use specific selector
+   --selector <selector>
+      -k <key>,               Use specific key of file
+   --key <key>
+     -t <arc|dkim>,           ARC or DKIM signing (default: dkim)
+   type <arc|dkim>
+         -o <message|signature>,
+   --output <message|signature>
+                              Output format (default: message)
 ~~~
 
 ## Rspamadm pw
@@ -196,20 +361,19 @@ Application Options:
 
 ## Rspamadm statconvert
 
-This is a command for converting statistics from SQLite to Redis. Typical invocation to convert spam/ham databases and learn cache is shown below:
-
-~~~
-rspamadm statconvert -d /var/lib/rspamd/bayes.spam.sqlite -h 127.0.0.1 -s BAYES_SPAM
-rspamadm statconvert -d /var/lib/rspamd/bayes.ham.sqlite -h 127.0.0.1 -s BAYES_HAM -c /var/lib/rspamd/learn_cache.sqlite
-~~~
+This is a command for converting statistics from SQLite to Redis. A typical invocation to convert spam/ham databases and learn cache can be found in the [FAQ](https://rspamd.com/doc/faq.html#which-backend-should-i-use-for-statistics).
 
 ~~~
 Application Options:
-  -d, --database     Input sqlite
-  -c, --cache        Input learn cache
-  -h, --host         Output redis ip (in format ip:port)
-  -s, --symbol       Symbol in redis (e.g. BAYES_SPAM)
-  -D, --dbname       Database in redis (should be numeric)
-  -p, --password     Password to connect to redis
-  -r, --reset        Reset previous data instead of appending values
+  -c, --config             Config file to read data from
+  -r, --reset              Reset previous data instead of appending values
+  -e, --expire             Set expiration in seconds (can be fractional)
+  --symbol-spam            Symbol for spam (e.g. BAYES_SPAM)
+  --symbol-ham             Symbol for ham (e.g. BAYES_HAM)
+  --spam-db                Input spam file (sqlite3)
+  --ham-db                 Input ham file (sqlite3)
+  --cache                  Input learn cache
+  -h, --redis-host         Output redis ip (in format ip:port)
+  -p, --redis-password     Password to connect to redis
+  -d, --redis-db           Redis database (should be numeric)
 ~~~
