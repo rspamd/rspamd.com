@@ -4,13 +4,13 @@ title: Bayesian statistics and fuzzy storage replication with multi-instance Red
 ---
 # Bayesian statistics and fuzzy storage replication with multi-instance Redis backend
 
-This step-by-step tutorial will explain how to establish statistics and fuzzy storage replication on FreeBSD. Configuration procedures for other operating systems are very similar. 
+This tutorial presents a step-by-step guide on setting up statistics and fuzzy storage replication on FreeBSD. The configuration procedures for other operating systems are quite similar.
 
-This tutorial describes a centralized model when Bayesian classifier and fuzzy storage learning is performed on one host and distributed among Rspamd installations at remote locations. For simplicity, the tutorial only covers replication to one `replica` database for each of the `masters`.
+The tutorial focuses on a centralized model where Bayesian classifier and fuzzy storage learning occur on a single host and are then distributed among Rspamd installations in remote locations. For the sake of simplicity, the tutorial covers replication to a single `replica` database for each of the `masters`.
 
-To accomplish this we should replicate bayes and fuzzy storage backend data to the remote host. As the rest of the Redis cache should not be mirrored we need to use dedicated Redis instances. Probably separating bayes and fuzzy is good idea as well.
+To achieve this, we need to replicate the bayes and fuzzy storage backend data to the remote host. Since we don't want to mirror the entire Redis cache, we should use dedicated Redis instances. It would be wise to separate the bayes and fuzzy storage as well.
 
-We will create 3 Redis instances on both `master` and `replica` sides: `bayes`, `fuzzy` and `redis` for the rest of the cache:
+We will create three Redis instances on both the `master` and `replica` sides: `bayes`, `fuzzy`, and `redis` for the remaining cache.
 
 |instance|Redis socket|
 |---|---|
@@ -20,26 +20,26 @@ We will create 3 Redis instances on both `master` and `replica` sides: `bayes`, 
 
 ## Installation
 
-First install the `databases/redis` package:
+To begin, install the `databases/redis` package by executing the following command:
 
 ```sh
 # pkg install redis
 ```
 
-Create separate working directories for instances:
+Next, create separate working directories for the instances:
 
 ```sh
 # cd /var/db/redis && mkdir bayes fuzzy && chown redis bayes fuzzy
 ```
 
-To enable `redis` and its specific instances add the following lines to the `/etc/rc.conf`:
+To enable `redis` and its specific instances, add the following lines to the `/etc/rc.conf` file:
 
 ```sh
 redis_enable="YES"
 redis_profiles="redis bayes fuzzy"
 ```
 
-Enable Redis logs rotation by creating a newsyslog configuration file `/usr/local/etc/newsyslog.conf.d/redis.newsyslog.conf`:
+To enable log rotation for Redis, create a newsyslog configuration file named `/usr/local/etc/newsyslog.conf.d/redis.newsyslog.conf`:
 
 ```sh
 # logfilename          [owner:group]    mode count size when  flags [/pid_file] [sig_num]
@@ -50,15 +50,15 @@ Enable Redis logs rotation by creating a newsyslog configuration file `/usr/loca
 
 ## Configuration
 
-Create the default configuration on both `master` and `replica` (common for all of the instances):
+Generate the default configuration on both the `master` and `replica` hosts, which will be common for all instances:
 
 ```sh
 # cp /usr/local/etc/redis.conf.sample /usr/local/etc/redis.conf
 ```
 
-Since it is not safe to expose Redis to external interfaces, configure Redis to listen on loopbacks and use `stunnel` to create TLS tunnels between `replica` and `master` hosts. As this approach has security vulnerabilities as well, **you should not setup replication** if the replica host's users cannot be trusted.
+Due to security concerns, it is not advisable to expose Redis to external interfaces. Instead, configure Redis to listen on loopback interfaces and utilize stunnel to establish TLS tunnels between the `replica` and `master` hosts. However, please note that this approach also has its own security vulnerabilities. Therefore, **do not set up replication** if you cannot trust the users of the replica host.
 
-Set listening sockets and memory limit (optional) as follows:
+Configure the listening sockets and memory limit (optional) as follows:
 
 ```diff
 # diff -u1 /usr/local/etc/redis.conf.sample /usr/local/etc/redis.conf
@@ -74,7 +74,7 @@ Set listening sockets and memory limit (optional) as follows:
 +maxmemory 200M
 ```
 
-Configure the `redis` instance on both `master` and `replica` in a manner to keep it compatible with a single instance configuration. So if you already had a single instance database it will keep working.
+Configure the `redis` instance on both the `master` and `replica` hosts in a way that maintains compatibility with a single instance configuration. This ensures that if you already have a single instance database, it will continue to function properly.
 
 `/usr/local/etc/redis-redis.conf`:
 
