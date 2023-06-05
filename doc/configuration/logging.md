@@ -6,8 +6,6 @@ title: Rspamd Logging
 # Rspamd logging settings
 {:.no_toc}
 
-Here is the description of Rspamd logging settings.
-
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
   * TOC
@@ -16,7 +14,7 @@ Here is the description of Rspamd logging settings.
 
 ## Introduction
 
-Rspamd has a number of logging options. Firstly, there are three types of log output that are supported: **console** logging - just output log messages to console, **file** logging - output log messages to a file and logging via **syslog** daemon. It is also possible to restrict logging to a specific level:
+Rspamd offers various logging options. Firstly, there are three supported types of log output: `console` logging, which outputs log messages to the console; `file` logging, which directs log messages to a file; and logging via the `syslog` daemon. Additionally, it is possible to limit logging to a specific level:
 
 | Level          | Description                       |
 | :-------------- | :-------------------------------- |
@@ -27,23 +25,23 @@ Rspamd has a number of logging options. Firstly, there are three types of log ou
 | `silent` | log at `info` level on start and then reduce to `notice` level when forking worker processes
 | `debug` | log all including debug messages (huge amount of logging)
 
-It is possible to turn on debug messages for specific IP addresses. This can be useful for testing. For each logging type there are special mandatory parameters: log facility for syslog (read `syslog(3)` man page for details about facilities), log file for file logging. Also, file logging may be buffered for performance. To reduce logging noise, Rspamd detects sequential matching log messages and replaces them with a total number of repeats:
+You have the option to enable debug messages for specific IP addresses, which can be beneficial for testing purposes. Each logging type has specific mandatory parameters: log facility for syslog (refer to the `syslog(3)` man page for facility details), and log file for file logging. File logging can also be buffered for improved performance. In order to reduce logging noise, Rspamd detects consecutive matching log messages and replaces them with the total number of repeated occurrences.
 
 	#81123(fuzzy): May 11 19:41:54 rspamd file_log_function: Last message repeated 155 times
 	#81123(fuzzy): May 11 19:41:54 rspamd process_write_command: fuzzy hash was successfully added
 
 ## Unique ID
 
-From version 1.0, Rspamd logs contain a unique ID for each logging message. This allows finding relevant messages quickly. Moreover, there is now a `module` definition: for example, `task` or `cfg` modules. Here is a quick example of how it works: imagine that we have an incoming task for some message. Then you'd see something like this in the logs:
+Starting from version 1.0, Rspamd logs include a unique ID for each logging message, enabling efficient search for relevant messages. Additionally, there is now a `module` definition that specifies the module associated with the log message, such as `task` or `cfg` modules. Here is a brief example to illustrate how it works: let's consider an incoming task for a specific message. In the logs, you would observe something similar to the following entry:
 
     2015-09-02 16:41:59 #45015(normal) <ed2abb>; task; accept_socket: accepted connection from ::1 port 52895
     2015-09-02 16:41:59 #45015(normal) <ed2abb>; task; rspamd_message_parse: loaded message; id: <F66099EE-BCAB-4D4F-A4FC-7C15A6686397@FreeBSD.org>; queue-id: <undef>
 
-So the tag is `ed2abb` in this case. All subsequent processing related to this task will have the same tag. It is enabled not only on the `task` module, but also others, such as the `spf` or `lua` modules. For other modules, such as `cfg`, the tag is generated statically using a specific characteristic, for example the configuration file checksum.
+In this case, the tag `ed2abb` is assigned to the task, and all subsequent processing related to that task will bear the same tag. This tagging feature is not limited to the `task` module alone; it is also enabled in other modules like `spf` or `lua`. For certain modules like `cfg`, the tag is generated statically using a specific characteristic, such as the checksum of the configuration file.
 
 ## Configuration parameters
 
-Here is the summary of logging parameters, each of those can be redefined or defined in `local.d/logging.inc` file:
+Here is a summary of the logging parameters, each of which can be redefined or defined in the `local.d/logging.inc` file:
 
 | Parameter          | Description                       |
 | :-------------- | :-------------------------------- |
@@ -87,12 +85,11 @@ Here is a list of C debug modules defined in Rspamd (this list is usually incomp
 | `symcache` | messages from symbols cache
 | `task` | task messages
  
- Any Lua module can also be added to `debug_modules` as they are using somehow a similar naming semantics. E.g. you can use `dkim_signing` or `multimap` or `lua_tcp` to debug the corresponding modules.
+Any Lua module can also be added to `debug_modules` as they are using somehow a similar naming semantics. E.g. you can use `dkim_signing` or `multimap` or `lua_tcp` to debug the corresponding modules.
 
 ## Log format
 
-Rspamd supports a custom log format when writing information about a message to the log. (This feature is supported since version 1.1.) The format string looks as follows:
-
+Rspamd supports a custom log format for writing message information to the log. This feature has been supported since version 1.1. The format string for the custom log format is as follows:
 
 	log_format =<<EOD
 	id: <$mid>,$if_qid{ qid: <$>,}$if_ip{ ip: $,}$if_user{ user: $,}$if_smtp_from{ from: <$>,}
@@ -101,8 +98,7 @@ Rspamd supports a custom log format when writing information about a message to 
 	$time_virtual virtual, dns req: $dns_req
 	EOD
 
-Newlines are replaced with spaces. Both text and variables are supported in the log format line. Each variable can have an optional `if_` prefix, which will log only if it is triggered. Moreover, each variable can have an optional body value, where `$` is replaced with the variable value (as many times as it is found in the body, e.g. `$if_var{$$$$}` will be replaced with the variable's name repeated 4 times).
-
+Newlines are replaced with spaces in the custom log format. The log format line can include both text and variables. Each variable can have an optional `if_` prefix, which will log the variable only if it is triggered. Additionally, each variable can have an optional body value where `$` is replaced with the variable's value. The `$` placeholder can be repeated multiple times in the body. For example, `$if_var{$$$$}` will be replaced with the variable's name repeated four times.
 
 ### Log variables
 
