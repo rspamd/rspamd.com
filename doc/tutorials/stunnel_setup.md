@@ -4,13 +4,13 @@ title: Setting up encrypted tunnel using stunnel
 ---
 # Setting up encrypted tunnel using stunnel
 
-To implement encrypted communication between Redis masters and slaves, we recommend using [stunnel](https://www.stunnel.org). Stunnel works as TLS encryption wrapper between client and server.
+To establish encrypted communication between Redis masters and slaves, we recommend using [stunnel](https://www.stunnel.org). Stunnel serves as a TLS encryption wrapper between the client and server.
 
-This step-by-step tutorial will explain how to install and configure `stunnel` proxies on FreeBSD client and server.
+This tutorial provides a detailed explanation of installing and configuring `stunnel` proxies on both the FreeBSD client and server.
 
-Alternatively, for [DigitalOcean's managed Redis](https://docs.digitalocean.com/products/databases/redis/), there is a [community tutorial](https://www.digitalocean.com/community/tutorials/how-to-connect-to-managed-redis-over-tls-with-stunnel-and-redis-cli) available.
+If you are using [DigitalOcean's managed Redis](https://docs.digitalocean.com/products/databases/redis/), there is a [community tutorial](https://www.digitalocean.com/community/tutorials/how-to-connect-to-managed-redis-over-tls-with-stunnel-and-redis-cli) available as an alternative.
 
-Configuration procedures for other operating systems are very similar. For simplicity, this tutorial only covers replication to one client host as this configuration does not require individual preshared keys for each of the clients.
+Although the configuration procedures for other operating systems are quite similar, this tutorial focuses on replication to a single client host to simplify the process. This configuration does not require individual pre-shared keys for each client.
 
 ## Introduction
 
@@ -22,7 +22,7 @@ Assuming we have 3 Redis instances on both `server` and `client`, listening sock
 |`bayes`|localhost:6378|master.example.com:6478|
 |`fuzzy`|localhost:6377|master.example.com:6477|
 
-As the instance named `redis` should not be mirrored, we will replicate `fuzzy` and `bayes` instances. So we need to setup 2 TLS tunnels.
+Since the `redis` instance should not be mirrored, we will replicate the `fuzzy` and `bayes` instances. Consequently, we need to set up two TLS tunnels.
 
 ## Installation
 
@@ -102,9 +102,9 @@ Create `/usr/local/etc/stunnel/psk.txt` .
 
 > _Do not use example passwords._
 
-As both `bayes` and `fuzzy` Redis instances located at the same host we can share the same key between them.
+Since both the `bayes` and `fuzzy` Redis instances are located on the same host, we can use the same key for both of them.
 
-Since this file should be kept secret set secure permissions on it:
+Considering that this file contains sensitive information, it is crucial to maintain its secrecy by setting secure permissions on it:
 
 `# chmod 600 /usr/local/etc/stunnel/psk.txt`
 
@@ -121,4 +121,4 @@ From the client host use the `redis-cli` utility to connect to the remote instan
 # redis-cli -p 6478
 ```
 
-Given that it connected, you are clear to proceed with [configuring replication between Redis instances](./redis_replication.html#slave-instances-configuration).
+Now that the connection is established, you are ready to proceed with configuring replication between the Redis instances. You can follow the instructions provided in the [Redis replication configuration guide](./redis_replication.html#slave-instances-configuration).
