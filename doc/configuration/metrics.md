@@ -6,7 +6,7 @@ title: Rspamd Metrics
 
 ## Introduction
 
-Unlike SpamAssassin, Rspamd **suggests** the desired action for a specific message scanned. This could be treated as a recommendation to MTA what it should do with this message. Here is a list of possible choices that are sent by Rspamd:
+Unlike SpamAssassin, Rspamd provides **suggested** actions for specific scanned messages. These actions can be considered as recommendations for the MTA on how to handle the message. Here is a list of the possible choices sent by Rspamd:
 
 - `discard`: drop an email but return success for sender (should be used merely in special cases)
 - `reject`: ultimately reject message
@@ -20,7 +20,7 @@ From version 1.9, there are also some more actions:
 - `quarantine`: push a message to quarantine (must be supported by MTA)
 - `discard`: silently discard a message
 
-From version 1.9, you can also define any action you'd like with it's own threshold or use that in `force_actions` module:
+Starting from version 1.9, you have the flexibility to define custom actions with their own threshold in Rspamd. You can also utilize these custom actions in the `force_actions` module. This allows you to tailor the actions according to your specific requirements:
 
 ```ucl
 actions {
@@ -58,7 +58,7 @@ symbol "RWL_SPAMHAUS_WL_IND" {
 }
 ~~~
 
-Rspamd rules are usually groupped into groups. Each symbol can belong to multiple groups. For example, `DKIM_ALLOW` symbol belongs to `dkim` group and to `policies` metagroup. You can group or not group your own rules. To redefine scores of your symbols, you can use `local.d/groups.conf` as following:
+Rspamd rules are typically organized into groups, with each symbol capable of belonging to multiple groups. For instance, the `DKIM_ALLOW` symbol is part of both the `dkim` group and the `policies` metagroup. You have the flexibility to group or not group your own rules. If you wish to adjust the scores of your symbols, you can do so by modifying the `local.d/groups.conf` file as shown below:
 
 ~~~ucl
 # local.d/groups.conf
@@ -84,7 +84,7 @@ group "mygroup" {
 }
 ~~~
 
-To redefine symbols for the existing groups, it is recommended to use a specific `local.d` or `override.d` file, for example, `local.d/rbl_group.conf` to add your custom RBLs. To get the full list of such files, you can take a look over the `groups.conf` file in the main Rspamd configuration directory (e.g. `/etc/rspamd/groups.conf`).
+To modify symbols for existing groups, it is advisable to utilize dedicated files in either the `local.d` or `override.d` directory. For instance, you can create a file named `local.d/rbl_group.conf` to incorporate your custom RBLs. To obtain a comprehensive list of these files, you can refer to the `groups.conf` file located in the primary Rspamd configuration directory (e.g., `/etc/rspamd/groups.conf`).
 
 ### Actions
 
@@ -118,7 +118,7 @@ $$
 	grow\_factor = grow\_factor * grow\_factor
 $$
 
-By default this value is `1.0` meaning that no weight growing is defined. By increasing this value you increase the effective score of messages with multiple `spam` rules matched. This value is not affected by negative score values.
+The default value for this setting is `1.0`, indicating no weight increase is applied. By raising this value, the score of messages with multiple matching `spam` rules is amplified. It's important to note that negative score values do not affect this value.
 
 * `subject` - string value that replaces the message's subject if the `rewrite subject` action is applied. Original subject can be included with `%s`. Message score can be filled using `%d` extension.
 * `unknown_weight` - weight for unknown rules. If this parameter is specified, all rules can add symbols to this metric. If such a rule is not specified by this metric then its weight is equal to this option's value. Please note, that adding this option means that all rules will be checked by Rspamd, on the contrary, if no `unknown_weight` metric is specified then rules that are not registered anywhere are silently ignored by Rspamd.
