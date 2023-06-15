@@ -171,7 +171,7 @@ neighbours {
 ~~~
 
 But if you are plannig to access WebUI on this host as well you should configure something sensible.
-ChatGPT
+
 However, if you plan to access the WebUI on this particular host, it is advisable to configure something more appropriate and relevant for that entry.
 
 If you have [a reverse proxy with TLS]({{ site.baseurl }}/doc/quickstart.html#setting-up-the-webui) in front of Rspamd, you need to explicitly specify the protocol and port in the `host` directive:
