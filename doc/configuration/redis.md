@@ -5,11 +5,11 @@ title: Redis configuration
 
 # Redis configuration for Rspamd
 
-This document describes how to setup Redis cache in Rspamd.
+This document provides instructions on setting up a Redis cache in Rspamd.
 
 ## Introduction
 
-[Redis](http://redis.io) cache server is used as an efficient key-value storage by many Rspamd modules, including such modules as:
+The [Redis](http://redis.io) cache server, is utilized as a highly efficient key-value storage by various Rspamd modules, including the following:
 
 * [Ratelimit plugin]({{ site.baseurl }}/doc/modules/ratelimit.html) uses Redis to store limits buckets
 * [Greylisting module]({{ site.baseurl }}/doc/modules/greylisting.html) stores data and meta hashes inside Redis
@@ -21,7 +21,7 @@ This document describes how to setup Redis cache in Rspamd.
 * [Reputation module]({{ site.baseurl }}/doc/modules/reputation.html) uses Redis for caching
 * [Neural network module]({{ site.baseurl }}/doc/modules/neural.html) uses Redis for data storage
 
-Furthermore, Redis is used to store Bayes tokens in the [statistics]({{ site.baseurl }}/doc/configuration/statistic.html) module. Rspamd provides several ways to configure Redis storage. There is also support for Redis [replication](http://redis.io/topics/replication), so Rspamd can **write** values to one set of Redis servers and **read** data from another set.
+Furthermore, Redis is used to store Bayes tokens in the [statistics]({{ site.baseurl }}/doc/configuration/statistic.html) module. Rspamd offers multiple configuration options for Redis storage. Moreover, Redis [replication](http://redis.io/topics/replication)is supported, enabling Rspamd to **write** values to one set of Redis servers and **read** data from another set.
 
 ## Redis setup
 
@@ -33,14 +33,13 @@ dmarc {
 }
 ~~~
 
-However it is better to use local and override dirs for these purposes, for example, `/etc/rspamd/local.d/dmarc.conf` for this case:
-
+However, it is recommended to use the local and override directories for such configurations. For instance, you can create a file called `/etc/rspamd/local.d/dmarc.conf` for this specific case:
 ~~~ucl
 # local.d/dmarc.conf
 servers = "127.0.0.1";
 ~~~
 
-You can specify multiple servers, separated by commas with (optional) port value:
+You can specify multiple servers by separating them with commas. Each server can also have an optional port value:
 
 ~~~ucl
   servers = "serv1,serv2:6371";
@@ -52,9 +51,8 @@ By default, Rspamd uses port `6379` for Redis. Alternatively, you can define the
   servers = "master-slave:127.0.0.1,10.0.1.1";
 ~~~
 
-You can read more about upstream line in the [upstreams documentation]({{ site.baseurl }}/doc/configuration/upstream.html).
-
-Setting Redis options for each individual module might be simplified by using of common `redis` section (for example, by defining it in `/etc/rspamd/local.d/redis.conf`):
+You can simplify the configuration of Redis options for each individual module by using a common `redis` section. This can be done by defining the section in a separate file, such as `/etc/rspamd/local.d/redis.conf`. This approach helps streamline the configuration process and make it more organized. 
+For more detailed information, you can refer to the [upstreams documentation]({{ site.baseurl }}/doc/configuration/upstream.html).
 
 ~~~ucl
 # /etc/rspamd/local.d/redis.conf
@@ -64,7 +62,7 @@ write_servers = "127.0.0.1";
 
 Please bear in mind that you should either use `servers` for both `read_servers` and `write_servers` or define `read_servers` and `write_servers` separately. So it is **either** `servers` or `read_servers`+`write_servers` **together**.
 
-It is also possible to redefine Redis options inside `redis` section for the specific module or modules:
+Additionally, you have the option to redefine Redis options inside the `redis` section specifically for the desired module or modules. This provides flexibility in configuring Redis options on a per-module basis:
 
 ~~~ucl
 # /etc/rspamd/local.d/redis.conf
@@ -76,7 +74,7 @@ dmarc {
 }
 ~~~
 
-In this example, `dmarc` module will use different servers set than other modules. To exclude specific modules from using of the common redis options, you can add them to the list of `disabled_modules`, for example:
+In this example, the `dmarc` module will use a different set of servers than other modules. If you want to exclude specific modules from using the common Redis options, you can add them to the `disabled_modules` list, like this:
 
 ~~~ucl
 # /etc/rspamd/local.d/redis.conf
@@ -85,7 +83,7 @@ servers = "127.0.0.1";
 disabled_modules = ["ratelimit"];
 ~~~
 
-This configuration snippet denies `ratelimit` to use the common Redis configuration and this module will be disabled if Redis is not explicitly configured for this module (either in `redis -> ratelimit` section or in `ratelimit` section).
+This configuration snippet prevents the `ratelimit` module from using the common Redis configuration. If Redis is not explicitly configured for this module (either in the `redis` -> `ratelimit` section or in the `ratelimit` section), the module will be disabled.
 
 ## Available Redis options
 
@@ -102,7 +100,7 @@ Rspamd supports the following Redis options (common for all modules):
 
 ## Key expansion
 
-In version 1.7.0+ setting the `redis.expand_keys` configuration parameter to `true` enables special values to be replaced in key names before they are sent to Redis when queries are performed via Lua (as in the majority of plugins: such as `multimap`, `ratelimit` and `settings`). If module-specific Redis configuration is used this setting could be specified in the module configuration instead of `redis`.
+Starting from version 1.7.0, if you set the `redis.expand_keys` configuration parameter to `true`, special values can be replaced in key names before they are sent to Redis when performing queries via Lua (as in plugins like `multimap`, `ratelimit`, and `settings`). If you are using module-specific Redis configuration, you can specify this setting in the module configuration instead of `redis`.
 
 Given this setting is enabled, where-ever names of keys could be specified in configuration special values could be used, for example `map = "redis://${ip}!foo` in multimap configuration would dynamically set key name to something like `1.2.3.4!foo`. Variable names which could be used are as follows:
 
@@ -130,7 +128,7 @@ sentinel_watch_time = 1min; # How often Rspam will query sentinels for masters a
 sentinel_masters_pattern = "^mymaster.*$"; # Defines masters pattern to match in Lua syntax (no pattern means all masters)
 ~~~
 
-Rspamd will then use sentinels to determine which servers should be used as write_servers and which should be used as read_servers. While Redis sentinel does not fully support multi-master configurations, this feature can still be useful for switching masters when accessing non-volatile data such as statistics, fuzzy storage, or neural network data. However, it should be noted that you must still configure an initial set of servers to be used in the event that no sentinel is accessible.
+Rspamd will utilize sentinels to determine which servers should be designated as write_servers and which should be designated as read_servers. Although Redis sentinel does not fully support multi-master configurations, this feature can still be valuable for switching masters when accessing non-volatile data such as statistics, fuzzy storage, or neural network data. However, it is important to note that you must still configure an initial set of servers to be used in case no sentinel is accessible.
 
 ## Other clustering options
-If you require more advanced clustering options than Redis Sentinel offers, we recommend considering the [KeyDB](https://docs.keydb.dev/) project. KeyDB is a drop-in replacement for Redis that supports multi-master replication mode, while still being fully compatible with Redis (and Rspamd).
+If you require more advanced clustering options beyond what Redis Sentinel offers, we recommend considering the KeyDB project. KeyDB serves as a drop-in replacement for Redis, providing support for multi-master replication mode while remaining fully compatible with Redis (and Rspamd). You can learn more about KeyDB in the [KeyDB documentation](https://docs.keydb.dev/).
