@@ -116,9 +116,9 @@ control_socket = "$DBDIR/rspamd.sock mode=0600";
 
 ## DNS options
 
-These options are in a separate subsection named `dns` and specify the behaviour of Rspamd name resolution. Here is a list of available tunables:
+These options fall under a dedicated subsection called `dns` and control the name resolution behavior of Rspamd. Here is a list of available tunables:
 
-* `nameserver`: list (or array) of DNS servers to be used (if this option is skipped, then `/etc/resolv.conf` is parsed instead). It is also possible to specify weights of DNS servers to balance the payload, e.g.
+* `nameserver`: A list (or array) of DNS servers to be used. If this option is omitted, Rspamd will parse the `/etc/resolv.conf` file. Additionally, you can specify weights for DNS servers to balance the load. For example:
 
 ~~~ucl
 options {
@@ -139,7 +139,7 @@ options {
 }
 ~~~
 
-In this case, `8.8.8.8` public resolver will be used as a backup when local resolver is down. Please note, that by default, Rspamd uses `round-robin` strategy which is also used when resolvers are read from `/etc/resolv.conf`.
+In this case, `8.8.8.8` public resolver will be used as a backup when local resolver is down. It's important to note that by default, Rspamd uses `round-robin` strategy which is also used when resolvers are read from `/etc/resolv.conf`.
 
 * `timeout`: timeout for each DNS request
 * `retransmits`: how many times each request is retransmitted before it is treated as failed (the overall timeout for each request is thus `timeout * retransmits`)
@@ -147,7 +147,7 @@ In this case, `8.8.8.8` public resolver will be used as a backup when local reso
 
 ## Neighbours list
 
-The WebUI supports displaying and aggregating statistics from a cluster of Rspamd servers and changing configuration of all cluster members at once.
+The WebUI supports displaying and aggregating statistics from a cluster of Rspamd servers, as well as changing the configuration of all cluster members simultaneously.
 
 On the Rspamd server at which you want to point your web-browser add a neighbours list to the `local.d/options.inc`:
 
@@ -159,26 +159,29 @@ neighbours {
 }
 ~~~
 
-There is no communication between the cluster members. Rspamd just sends the neighbours list to the web-browser. Everything else happens on the browser side. The web-browser makes HTTP requests directly to the neighbours on the list.
+There is no communication between the cluster members. Rspamd simply sends the neighbours list to the web browser, and all subsequent communication happens directly between the browser and the neighbours on the list via HTTP requests.
 
 For some reason (ask @cebka on IRC about that) you should have such a list in the configuration of every other neighbour. Actually, it does not matter what is configured in the `neighbours` section on other servers of the cluster. There should be at least one host entry.
 
 A dummy entry like this is enough:
+
 ~~~ucl
 neighbours {
     server1 {host = ""; }
 }
 ~~~
 
-But if you are plannig to access WebUI on this host as well you should configure something sensible.
+However, if you plan to access the WebUI on this particular host, it is advisable to configure something more appropriate and relevant for that entry.
 
 If you have [a reverse proxy with TLS]({{ site.baseurl }}/doc/quickstart.html#setting-up-the-webui) in front of Rspamd, you need to explicitly specify the protocol and port in the `host` directive:
+
 ~~~ucl
 neighbours {
     server1 { host = "https://host1.example.com:443"; }
     server2 { host = "https://host2.example.com:443"; }
 }
 ~~~
+
 Otherwise it defaults to `http` and `11334` respectively.
 
 Also you can use the same host name but set different paths:
