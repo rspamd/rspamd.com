@@ -164,23 +164,24 @@ There is no communication between the cluster members. Rspamd simply sends the n
 For some reason (ask @cebka on IRC about that) you should have such a list in the configuration of every other neighbour. Actually, it does not matter what is configured in the `neighbours` section on other servers of the cluster. There should be at least one host entry.
 
 A dummy entry like this is enough:
+
 ~~~ucl
 neighbours {
     server1 {host = ""; }
 }
 ~~~
 
-But if you are plannig to access WebUI on this host as well you should configure something sensible.
-
 However, if you plan to access the WebUI on this particular host, it is advisable to configure something more appropriate and relevant for that entry.
 
 If you have [a reverse proxy with TLS]({{ site.baseurl }}/doc/quickstart.html#setting-up-the-webui) in front of Rspamd, you need to explicitly specify the protocol and port in the `host` directive:
+
 ~~~ucl
 neighbours {
     server1 { host = "https://host1.example.com:443"; }
     server2 { host = "https://host2.example.com:443"; }
 }
 ~~~
+
 Otherwise it defaults to `http` and `11334` respectively.
 
 Also you can use the same host name but set different paths:
