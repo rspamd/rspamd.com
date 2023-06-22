@@ -101,19 +101,6 @@ sudo apt-get update
 sudo apt-get --no-install-recommends install rspamd
 ~~~
 
-	
-If you have `ubuntu-bionic` or `debian-buster`, then you might need to add llvm repository as Rspamd now requires a compatible standard c++ library that supports C++ 20 standard since version 3.5. To enable this repo you can use the following commands:
-
-~~~bash
-sudo apt-get install software-properties-common # For ubuntu-bionic only
-add-apt-repository ppa:ubuntu-toolchain-r/test # For ubuntu-bionic only
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-echo "deb http://apt.llvm.org/$CODENAME/ llvm-toolchain-$CODENAME-16 main" | sudo tee /etc/apt/sources.list.d/llvm-16.list
-echo "deb-src http://apt.llvm.org/$CODENAME/ llvm-toolchain-$CODENAME-16 main"  | sudo tee -a /etc/apt/sources.list.d/llvm-16.list
-sudo apt-get update
-~~~
-
-This step might be needed for other distributives when their libraries are getting incompatible with Rspamd. Please check the [llvm apt documentation](https://apt.llvm.org/) about how to install those for your system.
 
 For [Hyperscan](https://www.hyperscan.io/) and [LuaJIT](https://luajit.org) information see the [FAQ]({{ site.url }}{{ site.baseurl }}/doc/faq.html).
 
