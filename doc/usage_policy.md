@@ -19,7 +19,7 @@ To qualify for free usage of the feeds, you must meet the following conditions:
 
     **and**
 
-2. Your query volume is less than **500,000 queries per day**
+2. Your query volume is less than **100,000 queries per day**
 
 If you qualify (1) and (2) but still got blocked then please contact us by using our email address: <mailto:support@rspamd.com>
 
