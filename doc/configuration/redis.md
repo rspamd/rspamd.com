@@ -9,7 +9,7 @@ This document provides instructions on setting up a Redis cache in Rspamd.
 
 ## Introduction
 
-The [Redis](http://redis.io) cache server, is utilized as a highly efficient key-value storage by various Rspamd modules, including the following:
+The [Redis](https://redis.io) cache server, is utilized as a highly efficient key-value storage by various Rspamd modules, including the following:
 
 * [Ratelimit plugin]({{ site.baseurl }}/doc/modules/ratelimit.html) uses Redis to store limits buckets
 * [Greylisting module]({{ site.baseurl }}/doc/modules/greylisting.html) stores data and meta hashes inside Redis
@@ -21,7 +21,7 @@ The [Redis](http://redis.io) cache server, is utilized as a highly efficient key
 * [Reputation module]({{ site.baseurl }}/doc/modules/reputation.html) uses Redis for caching
 * [Neural network module]({{ site.baseurl }}/doc/modules/neural.html) uses Redis for data storage
 
-Furthermore, Redis is used to store Bayes tokens in the [statistics]({{ site.baseurl }}/doc/configuration/statistic.html) module. Rspamd offers multiple configuration options for Redis storage. Moreover, Redis [replication](http://redis.io/topics/replication)is supported, enabling Rspamd to **write** values to one set of Redis servers and **read** data from another set.
+Furthermore, Redis is used to store Bayes tokens in the [statistics]({{ site.baseurl }}/doc/configuration/statistic.html) module. Rspamd offers multiple configuration options for Redis storage. Moreover, Redis [replication](https://redis.io/docs/management/replication/)is supported, enabling Rspamd to **write** values to one set of Redis servers and **read** data from another set.
 
 ## Redis setup
 

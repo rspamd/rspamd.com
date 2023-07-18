@@ -423,7 +423,7 @@ Note that in versions <= 2.7, flags were ordered but stacked to the right in the
 
 ## DCC specific details
 
-This modules performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine
+This modules performs [DCC](https://www.dcc-servers.net/dcc/) lookups to determine
 the *bulkiness* of a message (e.g. how many recipients have seen it).
 
 This is particularly valuable in composite rules, such as when a message is from a freemail domain AND it is identified as bulk by DCC, making it easier to classify it as spam and assign a higher weight to it. 

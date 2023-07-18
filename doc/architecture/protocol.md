@@ -140,7 +140,7 @@ Rspamd reply is encoded in `JSON`. Here is a typical HTTP reply:
 }
 ~~~
 
-For convenience, the reply is LINTed using [JSONLint](http://jsonlint.com){:target="&#95;blank"}. The actual reply is compressed for speed.
+For convenience, the reply is LINTed using [JSONLint](https://jsonlint.com){:target="&#95;blank"}. The actual reply is compressed for speed.
 
 Each reply has the following fields:
 

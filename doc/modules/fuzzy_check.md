@@ -13,7 +13,7 @@ is responsible for teaching fuzzy storage with message patterns.
 Rspamd utilizes the `shingles` algorithm to conduct fuzzy matching of messages. This algorithm 
 operates in a probabilistic manner by using word chains as patterns, which helps to filter 
 out spam or ham messages. A detailed description of the `shingles` algorithm can be found in the
-[research paper](http://dl.acm.org/citation.cfm?id=283370). 
+[research paper](https://dl.acm.org/doi/10.5555/283554.283370).
 
 In Rspamd, we employ trigrams (3-grams) for the shingles algorithm, and we use 
 a set of hash functions, including siphash, mumhash, and others.

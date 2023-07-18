@@ -80,7 +80,7 @@ It is important to note that there is often confusion between the `type` and `fi
 | `https://example.com/list` | HTTPS map - same as HTTP but with TLS enabled (with certificate check)
 | `file:///path/to/list` | file map, reloaded on change, can be signed
 |  `/path/to/list` | shorter form of a file map
-| `cdb://path/to/list.cdb` | [CDB](http://www.corpit.ru/mjt/tinycdb.html) map in file, cannot be signed
+| `cdb://path/to/list.cdb` | [CDB](https://www.corpit.ru/mjt/tinycdb.html) map in file, cannot be signed
 | `redis://<hashkey>` | Redis map, read field in the hash stored at key
 | `redis+selector://selector` | (from version 2.0) similar to the former one Redis map where a hash key is acquired by application of some [selector](../configuration/selectors.html) that allows to create dependent maps
 
@@ -175,7 +175,7 @@ Type attribute means what is matched with this map. The following types are supp
 
 DNS maps are considered legacy and it is not encouraged to use them in new projects. Instead, [rbl](rbl.html) should be used for that purpose.
 
-Maps can also be specified as [CDB](http://www.corpit.ru/mjt/tinycdb.html) databases, which might be useful for large maps:
+Maps can also be specified as [CDB](https://www.corpit.ru/mjt/tinycdb.html) databases, which might be useful for large maps:
 
 ~~~ucl
 SOME_SYMBOL {
@@ -196,7 +196,7 @@ All maps, except for `ip` and `dnsbl` maps, support the `regexp` mode. In this m
 # Comments are still enabled
 ```
 
-For performance considerations, it is recommended to use only expressions supported by [Hyperscan](http://intel.github.io/hyperscan/dev-reference/compilation.html#pattern-support) as this engine provides fast performance without any additional cost. Currently, there is no way to distinguish which particular regexp was matched in case of multiple regexps being matched.
+For performance considerations, it is recommended to use only expressions supported by [Hyperscan](https://intel.github.io/hyperscan/dev-reference/compilation.html#pattern-support) as this engine provides fast performance without any additional cost. Currently, there is no way to distinguish which particular regexp was matched in case of multiple regexps being matched.
 
 To enable the `regexp` mode, you should set the `regexp` option to `true`:
 

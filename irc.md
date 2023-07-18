@@ -17,7 +17,7 @@ For those who are familiar with IRC, here are settings for IRC channel access:
 To access IRC, you can use a set of clients for your favourite platform, for instance:
 
 * [XChat](http://www.xchat.org) - cross-platform GUI client
-* [Irssi](http://www.irssi.org) - console client
+* [Irssi](https://www.irssi.org) - console client
 * [AndroIRC](https://play.google.com/store/apps/details?id=com.androirc) - Android IRC client
 
 Alternatively, you could use some web interface to access IRC:

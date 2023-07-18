@@ -10,7 +10,7 @@ Ratelimit plugin is designed to limit messages coming from certain senders, to
 certain recipients from certain IP addresses combining these parameters into
 a separate limits.
 
-To enable a shared cache across multiple scanners, all the established limits are securely stored within a [Redis server](http://redis.io) (or a cluster of servers).
+To enable a shared cache across multiple scanners, all the established limits are securely stored within a [Redis server](https://redis.io) (or a cluster of servers).
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>

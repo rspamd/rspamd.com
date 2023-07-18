@@ -29,10 +29,10 @@ Global optimizations are used to speed up the overall messages processing improv
 
 Rspamd uses various methods to speed up each individual message processing stage. This is achieved by applying local optimizations techniques:
 
-* **<abbr title="Abstract Syntax Tree">AST</abbr> optimizations** are used to exclude unnecessary checks from rules. You can watch the following [slides](http://www.slideshare.net/VsevolodStakhov/astrspamd) to get more details about this method.
+* **<abbr title="Abstract Syntax Tree">AST</abbr> optimizations** are used to exclude unnecessary checks from rules. You can watch the following [slides](https://www.slideshare.net/VsevolodStakhov/astrspamd) to get more details about this method.
 
 * Unlike SA, Rspamd uses **specific state machines** to parse email components: mime structure, HTML parts, URLs, images, received headers and so on and so forth. This approach allows to skip unnecessary details and extract information from emails quicker than by using a large set of regular expressions for these purposes.
 
-* **[Hyperscan](https://github.com/intel/hyperscan) engine** is used in Rspamd to quickly process large regular expressions set. Unlike traditional regexps engines, Hyperscan allows to process multiple expressions at the same time. There are many details about hyperscan that are covered in the following [slides](http://www.slideshare.net/VsevolodStakhov/rspamdhyperscan).
+* **[Hyperscan](https://github.com/intel/hyperscan) engine** is used in Rspamd to quickly process large regular expressions set. Unlike traditional regexps engines, Hyperscan allows to process multiple expressions at the same time. There are many details about hyperscan that are covered in the following [slides](https://www.slideshare.net/VsevolodStakhov/rspamdhyperscan).
 
 * **Assembly snippets** allow to optimize specific algorithms for targeted architectures. Rspamd uses assembly for some frequently used cryptography and hashing algorithms selecting the proper version of code in runtime, relying on CPU instructions set support tests.

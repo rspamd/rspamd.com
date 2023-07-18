@@ -7,7 +7,7 @@ title: Elasticsearch module
 
 Elasticsearch module pushes a variety of message-related metadata to an instance of [Elasticsearch](https://elastic.co/). This module provides exporter, template creation logic and a simple kibana dashboard.
 
-<img src="http://i.imgur.com/etYWT8R.png" class="img-responsive" />
+<img src="https://i.imgur.com/etYWT8R.png" class="img-responsive" />
 
 This plugin is based on the [plugin](https://github.com/Menta2L/rspamd-elastic) created by [Veselin Iordanov](https://github.com/Menta2L) and adopted for the Elasticsearch 6.x
 

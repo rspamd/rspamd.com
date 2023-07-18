@@ -27,7 +27,7 @@ This guide outlines the primary procedures for obtaining and initiating work wit
 
 ## Preparation steps
 
-First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. This guide covers the setup of the [Postfix MTA](http://www.postfix.org/){:target="&#95;blank"}, but note that Rspamd can also work with other MTA software. For more information, see the [integration document]({{ site.baseurl }}/doc/integration.html). Keep in mind that Exim MTA has limited support for Rspamd, so it's not recommended to run them together.
+First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. This guide covers the setup of the [Postfix MTA](https://www.postfix.org/){:target="&#95;blank"}, but note that Rspamd can also work with other MTA software. For more information, see the [integration document]({{ site.baseurl }}/doc/integration.html). Keep in mind that Exim MTA has limited support for Rspamd, so it's not recommended to run them together.
 
 You should also consider to setup your own [local  DNS resolver]({{ site.baseurl }}/doc/faq.html#resolver-setup).
 
@@ -135,7 +135,7 @@ For <abbr title="Internet Mail Access Protocol">IMAP</abbr> we recommend to inst
 
     apt install dovecot-imapd dovecot-sieve
 
-Configuring Dovecot, particularly its authentication mechanisms, is beyond the scope of this guide. However, you can find many helpful guides on the [Dovecot main site](http://dovecot.org){:target="&#95;blank"}. By default, Dovecot uses Unix users in system and place mail into the standard mailbox `/var/mail/username`.
+Configuring Dovecot, particularly its authentication mechanisms, is beyond the scope of this guide. However, you can find many helpful guides on the [Dovecot main site](https://dovecot.org){:target="&#95;blank"}. By default, Dovecot uses Unix users in system and place mail into the standard mailbox `/var/mail/username`.
 
 It is important to set up Postfix authentication as well. This is located in `/etc/dovecot/conf.d/10-master.conf`. Ensure that the following lines in this file are uncommented:
 
@@ -571,21 +571,21 @@ While Rspamd is free to use for any purpose, it is important to note that some o
 
 [DNSWL](https://www.dnswl.org/?page_id=9){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 100k queries per day
 
-[Mailspike](http://mailspike.org/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
+[Mailspike](https://mailspike.org/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
 
-[Rspamd URIBL](http://www.rspamd.com/doc/usage_policy.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
+[Rspamd URIBL](https://www.rspamd.com/doc/usage_policy.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
 
-[SORBS](http://www.sorbs.net/general/using.shtml#largesites){:target="&#95;blank"} - Limit of 100k users or more than 5 messages per second sustained
+[SORBS](https://www.sorbs.net/general/using.shtml#largesites){:target="&#95;blank"} - Limit of 100k users or more than 5 messages per second sustained
 
-[SpamEatingMonkey](http://spameatingmonkey.com/faq.html#query-limits){:target="&#95;blank"} - Limit of 100k queries per day or more than 5 queries per second for more than a few minutes
+[SpamEatingMonkey](https://spameatingmonkey.com/faq#query-limits){:target="&#95;blank"} - Limit of 100k queries per day or more than 5 queries per second for more than a few minutes
 
 [Spamhaus](https://www.spamhaus.org/organization/dnsblusage/){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 300k queries or 100k SMTP connections per day
 
-[SURBL](http://www.surbl.org/usage-policy){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
+[SURBL](https://www.surbl.org/usage-policy){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
 
-[UCEProtect](http://www.uceprotect.net/en/index.php?m=6&s=11){:target="&#95;blank"} - If you're sending 100k queries or more per day you should use the (free) Rsync service.
+[UCEProtect](https://www.uceprotect.net/en/index.php?m=6&s=11){:target="&#95;blank"} - If you're sending 100k queries or more per day you should use the (free) Rsync service.
 
-[URIBL](http://uribl.com/about.shtml){:target="&#95;blank"} - Requires a commercial subscription if 'excessive queries' are sent (numbers unclear).
+[URIBL](https://uribl.com/about.shtml){:target="&#95;blank"} - Requires a commercial subscription if 'excessive queries' are sent (numbers unclear).
 
 Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) module documentation for information about disabling RBLs/SURBLs.
 

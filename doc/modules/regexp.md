@@ -77,7 +77,7 @@ The match type is defined by a flag that appears after the last `/` symbol. This
 | `U`  | `{url}`         | URLs (before 2.4 also email addresses extracted from the message body, in the same form as returned by [url:tostring()](../lua/rspamd_url.html#m6b648)) |
 | `$`  | `{selector}`    | Strings returned by a [selector](../configuration/selectors.html#regular-expressions-selectors) (from 1.8) |
 |      | `{email}`       | Emails extracted from the message body (from 2.4) |
-|      | `{words}`       | Unicode normalized (to [NFKC](http://www.unicode.org/reports/tr15/#Norm_Forms)) and lowercased words extracted from the text (excluding URLs), subject and From displayed name |
+|      | `{words}`       | Unicode normalized (to [NFKC](https://www.unicode.org/reports/tr15/#Norm_Forms)) and lowercased words extracted from the text (excluding URLs), subject and From displayed name |
 |      | `{raw_words}`   | The same words, but without normalization (converted to utf8 however) |
 |      | `{stem_words}`  | Unicode normalized, lowercased and [stemmed](https://en.wikipedia.org/wiki/Stemming) words extracted from the text (excluding URLs), subject and From displayed name |
 

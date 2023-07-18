@@ -209,7 +209,7 @@ Rspamd requires several 3-rd party software to build and run:
 * [cmake](https://cmake.org/) - build system used to configure rspamd
 * [sqlite3](https://sqlite.org/) - embedded database used to store some data by rspamd
 * [libmagic](https://www.darwinsys.com/file/) - common library for detecting file types
-* [libicu](http://site.icu-project.org/) - unicode library
+* [libicu](https://icu.unicode.org/) - unicode library
 * [PCRE](https://www.pcre.org/) - regular expressions library
 * [Hyperscan](https://hyperscan.io)/[Vectorscan](https://github.com/VectorCamp/vectorscan) - optional regexp performance boost library
 * [zlib](https://zlib.net/) - compression library

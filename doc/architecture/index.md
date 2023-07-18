@@ -53,7 +53,7 @@ To avoid unnecessary checks Rspamd uses a scheduler of rules for each message. I
 
 These optimizations can filter definite spam more quickly than a generic queue.
 
-Since Rspamd-0.9 there are further optimizations for rules and expressions that are described generally in the [following presentation](http://highsecure.ru/ast-rspamd.pdf).
+Since Rspamd-0.9 there are further optimizations for rules and expressions that are described generally in the [following presentation](https://highsecure.ru/ast-rspamd.pdf).
 
 ## Actions
 
@@ -73,7 +73,7 @@ The weight of rules is not necessarily constant. For example, for statistics rul
 
 ## Statistics
 
-Rspamd uses statistic algorithms to precisely calculate the final score of a message. Currently, the only algorithm defined is OSB-Bayes. You can find details of this algorithm in the following [paper](http://osbf-lua.luaforge.net/papers/osbf-eddc.pdf). Rspamd uses a window size of 5 words in its classification. During the classification procedure, Rspamd splits a message into a set of tokens. Tokens are separated by punctuation or whitespace characters. Short tokens (less than 3 symbols) are ignored. For each token, Rspamd calculates two non-cryptographic hashes used subsequently as indices. All these tokens are stored in different statistics backends (mmapped files, SQLite3 database or Redis server). Currently, the recommended backend for statistics is `Redis`.
+Rspamd uses statistic algorithms to precisely calculate the final score of a message. Currently, the only algorithm defined is OSB-Bayes. You can find details of this algorithm in the following [paper](https://web.archive.org/web/20181024182218/http://osbf-lua.luaforge.net/papers/osbf-eddc.pdf). Rspamd uses a window size of 5 words in its classification. During the classification procedure, Rspamd splits a message into a set of tokens. Tokens are separated by punctuation or whitespace characters. Short tokens (less than 3 symbols) are ignored. For each token, Rspamd calculates two non-cryptographic hashes used subsequently as indices. All these tokens are stored in different statistics backends (mmapped files, SQLite3 database or Redis server). Currently, the recommended backend for statistics is `Redis`.
 
 ## Running rspamd
 

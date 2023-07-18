@@ -8,7 +8,7 @@ This module enables you to load rspamd rules, adjust symbol scores, and implemen
 
 ## Security considerations
 
-The Rspamd update module can execute Lua code, which is run with the scanner's privileges, typically under the `_rspamd` or `nobody` user. Therefore, it's important to avoid using untrusted sources of updates. Rspamd supports digital signatures to validate the authenticity of updates downloaded using the using [EdDSA](http://ed25519.cr.yp.to/) signatures scheme.
+The Rspamd update module can execute Lua code, which is run with the scanner's privileges, typically under the `_rspamd` or `nobody` user. Therefore, it's important to avoid using untrusted sources of updates. Rspamd supports digital signatures to validate the authenticity of updates downloaded using the using [EdDSA](https://ed25519.cr.yp.to/) signatures scheme.
 For your own updates that are loaded from the filesystem or from some trusted network you might use unsigned files, however, signing is recommended even in this case.
 
 For your own updates that are loaded from the file system or a trusted network, you might be able to use unsigned files. However, we recommend that you sign even in this scenario. To sign a map, you can use `rspamadm signtool`, and to generate a signing keypair, use `rspamadm keypair -s -u`.

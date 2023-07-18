@@ -232,7 +232,7 @@ Finally, a [workers](../workers/index.html) section (code not provided here) is 
 
 {% raw %}
 
-[Jinja](http://jinja.pocoo.org) is a modern and designer-friendly templating language for Python, modelled after Django’s templates.
+[Jinja](https://jinja.palletsprojects.com) is a modern and designer-friendly templating language for Python, modelled after Django’s templates.
 [Lupa](https://github.com/orbitalquark/lupa) is a Jinja2 template engine implementation written in Lua and supports Lua syntax within tags and variables.
 Starting in version 1.9.1, Rspamd supports Jinja templates with Lua code within Rspamd UCL configuration files. This can be used to implement logic and data transformations, beyond the static assignments and `.include` directives noted above. Rspamd itself uses a specific syntax for variable tags: `{=` and `=}` instead of the traditional `{{` and `}}`, as these tags could otherwise mean "a table within a table" in Lua.
 

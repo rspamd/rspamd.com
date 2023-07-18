@@ -13,7 +13,7 @@ According to this spam score and the user's settings rspamd recommends an action
 the MTA to apply to the message- for example to pass, reject or add a header.
 Rspamd is designed to process hundreds of messages per second simultaneously.
 
-You can watch the following [introduction video](https://www.youtube.com/watch?v=_fl9i-az_Q0) from [FOSDEM-2016](http://fosdem.org) where I describe the main features of rspamd and explain why rspamd runs so fast.
+You can watch the following [introduction video](https://www.youtube.com/watch?v=_fl9i-az_Q0) from [FOSDEM-2016](https://archive.fosdem.org/2016/) where I describe the main features of rspamd and explain why rspamd runs so fast.
 
 Rspamd is [packaged]({{ site.url }}{{ site.baseurl }}/downloads.html) for the major Linux distributions and is also available via [FreeBSD ports](https://freshports.org/mail/rspamd) and NetBSD [pkgsrc](https://pkgsrc.org).
 
@@ -28,7 +28,7 @@ predefined rules. This feature is similar to regular expressions in spamassassin
 
 
 * **SPF module** validates a message's origin against the policy defined in the DNS record of sender's domain. You can read
-about SPF policies [here](http://www.openspf.org/). A number of mail systems include SPF support, such as `gmail` or `yahoo mail`.
+about SPF policies [here](http://www.open-spf.org/). A number of mail systems include SPF support, such as `gmail` or `yahoo mail`.
 
 
 * **DKIM module** validates a message cryptographic signature against a public key placed in the DNS record of sender's domain. Like SPF,
@@ -46,12 +46,12 @@ This technique is very useful for finding malicious domains.
 
 * **Statistics** - rspamd uses a bayesian classifier based on five gramms of input. This means that the input is evaluated not based on individual
 words, but organized into chains. This approach achieves better results than
-traditionally used monogramms (or words literally speaking). It's described in detail in [this paper](http://osbf-lua.luaforge.net/papers/osbf-eddc.pdf).
+traditionally used monogramms (or words literally speaking). It's described in detail in [this paper](https://web.archive.org/web/20181024182218/http://osbf-lua.luaforge.net/papers/osbf-eddc.pdf).
 
 
 * **Fuzzy hashes** - for identifying malicious mail patterns rspamd uses so-called `fuzzy hashes`. Unlike normal hashes, these structures are designed to hide
 small differences between text patterns allowing to find similar messages quickly. Rspamd has internal storage of such hashes and can block mass spam sendings
-quickly based on users' feedback. Moreover, this allows for feeding rspamd with data from [`honeypots`](http://en.wikipedia.org/wiki/Honeypot_(computing)#Spam_versions)
+quickly based on users' feedback. Moreover, this allows for feeding rspamd with data from [`honeypots`](https://wikipedia.org/wiki/Honeypot_(computing)#Spam_versions)
 without polluting the statistical module.
 
 Rspamd uses a conjunction of different techniques to make a final decision about a message. This improves the overall quality of filtering and reduces the number of
@@ -94,10 +94,10 @@ against a set of multiple patterns & radix bit trie for storing IP addresses inf
 
 ## Extensions
 
-Besides its `C` core, rspamd provides an extensive [Lua](http://lua.org) API to access almost all the features available directly from `C`. Lua is an extremely easy
+Besides its `C` core, rspamd provides an extensive [Lua](https://www.lua.org) API to access almost all the features available directly from `C`. Lua is an extremely easy
 to learn programming language though it is powerful enough to implement complex mail filters. In fact rspamd has a significant amount of code written completely in Lua such as
 DNS blacklists checks, user's settings or different maps implementation. You can also write your own filters and rules in Lua adapting rspamd's functionality to your needs.
-Furthermore, Lua programs are very fast and their performance is rather [close](http://attractivechaos.github.io/plb/) to pure `C`. However, you should note that for the most
+Furthermore, Lua programs are very fast and their performance is rather [close](https://attractivechaos.github.io/plb/) to pure `C`. However, you should note that for the most
 performance critical tasks you usually use the rspamd core functionality than Lua code. Anyway, you can also use `LuaJIT` with rspamd if your goal is maximum performance.
 Functionality supported by the Lua API includes:
 
