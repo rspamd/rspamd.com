@@ -78,7 +78,7 @@ clamav {
   # If set force this action if any virus is found (default unset: no action is forced)
   # action = "reject";
   # message = '${SCANNER}: virus found: "${VIRUS}"';
-  # Scan mime_parts seperately - otherwise the complete mail will be transfered to AV Scanner
+  # Scan mime_parts separately - otherwise the complete mail will be transferred to AV Scanner
   #attachments_only = true; # Before 1.8.1
   #scan_mime_parts = true; # After 1.8.1
   # Scanning Text is suitable for some av scanner databases (e.g. Sanesecurity)

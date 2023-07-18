@@ -328,11 +328,11 @@ If your issue is related to crashes, then you need to obtain core file prior to 
 
 
 
-For issues about the rules, we usually need a **message sample** that causes a problem. To protect your privacy, you can remove unrelevant headers and content. E.g. you can blind message sender/recipients, subject and/or other fields.
+For issues about the rules, we usually need a **message sample** that causes a problem. To protect your privacy, you can remove irelevant headers and content. E.g. you can blind message sender/recipients, subject and/or other fields.
 
 For issues with SPF, we need SMTP From (or Helo) and sender's IP address.
 
-For issues with statistics, DKIM or ARC we unfotunately need a full message with all headers and content being preserved.
+For issues with statistics, DKIM or ARC we unfortunately need a full message with all headers and content being preserved.
 
 Without message samples, your bug reports will not be considered unless you provide either patch or a bug is tirvial by its nature.
 
@@ -1246,7 +1246,7 @@ This symbol means that you have exceeded the amount of DNS queries allowed for n
 
 ### How can I use commercial feeds for SURBL/RBL others
 
-The most starightforward way is to use your own local resolver with forward zones that point to dedicated rbldnsd instance or instances that serve static zones provided by different vendors (e.g. Spamhaus or SURBL). Here is a sample configuration snippet for `Unbound` caching resolver:
+The most straightforward way is to use your own local resolver with forward zones that point to dedicated rbldnsd instance or instances that serve static zones provided by different vendors (e.g. Spamhaus or SURBL). Here is a sample configuration snippet for `Unbound` caching resolver:
 
 ```
 forward-zone:
@@ -1498,7 +1498,7 @@ From version 1.7.0 onwards, proxy worker can pass a special header called `setti
 settings {
   outbound {
     priority = high;
-    id = "outbound"; # Can be omitted as the rule itself is already called `outboud`
+    id = "outbound"; # Can be omitted as the rule itself is already called `outbound`
     apply {
       actions {
         reject = 150.0;

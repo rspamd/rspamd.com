@@ -5,7 +5,7 @@ title: Elasticsearch module
 
 # Elasticsearch module
 
-Elasticsearch module pushes a variety of message-related metadata to an instance of [Elasticsearch](https://elastic.co/). This module provides exporter, template creation logic and a simple kibana dashboard.
+Elasticsearch module pushes a variety of message-related metadata to an instance of [Elasticsearch](https://elastic.co/). This module provides exporter, template creation logic and a simple Kibana dashboard.
 
 <img src="http://i.imgur.com/etYWT8R.png" class="img-responsive" />
 
@@ -34,7 +34,7 @@ timeout = 5;
 #kibana_file = "${PLUGINSDIR}/elastic/kibana.json";
 # Elasticsearch index name pattern
 index_pattern = "rspamd-%Y.%m.%d";
-# Import kibana template
+# Import Kibana template
 import_kibana = false;
 # Use https if needed
 use_https = false;

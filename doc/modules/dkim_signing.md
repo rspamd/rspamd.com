@@ -314,7 +314,7 @@ key_table = [
 ];
 ~~~
 
-When using these options, they *passthrough* all mismatch checks. The only meaninglful setting is `sign_networks` in this mode as it corresponds with OpenDKIM behaviour. Otherwise, Rspamd will perform signing based on matching of the Mime `From` header with the entries in `signing_table`
+When using these options, they *passthrough* all mismatch checks. The only meaningful setting is `sign_networks` in this mode as it corresponds with OpenDKIM behaviour. Otherwise, Rspamd will perform signing based on matching of the Mime `From` header with the entries in `signing_table`
 
 ## HTTP headers based DKIM signing
 

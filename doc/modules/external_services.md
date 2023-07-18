@@ -32,7 +32,7 @@ In case of connection errors or failures reported by the external service, the f
 ...
 ~~~
 
-By default, the complete email will be sent to the external service system. You can and you have to change this behavior for some services by setting `scan_mime_parts = true;` to send all mime parts detected as attachments seperately. If you also want to scan text mimes and images using the AV scanner, you can set the `scan_text_mime` or `scan_image_mime` parameter to "true".
+By default, the complete email will be sent to the external service system. You can and you have to change this behavior for some services by setting `scan_mime_parts = true;` to send all mime parts detected as attachments separately. If you also want to scan text mimes and images using the AV scanner, you can set the `scan_text_mime` or `scan_image_mime` parameter to "true".
 
 Furthermore, there are two types of MIME part filters available:
 
@@ -73,7 +73,7 @@ icap {
   # type of scanner: "icap", "oletools", "dcc" or "vadesecure"
   type = "icap";
 
-  # Scan mime_parts seperately - otherwise the complete mail will be transfered
+  # Scan mime_parts separately - otherwise the complete mail will be transferred
   #scan_mime_parts = true;
   #scan_text_mime = false;
   #scan_image_mime = false;

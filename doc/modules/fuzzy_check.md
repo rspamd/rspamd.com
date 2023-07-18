@@ -92,7 +92,7 @@ fuzzy_check {
 
 A fuzzy `rule` is defined as a set of `rule` definitions. Each `rule` is required to have a `servers` list for checking or teaching (training), along with a set of flags and optional parameters. 
 
-The `servers` parameter defines [upstream](https://rspamd.com/doc/configuration/upstream.html) oobject that can be configured to rotate or shard as needed. Sharding is performed based on the hash value itself.
+The `servers` parameter defines [upstream](https://rspamd.com/doc/configuration/upstream.html) object that can be configured to rotate or shard as needed. Sharding is performed based on the hash value itself.
 
 The available parameters include:
 
@@ -219,7 +219,7 @@ To accomplish this, you can use the `rspamc` command or connect to the **control
 For learning, you must check the following settings:
 
 1. Controller worker should be accessible by `rspamc` or HTTP (check `bind_socket`)
-2. Controller should allow privilleged commands for this client (check `enable_password` or `allow_ip` settings)
+2. Controller should allow privileged commands for this client (check `enable_password` or `allow_ip` settings)
 3. Controller should have `fuzzy_check` module configured to the servers specified
 4. You should know `fuzzy_key` and `fuzzy_shingles_key` to operate with this storage
 5. Your `fuzzy_check` module should have `fuzzy_map` configured to the flags used by server

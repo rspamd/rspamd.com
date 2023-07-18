@@ -46,7 +46,7 @@ To use the greylisting module, you must first set up a Redis server to store has
 * **`timeout`**: defines greylisting timeout (5 min by default)
 * **`whitelisted_ip`**: map of IP addresses and/or subnets to skip greylisting for
 * **`whitelist_domains_url`**: map of hostnames and/or eSLDs of hostnames to skip greylisting for
-* **`report_time`**: tell when greylisting is epired (appended to `message`)
+* **`report_time`**: tell when greylisting is expired (appended to `message`)
 * **`whitelist_symbols`**: skip greylisting when specific symbols have been found (from 1.9.1)
 
 If you want to skip greylisting based on other conditions, you can simply disable the `GREYLIST_CHECK` and `GREYLIST_SAVE` symbols using the [settings module]({{ site.baseurl }}/doc/configuration/settings.html).

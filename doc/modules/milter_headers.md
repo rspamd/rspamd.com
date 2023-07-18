@@ -362,7 +362,7 @@ If desired, the [`extended_headers_rcpt`](#extended_headers_rcpt-162) option can
 
 ### Disabling DSN
 
-Delivery status notification (DSN) reports for *successful* demail deliveries can include the original message headers, including Rspamd headers. The only way to prevent this is to stop offering DSN to foreign servers. 
+Delivery status notification (DSN) reports for *successful* email deliveries can include the original message headers, including Rspamd headers. The only way to prevent this is to stop offering DSN to foreign servers.
 
 Additionally, disabling DSN can prevent the generation of backscatter.
 
@@ -391,7 +391,7 @@ master.cf:
 smtp      inet  n       -       n       -       1       postscreen
   -o smtpd_discard_ehlo_keyword_address_maps=cidr:$config_directory/esmtp_access
 ```
-or globaly
+or globally
 main.cf:
 
 ```conf

@@ -56,7 +56,7 @@ Below are the configuration parameters for DMARC reporting, along with correspon
     smtp_port = 25; # SMTP server port
     from_name = 'Rspamd'; # SMTP FROM
     msgid_from = 'rspamd'; # Msgid format
-    max_entries = 1k; # Maxiumum amount of entries per domain
+    max_entries = 1k; # Maximum amount of entries per domain
     keys_expire = 2d; # Expire date for Redis keys
     #only_domains = '/path/to/map'; # Only store reports from domains or eSLDs listed in this map
     # Available from 3.3
