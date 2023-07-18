@@ -19,7 +19,7 @@ In addition, there is a special set where suffixes are stored, and the keyname f
 
 ## Compression
 
-Rspamd uses [zstd](https://zstd.net) compression, which is highly efficient for both compression and decompression, offering a typical compression rate of 50% for history elements. As long as you have sufficient computational power, it is recommended to use zstd in order to minimize Redis memory usage when storing elements.
+Rspamd uses [zstd](https://facebook.github.io/zstd/) compression, which is highly efficient for both compression and decompression, offering a typical compression rate of 50% for history elements. As long as you have sufficient computational power, it is recommended to use zstd in order to minimize Redis memory usage when storing elements.
 
 ## WebUI support
 

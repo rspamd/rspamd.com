@@ -9,7 +9,7 @@ The RBL module offers support for checking various message elements, such as the
 
 By default, Rspamd comes with a set of RBL rules pre-configured for popular resources that are often free for non-profit usage, subject to fair usage policies. If you require a different level of support or access, please contact the relevant vendors.
 
-For example, you can use [Abusix Mail Intelligence](https://docs.abusix.com/105726-setup-abusix-mail-intelligence/rspamd-configuration) or [Spamhaus DQS](https://github.com/spamhaus/rspamd-dqs) or any other RBL provider that suits your needs. 
+For example, you can use [Abusix Mail Intelligence](https://docs.abusix.com/abusix-mail-intelligence/getting-started/dmw9dcwSGSNQiLTssFAnBW#rspamd) or [Spamhaus DQS](https://github.com/spamhaus/rspamd-dqs) or any other RBL provider that suits your needs.
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>

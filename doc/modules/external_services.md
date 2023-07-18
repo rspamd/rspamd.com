@@ -608,7 +608,7 @@ The `RAZOR` symbole will be added based on the exit code of Razor (0 = SPAM or 1
 
 ## VadeSecure specific details
 
-To use the VadeSecure module, a valid installation of Filterd from [VadeSecure](https://www.vadesecure.com/en/email-content-filtering-isp/) is required. Please [contact VadeSecure](https://www.vadesecure.com) to obtain a valid trial or commercial license to get this product.
+To use the VadeSecure module, a valid installation of Filterd from [VadeSecure](https://www.vadesecure.com/en/isp-products/) is required. Please [contact VadeSecure](https://www.vadesecure.com) to obtain a valid trial or commercial license to get this product.
 
 Once installed, you can use VadeSecure to adjust symbols based on the category returned by Filterd. The default settings for this module are listed below and can be redefined in the `local.d/external_services.conf` file as needed:
 

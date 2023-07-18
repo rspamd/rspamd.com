@@ -51,9 +51,9 @@ There is also some significant amount of home-crafted scripts written in Lua to 
 
 Now some words about hardware being used.
 
-Previously we have set the same setup on a small instance of [AX-60](https://www.hetzner.com/dedicated-rootserver/ax60-ssd) and it was loaded for around 80%. We have decided to move to a more powerful server to have some margin for processing more emails and doing some experiments.
+Previously we have set the same setup on a small instance of [AX-60](https://web.archive.org/web/20190319181059/https://www.hetzner.com/dedicated-rootserver/ax60-ssd) and it was loaded for around 80%. We have decided to move to a more powerful server to have some margin for processing more emails and doing some experiments.
 
-Hence, we now have an [AX-160](https://www.hetzner.com/dedicated-rootserver/ax160-ssd) AMD server rented in [Hetzner](https://www.hetzner.com/). This is quite a powerful machine and the current load pictures look like this one:
+Hence, we now have an [AX-160](https://web.archive.org/web/20190319181053/https://www.hetzner.com/dedicated-rootserver/ax160-ssd) AMD server rented in [Hetzner](https://www.hetzner.com/). This is quite a powerful machine and the current load pictures look like this one:
 
 <pre>
 <div class="term">
