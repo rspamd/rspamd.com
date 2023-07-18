@@ -30,7 +30,7 @@ The original Lua bindings are too complicated at the moment. The idea is to unif
 
 ### Additional statistics backends
 
-Currently, we support plain mapped files only for storing statistics tokens. However, we'd like to support other backends, such as redis, sqlite or other storages.
+Currently, we support plain memory-mapped files only for storing statistics tokens. However, we'd like to support other backends, such as redis, sqlite or other storages.
 
 * Difficulty: hard
 * Required skills: C

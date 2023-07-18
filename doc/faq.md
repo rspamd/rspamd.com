@@ -328,7 +328,7 @@ If your issue is related to crashes, then you need to obtain core file prior to 
 
 
 
-For issues about the rules, we usually need a **message sample** that causes a problem. To protect your privacy, you can remove irelevant headers and content. E.g. you can blind message sender/recipients, subject and/or other fields.
+For issues about the rules, we usually need a **message sample** that causes a problem. To protect your privacy, you can remove irrelevant headers and content. E.g. you can blind message sender/recipients, subject and/or other fields.
 
 For issues with SPF, we need SMTP From (or Helo) and sender's IP address.
 
