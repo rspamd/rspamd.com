@@ -30,7 +30,7 @@ To complete the setup, simply inform rspamd of the location where the `dccifd` i
 enabled = true; # Required as default is to disable DCC plugin
 
 # Define local socket or TCP servers in upstreams syntax
-# When sockets and servers are definined - servers is used!
+# When sockets and servers are defined - servers is used!
 
 servers = "/var/dcc/dccifd"; # Unix socket
 #servers = "127.0.0.1:10045" # OR TCP upstreams

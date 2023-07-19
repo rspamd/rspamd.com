@@ -19,7 +19,7 @@ You can select the module you are interested in in the list on the left. Some of
 
 ## Using async requests inside plugins
 
-Please read the following [document]({{ site.url }}{{ site.baseurl }}/doc/lua/sync_async.html) that desribes the main principles of writing async code in Rspamd.
+Please read the following [document]({{ site.url }}{{ site.baseurl }}/doc/lua/sync_async.html) that describes the main principles of writing async code in Rspamd.
 
 ## References
 

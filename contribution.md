@@ -30,7 +30,7 @@ The original Lua bindings are too complicated at the moment. The idea is to unif
 
 ### Additional statistics backends
 
-Currently, we support plain mmapped files only for storing statistics tokens. However, we'd like to support other backends, such as redis, sqlite or other storages.
+Currently, we support plain memory-mapped files only for storing statistics tokens. However, we'd like to support other backends, such as redis, sqlite or other storages.
 
 * Difficulty: hard
 * Required skills: C
@@ -62,7 +62,7 @@ Currently, rspamd allows to turn on and turn off debugging logs globally. Ideall
 
 ### New rules
 
-The never-ending task of writing new rules is here. Spam fighting is a continious process, so we need help from mail administrators who want to contribute their useful rules.
+The never-ending task of writing new rules is here. Spam fighting is a continuous process, so we need help from mail administrators who want to contribute their useful rules.
 
 * Difficulty: easy
 * Required skills: Lua

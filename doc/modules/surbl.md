@@ -105,7 +105,7 @@ It is also possible to check HTML images URLs using URL blacklists. Just specify
 }
 ~~~
 
-By default, Rspamd checks each SURBL `sanity` by queriyng of `facebook.com` domain. URL black list must NOT reply by some positive result (other than NXDOMAIN) to such a query. However, sometimes you might need to change that to another domain (e.g. to `INVALID`), so you can use `monitored_domain` option from Rspamd 1.6:
+By default, Rspamd checks each SURBL `sanity` by querying of `facebook.com` domain. URL black list must NOT reply by some positive result (other than NXDOMAIN) to such a query. However, sometimes you might need to change that to another domain (e.g. to `INVALID`), so you can use `monitored_domain` option from Rspamd 1.6:
 
 ~~~ucl
 "HOSTKARMA_URIBL" {

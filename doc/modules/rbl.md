@@ -214,7 +214,7 @@ whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
       checks = ['emails', 'dkim', 'urls'];
       # Also check images
       images = true;
-      # Сheck emails for URLs
+      # Check emails for URLs
       emails_domainonly = true;
       # Hashed BL
       hash = 'blake2';
@@ -296,7 +296,7 @@ URL blacklists can also be used to check DKIM signature domains, HTML image URLs
       checks = ['emails', 'dkim', 'urls'];
       # Also check images
       images = true;
-      # Сheck emails for URLs
+      # Check emails for URLs
       emails_domainonly = true;
       # Hashed BL
       hash = 'blake2';
