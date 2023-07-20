@@ -61,7 +61,7 @@ title: Rspamd spam filtering system
 										<div class="item active">
 												<div class="carousel-content"><div>
 														<div class="col-sm-3 col-xs-12">
-																<a href="http://www.locaweb.com.br/" target="_blank"><img src="img/logo_locaweb.png" class="img-responsive"></a>
+																<a href="https://www.locaweb.com.br/" target="_blank"><img src="img/logo_locaweb.png" class="img-responsive"></a>
 														</div>
 														<div class="col-sm-9 col-xs-12">
 																<blockquote>
@@ -104,7 +104,7 @@ title: Rspamd spam filtering system
 										<div class="item">
 												<div class="carousel-content"><div>
 																<div class="col-sm-2 col-xs-12 col-sm-offset-1">
-																		<a href="http://www.ozon.ru/" target="_blank"><img src="img/ozon_logo.png" class="img-responsive"></a>
+																		<a href="https://www.ozon.ru/" target="_blank"><img src="img/ozon_logo.png" class="img-responsive"></a>
 																</div>
 																<div class="col-sm-9 col-xs-12">
 																		<blockquote>

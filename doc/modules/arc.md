@@ -5,7 +5,7 @@ title: ARC module
 
 # ARC module
 
-This module verifies [ARC](http://arc-spec.org/) signatures and seals for scanned emails, which demonstrate the message's authenticity through a series of trusted relays. The ARC standard is explained in detail at <https://dmarc.org/presentations/ARC-Overview-2016Q2-v03.pdf>.
+This module verifies [ARC](https://arc-spec.org/) signatures and seals for scanned emails, which demonstrate the message's authenticity through a series of trusted relays. The ARC standard is explained in detail at <https://dmarc.org/presentations/ARC-Overview-2016Q2-v03.pdf>.
 
 Rspamd, starting from version 1.6, offers support for both checking and signing ARC signatures and seals. It utilizes the [dkim](./dkim.html) module to manage signatures.
 

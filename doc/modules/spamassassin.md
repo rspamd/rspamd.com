@@ -31,7 +31,7 @@ that if an individual rule occurs multiple times, it may be overwritten.
 ## Limitations and principles of work
 
 Rspamd tries to optimize SA rules quite aggressively. Some of that optimizations
-are described in the following [presentation](http://highsecure.ru/ast-rspamd.pdf).
+are described in the following [presentation](https://highsecure.ru/ast-rspamd.pdf).
 To achieve this objective, Rspamd treats all rules as `expression atoms`. While meta 
 rules are considered as **real** Rspamd rules that possess their symbol and score, 
 other rules are typically concealed. Nevertheless, it is possible to specify a minimum 
@@ -73,6 +73,6 @@ regular expressions might benefit from "hyperscan" support, which is accessible 
 as of Rspamd version 1.1.
 
 The SpamAssassin plugin is implemented in Lua and encompasses numerous functional components. 
-As a result, to enhance its speed, one may wish to compile Rspamd with [luajit](http://luajit.org), 
+As a result, to enhance its speed, one may wish to compile Rspamd with [luajit](https://luajit.org),
 a high-speed engine that approaches the speed of standard C. Since Rspamd version 0.9, LuaJIT has been 
 enabled by default.

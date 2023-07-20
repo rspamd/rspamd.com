@@ -68,7 +68,7 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [asn](asn.html) - looks up ASN-related information
 - [clickhouse](clickhouse.html) - pushes scan-related information to clickhouse DBMS (requires configuration)
 - [bayes_expiry](bayes_expiry.html) - provides expiration of statistical tokens (requires Redis and configuration)
-- [dcc](dcc.html) - performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine message bulkiness (requires configuration)
+- [dcc](dcc.html) - performs [DCC](https://www.dcc-servers.net/dcc/) lookups to determine message bulkiness (requires configuration)
 - [dkim_signing](dkim_signing.html) - adds DKIM signatures to messages (requires configuration)
 - [dmarc](dmarc.html) - performs DMARC policy checks (requires Redis & configuration for reporting)
 - [elastic](elastic.html) - pushes scan-related information to Elasticsearch. (requires configuration)

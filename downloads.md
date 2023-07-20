@@ -153,7 +153,7 @@ Rspamd is also supported on the following Linux distributions:
 Rspamd is available in the [community repository](https://pkgs.alpinelinux.org/package/edge/community/x86_64/rspamd)
 
 ### Arch Linux
-Rspamd is available in the [community repository](https://www.archlinux.org/packages/community/x86_64/rspamd/)
+Rspamd is available in the [community repository](https://archlinux.org/packages/extra/x86_64/rspamd/)
 
 ### Gentoo Linux
 Ebuilds for Gentoo Linux users are available in the main [Gentoo Portage repository](https://packages.gentoo.org/packages/mail-filter/rspamd).
@@ -162,7 +162,7 @@ Ebuilds for Gentoo Linux users are available in the main [Gentoo Portage reposit
 Packages for OpenSUSE Leap & Tumbleweed are available on [OBS](https://build.opensuse.org/package/show/server:mail/rspamd).
 
 ### Void Linux
-Packages for Void Linux are available in the main [package repository](https://github.com/voidlinux/void-packages/tree/master/srcpkgs/rspamd).
+Packages for Void Linux are available in the main [package repository](https://github.com/void-linux/void-packages/tree/master/srcpkgs/rspamd).
 
 </div>
         </div>
@@ -209,9 +209,9 @@ Rspamd requires several 3-rd party software to build and run:
 * [cmake](https://cmake.org/) - build system used to configure rspamd
 * [sqlite3](https://sqlite.org/) - embedded database used to store some data by rspamd
 * [libmagic](https://www.darwinsys.com/file/) - common library for detecting file types
-* [libicu](http://site.icu-project.org/) - unicode library
+* [libicu](https://icu.unicode.org/) - unicode library
 * [PCRE](https://www.pcre.org/) - regular expressions library
-* [Hyperscan](https://hyperscan.io)/[Vectorscan](https://github.com/VectorCamp/vectorscan) - optional regexp performance boost library
+* [Hyperscan](https://www.hyperscan.io)/[Vectorscan](https://github.com/VectorCamp/vectorscan) - optional regexp performance boost library
 * [zlib](https://zlib.net/) - compression library
 
 You can either install them from sources or (recommended) install using package manager of your system.

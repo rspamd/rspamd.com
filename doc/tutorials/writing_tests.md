@@ -21,7 +21,7 @@ Rspamd has two types of tests:
 
 ## Unit tests
 
-Unit tests are placed in `test/lua/unit`. Each tests defines testing context, where there are main definitions used by all test cases, for example, [FFI](http://luajit.org/ext_ffi.html) definitions:
+Unit tests are placed in `test/lua/unit`. Each tests defines testing context, where there are main definitions used by all test cases, for example, [FFI](https://luajit.org/ext_ffi.html) definitions:
 
 ```lua
 context("Inet addr check functions", function()

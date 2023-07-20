@@ -54,7 +54,7 @@ Selects upstreams randomly ignoring priorities.
 
 ### Hash algorithm
 
-Selects upstream based on hash value of the input key. Rspamd uses a [consistent hash algorithm](http://arxiv.org/abs/1406.2294) that allows you to split data between shards based on some key value. This rotation is available for specific upstreams, for example, some Redis upstreams. Otherwise, `round-robin` algorithm is used.
+Selects upstream based on hash value of the input key. Rspamd uses a [consistent hash algorithm](https://arxiv.org/abs/1406.2294) that allows you to split data between shards based on some key value. This rotation is available for specific upstreams, for example, some Redis upstreams. Otherwise, `round-robin` algorithm is used.
 
 ## Upstreams lifetime
 

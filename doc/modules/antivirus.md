@@ -9,11 +9,11 @@ The Antivirus module, available from Rspamd version 1.4, seamlessly integrates w
 
 * [Avast Antivirus Rest API](https://businesshelp.avast.com/Content/Products/AfB_Antivirus/Linux/InstallingAvastBusinessAntivirusLinux.htm) (from 3.3)
 * [Avira](https://www.avira.com/de/oem-antivirus) (via SAVAPI)
-* [ClamAV](http://www.clamav.net)
-* [F-Prot](http://www.f-prot.com/products/corporate_users/unix/linux/mailserver.html)
+* [ClamAV](https://www.clamav.net)
+* [F-Prot](https://www.f-prot.com/)
 * [Kaspersky antivirus](https://www.kaspersky.com/small-to-medium-business-security/linux-mail-server) (from 1.8.3)
 * [Kaspersky Scan Engine](https://www.kaspersky.com/scan-engine) (from 2.0)
-* [Sophos](https://www.sophos.com/en-us/medialibrary/PDFs/partners/sophossavdidsna.pdf) (via SAVDI)
+* [Sophos](https://web.archive.org/web/20140810135906/https://www.sophos.com/en-us/medialibrary/PDFs/partners/sophossavdidsna.pdf) (via SAVDI)
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>

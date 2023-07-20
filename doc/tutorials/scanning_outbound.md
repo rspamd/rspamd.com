@@ -76,7 +76,7 @@ redirect_outbound_spam:
 # <rest of configuration>
 ~~~
 
-See the [Exim specification](http://www.exim.org/exim-html-current/doc/html/spec_html/) for more information.
+See the [Exim specification](https://www.exim.org/exim-html-current/doc/html/spec_html/) for more information.
 
 ### Haraka
 

@@ -423,7 +423,7 @@ Note that in versions <= 2.7, flags were ordered but stacked to the right in the
 
 ## DCC specific details
 
-This modules performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine
+This modules performs [DCC](https://www.dcc-servers.net/dcc/) lookups to determine
 the *bulkiness* of a message (e.g. how many recipients have seen it).
 
 This is particularly valuable in composite rules, such as when a message is from a freemail domain AND it is identified as bulk by DCC, making it easier to classify it as spam and assign a higher weight to it. 
@@ -608,7 +608,7 @@ The `RAZOR` symbole will be added based on the exit code of Razor (0 = SPAM or 1
 
 ## VadeSecure specific details
 
-To use the VadeSecure module, a valid installation of Filterd from [VadeSecure](https://www.vadesecure.com/en/email-content-filtering-isp/) is required. Please [contact VadeSecure](https://www.vadesecure.com) to obtain a valid trial or commercial license to get this product.
+To use the VadeSecure module, a valid installation of Filterd from [VadeSecure](https://www.vadesecure.com/en/isp-products/) is required. Please [contact VadeSecure](https://www.vadesecure.com) to obtain a valid trial or commercial license to get this product.
 
 Once installed, you can use VadeSecure to adjust symbols based on the category returned by Filterd. The default settings for this module are listed below and can be redefined in the `local.d/external_services.conf` file as needed:
 

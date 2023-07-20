@@ -170,7 +170,7 @@ Rmilter can also set custom prefixes for the keys pushed into Redis:
 - `white_prefix`: used to whitelist records after greylisting
 - `id_prefix`: used to store message ids
 
-Copying messages to [Pub/Sub](http://redis.io/topics/pubsub) channels also requires to setup channels in Redis:
+Copying messages to [Pub/Sub](https://redis.io/docs/interact/pubsub/) channels also requires to setup channels in Redis:
 
 - `spam_channel`: channel for spam messages
 - `copy_channel`: channel for copies

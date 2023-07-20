@@ -69,7 +69,7 @@ If you have your SA up and running it is usually possible to switch the system t
 
 ## Statistics
 
-Rspamd statistics are not compatible with SA as Rspamd uses a more advanced statistics algorithm, described in the following [article](http://osbf-lua.luaforge.net/papers/trec2006_osbf_lua.pdf), so please bear in mind that you need to **relearn** your statistics. This can be done, for example, by using the `rspamc` command: assuming that you have your messages in separate files (e.g. `maildir` format), placed in directories `spam` and `ham`:
+Rspamd statistics are not compatible with SA as Rspamd uses a more advanced statistics algorithm, described in the following [article](https://web.archive.org/web/20160331200621/http://osbf-lua.luaforge.net/papers/trec2006_osbf_lua.pdf), so please bear in mind that you need to **relearn** your statistics. This can be done, for example, by using the `rspamc` command: assuming that you have your messages in separate files (e.g. `maildir` format), placed in directories `spam` and `ham`:
 
 	rspamc learn_spam spam/
 	rspamc learn_ham ham/

@@ -7,9 +7,9 @@ title: MTA integration
 
 This document describes several methods of integrating rspamd with some popular MTAs. Among them are:
 
-* [Postfix](http://www.postfix.org)
-* [Exim](http://exim.org)
-* [Sendmail](http://sendmail.org)
+* [Postfix](https://www.postfix.org)
+* [Exim](https://exim.org)
+* [Sendmail](https://sendmail.org)
 * [Haraka](https://haraka.github.io/)
 * [EmailSuccess](https://www.emailsuccess.com)
 * [Apache James](https://james.apache.org)
@@ -112,7 +112,7 @@ acl_check_spam:
   accept
 ```
 
-For further information please refer to the [Exim specification](http://www.exim.org/exim-html-current/doc/html/spec_html){:target="&#95;blank"}, especially the [chapter about content scanning](http://www.exim.org/exim-html-current/doc/html/spec_html/ch-content_scanning_at_acl_time.html){:target="&#95;blank"}.
+For further information please refer to the [Exim specification](https://www.exim.org/exim-html-current/doc/html/spec_html/){:target="&#95;blank"}, especially the [chapter about content scanning](https://www.exim.org/exim-html-current/doc/html/spec_html/ch-content_scanning_at_acl_time.html){:target="&#95;blank"}.
 
 ## Using Rspamd with Sendmail MTA
 

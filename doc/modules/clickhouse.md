@@ -94,7 +94,7 @@ subject_privacy_length = 16;
 #  # disabled by default
 #  enable = true;
 #  # drop | detach, please refer to ClickHouse docs for details
-#  # http://clickhouse-docs.readthedocs.io/en/latest/query_language/queries.html#manipulations-with-partitions-and-parts
+#  # https://clickhouse.com/docs/en/sql-reference/statements/alter/partition
 #  method = "drop";
 #  # how many month the data should be kept in ClickHouse
 #  period_months = 3;
@@ -149,7 +149,7 @@ Privacy is a crucial consideration in many email systems. The Clickhouse dumps m
 retention {
   enable = true;
   # drop | detach, please refer to ClickHouse docs for details
-  # http://clickhouse-docs.readthedocs.io/en/latest/query_language/queries.html#manipulations-with-partitions-and-parts
+  # https://clickhouse.com/docs/en/sql-reference/statements/alter/partition
   method = "drop";
   # how many month the data should be kept in ClickHouse
   period_months = 3;

@@ -5,7 +5,7 @@ title: Lua API documentation
 
 # Lua API documentation {#top}
 
-[Lua](http://www.lua.org) is used for writing rules and plugins in Rspamd. Rspamd exposes various core functionality through its Lua API.
+[Lua](https://www.lua.org) is used for writing rules and plugins in Rspamd. Rspamd exposes various core functionality through its Lua API.
 
 ## Using Lua API from rules
 

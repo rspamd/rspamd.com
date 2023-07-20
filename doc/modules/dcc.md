@@ -4,7 +4,7 @@ title: DCC module
 ---
 # DCC module
 
-This modules performs [DCC](http://www.dcc-servers.net/dcc/) lookups to determine
+This modules performs [DCC](https://www.dcc-servers.net/dcc/) lookups to determine
 the *bulkiness* of a message (e.g. how many recipients have seen it).
 
 This information, which indicates how many recipients have seen the message, is useful for identifying bulk messages in composite rules. 

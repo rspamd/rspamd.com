@@ -81,7 +81,7 @@ Furthermore, the Log helper worker has been removed, although it is unlikely tha
 
 {% raw %}
 
-From version 1.9.1, Rspamd supports [Jinja2 templates](http://jinja.pocoo.org) provided by [Lupa Lua library](https://foicica.com/lupa/). You can learn more about the basic syntax and capabilities of these templating engines by following the links provided. Rspamd uses a specific syntax for variable tags: `{=` and `=}` instead of the traditional `{{` and `}}` as these tags could represent, for example, a table within a table in Lua.
+From version 1.9.1, Rspamd supports [Jinja2 templates](https://jinja.palletsprojects.com) provided by [Lupa Lua library](https://foicica.com/lupa/). You can learn more about the basic syntax and capabilities of these templating engines by following the links provided. Rspamd uses a specific syntax for variable tags: `{=` and `=}` instead of the traditional `{{` and `}}` as these tags could represent, for example, a table within a table in Lua.
 
 Therefore, in version 1.9.1 and above, your config files must be Jinja safe, meaning that there should be no special sequences such as `{%` or `{=` anywhere in your configuration. Alternatively, you can escape them using `raw` and `endraw` tags as described [here](https://shopify.github.io/liquid/tags/raw/).
 
@@ -89,7 +89,7 @@ Therefore, in version 1.9.1 and above, your config files must be Jinja safe, mea
 
 ## Migration to Rspamd 1.9.0
 
-This version should not generally be incompatible with the previous one aside of the case if you build Rspamd from the sources or use a custom package. From the version 1.9, Rspamd has changed some of the default instalation paths:
+This version should not generally be incompatible with the previous one aside of the case if you build Rspamd from the sources or use a custom package. From the version 1.9, Rspamd has changed some of the default installation paths:
 
 - There is a new `${LIBDIR}/rspamd/librspamd-server.so` library that contains common functions for `rspamd`, `rspamadm` and `rspamc` binaries
 - `${PLUGINSDIR}` is now set to a specific path for Lua plugins and is **no longer** in the Lua path; it is suggested to use `${LUALIBDIR}` for all shared Lua code
@@ -302,10 +302,10 @@ In these releases, systemd socket activation has been removed. Note that upon up
 
 Please note that there are a few changes to the supported features in this release:
 
-* beanstalk support has been removed from Rmilter in honor of Redis [pub/sub](http://redis.io/topics/pubsub), you must remove the whole `beanstalk` section from the configuration file
+* beanstalk support has been removed from Rmilter in honor of Redis [pub/sub](https://redis.io/docs/interact/pubsub/), you must remove the whole `beanstalk` section from the configuration file
 * auto whitelist for greylisting is no longer supported as it has been broken from the very beginning, you must remove all `awl` options from the greylisting section
 
-If you have been using Beanstalk for certain purposes, you can transition to using Redis [pub/sub](http://redis.io/topics/pubsub). The `redis` section includes settings such as `spam_servers` and `spam_channel` for sending spam, and `copy_servers`, `copy_prob`, and `copy_channel` for sending message copies, which can help you reproduce Beanstalk functions using Redis.
+If you have been using Beanstalk for certain purposes, you can transition to using Redis [pub/sub](https://redis.io/docs/interact/pubsub/). The `redis` section includes settings such as `spam_servers` and `spam_channel` for sending spam, and `copy_servers`, `copy_prob`, and `copy_channel` for sending message copies, which can help you reproduce Beanstalk functions using Redis.
 
 Rmilter now provides additional options for configuring your local settings. You can now use `rmilter.conf.local` and `rmilter.conf.d/*.conf` files to override the default configuration.
 

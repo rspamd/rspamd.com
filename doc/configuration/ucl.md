@@ -344,12 +344,12 @@ Each UCL object can be serialized to one of the three supported formats:
 
 ## Validation {#validation}
 
-UCL allows for the validation of objects using the [json schema v4](http://json-schema.org). UCL supports the full set of JSON Schema, with the exception of remote references. This feature may not be useful for configuration objects. A schema definition can also be written in UCL format, which simplifies schema writing. Additionally, since UCL supports multiple values for keys in an object, it is possible to specify generic integer constraints `maxValues` and `minValues` to define the limits on the number of values for a single key. UCL is not strictly enforcing validation of the schema itself, so it is important for users to provide valid schemas according to the JSON Schema v4 specification to ensure proper validation of input objects.
+UCL allows for the validation of objects using the [json schema v4](https://json-schema.org). UCL supports the full set of JSON Schema, with the exception of remote references. This feature may not be useful for configuration objects. A schema definition can also be written in UCL format, which simplifies schema writing. Additionally, since UCL supports multiple values for keys in an object, it is possible to specify generic integer constraints `maxValues` and `minValues` to define the limits on the number of values for a single key. UCL is not strictly enforcing validation of the schema itself, so it is important for users to provide valid schemas according to the JSON Schema v4 specification to ensure proper validation of input objects.
 
 ## Performance {#performance}
 
 Is the UCL parser and emitter fast enough? Here are some performance measurements.
-A 19Mb file consisting of approximately 700,000 lines of JSON (obtained from http://www.json-generator.com/) was used to compare the performance of the jansson library, which handles JSON parsing and emitting, with UCL. Here are the results::
+A 19Mb file consisting of approximately 700,000 lines of JSON (obtained from https://www.json-generator.com/) was used to compare the performance of the jansson library, which handles JSON parsing and emitting, with UCL. Here are the results::
 
     jansson: parsed json in 1.3899 seconds
     jansson: emitted object in 0.2609 seconds

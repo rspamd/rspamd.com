@@ -18,7 +18,7 @@ useful features.
 
 A good starting point to study how to install and configure Rspamd is [the quick start guide]({{ site.url }}{{ site.baseurl }}/doc/quickstart.html).
 
-Rspamd is [packaged]({{ site.url }}{{ site.baseurl }}/downloads.html) for the major Linux distributions, and is also available via [FreeBSD ports](https://freshports.org/mail/rspamd){:target="&#95;blank"}, NetBSD [pkgsrc](https://pkgsrc.org){:target="&#95;blank"} and [OpenBSD ports](http://openports.se/mail/rspamd){:target="&#95;blank"}.
+Rspamd is [packaged]({{ site.url }}{{ site.baseurl }}/downloads.html) for the major Linux distributions, and is also available via [FreeBSD ports](https://freshports.org/mail/rspamd){:target="&#95;blank"}, NetBSD [pkgsrc](https://pkgsrc.org){:target="&#95;blank"} and [OpenBSD ports](https://openports.pl/path/mail/rspamd){:target="&#95;blank"}.
 
 You can also watch some [videos about Rspamd]({{ site.url }}{{ site.baseurl }}/media.html).
 

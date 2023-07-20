@@ -1419,7 +1419,7 @@ local rspamd_regexp = require 'rspamd_regexp'
 Rspamd also ships some additional lua modules which you can use in your rules:
 
 - [Lua functional](https://github.com/rtsisyk/luafun)
-- [Lua LPEG](http://www.inf.puc-rio.br/~roberto/lpeg/)
+- [Lua LPEG](https://www.inf.puc-rio.br/~roberto/lpeg/)
 
 ### How to write to Rspamd log
 [Rspamd logger]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_logger.html) provides many convenient methods to log data from lua rules and plugins. You should consider using one of the modern methods (with `x` suffix) that allow use of `%s` and `%1` .. `%N` notation. The `%s` format is used to print the **next** argument, and `%<number>` is used to process the particular argument (starting from `1`):
