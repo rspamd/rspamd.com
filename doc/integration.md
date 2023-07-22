@@ -13,6 +13,7 @@ This document describes several methods of integrating rspamd with some popular 
 * [Haraka](https://haraka.github.io/)
 * [EmailSuccess](https://www.emailsuccess.com)
 * [Apache James](https://james.apache.org)
+* [Stalwart Mail](https://github.com/stalwartlabs/mail-server)
 
 In addition, this document delves into the Rspamd LDA proxy mode, a versatile tool that can be employed with any MTA.
 
@@ -173,3 +174,24 @@ Specifically, James utilizes the HTTP API to communicate with Rspamd, allowing i
 Additionally, James can also be used as a feedback source for enriching Rspamd's spam/ham database, through live feedback (via mailbox listener) or through a CRON batch job (by calling web-admin tasks). 
 
 For further information, please refer to the James' extensions for Rspamd documentation on [GitHub](https://github.com/apache/james-project/tree/master/third-party/rspamd)
+
+## Integration with Stalwart Mail Server
+
+Rspamd can easily be integrated with Stalwart Mail Server using the `milter` protocol. In order to enable Milter support in rspamd, follow the instructions in the [proxy worker](./workers/rspamd_proxy.html) chapter. 
+
+After setting up the proxy worker to handle milter requests, configure Stalwart Mail Server to use rspamd via milter by adding the following entries to the `etc/config.toml` configuration file:
+
+```toml
+[session.data.milter."rspamd"]
+enable = [ { if = "listener", eq = "smtp", then = true }, 
+           { else = false } ]
+hostname = "127.0.0.1"
+port = 11332
+
+[session.data.milter."rspamd".options]
+tempfail-on-error = true
+max-response-size = 52428800 # 50mb
+version = 6
+```
+
+For more details please refer to the [milter filters](https://stalw.art/docs/smtp/filter/milter) documentation for Stalwart Mail Server.
