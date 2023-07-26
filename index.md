@@ -76,7 +76,7 @@ title: Rspamd spam filtering system
 										<div class="item">
 												<div class="carousel-content"><div>
 														<div class="col-sm-3 col-xs-12">
-																<a href="https://mailcow.email/" target="_blank"><img src="https://mailcow.email/img/cow_mailcow.svg" class="img-responsive" style="max-height: 200px;"></a>
+																<a href="https://mailcow.email/" target="_blank"><img src="img/cow_mailcow.svg" class="img-responsive" style="max-height: 200px;"></a>
 														</div>
 														<div class="col-sm-9 col-xs-12">
 																<blockquote>
