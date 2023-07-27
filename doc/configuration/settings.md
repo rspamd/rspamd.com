@@ -6,15 +6,15 @@ title: Users settings description
 
 ## Introduction
 
-Rspamd can apply different settings for messages scanned. Each setting can define a set of custom metric weights, symbols or actions scores and enable or disable certain checks. Rspamd settings can be loaded as dynamic maps and updated automatically if a corresponding file or URL has changed since its last update.
+Rspamd offers the flexibility to apply various settings for scanned messages. Each setting can define a specific set of custom metric weights, symbol scores, actions scores, and the ability to enable or disable certain checks. These settings can be loaded as dynamic maps, allowing them to be updated automatically whenever the corresponding file or URL has changed since the last update.
 
-To load settings as a dynamic map, you can set 'settings' to a map string:
+To load settings as a dynamic map, you can set the 'settings' to a map string as follows:
 
 ~~~ucl
 settings = "http://host/url"
 ~~~
 
-If you don't want dynamic updates then you can define settings as an object:
+If you prefer not to use dynamic updates, you can define settings as an object using the following format:
 
 ~~~ucl
 settings {
@@ -27,13 +27,13 @@ settings {
 }
 ~~~
 
-To define static settings, you might want to edit `local.d/settings.conf` file (from Rspamd 1.8). If you want to use dynamic map for settings, it might be better to define it in the override file: `rspamd.conf.override`:
+To define static settings, you can edit the `local.d/settings.conf` file (from Rspamd 1.8 onwards). On the other hand, if you want to use a dynamic map for settings, it's recommended to define it in the override file `rspamd.conf.override`:
 
 ~~~ucl
 settings = "http://host/url"
 ~~~
 
-Alternatively, settings apply part (see later) could be passed to Rspamd by a client by query parameter:
+Alternatively, the settings apply part (see later) could be passed to Rspamd by a client through a query parameter:
 
 ~~~
 POST /scanv2?settings="{symbol1 = 10.0}" HTTP/1.0
@@ -46,11 +46,11 @@ POST /scanv2 HTTP/1.0
 Settings: {symbol1 = 10.0}
 ~~~
 
-Settings could also be indexed by ID, allowing to select a specific setting without checking for its conditions. For example, this feature could be used to split inbound and outbound mail flows by specifying different rules set from the MTA side. Another use case of settings id option is to create a dedicated lightweight checks for certain conditions, for example DKIM checks.
+Settings can also be indexed by ID, enabling the selection of a specific setting without the need to check its conditions. This feature can be used to split inbound and outbound mail flows by specifying different rulesets from the MTA side. Another use case for the settings ID option is to create dedicated lightweight checks for certain conditions, such as DKIM checks.
 
-**Important note**: using settings ID is optimal from the terms of performance.
+**Important note**: Using settings ID is optimal in terms of performance.
 
-Let's assume that we have the following settings in the configuration that have id `dkim`:
+Let's assume we have the following settings in the configuration with an ID of `dkim`:
 
 ~~~ucl
 # local.d/settings.conf
@@ -62,14 +62,14 @@ dkim {
 }
 ~~~
 
-Afterwards, if we send a request with this settings id using HTTP protocol:
+Afterwards, if we send a request with this settings ID using the HTTP protocol:
 
 ~~~
 POST /scanv2 HTTP/1.0
 Settings-ID: dkim
 ~~~
 
-then Rspamd won't check all rules but DKIM ones. Alternatively, you could check this setup using `rspamc` command:
+Then Rspamd will only check the DKIM rules and skip the other rules. Alternatively, you could test this setup using the `rspamc` command:
 
 ~~~
 rspamc --header="settings-id=dkim" message.eml
@@ -124,7 +124,7 @@ authenticated {
 So each setting has the following attributes:
 
 - `name` - section name that identifies this specific setting (e.g. `some_users`)
-- `priority` - `high` (3), `medium` (2), `low` (1) or any positive integer value (default priority is `low`). Rules with greater priorities are matched first. From version 1.4 Rspamd checks rules with equal priorities in **alphabetical** order. Once a rule matches only that rule is applied and the rest are ignored.
+- `priority` - `high` (3), `medium` (2), `low` (1) or any positive integer value (default priority is `low`). Rules with greater priorities are matched first. Starting from version 1.4, Rspamd checks rules with equal priorities in **alphabetical** order. Once a rule matches, only that rule is applied, and the rest are ignored.
 - `match list` - list of rules which this rule matches:
 	+ `from` - match SMTP sender
 	+ `from_mime` - match MIME sender
@@ -155,7 +155,7 @@ If `symbols_enabled` or `groups_enabled` are found in `apply` element, then Rspa
 2. Enable symbols from `symbols_enabled` and `groups_enabled`
 3. Disable symbols from `symbols_disabled` and `groups_disabled`
 
-Some rules, such as `metadata exporter`, `history redis` or `clickhouse` are marked as `explicit_disable`. It means that even if you set some specific symbols in `symbols_enabled` these rules will still be executed. This is normally what is expected: enabling specific checks should not interfere with the data exporting/history.
+Certain rules, like `metadata exporter`, `history redis`, or `clickhouse`, are labeled as `explicit_disable`. This means that even if you enable specific symbols in `symbols_enabled`, these rules will still be executed. This behavior is intentional as enabling specific checks should not interfere with data exporting or history logging.
 
 **Important notice**: This is **NOT** applicable to `want_spam` option. This option disable **ALL** Rspamd rules, even history or data exporting. Actually, it is a full bypass of all Rspamd processing.
 
@@ -174,13 +174,13 @@ The picture below describes the architecture of settings matching.
 
 ### Redis settings
 
-Storing settings in Redis provides a very flexible way to apply settings & avoids the need to reload a map.
+Storing settings in Redis offers a highly flexible way to apply settings and eliminates the need to reload a map.
 
-To use settings in Redis we write one or more handlers in Lua, each of which might return a key. If a key is returned, and it exists in Redis, the value of the key is used as settings. This value should be formatted as in the contents of the `apply` block or settings posted in headers.
+To utilize settings in Redis, we create one or more handlers in Lua, each of which may return a key. If a key is returned and exists in Redis, its value is used as the settings. The value of the key should be formatted similarly to the contents of the `apply` block or settings posted in headers.
 
-Let's presume that we want to base our settings on the domain of the first SMTP recipient.
+Let's consider a scenario where we want to base our settings on the domain of the first SMTP recipient.
 
-We could set our keys as follows
+We can set our keys as follows:
 ~~~
 127.0.0.1:6379> SET "setting:example.com" "{symbol1 = 5000;}"
 OK
