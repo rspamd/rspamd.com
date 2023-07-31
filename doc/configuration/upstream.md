@@ -5,11 +5,11 @@ title: Upstreams configuration
 
 # Upstreams configuration in Rspamd
 
-This document describes **upstreams**: list of servers that are selected by Rspamd using specific algorithm to establish a connection.
+This document describes **upstreams**: list of servers that are selected by Rspamd using the specific algorithm to establish a connection.
 
 ## Introduction
 
-List of upstreams is a common structure used in various Rspamd configuration options when you need to setup some remote servers. For example, upstreams are used to connect to a Redis server, to select a DNS server and to establish a connection by Rspamd proxy. Servers in upstream list can be defined by IP addresses (IPv6 addresses should be enclosed in brackets) or Unix domain sockets:
+A list of upstreams is a commonly used structure in various Rspamd configuration options when setting up connections to remote servers. For instance, upstreams are used to connect to a Redis server, select a DNS server, or establish a connection via Rspamd proxy. Servers in the upstream list can be defined using IP addresses (IPv6 addresses should be enclosed in brackets) or Unix domain sockets. Here is an example:
 
     127.0.0.1,[::1]
 
@@ -17,19 +17,19 @@ by names:
 
     serv1.example.com,serv2.example.com
 
-You can also specify custom ports if they differ from the default ones (e.g. `53` for DNS):
+If the ports you need to use are different from the default ones, you have the option to specify custom ports. For example, you can use `53` for DNS:
 
     serv1.example.com:8080,serv2.example.com
 
-It is also possible to define upstreams priorities (described later), but in this case you must also specify a port number:
+Later on, it will be explained how to define the priorities of upstreams. However, if you choose to do so, you must also indicate a port number.:
 
     127.0.0.1:53:10,8.8.8.8:53:1
 
-Unix sockets (starting with `/` or `.`) can also be specified, but priorities are not supported:
+You can specify Unix sockets by starting with either `/` or `.`. However, please note that priorities are not supported in this case.:
 
     /tmp/rspamd.sock,fallback.example.com
 
-Upstreams line can be separated by commas or by semicolons in any combination. You can prepend rotation algorithm to the upstreams line to override the default rotation method (specific for each upstream list definition):
+The upstreams line can be separated by commas or semicolons in any combination. Additionally, you can prepend a rotation algorithm to the upstreams line to override the default rotation method (specific for each upstream list definition):
 
     master-slave:127.0.0.1:53:10,8.8.8.8:53:1
 
@@ -42,11 +42,15 @@ There are several algorithms available in Rspamd so far:
 
 ### Master-slave algorithm
 
-This algorithm always select the upstream with highest weight unless it is not alive. For example, `master-slave:127.0.0.1:53:10,8.8.8.8:53:1`, line specifies that `127.0.0.1` will be always used if possible. You can skip priorities, then the first element is treated as master and the subsequent ones are used as slaves: `master-slave:127.0.0.1,8.8.8.8` is the equivalent of the previous definition.
+The `master-slave` algorithm always selects the upstream with the highest weight unless it is not alive. For example, the line `master-slave:127.0.0.1:53:10,8.8.8.8:53:1` specifies that `127.0.0.1` will always be used if possible, as it has a higher weight (10) compared to `8.8.8.8` (weight 1). If `127.0.0.1` becomes unavailable, Rspamd will use `8.8.8.8` as the backup option.
+
+If you skip specifying priorities, the first element is treated as the master and the subsequent ones are used as slaves. For example, `master-slave:127.0.0.1,8.8.8.8` is equivalent to the previous definition, with `127.0.0.1` considered the master and `8.8.8.8` as a slave.
 
 ### Round-robin algorithm
 
-In this algorithm, upstreams are selected based on its weight, but, after selection, the upstream's weight is decreased by one. For example, `round-robin:127.0.0.1:53:10,8.8.8.8:53:1` will select `127.0.0.1` 10 times and `8.8.8.8` merely one time. After all upstreams are rotated, Rspamd reset current weights to the initial ones. Hence, this could be treated as `10:1` distribution for these two upstreams. Upstreams with errors pending have their priorities penalised according to number of errors pending, so Rspamd prefers to select upstreams with no errors.
+In the `round-robin` algorithm, upstreams are initially selected based on their weights, but after selection, the weight of the chosen upstream is decreased by one. For example, `round-robin:127.0.0.1:53:10,8.8.8.8:53:1` will select `127.0.0.1` ten times and `8.8.8.8` merely once. After all, upstreams are rotated through, Rspamd resets the current weights to their initial values. Therefore, this could be seen as a `10:1` distribution for these two upstreams.
+
+Upstreams that have errors pending will have their priorities penalized according to the number of errors pending, so Rspamd prefers to select upstreams with no errors whenever possible.
 
 ### Random algorithm
 
@@ -54,16 +58,18 @@ Selects upstreams randomly ignoring priorities.
 
 ### Hash algorithm
 
-Selects upstream based on hash value of the input key. Rspamd uses a [consistent hash algorithm](https://arxiv.org/abs/1406.2294) that allows you to split data between shards based on some key value. This rotation is available for specific upstreams, for example, some Redis upstreams. Otherwise, `round-robin` algorithm is used.
+The `hash` algorithm selects an upstream based on the hash value of the input key. Rspamd uses a [consistent hash algorithm](https://arxiv.org/abs/1406.2294) that allows data to be evenly distributed between shards based on some key value. This rotation method is available for specific upstreams, such as certain Redis upstreams. Otherwise, the `round-robin` algorithm is used.
 
 ## Upstreams lifetime
 
-Each upstream is monitored by Rspamd for errors. If an error occur Rspamd places an upstream in monitoring mode during which it analyses errors rate (this is usually set by options `max_errors` and `error_time` where rate is calculated by `errors` / `time elapsed since monitoring start`). If this error rate is higher than desired (`max_errors` / `error_time`) then Rspamd marks upstream as inactive unless there are no active upstreams. Any successful connection during `monitoring` state returns an upstream to the `active` state. Upon reaching error rate limit, an upstream is marked as inactive and Rspamd waits for some time configured by option `revive_time` to restore upstream in the active list. The overall process is depicted in the following scheme:
+Rspamd monitors each upstream for errors. If an error occurs, Rspamd places the upstream in monitoring mode during which it analyzes the error rate. The error rate is calculated as `errors` / `time elapsed since monitoring start`, usually set by options `max_errors` and `error_time`. If the error rate exceeds the desired limit (`max_errors` / `error_time`), Rspamd marks the upstream as inactive, unless no active upstreams are available. Any successful connection during the monitoring state returns the upstream to the active state.
+
+When an upstream reaches the error rate limit, Rspamd marks it as inactive and waits for a certain period of time, configured by the `revive_time` option, before restoring the upstream to the active list. The entire process is illustrated in the following scheme:
 
 <img class="img-responsive" width="75%" src="{{ site.baseurl }}/img/upstreams.png">
 
 ## Name resolution
 
-Rspamd has a special treatment for upstreams defined with their names. During `revive_time`, Rspamd tries to re-resolve names and insert new IP addresses into upstream. If a name has multiple addresses, then Rspamd inserts all. Addresses are selected using round-robin rotation with error checking. Unlike upstreams configurations, errors are persistent and not cleared after successful attempts, so Rspamd always select an address with fewer errors count. This is done to turn off an IPv6 address, for example, if IPv6 is improperly configured in the system.
+Rspamd treats upstreams defined with their names differently. During the `revive_time`, Rspamd attempts to re-resolve these names and inserts any new IP addresses into the upstream list. If a name has multiple addresses, Rspamd includes all of them. The addresses are then selected using round-robin rotation with error checking. Unlike upstream configurations, errors are persistent and not cleared after successful attempts. Therefore, Rspamd always selects an address with a lower error count. This approach is taken to disable an IPv6 address, for example, if IPv6 is improperly configured in the system.
 
-From version 2.0 Rspamd also resolves all upstreams in the background each `lazy_resolve_time` + `jitter(0.1 * lazy_resolve_time)`. By default, this value is 1 hour but you can set this setting to a different value in the configuration (options -> upstreams section).
+Starting from version 2.0, Rspamd also performs background resolution of all upstreams every `lazy_resolve_time` + `jitter(0.1 * lazy_resolve_time)`. By default, this value is set to 1 hour, but you can customize it in the configuration (options -> upstreams section). This allows Rspamd to update its knowledge of upstream IP addresses, ensuring efficient and reliable connections.
