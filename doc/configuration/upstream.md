@@ -17,11 +17,11 @@ by names:
 
     serv1.example.com,serv2.example.com
 
-If the ports you need to use are different from the default ones, you have the option to specify custom ports. For example, you can use `53` for DNS:
+If the ports you need to use are different from the default ones, you have the option to specify custom ports:
 
     serv1.example.com:8080,serv2.example.com
 
-Later on, it will be explained how to define the priorities of upstreams. However, if you choose to do so, you must also indicate a port number.:
+Later on, it will be explained how to define the priorities of upstreams. However, if you choose to do so, you must also indicate a port number:
 
     127.0.0.1:53:10,8.8.8.8:53:1
 
