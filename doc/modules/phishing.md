@@ -87,6 +87,13 @@ Rspamd has included support for [phishtank](https://phishtank.com) ssince versio
 phishtank_enabled = false
 ~~~
 
+You can also use your own phishtank DNS zone:
+
+~~~ucl
+# local.d/phishing.conf
+local phishtank_suffix = 'phishtank.rspamd.com'; # Replace with your own zone
+~~~
+
 ## Generic feed support
 
 To enable support for custom phishing maps from a local file or online URL catalog, you need to enable the generic service support by creating and enabling a service definition. You'll also need to have a local file or URL containing the map data. For instance, you can use a local map from the [CaUMa](https://cauma.pop-ba.rnp.br/about.html) URLs catalog.
