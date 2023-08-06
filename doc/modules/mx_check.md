@@ -5,7 +5,7 @@ title: MX Check module
 
 # MX Check module
 
-he MX Check module examines whether the domain in a message's SMTP FROM address (or the domain in HELO if SMTP FROM is empty) has at least one connectable MX. If a connectable MX is discovered, this data is stored in [Redis]({{ site.baseurl }}/doc/configuration/redis.html).
+The MX Check module examines whether the domain in a message's SMTP FROM address (or the domain in HELO if SMTP FROM is empty) has at least one connectable MX. If a connectable MX is discovered, this data is stored in [Redis]({{ site.baseurl }}/doc/configuration/redis.html).
 
 To activate this module, modify `enabled = true` in `/etc/rspamd/local.d/mx_check.conf` and configure [redis]({{ site.baseurl }}/doc/configuration/redis.html) either for the entire system or for this specific module.
 
