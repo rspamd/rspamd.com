@@ -109,7 +109,7 @@ To convert these complex entities into simpler ones (strings or string lists), t
 
 If a data transformation function or **any** transform function returns `nil`, the selector is entirely disregarded. This characteristic is employed in functions like `in` and `not_in`. An illustrative configuration for the `ratelimit` module that combines the `in` transformation with `id` to exclude the original string is as follows:
 
-~~~lua
+```lua
 user_workdays = {
     selector = "user.lower;time('connect', '!%w').in(1, 2, 3, 4, 5).id('work')";
     bucket = "10 / 1m";
@@ -118,7 +118,7 @@ user_weekends = {
     selector = "user.lower;time('connect', '!%w').in(6, 7).id('weekends')";
     bucket = "1 / 1m";
 };
-~~~
+```
 
 In this example, during weekends, the `user_workdays` selector will be entirely disregarded, and conversely, during working days, the `user_weekends` selector will not be utilized.
 
@@ -126,19 +126,19 @@ In this example, during weekends, the `user_workdays` selector will be entirely 
 
 In the previous example, the selector comprised multiple components:
 
-- `user.lower` - extracts the authenticated username and converts it to lowercase
-- `time('connect', '!%w').in(6, 7).id('weekends')` - if the connection time falls within the specified range, it returns the string 'weekends'
+* `user.lower` - extracts the authenticated username and converts it to lowercase
+* `time('connect', '!%w').in(6, 7).id('weekends')` - if the connection time falls within the specified range, it returns the string 'weekends'
 
 These two elements are separated by the `;` symbol. Modules will utilize these elements as a concatenated string, for instance, `user@example.com:weekends` (the `:` symbol serves as a separator and is employed by the ratelimit module).
 
 However, what if you want to achieve the same functionality for, let's say, recipients:
 
-~~~lua
+```lua
 rcpt_weekends = {
     selector = "rcpts.take_n(5).lower;time('connect', '!%w').in(6, 7).id('weekends')";
     bucket = "1 / 1m";
 };
-~~~
+```
 
 In this instance, we're taking up to `5` recipients, extracting the address part, converting it to lowercase, and combining it with the string `weekends` if the condition is met. When a list of elements is concatenated with a string, this string is appended (or prepended) to each element of the list, resulting in the following:
 
@@ -150,12 +150,12 @@ rcpt3:weekends
 
 It also works if you want to add a prefix and a suffix:
 
-~~~lua
+```lua
 rcpt_weekends = {
     selector = "id('rcpt');rcpts:addr.take_n(5).lower;time('connect', '!%w').in(6, 7).id('weekends')";
     bucket = "1 / 1m";
 };
-~~~
+```
 
 This configuration will be transformed into:
 
@@ -167,9 +167,9 @@ rcpt:rcpt3:weekends
 
 However, combining lists with different numbers of entries is not recommended – in this case, the shortest of the lists will be used:
 
-~~~lua
+```lua
 id('rcpt');rcpts.take_n(5).lower;urls.get_host.lower
-~~~
+```
 
 This will result in a list that might have up to 5 elements and will be concatenated with the prefix:
 
