@@ -122,8 +122,7 @@ symbols {
 
 ## Exclusions from phishing feeds
 
-To exclude hosts from phishing feed checks (Openphish, Phishtank, or Generic) you need to enable phishing feed exclusion and configure map data to a local file or online hosts catalog. The exclusion map should only contain a list of host names without a scheme and path.
-
+To exclude hosts from phishing feed checks (Openphish, Phishtank, or Generic) you need to enable phishing feed exclusion and configure map data to a local file or online hosts catalog. The exclusion map should only contain a list of host names without a scheme and path. It is available in version 3.7.0 and greater.
 
 ~~~ucl
 # local.d/phishing.conf
