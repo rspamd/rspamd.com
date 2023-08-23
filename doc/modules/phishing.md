@@ -104,7 +104,7 @@ To enable support for custom phishing maps from a local file or online URL catal
 generic_service_enabled = true;
 generic_service_name = 'CaUMa';
 generic_service_symbol = "PHISHED_CAUMA";
-generic_service_map = "file:///var/tmp/cauma-online-urls.txt";
+generic_service_map = "file:///path/to/map";;
 ~~~
 
 The following definition is also necessary to define a weight value to the symbol.
@@ -128,5 +128,5 @@ To exclude hosts from phishing feed checks (Openphish, Phishtank, or Generic) yo
 ~~~ucl
 # local.d/phishing.conf
 phishing_feed_exclusion_enabled = true;
-phishing_feed_exclusion_map = "file:///var/tmp/phishing-feed-exclusion-hosts.txt";
+phishing_feed_exclusion_map = "file:///path/to/map";
 ~~~
