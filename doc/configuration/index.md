@@ -5,8 +5,7 @@ title: General information
 # Rspamd configuration
 {:.no_toc}
 
-Rspamd uses the Universal Configuration Language (UCL) for its configuration. The UCL format is described in detail in this [document](ucl.html). Rspamd defines several variables and macros to extend
-UCL functionality.
+Rspamd employs the Universal Configuration Language (UCL) for its configuration. You can find an extensive description of the UCL format in this [document](ucl.html). Additionally, Rspamd introduces a range of variables and macros to enhance UCL's functionality.
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
@@ -16,7 +15,7 @@ UCL functionality.
 
 ## UCL sections and includes
 
-UCL implements the JSON data model. However, there are a lot of mentions of `sections` in Rspamd documentation. You can treat sections as simple sub-objects of the top object. For example, here are two equivalent definitions in `UCL` and in `JSON` syntax:
+UCL adopts the JSON data model, although Rspamd's documentation frequently refers to `sections`. Consider these sections as straightforward sub-objects of the main object. For instance, the following two definitions are equivalent in both `UCL` and `JSON` syntax:
 
 ```ucl
 section "foo" {
@@ -36,17 +35,17 @@ vs
 }
 ```
 
-UCL also supports a `.include` macro which is used extensively in Rspamd configuration. This allows inclusion of another file (or files), to define an override/merge strategy, to define new element priorities, and to do other useful things. Almost all Rspamd sections are followed by two or three include directives. The following is a summary of how the include macro is used in Rspamd. More details are available in the [Macros Support](ucl.html#macros-support) section of the UCL document.
+UCL also offers support for the `.include` macro, a feature heavily utilized in Rspamd's configuration. This macro allows the inclusion of other files, enabling the definition of override or merge strategies, establishment of new element priorities, and other beneficial operations. Throughout Rspamd's configuration, nearly all sections are followed by two or three include directives. The following overview outlines how the include macro is employed in Rspamd, while further elaboration can be found in the [Macros Support](ucl.html#macros-support) section of the UCL documentation.
 
 ```
 .include(param=value,param=value) "filename"
 ```
 
-Param/value arguments are options (sometimes called policies) which are applied to the file being included.
+Param/value arguments represent options, often referred to as policies, that are applicable to the included file.
 
-The "priority" policy determines how values are overwritten during include. Higher priority elements overwrite lower priority ones. 
+The "priority" policy dictates the hierarchy for overwriting values during the inclusion process. Elements with higher priority take precedence over those with lower priority.
 
-The "duplicate" policy defines what happens if there are two objects with the same name in both files. The value "merge" on the "duplicate" policy causes a merge of keys from the included file into the current file. (See the Macros Support notes for other values.)
+The "duplicate" policy specifies the behavior when encountering two objects with the same name in both files. Employing the "merge" value for the "duplicate" policy results in key merging from the included file into the current file. (For additional values, consult the Macros Support notes.)
 
 This is how included files are processed:
 
@@ -118,11 +117,11 @@ subsection {
 }
 ```
 
-Note: When an include directive is inside of a `section {}` block, the included local.d/override.d files must not also have the same `section {}` wrapper. This would result in nested blocks: `section { section{} }`. Files referenced by include directives outside of a section must specify the sections being defined, achieving the following pattern: `section{} section{}` where the second section overrides or merges with the first.
+Note: If an include directive is situated within a `section {}` block, it's essential that the included local.d/override.d files do not possess an identical `section {}` wrapper. This would inadvertently lead to nested blocks like `section { section{} }`. Conversely, files referred to by include directives outside of a section must explicitly delineate the sections they define, following a pattern like `section{} section{}` where the second section either overrides or merges with the first.
 
 ## Rspamd variables
 
-Rspamd defines some useful variables to use in configuration files, as `${VAR}`, or simply as `$VAR`). These variables are replaced with substitution values at run-time. Nested variables like `${ VAR1_${VAR2} }` are **NOT** supported.
+Rspamd introduces a range of valuable variables designed for use in configuration files, denoted as `${VAR}` or simply as `$VAR`. These variables are dynamically replaced with corresponding values during runtime. However, it's important to note that nested variables such as `${ VAR1_${VAR2} }` are **NOT** supported.
 
 - *CONFDIR*: configuration directory for Rspamd, found in `$PREFIX/etc/rspamd/`
 - *LOCAL_CONFDIR*: site-local configuration directory for Rspamd (usually the same value as $CONFDIR, and not to be confused with local.d)
@@ -142,26 +141,26 @@ Rspamd defines some useful variables to use in configuration files, as `${VAR}`,
 ## Rspamd basic configuration
 
 ### Overview
-Configuration files that are installed or updated with Rspamd are not intended to be changed by the user. Rather, files should be overridden in site-specific configuration files. See the [quickstart](../quickstart.html#configuring-rspamd) page for details.
+Configuration files that are installed or updated with Rspamd are not meant to be modified directly by the user. Instead, these files should be overridden in site-specific configuration files. You can find more information on this process in the [quickstart](../quickstart.html#configuring-rspamd) page.
 
-Nevertheless, packaging will generally never overwrite configuration files on upgrade if they have been touched by the user. Please read the [migration notes](../migration.html) carefully if you upgrade Rspamd to a new version for all incompatible configuration changes.
+However, it's important to note that packaging typically avoids overwriting configuration files during upgrades if they have been modified by the user. For a smooth transition when upgrading to a new version of Rspamd, be sure to carefully review the [migration notes](../migration.html) for any incompatible configuration changes.
 
-Rspamd configuration starts in file `$CONFDIR/rspamd.conf`. That file has a few settings, and includes other files, which themselves include yet more files. The final configuration is the sum of all files processed in the order found.
+The Rspamd configuration process begins with the file `$CONFDIR/rspamd.conf`. This file contains several settings and includes references to other files, which in turn might include additional files. The complete configuration is a compilation of all processed files, following the order in which they are encountered.
 
-For each Rspamd "core" file, there is an include to the `local.d` folder for local overrides, and another include to the `overide.d` folder for final overrides. For clarity on this architecture, see [this FAQ](../faq.html#what-are-local-and-override-config-files) and others related to the topic.
+Each core Rspamd file incorporates an include to the `local.d` folder for local overrides, as well as another include to the `override.d` folder for final overrides. To better understand this architectural approach, you can refer to the [related FAQ](../faq.html#what-are-local-and-override-config-files) and other resources on the topic.
 
 ### Detail
-The `rspamd.conf` file starts by including `common.conf`:
+The `rspamd.conf` file commences by incorporating `common.conf`:
 
 ~~~ucl
 .include "$CONFDIR/common.conf"
 ~~~
 
-In `common.conf`, a Lua script containing rules is defined, `$RULESDIR/rspamd.lua`. This is the main Lua config file for Rspamd, which loads and executes many other Lua programs as [modules](../modules/index.html).
+Within `common.conf`, a Lua script that includes rules is specified as `$RULESDIR/rspamd.lua`. This Lua configuration file is pivotal in Rspamd, as it loads and runs numerous other Lua programs as [modules](../modules/index.html).
 
-Tip: $RULESDIR may be something like /usr/share/rspamd/rules.
+Note: The variable `$RULESDIR` typically corresponds to a path like `/usr/share/rspamd/rules`.
 
- Other files are then included to define rules, and set rule weights and Rspamd actions.
+Subsequently, additional files are included to establish rules, set rule priorities, and define Rspamd actions.
 
 ~~~ucl
 lua = "$RULESDIR/rspamd.lua"
@@ -174,18 +173,16 @@ lua = "$RULESDIR/rspamd.lua"
 .include "$CONFDIR/settings.conf"
 ~~~
 
-Each of those .conf files defines a specific section, as well as `.include` files to override each section with local settings.
+Each of these `.conf` files defines a specific section, along with corresponding `.include` files that permit local settings to override each section.
 
-- The [metrics.conf](metrics.html) file was previously included in this documentation. It was deprecated in v1.7 and was replaced with `actions.conf` and `groups.conf`.
-- actions.conf (no separate doc yet) defines score limits for specific [action](../faq.html#what-are-rspamd-actions) types.
-- groups.conf (no separate doc yet) defines a single "group" section, with multiple symbol groups. Each group has `.include` directives to files containing details for symbols related to those groups. ([See also](../faq.html#how-to-change-score-for-some-symbol))
-- [composites.conf](composites.html) describes composite symbols.
-- Statistical filters are defined in [statistic.conf](statistic.html).
-- Rspamd stores module configurations (for both Lua and internal modules) in .conf files in the [modules.d](../modules/index.html) folder. For example, settings for the [RBL module](../modules/rbl.html) are defined in "/modules.d/rbl.conf". The `modules.conf` file exists merely to `.include` all of those files.
-- User settings are described extensively in the [settings.conf](settings.html) documentation. Each setting can define a set of custom metric weights, symbols or action scores, and enable or disable certain checks.
-
-After those includes, `common.conf` ends with a check for final override settings, and a small `modules` section:
-
+- The [metrics.conf](metrics.html) file, formerly featured in this documentation, was deprecated in version 1.7. It was succeeded by `actions.conf` and `groups.conf`.
+- `actions.conf` (without a separate document yet) delineates score thresholds for specific [action](../faq.html#what-are-rspamd-actions) types.
+- `groups.conf` (also without a separate document yet) introduces a singular "group" section housing multiple symbol groups. Each group incorporates `.include` directives pointing to files that detail symbols linked to those groups. ([For more, see](../faq.html#how-to-change-score-for-some-symbol))
+- [composites.conf](composites.html) outlines composite symbols.
+- Statistical filters are defined within [statistic.conf](statistic.html).
+- Rspamd manages module configurations (both for Lua and internal modules) through `.conf` files located in the [modules.d](../modules/index.html) folder. For instance, configurations for the [RBL module](../modules/rbl.html) are specified in "/modules.d/rbl.conf". The `modules.conf` file primarily serves to `.include` all of these module configuration files.
+- User settings receive thorough coverage in the [settings.conf](settings.html) documentation. Each setting can define a unique set of custom metric weights, symbols or action scores, as well as enable or disable specific checks.
+  
 ~~~ucl
 .include(try=true) "$LOCAL_CONFDIR/rspamd.conf.local"
 .include(try=true,priority=10) "$LOCAL_CONFDIR/rspamd.conf.local.override"
@@ -198,9 +195,9 @@ modules {
 }
 ~~~
 
-The modules section defines paths of directories or specific files. If a directory is specified, all files in that folder with a `.lua` suffix are loaded as Lua plugins. (The directory path is treated as a `*.lua` shell pattern).
+The modules section establishes paths for directories or specific files. When a directory is specified, all files in that folder with a `.lua` suffix are loaded as Lua plugins. (The directory path is treated as a `*.lua` shell pattern).
 
-Coming back to `rspamd.conf`, a global [options](options.html) section is defined, followed by [logging](logging.html) configuration.
+Returning to `rspamd.conf`, it encompasses a global [options](options.html) section, followed by the configuration for [logging](logging.html).
 
 ~~~ucl
 options {
@@ -222,7 +219,7 @@ logging {
 }
 ~~~
 
-Finally, a [workers](../workers/index.html) section (code not provided here) is defined using the `section "foo" {}` syntax noted above, for worker types: normal, controller, rspamd_proxy, and fuzzy.
+Ultimately, a [workers](../workers/index.html) section (code not provided here) is outlined, utilizing the aforementioned `section "foo" {}` syntax, to define worker types such as normal, controller, rspamd_proxy, and fuzzy.
 
 
 
@@ -232,13 +229,14 @@ Finally, a [workers](../workers/index.html) section (code not provided here) is 
 
 {% raw %}
 
-[Jinja](https://jinja.palletsprojects.com) is a modern and designer-friendly templating language for Python, modelled after Django’s templates.
+[Jinja](https://jinja.palletsprojects.com) stands as a contemporary and design-friendly templating language for Python, modelled after Django’s templates. 
 [Lupa](https://github.com/orbitalquark/lupa) is a Jinja2 template engine implementation written in Lua and supports Lua syntax within tags and variables.
-Starting in version 1.9.1, Rspamd supports Jinja templates with Lua code within Rspamd UCL configuration files. This can be used to implement logic and data transformations, beyond the static assignments and `.include` directives noted above. Rspamd itself uses a specific syntax for variable tags: `{=` and `=}` instead of the traditional `{{` and `}}`, as these tags could otherwise mean "a table within a table" in Lua.
+
+Beginning with version 1.9.1, Rspamd introduces support for Jinja templates combined with Lua code within Rspamd UCL configuration files. This functionality extends beyond static assignments and `.include` directives, allowing the implementation of logic and data transformations. Notably, Rspamd employs a specific syntax for variable tags, namely `{=` and `=}`, to prevent conflicts with Lua's use of `{{` and `}}`, which might otherwise signify "a table within a table" in Lua.
 
 {% endraw %}
 
-Templating can be useful to hide secret values from config files, by placing them into environment variables. Rspamd automatically reads environment variables that start with a `RSPAMD_` prefix, and pushes them onto the `env` variable. For example, `RSPAMD_foo=bar` becomes `env.foo="bar"` in templates.
+Templating offers the advantage of concealing sensitive values from configuration files, achieved by placing them into environment variables. Rspamd automates the reading of environment variables that begin with the `RSPAMD_` prefix, subsequently pushing them onto the `env` variable. For instance, `RSPAMD_foo=bar` would translate to `env.foo="bar"` in the templates.
 
 The `env` variable also contains the following information:
 
@@ -286,8 +284,8 @@ password = "{= env.password|pbkdf =}"; # Password is encrypted using `catena` PB
 ~~~
 {% endraw %}
 
-Note that the pipe symbol `|` is used to send the password into a Jinja [filter](https://jinja.palletsprojects.com/en/2.11.x/templates/#filters) for additional processing. The `pbkdf` filter (defined in Rspamd) encrypts the password using the [PBKDF](https://en.wikipedia.org/wiki/PBKDF2) standard, specifically using the [Catena](https://github.com/bsdphk/PHC/tree/master/Catena) hashing scheme.)
+Please note that the pipe symbol `|` serves the purpose of conveying the password to a Jinja [filter](https://jinja.palletsprojects.com/en/2.11.x/templates/#filters), which facilitates further processing. Within Rspamd, the `pbkdf` filter is available and is utilized to encrypt the password using the [PBKDF](https://en.wikipedia.org/wiki/PBKDF2) standard, specifically employing the [Catena](https://github.com/bsdphk/PHC/tree/master/Catena) hashing scheme.
 
 With this enhancement, as of version 1.9.1, your config files should be Jinja safe. However, this also implies that there should be no special sequences like {% raw %}`{%` or `{=`{% endraw %} anywhere in your configuration, other than for Jinja. If you do require these sequences for any reason, you can [escape](https://jinja.palletsprojects.com/en/2.11.x/templates/#escaping) them using {% raw %}{%{% endraw %} raw {% raw %}%}{% endraw %} and {% raw %}{%{% endraw %} endraw {% raw %}%}{% endraw %} tags.
 
-Just remember that the standard Jinja documentation describes the use of Python syntax and features, while Rspamd with Lupa facilitates the use of Lua syntax and features. See the Lupa documentation for details.
+Keep in mind that the standard Jinja documentation primarily covers Python syntax and features, whereas Rspamd with Lupa introduces the usage of Lua syntax and features. For detailed information, refer to the Lupa documentation.
