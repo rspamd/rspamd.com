@@ -104,7 +104,7 @@ To enable support for custom phishing maps from a local file or online URL catal
 generic_service_enabled = true;
 generic_service_name = 'CaUMa';
 generic_service_symbol = "PHISHED_CAUMA";
-generic_service_map = "file:///var/tmp/cauma-online-urls.txt";
+generic_service_map = "file:///path/to/map";;
 ~~~
 
 The following definition is also necessary to define a weight value to the symbol.
@@ -118,4 +118,14 @@ symbols {
         one_shot = true;
     }
 }
+~~~
+
+## Exclusions from phishing feeds
+
+To exclude hosts from phishing feed checks (Openphish, Phishtank, or Generic) you need to enable phishing feed exclusion and configure map data to a local file or online hosts catalog. The exclusion map should only contain a list of host names without a scheme and path. It is available in version 3.7 and greater.
+
+~~~ucl
+# local.d/phishing.conf
+phishing_feed_exclusion_enabled = true;
+phishing_feed_exclusion_map = "file:///path/to/map";
 ~~~
