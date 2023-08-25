@@ -363,6 +363,23 @@ By default, Rspamd converts all messages to `UTF-8` encoding. This includes text
 
 It is always safe to assume that everything will be encoded in `UTF-8`; even in the case of raw messages, you would just miss some particular features. There is also a module called [chartable]({{ site.url }}{{ site.baseurl }}/doc/modules/chartable.html) that checks for different unicode (or `ASCII` - non `ASCII` characters in raw mode) symbols and tries to guess if there is an attempt to mix characters sets.
 
+### How can I report a false positive with fuzzy hit
+
+Sometimes, the fuzzy lists provided by Rspamd have false positives (e.g. hits on legit messages), so here is the procedure to delist those hashes from the storage:
+
+1. **Extract the Short Hash from the Symbol**. This short hash is listed in the symbol's options for the fuzzy symbols, e.g. `1:xxxxxxfe7x:0.99:txt`. The short hash value will be a hex string like `xxxxxxfe7x` in this particular case.
+2. Search for the Log Line: In your Rspamd logs, you should see lines indicating the discovery of fuzzy hashes. These lines usually contain the short hash and the full hash. Search for a log line similar to this:
+
+~~~
+found fuzzy hash: <short_hash> -> <full_hash>
+~~~
+
+Here, `<short_hash>` is the short hash you extracted from the symbol and `<full_hash>` is the full hash you want to delist.
+
+3. **Use the Log Line as Context**: Once you locate the log line with the full hash, you can use it as context when submitting the hash for delisting on bl.rspamd.com. This context will help the Rspamd team understand why you believe the hash is a false positive. It provides evidence that the hash has been detected in legitimate content.
+
+4. **Submit the Full Hash with Context**: Visit the Rspamd Fuzzy List Submission page at https://bl.rspamd.com and fill in the full hash you extracted from the logs. In the "Context" or "Comments" field, paste the log line you found, which contains the short and full hashes. This context will help the Rspamd team understand the situation and review the delisting request more effectively.
+
 ### Can I relearn messages for fuzzy storage or for statistics
 
 In case you need to move a hash from one list (e.g. blacklist) to another (e.g. whitelist), you need to call the `rspamc fuzzy_del` command for the first list (lists are identified by number) followed by `rspamc fuzzy_add` command:
