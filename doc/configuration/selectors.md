@@ -18,19 +18,19 @@ Rspamd selectors is a Lua framework that allows functional extraction and proces
 
 <center><img class="img-responsive" src="{{ site.baseurl }}/img/selectors.png" width="50%"></center>
 
-From version 1.8, Rspamd includes a framework to extract data from messages and use it further in plugins by means of transform functions. For example, you can extract SMTP from address and lowercase it by the following selector:
+Starting from version 1.8, Rspamd introduces a framework designed for data extraction from messages and its subsequent utilization in plugins via transform functions. This functionality allows for a variety of operations. For instance, you can retrieve the SMTP from address and convert it to lowercase using the following selector:
 
 ```
 smtp_from.lower
 ```
 
-or get a subject's digest lowercased and truncated to 16 hex characters:
+Similarly, you can obtain a lowercased digest of the subject and then truncate it to 16 hexadecimal characters:
 
 ```
 header('Subject').lower.digest('hex').substring(1, 16)
 ```
 
-You can also operate with lists, e.g. lists of URLs:
+Additionally, you have the capability to work with lists, such as lists of URLs:
 
 ```
 urls:get_tld
@@ -64,23 +64,23 @@ INVALUEMENT_SENDGRID_DOMAIN {
 }
 ~~~
 
-As you can see, this rule uses both maps expressions and selectors to get and transform data for querying in maps.
+As evident from this rule, it skillfully employs a combination of map expressions and selectors to retrieve and modify data for queries within maps.
 
 ## Selectors syntax
 
-Typically, a selector is composed of two parts:
+A selector typically consists of two key components:
 
-1. Data definition (e.g. `header` or `urls`)
-2. Optional data transformation method separated by `:`
-3. Transform pipeline in which multiple functions, separated by dot operators (.), are chained together
+1. Data identification (such as `header` or `urls`)
+2. An optional data transformation method, separated by a colon (`:`)
+3. A transformation pipeline, where multiple functions are linked with dot operators (`.`)
 
-You can also combine multiple selectors by using `;` as a separator:
+Additionally, you can merge several selectors by using a semicolon (`;`) as a delimiter:
 
 ```
 smtp_from.addr.lower;ip.addr
 ```
 
-Both data definition and transformation functions support arguments separated by commas. Single and double quotes are supported to simplify escaping:
+Both the data identification and transformation functions allow the use of arguments separated by commas. To simplify escaping, single and double quotation marks are supported:
 
 ```
 header('Subject').regexp("^A-Z{10,}.*")
@@ -90,26 +90,26 @@ header('Subject').regexp('^A-Z{10,}"\'.*')
 
 ### Data transformation method
 
-Some data extractors return complex objects (or list of such a complex objects):
+Certain data extractors yield intricate objects or lists of such objects, including:
 
 - table
 - userdata (Lua object)
 
-There are two possibilities to convert these complex objects to a simple ones (strings or list of strings): implicit conversion and using of the method/table key extraction. 
+To convert these complex entities into simpler ones (strings or string lists), there are two approaches: implicit conversion and employing the method or table key extraction.
 
-1. For objects, implicit conversion is just calling of `tostring` while method is a plain method call. The following are equal: `ip:to_string.lower` and `ip.lower`. However, you can call different methods of the objects: `urls:get_tld` will return a list of strings with all eSLD parts of urls in the message. The only exception from this rule (from 2.7) is `rspamd_text` which can be traversed over the selectors pipeline without any conversation. This is done to preserve large strings to avoid Lua strings interning and allocation.
+1. For objects, implicit conversion involves invoking the `tostring` function, while the method call is straightforward. The following are equivalent: `ip:to_string.lower` and `ip.lower`. Nevertheless, different methods of the objects can be called: `urls:get_tld` will return a list of strings containing all eSLD parts of URLs in the message. An exception to this rule (starting from 2.7) is `rspamd_text`, which can be traversed within the selector pipeline without any conversion. This exemption aims to retain large strings to prevent Lua string interning and excessive allocation.
 
-2. For tables, explicit conversion just extracts the specific key, for example, `from:addr` or `from('mime'):name`. Implicit conversion is a bit more complicated:
+2. For tables, explicit conversion simply extracts the specified key, such as `from:addr` or `from('mime'):name`. Implicit conversion is slightly more intricate:
 
-  - If there is a field `value` in table it will be used for implicit conversion
-  - Otherwise, if there is a field `addr` in table it will be used for implicit conversion
-  - Otherwise `table.concat(t, ' ')` will be used for implicit conversion
+   - If the table contains a field named `value`, it is used for implicit conversion.
+   - If not, and there is a field named `addr` in the table, it is used for implicit conversion.
+   - If neither of the above conditions are met, `table.concat(t, ' ')` is used for implicit conversion.
 
 ### Null values
 
-If data transformation function or **any** transform function returns `nil`, selector is completely ignored. For example, this property is utilised in `in` and `not_in` transformation functions. Here is a sample config for `ratelimit` module that uses `in` transformation combined with `id` to drop the original string.
+If a data transformation function or **any** transform function returns `nil`, the selector is entirely disregarded. This characteristic is employed in functions like `in` and `not_in`. An illustrative configuration for the `ratelimit` module that combines the `in` transformation with `id` to exclude the original string is as follows:
 
-```
+```lua
 user_workdays = {
     selector = "user.lower;time('connect', '!%w').in(1, 2, 3, 4, 5).id('work')";
     bucket = "10 / 1m";
@@ -120,27 +120,27 @@ user_weekends = {
 };
 ```
 
-In this sample, `user_weekdays` will be completely ignored during weekends and, vice versa, `user_weekends` will not be used during the working days.
+In this example, during weekends, the `user_workdays` selector will be entirely disregarded, and conversely, during working days, the `user_weekends` selector will not be utilized.
 
 ## Selectors combinations
 
-In the previous example, the selector had multiple components:
+In the previous example, the selector comprised multiple components:
 
-* `user.lower` - extracts authenticated username and lowercases it
-* `time('connect', '!%w').in(6, 7).id('weekends')`  - if connection time is in the specified range, return string 'weekends'
+* `user.lower` - extracts the authenticated username and converts it to lowercase
+* `time('connect', '!%w').in(6, 7).id('weekends')` - if the connection time falls within the specified range, it returns the string 'weekends'
 
-These two elements are separated by `;` symbol. Modules will use these elements as a concatenated string, e.g. `user@example.com:weekends` (`:` symbol is used by ratelimit module as a separator).
+These two elements are separated by the `;` symbol. Modules will utilize these elements as a concatenated string, for instance, `user@example.com:weekends` (the `:` symbol serves as a separator and is employed by the ratelimit module).
 
-But what if you want to use the same for, let's say, recipients:
+However, what if you want to achieve the same functionality for, let's say, recipients:
 
-```
+```lua
 rcpt_weekends = {
     selector = "rcpts.take_n(5).lower;time('connect', '!%w').in(6, 7).id('weekends')";
     bucket = "1 / 1m";
 };
 ```
 
-In this sample, we take up to `5` recipients, extract address part, lowercase it and combine with a string `weekends` if the condition is satisfied. When a list of elements is concatenated with a string, then this string is appended (or prepended) to each element of the list:
+In this instance, we're taking up to `5` recipients, extracting the address part, converting it to lowercase, and combining it with the string `weekends` if the condition is met. When a list of elements is concatenated with a string, this string is appended (or prepended) to each element of the list, resulting in the following:
 
 ```
 rcpt1:weekends
@@ -148,16 +148,16 @@ rcpt2:weekends
 rcpt3:weekends
 ```
 
-It also works if you want to add prefix and suffix:
+It also works if you want to add a prefix and a suffix:
 
-```
+```lua
 rcpt_weekends = {
     selector = "id('rcpt');rcpts:addr.take_n(5).lower;time('connect', '!%w').in(6, 7).id('weekends')";
     bucket = "1 / 1m";
 };
 ```
 
-will be transformed to:
+This configuration will be transformed into:
 
 ```
 rcpt:rcpt1:weekends
@@ -165,13 +165,13 @@ rcpt:rcpt2:weekends
 rcpt:rcpt3:weekends
 ```
 
-Combining of lists with different number of entries is not recommended - in this case the shortest of the lists will be used:
+However, combining lists with different numbers of entries is not recommended – in this case, the shortest of the lists will be used:
 
-```
+```lua
 id('rcpt');rcpts.take_n(5).lower;urls.get_host.lower
 ```
 
-will produce a list that might have up to 5 elements and concatenate it with a prefix:
+This will result in a list that might have up to 5 elements and will be concatenated with the prefix:
 
 ```
 rcpt:rcpt1:example.com
@@ -181,7 +181,7 @@ rcpt:rcpt3:example3.com
 
 ## Data definition functions
 
-Data definition part defines what exactly needs to be extracted. Here is the list of methods supported by Rspamd so far:
+The data definition part specifies what needs to be extracted. Here is the list of methods currently supported by Rspamd:
 
 | Extraction method          | Version  | Description                       |
 | :------------------------- | :------: | :-------------------------------- |
@@ -239,11 +239,11 @@ Data definition part defines what exactly needs to be extracted. Here is the lis
 | `to_ascii` | 2.6+ | Returns the string with all non-ascii bytes replaced with the character given as second argument or `?`
 | `uniq` | 2.0+ | Returns a list of unique elements (using a hash table - no order preserved!)
 
-You can get the most recent list of all selector functions and the ability to test Rspamd selectors pipelines using the embedded Web Interface.
+You can access the latest list of all selector functions and also test Rspamd selector pipelines through the integrated Web Interface. This provides you with a convenient way to explore and experiment with Rspamd's selector capabilities.
 
 ### Maps in transformations
 
-From the version 2.0, Rspamd supports using of maps within selectors. It is done by adding maps to a special `lua_selectors.maps` table. This table must have name-value pairs where `name` is a symbolic name of map that could be used in transformation/extraction functions and value is the return of `lua_maps.map_add_from_ucl`. Here is an example:
+Starting from version 2.0, Rspamd introduces support for using maps within selectors. This is achieved by incorporating maps into a designated `lua_selectors.maps` table. The table should consist of name-value pairs where the `name` represents the symbolic name of the map, which can be employed in extraction or transformation functions, and the `value` is the output of `lua_maps.map_add_from_ucl`. To illustrate this concept:
 
 {% raw %}
 ~~~lua
@@ -285,7 +285,7 @@ local samples = {
 
 All selectors provide type safety controls. It means that Rspamd checks if types within pipeline match each other. For example, `rcpts` extractor returns a list of addresses, and `from` returns a single address. If you need to lowercase this address you need to convert it to a string as the first step. This could be done by getting a specific element of this address, e.g. `from.addr` -> this returns a `string` (you could also get `from.name` to get a displayed name, for example). Each processor has its own list of the accepted types.
 
-However, in the case of recipients, `rcpt` returns a list of addresses not a single address. Despite of this, you can still apply the same pipeline `rcpts.addr.lower`. This magic works as many processors could be functionally applied as a map:
+However, even when dealing with recipients, where `rcpt` generates a list of addresses, you can still employ the same pipeline, such as `rcpts.addr.lower`. This versatility is possible because many processors can be functionally applied like a map:
 
 ```
 elt1 -> f(elt1) -> elt1'
@@ -293,15 +293,15 @@ elt2 -> f(elt2) -> elt2'
 elt3 -> f(elt3) -> elt3'
 ```
 
-So a list of elements of type `t` is element-wise transformed using processor `f` forming a new list of type `t1` (could be same as `t`). The length of the new list is the same.
+Hence, a list of elements of type `t` undergoes an element-wise transformation using processor `f`, creating a new list of type `t1` (which can be the same as `t`). The length of the resulting list remains unchanged.
 
-For convenience, the final values could be transformed implicitly to their string form. For example, URLs, emails and IP addresses could be converted to strings implicitly.
+To enhance convenience, the ultimate values can be implicitly converted to their string representation. This is particularly applicable to URLs, email addresses, and IP addresses, all of which can be seamlessly converted to strings.
 
-Normally, you should not care about type safety unless you have type errors. This mechanism is intended to protect selectors architecture from users mistakes.
+In general, you need not be overly concerned about type safety unless you encounter actual type errors. This mechanism serves to safeguard the selectors framework from inadvertent user errors.
 
 ## Own selectors
 
-You can add your own extractors and process functions. This should be done prior to using of these selectors somewhere else. For example, it is guaranteed that `rspamd.local.lua` is executed before any plugins initialisation so it is generally safe to register your functions there. Here is a small example about how to register your own extractors and processors.
+You have the option to incorporate your custom extractors and processing functions. However, it's crucial to implement this setup before utilizing these selectors in any other context. For instance, the execution of `rspamd.local.lua` precedes the initialization of plugins, making it a secure location to register your functions. Here is a small example about how to register your own extractors and processors.
 
 ~~~lua
 local lua_selectors = require "lua_selectors" -- Import module
@@ -336,17 +336,17 @@ You can use these functions in your selectors subsequently.
 
 ## Regular expressions selectors
 
-It is also possible to use selectors for Rspamd [regexp module](../modules/regexp.html). The idea behind that is that you can use data extracted and processed by the selector framework to match it against different regular expression.
+You can also leverage selectors with Rspamd's [regexp module](../modules/regexp.html). This approach allows you to utilize the data extracted and processed by the selector framework to match it against various regular expressions.
 
-First of all, you need to register a selector in regexp module (e.g. in `rspamd.local.lua` file):
+To start, you'll need to register a selector in the regexp module. You can achieve this by adding the following code to your `rspamd.local.lua` file:
 
 ~~~lua
 rspamd_config:register_re_selector('test', 'user.lower;header(Subject).lower', ' ')
 ~~~
 
-The first argument represents a symbolic name of the selector that will be used further to reference it in re rules. The second argument is the selector in a usual syntax. The optional last argument defines a character that will be used to join selector parts. For instance, this selector will produce a value of authenticated user concatenated with `Subject` header's value using a space character.
+The first argument denotes the symbolic name of the selector, which you will subsequently use to reference it in regular expression rules. The second argument entails the selector in the usual syntax. The last argument, which is optional, designates the character used to concatenate the different selector parts. In this manner, the selector generates a value by joining the authenticated user and the `Subject` header's value using a space character.
 
-Subsequently, you can reference this selector in regexp rules (order doesn't matter, so you can use the name of selector even before its registration in the code).
+Following this, you can refer to this selector in your regular expression rules. The order in which you use the selector's name and its registration in the code doesn't impact its functionality.
 
 ~~~lua
 config['regexp']['TEST_SELECTOR_RE'] = {
@@ -355,7 +355,7 @@ config['regexp']['TEST_SELECTOR_RE'] = {
 }
 ~~~
 
-The syntax of regexp for selectors is somehow similar to the headers regexp: you define selector's name followed by `=` and the regular expression itself and use `$` as type. Omitting `$` sign will tell Rspamd that you implicitly define header regexp, not a selector one. Hence, it is important to include this symbol. Alternatively, you can use a long syntax for re type:
+The syntax for regular expressions involving selectors bears some resemblance to header regular expressions. You begin by stating the selector's name, followed by `=` and the actual regular expression, concluded with `$` to signify the type. The omission of the `$` sign alerts Rspamd that you are specifying a header regular expression, rather than a selector-based one. It is essential to include this symbol to ensure clarity. Alternatively, you can utilize the extended syntax for the re type:
 
 ~~~lua
 config['regexp']['TEST_SELECTOR_RE'] = {
@@ -364,7 +364,7 @@ config['regexp']['TEST_SELECTOR_RE'] = {
 }
 ~~~
 
-If selector returns multiple values (e.g. recipients), then this regular expression would be matched against all elements in such a list. Hence, it might be important to include `one_shot` to avoid multiple symbols insertion if unintended:
+If a selector yields multiple values, such as recipients, the corresponding regular expression will be matched against all the elements within that list. Consequently, it becomes crucial to incorporate the `one_shot` option to prevent inadvertent insertion of multiple symbols:
 
 ~~~lua
 rspamd_config:register_re_selector('test_rcpt', 'rcpts.addr.lower;header(Subject).lower', ' ')
@@ -375,4 +375,4 @@ config['regexp']['TEST_SELECTOR_RCPT'] = {
 }
 ~~~
 
-Data extracted via selector is cached internally, so you can reuse it safely in multiple regular expressions (in case of `Hyperscan` support multiple regular expressions will also be composed as usually).
+It's noteworthy that data retrieved through selectors is internally cached, allowing you to safely reuse it across multiple regular expressions (in case of `Hyperscan` support multiple regular expressions will also be composed as usually).
