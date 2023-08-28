@@ -8,7 +8,7 @@ title: Quickstart
 
 This guide outlines the primary procedures for obtaining and initiating work with Rspamd. Specifically, we will cover the following setup:
 
-- Ubuntu Bionic (or another OS with systemd)
+- Ubuntu Jammy (or another OS with systemd)
 - Postfix MTA
 - Redis cache
 - Dovecot with Sieve plugin to sort mail and learn by moving messages to `Junk` folder
@@ -197,7 +197,7 @@ Instructions for downloading Rspamd can be found on the [downloads page]({{ site
 
 ## Running Rspamd
 
-### Platforms with systemd (Arch, CentOS 7, Debian, Fedora, Ubuntu)
+### Platforms with systemd (Linux distributives: Arch, CentOS 7, Debian, Fedora, Ubuntu)
 
 Packaging should include starting Rspamd and configuring it to run automatically on startup during installation.
 
