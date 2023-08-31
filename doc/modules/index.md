@@ -22,8 +22,8 @@ filters = "chartable,dkim,regexp,fuzzy_check";
 ~~~
 
 If no `filters` attribute is defined, all C modules are disabled. To understand how to
-override defaults, see the FAQ [here](faq.html#what-are-local-and-override-config-files)
-and [here](faq.html#what-are-the-locald-and-overrided-directories).
+override defaults, see the FAQ [here]({{ site.baseurl }}/doc/faq.html#what-are-local-and-override-config-files)
+and [here]({{ site.baseurl }}/doc/faq.html#what-are-the-locald-and-overrided-directories).
 
 Available C modules:
 
