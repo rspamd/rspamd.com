@@ -219,7 +219,7 @@ To accomplish this, you can use the `rspamc` command or connect to the **control
 For learning, you must check the following settings:
 
 1. Controller worker should be accessible by `rspamc` or HTTP (check `bind_socket`)
-2. Controller should allow privileged commands for this client (check `enable_password` or `allow_ip` settings)
+2. Controller should allow privileged commands for this client (check `enable_password` or `secure_ip` settings)
 3. Controller should have `fuzzy_check` module configured to the servers specified
 4. You should know `fuzzy_key` and `fuzzy_shingles_key` to operate with this storage
 5. Your `fuzzy_check` module should have `fuzzy_map` configured to the flags used by server
