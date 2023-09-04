@@ -35,8 +35,8 @@ To enable Milter mode, use the `milter` boolean worker option. When enabled, the
 
 It's important to note that Milter support is available in the `rspamd_proxy` worker only. There are two ways to use the Milter protocol:
 
-1. **Proxy Mode (for large instances)**: This mode involves a dedicated scanning layer.
-2. **Self-scan Mode (for small instances)**.
+* Proxy mode (for large instances) with a dedicated scan layer
+* Self-scan mode (for small instances)
 
 If your setup doesn't allow your MTA to reject emails, you can set `discard_on_reject` (available from version 1.6.2 onwards) to true to discard spam emails.
 
