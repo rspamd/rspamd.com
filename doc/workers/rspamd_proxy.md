@@ -5,49 +5,46 @@ title: Rspamd proxy worker
 
 # Rspamd proxy worker
 
-This worker provides different functionality to build multiple layers systems and to handle Milter protocol. Here is a short list of functions provided by proxy worker:
+This worker provides various functionalities for building multi-layered systems and handling the Milter protocol. Here is a brief list of functions provided by the proxy worker:
 
-* Forwarding of messages to scanning layer
-* Directly interacting with MTA using Milter protocol
-* Perform load balancing, retransmitting and health checks for scanning layer
-* Add encryption and/or compression to the scan requests
-* Mirror some portion of traffic to some test server
-* Compare results of mirrored request
-* Perform messages scan by own (self-scan mode)
+* Forwarding messages to the scanning layer
+* Direct interaction with the MTA using the Milter protocol
+* Performing load balancing, retransmitting, and health checks for the scanning layer
+* Adding encryption and/or compression to scan requests
+* Mirroring some traffic to a test server
+* Comparing results of mirrored requests
+* Performing message scans autonomously (self-scan mode)
 
-The `hosts` option for the `upstream` and `mirror` can specify IP addresses or
-Unix domain sockets as described in the
-[upstreams documentation]({{ site.baseurl }}/doc/configuration/upstream.html).
-If the port number is omitted, port 11333 is assumed.
+The `hosts` option for the `upstream` and `mirror` can specify IP addresses or Unix domain sockets, as described in the [upstreams documentation](https://rspamd.com/doc/configuration/upstream.html). If the port number is omitted, port 11333 is assumed.
 
-Refer to `rspamadm confighelp workers.rspamd_proxy` for a full list of options.
+For a full list of options, please refer to `rspamadm confighelp workers.rspamd_proxy`.
 
 ## Default configuration
 
-The most widely useful feature of the proxy worker is its ability to speak Milter protocol and the default configuration was built with this in mind. By default, the proxy worker is enabled & listening on `localhost:11332` in `milter` mode with `localhost` configured as an upstream (refer to `$CONFDIR/worker-proxy.inc`).
+The proxy worker's most widely useful feature is its ability to communicate using the Milter protocol, and the default configuration is designed with this in mind. By default, the proxy worker is enabled and listening on `localhost:11332` in `milter` mode, with `localhost` configured as an upstream (refer to `$CONFDIR/worker-proxy.inc`).
 
-Hence users who require Milter protocol support in their installations are provided with such out-the-box.
+This means that users who require Milter protocol support in their installations can use it straight out of the box.
 
-Users who do not require Milter support can generally use normal workers directly & [disable]({{ site.baseurl }}/doc/workers/#common-worker-options) the proxy worker to save resources.
+For users who do not need Milter support, it's generally more efficient to use normal workers directly and [disable](https://rspamd.com/doc/workers/#common-worker-options) the proxy worker to save resources.
 
 ## Milter support
 
-From Rspamd 1.6, rspamd proxy worker supports `milter` protocol which is supported by some of the popular MTA, such as Postfix or Sendmail. The introduction of this feature also finally obsoletes the [Rmilter](https://rspamd.com/rmilter/) project in honor of the new integration method.
+Starting from Rspamd 1.6, the rspamd proxy worker supports the `milter` protocol, which is compatible with popular MTAs like Postfix and Sendmail. This new feature also marks the obsolescence of the [Rmilter](https://rspamd.com/rmilter/) project in recognition of the improved integration method.
 
-Milter mode is enabled by the `milter` boolean worker option - when enabled, proxy speaks milter protocol only. If it is disabled, the proxy is usable with Rspamd's native [HTTP protocol]({{ site.baseurl }}/doc/architecture/protocol.html) and the legacy protocol used by Exim.
+To enable Milter mode, use the `milter` boolean worker option. When enabled, the proxy communicates exclusively in the Milter protocol. If disabled, the proxy can be used with Rspamd's native [HTTP protocol](https://rspamd.com/doc/architecture/protocol.html) and the legacy protocol used by Exim.
 
-Milter support is presented in `rspamd_proxy` **only**, however, there are two possibilities to use milter protocol:
+It's important to note that Milter support is available in the `rspamd_proxy` worker only. There are two ways to use the Milter protocol:
 
-* Proxy mode (for large instances) with a dedicated scan layer
-* Self-scan mode (for small instances)
+1. **Proxy Mode (for large instances)**: This mode involves a dedicated scanning layer.
+2. **Self-scan Mode (for small instances)**.
 
-If your setup does not allow your MTA to reject mails set `discard_on_reject` (>= 1.6.2) to true for discarding spam-mails.
+If your setup doesn't allow your MTA to reject emails, you can set `discard_on_reject` (available from version 1.6.2 onwards) to true to discard spam emails.
 
 ### Self-scan mode
 
 <img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
 
-In this mode, `rspamd_proxy` scans messages itself and talk to MTA directly using Milter protocol. The advantage of this mode is its simplicity. Here is a sample configuration for this mode:
+In this mode, the `rspamd_proxy` worker scans messages independently and communicates directly with the MTA using the Milter protocol. The advantage of this mode is its simplicity. Below is a sample configuration for this mode:
 
 ~~~ucl
 # local.d/worker-proxy.inc
@@ -83,7 +80,7 @@ rspamc -h rspamd.example.org:11334 input-file
 
 <img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_proxy.png">
 
-In this mode, there is a dedicated layer of Rspamd scanners with load-balancing and optional encryption and/or compression. For this setup, the configuration might be different. Here is a small sample of proxy mode with 4 scanners where 2 scanners are more powerful and receive more requests. Also the local worker is disabled:
+In this mode, a dedicated layer of Rspamd scanners is employed, featuring load-balancing and optional encryption and/or compression. For this particular setup, the configuration may vary. Below is a concise example of proxy mode with four scanners, where two of them are allocated more resources to handle a higher volume of requests. Additionally, the local worker is disabled:
 
 ~~~ucl
 # local.d/worker-proxy.inc
@@ -103,15 +100,15 @@ upstream "scan" {
 
 <img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-testing.jpg">
 
-Proxy can be used to test:
+The proxy can be utilized for testing purposes, including:
 
-* new versions of Rspamd;
-* new plugins;
-* new rules;
-* configuration changes;
-* ML models.
+* evaluating new versions of Rspamd
+* testing new plugins
+* validating new rules
+* experimenting with configuration changes
+* assessing ML models
 
-In this mode, Rspamd mirrors some portion of traffic to a test cluster. Results of their scans are ignored when returning reply to a client, however, optional compare scripts could be started to evaluate mirror results. Here is a sample configuration of this setup (we are not using milter mode in this sample):
+In this mode, Rspamd mirrors a portion of its traffic to a test cluster. The scan results from the test cluster are disregarded when responding to clients. However, optional comparison scripts can be initiated to assess the mirrored results. Below is a sample configuration for this setup, with no utilization of milter mode in this example:
 
 ~~~ucl
 # local.d/worker-proxy.inc
@@ -133,7 +130,7 @@ mirror "test" {
 
 ### Compare scripts
 
-Compare scripts are intended to perform some simple actions with the results returned by a mirror and main cluster machine. They cannot do async request, so all you can do is to write to logs or to files. Here is a simple example of such a script in the configuration:
+Comparison scripts are designed for executing straightforward actions with the results obtained from a mirror and the main cluster machine. These scripts do not support asynchronous requests, so your options are limited to logging or writing to files. Below is a basic example of such a script in the configuration:
 
 ~~~ucl
 # local.d/worker-proxy.inc
