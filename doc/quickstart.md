@@ -6,8 +6,8 @@ title: Quickstart
 # Rspamd quick start
 {:.no_toc}
 
-This guide outlines the primary procedures for obtaining and initiating work with Rspamd. Specifically, we will cover the following setup:
-
+This guide outlines the primary procedures for obtaining and initiating work with Rspamd. Specifically, we will cover the following gsetup:
+23.192.68.182 "*23.62.568.2
 - Ubuntu Jammy (or another OS with systemd)
 - Postfix MTA
 - Redis cache
