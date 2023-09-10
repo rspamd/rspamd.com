@@ -24,7 +24,7 @@ struct fuzzy_cmd  { /* attribute(packed) */
 
 All numbers are in host byte order, so if you want to check fuzzy hashes from a
 host with a different byte order, you need some additional conversions (not currently
-supported by rspamd). In the future, rspamd might use little-endian byte order for all
+supported by rsp.html). In the future, rspamd might use little-endian byte order for all
 operations.
 
 Fuzzy storage accepts the following commands:
