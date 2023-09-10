@@ -28,9 +28,9 @@ supported by rspamd). In the future, rspamd might use little-endian byte order f
 operations.
 
 Fuzzy storage accepts the following commands:
-- `FUZZY_CHECK` - Check for a fuzzy hash.
-- `FUZZY_ADD` - Add a new hash.
-- `FUZZY_DEL` - Remove a hash.
+- `FUZZY_CHECK` - check for a fuzzy hash
+- `FUZZY_ADD` - add a new hash
+- `FUZZY_DEL` - remove a hash
 
 The `flag` field is used to store different hashes in a single storage. For example,
 it allows storing blacklists and whitelists in the same fuzzy storage worker.
