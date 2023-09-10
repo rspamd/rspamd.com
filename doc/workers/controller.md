@@ -4,23 +4,20 @@ title: Controller worker
 ---
 # Controller worker
 
-Controller worker is used to manage rspamd stats, to learn rspamd and to serve WebUI.
+The controller worker is primarily utilized for managing Rspamd statistics, facilitating the learning process, and serving the WebUI. 
 
-Internally, the controller worker is just a web server that accepts requests and sends replies using JSON serialization.
-Each command is defined by URL. Some commands are read only and are considered as `unprivileged` whilst other commands, such as
-maps modification, config modifications and learning requires higher level of privileges: `enable` level. The difference between levels is specified
-by password. If only one password is specified in the configuration, it is used for both type of commands.
+In essence, it operates as a web server that accepts requests and delivers responses in JSON format. Various commands are mapped to specific URLs, and they fall into two categories: read-only commands, which are considered `unprivileged`, and commands like map modification, config alterations, and learning, which necessitate a higher level of privileges called `enable`. These privilege levels are differentiated by passwords. If only one password is specified in the configuration, it is used for both types of commands.
 
 ## Controller configuration
 
-Rspamd controller worker supports the following options:
+The Rspamd controller worker offers the following configuration options:
 
-* `password`: password for read-only commands
-* `enable_password`: password for write commands
-* `secure_ip`: list or map with IP addresses that are treated as `secure` so **all** commands are allowed from these IPs **without** passwords (if a reverse proxy sets an `X-Forwarded-For` header, both the proxy and actual client IP must be contained in `secure_ip`)
-* `static_dir`: directory where interface static files are placed (usually `${WWWDIR}`)
-* `stats_path`: path where controller save persistent stats about rspamd (such as scanned messages count)
-* `bind_socket` : a string that defines bind address of a worker-controller (web interface). If the port number is omitted, port 11334 is assumed (see also [the common workers options](https://rspamd.com/doc/workers/#common-workers-options)).
+* `password`: This sets the password required for read-only commands.
+* `enable_password`: This sets the password required for write commands.
+* `secure_ip`: A list or map containing IP addresses designated as "secure." All commands are allowed from these IPs without the need for passwords. If a reverse proxy sets an `X-Forwarded-For` header, both the proxy's IP and the actual client's IP must be included in `secure_ip`.
+* `static_dir`: This specifies the directory where static files for the web interface are located. Typically, this would be `${WWWDIR}`.
+* `stats_path`: This sets the path where the controller worker stores persistent statistics about Rspamd, such as the count of scanned messages.
+* `bind_socket`: A string defining the bind address for the controller worker (web interface). If the port number is omitted, it defaults to port 11334. You can also refer to [the common worker options](https://rspamd.com/doc/workers/#common-workers-options) for additional details.
 
 ## Encryption support
 
@@ -28,7 +25,7 @@ To generate a keypair for the scanner you could use:
 
     rspamadm keypair -u
 
-After that keypair should appear as following:
+After running this command, the keypair should appear as follows:
 
 ~~~ucl
 keypair {
