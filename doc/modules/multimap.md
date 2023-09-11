@@ -15,6 +15,12 @@ The Multimap module has been specifically designed to handle rules that are base
 
 ## Principles of work
 
+This module defines rules that allows to extract multiple types of data (defined by `type`). The data extracted is transformed in the desired way (defined by `filter`) and is checked against the list of strings that is usually referred as `map`:
+
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/multimap_dia.png" width="50%"></center>
+
+It is a common mistake to use `type` instead of `filter` and vice-versa. To avoid confusing, please bear in mind that `type` is the main property of the map that defines which exact data is extracted.
+
 Maps in Rspamd refer to files or HTTP links that are automatically monitored and reloaded if any changes occur. The following are examples of how maps can be defined:
 
 	map = "http://example.com/file";
@@ -160,17 +166,17 @@ Type attribute means what is matched with this map. The following types are supp
 | `country` | matches country code of AS passed by [ASN module](asn.html)
 | `dnsbl` | matches IP of the host that performed message handoff against some DNS blacklist (consider using [RBL](rbl.html) module for this)
 | `filename` | matches attachment filenames and filenames in archives against map. It also includes detected filename match from version 2.0. For example, if some attachment has `.png` extension but it has real type detected as `image/jpeg` then two checks would be performed: for the original attachment and for the detected one. This does not include files in archives as Rspamd does not extract them.
-| `from` | matches envelope from (or header `From` if envelope from is absent)
+| `from` | matches **envelope** from (or header `From` if envelope from is absent)
 | `header` | matches any header specified (must have `header = "Header-Name"` configuration attribute)
 | `helo` | matches HELO of the message handoff session
 | `hostname` | matches reverse DNS name of the host that performed message handoff
 | `ip` | matches IP of the host that performed message handoff (against radix map)
 | `mempool` | matches contents of a mempool variable (specified with `variable` parameter)
 | `received` | (new in 1.5) matches elements of `Received` headers
-| `rcpt` | matches any of envelope rcpt or header `To` if envelope info is missing
+| `rcpt` | matches any of  **envelope** rcpt or header `To` if envelope info is missing
 | `selector` | applies generic [selector](../configuration/selectors.html) and check data returned in the specific map. This type must have `selector` option and an optional `delimiter` option that defines how to join multiple selectors (an empty string by default). If a selector returns multiple values, e.g. `urls`, then all values are checked. Normal filter logic can also be applied to the selector's results.
 | `symbol_options` | (new in 1.6.3) match 'options' yielded by whichever symbol of interest (requires `target_symbol` parameter)
-| `url` | matches URLs in messages against maps
+| `url` | matches URLs in messages against maps (this excludes by default images urls and urls extracted from content parts, e.g. PDF parts)
 | `user` | matches authenticated username against maps
 
 DNS maps are considered legacy and it is not encouraged to use them in new projects. Instead, [rbl](rbl.html) should be used for that purpose.
