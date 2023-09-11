@@ -17,7 +17,7 @@ The Multimap module has been specifically designed to handle rules that are base
 
 This module defines rules that allows to extract multiple types of data (defined by `type`). The data extracted is transformed in the desired way (defined by `filter`) and is checked against the list of strings that is usually referred as `map`:
 
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/multimap_dia.png" width="50%"></center>
+<center><img class="img-responsive" src="{{ site.baseurl }}/img/multimap_dia.png" width="75%"></center>
 
 It is a common mistake to use `type` instead of `filter` and vice-versa. To avoid confusing, please bear in mind that `type` is the main property of the map that defines which exact data is extracted.
 
