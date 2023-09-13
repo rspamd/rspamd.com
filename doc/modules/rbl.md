@@ -67,6 +67,8 @@ The required parameters `rbl` and `checks` set the address used for testing and 
 - `emails` - email addresses found in a message-body
 - `from` - the sending IP that sent the message
 - `helo` - HELO provided by the sender
+- `images` - URLs of images linked in message body
+- `numeric_urls` - IP addresses featuring in the hostname part of URLs (since 3.7)
 - `rdns` - sender's hostname as provided to Rspamd (expected to be forward-confirmed)
 - `received` - IP addresses found in `Received` headers
 - `replyto` - address from the `Reply-To` header of a message
@@ -161,6 +163,12 @@ rbls {
 Starting from version 2.0, both the `Emails` and `SURBL` modules are deprecated in favour of the rules for the RBL module. Rspamd automatically converts the old rules on start. If you have custom rules in either the `SURBL` or `Emails` module, they are converted to have priority over RBL modules for a smooth transition. However, new rules should only be written for the RBL module, as the transition phase for the `SURBL` and `Emails` modules will not last forever.
 
 Previously, the `SURBL` module was responsible for scanning URLs found in messages against a list of known RBLs. However, these functions are now transferred to the RBL module.
+
+URLs extracted from the message body & URLs extracted from content such as PDFs can be checked by adding `urls` and/or `content_urls` respectively to the `checks` setting.
+
+**Image URLs are not extracted by default**, to include image URLs, add `images` to the `checks` setting. If `images` is used in `checks` without `urls` only image URLs are extracted.
+
+**Numeric URLs (IP addresses) are extracted by default** and are looked up in reverse notation, to exclude them set `no_ip = true`; or to extract IP addresses only set `checks = ["numeric_urls"]` (since 3.7). This check cannot be combined with the `urls` check; if combined with `content_urls` then only numeric URLs from *content* are checked.
 
 ## URL rules configuration
 
