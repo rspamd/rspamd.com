@@ -7,7 +7,7 @@ title: MID module
 
 The purpose of the MID module is to suppress the `INVALID_MSGID` (malformed Message-ID header) and `MISSING_MID` (missing Message-ID) rules for messages which are DKIM-signed by some particular domains.
 
-# Configuration
+## Configuration
 
 The default configuration of this module is shown below:
 
