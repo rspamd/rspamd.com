@@ -23,8 +23,8 @@ struct fuzzy_cmd  { /* attribute(packed) */
 ~~~
 
 All numbers are in host byte order, so if you want to check fuzzy hashes from a
-host with different byte order you need some additional conversions (not currently
-supported by rsp.html). In future, rspamd might use little endian byte order for all
+host with a different byte order, you need some additional conversions (not currently
+supported by rsp.html). In the future, rspamd might use little-endian byte order for all
 operations.
 
 Fuzzy storage accepts the following commands:
@@ -32,31 +32,33 @@ Fuzzy storage accepts the following commands:
 - `FUZZY_ADD` - add a new hash
 - `FUZZY_DEL` - remove a hash
 
-`flag` field is used to store different hashes in a single storage. For example,
-it allows to store blacklists and whitelists in the same fuzzy storage worker.
+The `flag` field is used to store different hashes in a single storage. For example,
+it allows storing blacklists and whitelists in the same fuzzy storage worker.
 A client should set the `flag` field when adding or deleting hashes and check it
 when querying for a hash.
 
-`value` is added to the currently stored value of a hash if that hash has been found.
+The `value` is added to the currently stored value of a hash if that hash has been found.
 This field can handle negative numbers as well.
 
-`tag` is used to distinguish requests by a client. Fuzzy storage just sets this
+The `tag` is used to distinguish requests by a client. Fuzzy storage just sets this
 field in the reply equal to the value in the request.
 
-`digest` field contains the content of hash. Currently, rspamd uses `blake2b` hash
-in its binary form granting the `2^512` of possible hashes with negligible collisions
+The `digest` field contains the content of the hash. Currently, rspamd uses the `blake2b` hash
+in its binary form, providing `2^512` possible hashes with negligible collision
 probability. At the same time, rspamd saves the legacy format of fuzzy hashes by
 means of this field. Old rspamd can work with legacy hashes only.
 
-`shingles_count` defines how many `shingles` are attached to this command.
-Currently, rspamd uses 32 shingles and this value thus should be 32 for commands
+The `shingles_count` defines how many `shingles` are attached to this command.
+Currently, rspamd uses 32 shingles, so this value should be set to 32 for commands
 with shingles. Shingles should be included in the same packet and follow the command as
-an array of int64_t values. Please note, that rspamd rejects commands that have wrong
-shingles count or their size is not equal to the desired one:
+an array of int64_t values. Please note that rspamd rejects commands that have the wrong
+shingle count or if their size is not equal to the desired one:
 
-	sizeof(fuzzy_.html) + shingles_count * sizeof(int64_t)
+```
+sizeof(fuzzy_cmd) + shingles_count * sizeof(int64_t)
+```
 
-Reply format of fuzzy storage is also presented as a structure:
+The reply format of fuzzy storage is also presented as a structure:
 
 ~~~C
 struct fuzzy_cmd  { /* attribute(packed) */
@@ -72,10 +74,10 @@ struct fuzzy_cmd  { /* attribute(packed) */
 
 ## Storage format
 
-Rspamd fuzzy storage uses `sqlite3` for storing hashes. All update operations are
-performed in a transaction which is committed to the main database approximately once
-per minute. `VACUUM` command is executed on startup and hashes expiration is performed
-at the termination of rspamd fuzzy storage worker.
+Rspamd's fuzzy storage uses `sqlite3` for storing hashes. All update operations are
+performed in a transaction, which is committed to the main database approximately once
+per minute. The `VACUUM` command is executed on startup, and hash expiration is performed
+when the rspamd fuzzy storage worker terminates.
 
 Here is the internal database structure:
 
@@ -96,12 +98,12 @@ database to perform, for example backup or analysis.
 
 ## Operation notes
 
-To check a hash, rspamd fuzzy storage initially queries for the direct match using
-`digest` field as a key. If that match succeed then the value is returned immediately.
-Otherwise, if a command contains shingles then rspamd checks for fuzzy match trying
-to find each shingle's value. If more than 50% of shingles matches the same digest
-then rspamd returns that digest's value and the probability of match that means
-generally `match_count / shingles_count`.
+To check a hash, rspamd fuzzy storage initially queries for a direct match using
+the `digest` field as a key. If that match succeeds, the value is returned immediately.
+Otherwise, if a command contains shingles, then rspamd checks for a fuzzy match by attempting
+to find the value for each shingle. If more than 50% of the shingles match the same digest,
+rspamd returns that digest's value along with the probability of the match, which generally
+equals `match_count / shingles_count`.
 
 ## Configuration
 
@@ -136,7 +138,7 @@ worker "fuzzy" {
 
 ## Compatibility notes
 
-Rspamd fuzzy storage of version `0.8` can work with rspamd clients of all versions,
-however, all updates from legacy versions (less that `0.8`) won't update fuzzy shingles
-database. Rspamd [fuzzy check module](../modules/fuzzy_check.html) can work **only**
-with the recent rspamd fuzzy storage (it won't get anything from the legacy storages).
+Rspamd fuzzy storage version `0.8` is compatible with rspamd clients of all versions.
+However, all updates from legacy versions (less than `0.8`) won't update the fuzzy shingles
+database. The Rspamd [fuzzy check module](../modules/fuzzy_check.html) can work **only**
+with the recent rspamd fuzzy storage and won't retrieve anything from the legacy storages.
