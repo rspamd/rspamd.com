@@ -17,6 +17,7 @@ In this tutorial, we describe how to create new rules for Rspamd - both using Lu
 Rules play a vital role in a spam filtering system, and Rspamd comes equipped with a set of default rules. However, if you operate your own system, you may want to create your own rules for more effective spam filtering or a lower false positive rate. Rules are typically written in Lua, where you can define both custom logic and generic regular expressions.
 
 ## Configuration files
+
 It is advisable to store your custom rules and configuration in separate files to avoid conflicts with the default rules, which may change from version to version. Rspamd comes with its own set of rules, so keeping your customizations separate can help to ensure that they are not overwritten or disrupted when updating the software.
 
 There are several ways to achieve this:
@@ -40,9 +41,7 @@ config['regexp']['symbol1'] = '/other_re/' -- add 'symbol1' key to the table
 config['regexp']['symbol'] = '/override_re/' -- replace regexp for 'symbol'
 ~~~
 
-To improve the style of the sentences, you could consider the following revisions:
-
-"Please note that this method is different from the standard configuration files, which use a different syntax (UCL-based) and typically include two special files:
+Please note that this method is different from the standard configuration files, which use a different syntax (UCL-based) and typically include two special files:
 
 ```
 .include(try=true,priority=1) "$CONFDIR/local.d/config.conf"
