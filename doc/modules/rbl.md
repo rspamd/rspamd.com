@@ -168,7 +168,7 @@ URLs extracted from the message body & URLs extracted from content such as PDFs 
 
 **Image URLs are not extracted by default**, to include image URLs, add `images` to the `checks` setting. If `images` is used in `checks` without `urls` only image URLs are extracted.
 
-**Numeric URLs (IP addresses) are extracted by default** and are looked up in reverse notation, to exclude them set `no_ip = true`; or to extract IP addresses only set `checks = ["numeric_urls"]` (since 3.7). This check cannot be combined with the `urls` check; if combined with `content_urls` then only numeric URLs from *content* are checked.
+**Numeric URLs (IP addresses) are extracted by default** and are looked up in reverse notation, to exclude them set `no_ip = true`; or to extract IP addresses only set `checks = ["numeric_urls"]` (since 3.7). Combining this check with the `urls` check doesn't make logical sense; if combined with `content_urls` or `images` then numeric URLs from content and images are respectively included (by default they are excluded as with `urls` check).
 
 ## URL rules configuration
 
