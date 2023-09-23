@@ -723,9 +723,9 @@ What distinguishes these files is the way in which they alter the configuration 
 
 ### What are maps
 
-Maps are files that contain lists of keys or key-value pairs that could be dynamically reloaded by Rspamd when changed. The important difference to configuration elements is that map reloading is done 'live' without and expensive restart procedure. Another important thing about maps is that Rspamd can monitor both file and HTTP maps for changes (modification time for files and HTTP `If-Modified-Since` header for HTTP maps). So far, Rspamd supports `HTTP` and `file` maps.
+Maps are files that contain lists of keys or key-value pairs that can be dynamically reloaded by Rspamd when changed. The important difference to configuration elements is that map reloading is done 'live' without an expensive restart procedure. Another important thing about maps is that Rspamd can monitor both file and HTTP maps for changes (modification time for files and HTTP `If-Modified-Since` header for HTTP maps). So far, Rspamd supports `HTTP` and `file` maps.
 
-All maps behaves in the same way so you can have some choices about how to define a map:
+All maps behave in the same way so you have some choices about how to define a map:
 
 1. Plain path to file or http (like `map = "http://example.com/file.txt"` or `map = "/tmp/mymap"`)
 2. Composite path like `map = ["http://example.com/file.txt", "/tmp/mymap"]`. Maps data is concatenated from the sources.
@@ -797,7 +797,7 @@ IP maps:
 There is a difference between hot and cold start:
 
 * on hot start Rspamd reuses cached maps for HTTP maps (and their `Cache-Control/ETag` attributes as well) so it starts using them just after the start
-* on cold start (when new maps are added or when `/var/lib/rspamd` is cleaned) Rspamd fetches maps merely after workers are started so there could be a gap that might be covered in turn by `file+fallback` backend option if map downtime is unacceptable:
+* on cold start (when new maps are added or when `/var/lib/rspamd` is cleaned) Rspamd fetches maps right after workers are started so there could be a gap that might be covered in turn by `file+fallback` backend option if map downtime is unacceptable:
 
 ```
 map = [
@@ -808,7 +808,7 @@ map = [
 ];
 ```
 
-In this case, the first three backends will be used when HTTP map is available (and the data will be joined all together). The final location defines cold startup fallback which will be replaced when/if HTTP map is downloaded.
+In this case, the first three backends will be used when the HTTP map is available (and all the data will be joined together). The final location defines cold startup fallback which will be replaced when/if HTTP map is downloaded.
 
 ### How to sign maps
 
