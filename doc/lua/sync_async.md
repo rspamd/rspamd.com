@@ -17,7 +17,7 @@ This guide describes how to make asynchronous calls from Rspamd plugins and rule
 Prior to 1.8.0, if you needed to perform an action involving network request
 (i.e. Redis query, Anti-virus scan), you had to use callback-style approach.
 You define callback and initiate an asynchronous request and stop the execution
-to let other tasks proceed. 
+to allow other tasks proceed. 
 
 As soon as request is completed, callback is called.
 
@@ -39,9 +39,9 @@ As soon as request is completed, callback is called.
 
 ### Introducing pseudo-synchronous API {#pseudo-synchronous-API}
 
-Rspamd 1.8.0 is introducing a new pseudo-synchronous API. Now you can write code in a usual imperative manner but you still will not block any other tasks.
+Rspamd 1.8.0 introduces a new pseudo-synchronous API. Now you can write code in a typical imperative manner without blocking other tasks.
 
-Each potentially blocking operation creates a yielding-point. In turn, this means the code is suspended until the operation is done (just like blocking) and resumes only when there is some result. Meanwhile, other tasks are processed as usual.
+Each operation that could potentially block creates a yielding point. Consequently, the code is paused until the operation is completed (similar to blocking), and it resumes only when there is a result. Meanwhile, other tasks are processed as usual.
 
 <small>
 **Please note** that synchronous mode requires symbol to be registered with **`coro`** flag from the version 1.9 (see "full example").
@@ -198,7 +198,7 @@ rspamd_config:register_symbol({
 
 ### DNS module {#API-example-DNS-module}
 
-To work with DNS properly, new module `rspamd_dns` was introduced obsoleting former `task:get_resolver()` calls. New API requires to explicitly specify type of request instead of providing set of `resolve_*` methods.
+To work with DNS properly, a new module called `rspamd_dns` has been introduced, which replaces the former `task:get_resolver()` calls. The new API requires explicit specification of the type of request, rather than providing a set of `resolve_*` methods.
 
 #### Asynchronous DNS request
 {:.no_toc}
