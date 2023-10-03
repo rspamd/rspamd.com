@@ -145,38 +145,45 @@ Available routines and their settings are as below, default values are as indica
 Add an [authentication-results](https://tools.ietf.org/html/rfc7001) header.
 
 ~~~ucl
-  # Name of header
-  header = "Authentication-Results";
-  # Remove existing headers
-  remove = 1;
-  # Set this false not to add SMTP usernames in authentication-results
-  add_smtp_user = true;
-  # SPF/DKIM/DMARC symbols in case these are redefined
-  spf_symbols {
-    pass = "R_SPF_ALLOW";
-    fail = "R_SPF_FAIL";
-    softfail = "R_SPF_SOFTFAIL";
-    neutral = "R_SPF_NEUTRAL";
-    temperror = "R_SPF_DNSFAIL";
-    none = "R_SPF_NA";
-    permerror = "R_SPF_PERMFAIL";
+use = ["authentication-results"];
+#authenticated_headers = ["authentication-results"]; # to add this header for authenticated users
+
+routines {
+  authentication-results {
+    # Name of header
+    header = "Authentication-Results";
+    # Remove existing headers
+    remove = 1;
+    # Set this false not to add SMTP usernames in authentication-results
+    add_smtp_user = true;
+    # SPF/DKIM/DMARC symbols in case these are redefined
+    spf_symbols {
+      pass = "R_SPF_ALLOW";
+      fail = "R_SPF_FAIL";
+      softfail = "R_SPF_SOFTFAIL";
+      neutral = "R_SPF_NEUTRAL";
+      temperror = "R_SPF_DNSFAIL";
+      none = "R_SPF_NA";
+      permerror = "R_SPF_PERMFAIL";
+    }
+    dkim_symbols {
+      pass = "R_DKIM_ALLOW";
+      fail = "R_DKIM_REJECT";
+      temperror = "R_DKIM_TEMPFAIL";
+      none = "R_DKIM_NA";
+      permerror = "R_DKIM_PERMFAIL";
+    }
+    dmarc_symbols {
+      pass = "DMARC_POLICY_ALLOW";
+      permerror = "DMARC_BAD_POLICY";
+      temperror = "DMARC_DNSFAIL";
+      none = "DMARC_NA";
+      reject = "DMARC_POLICY_REJECT";
+      softfail = "DMARC_POLICY_SOFTFAIL";
+      quarantine = "DMARC_POLICY_QUARANTINE";
+    }
   }
-  dkim_symbols {
-    pass = "R_DKIM_ALLOW";
-    fail = "R_DKIM_REJECT";
-    temperror = "R_DKIM_TEMPFAIL";
-    none = "R_DKIM_NA";
-    permerror = "R_DKIM_PERMFAIL";
-  }
-  dmarc_symbols {
-    pass = "DMARC_POLICY_ALLOW";
-    permerror = "DMARC_BAD_POLICY";
-    temperror = "DMARC_DNSFAIL";
-    none = "DMARC_NA";
-    reject = "DMARC_POLICY_REJECT";
-    softfail = "DMARC_POLICY_SOFTFAIL";
-    quarantine = "DMARC_POLICY_QUARANTINE";
-  }
+}
 ~~~
 
 ### fuzzy-hashes (1.7.5+)
@@ -184,7 +191,13 @@ Add an [authentication-results](https://tools.ietf.org/html/rfc7001) header.
 For each matched fuzzy hash adds a header containing the hash.
 
 ~~~ucl
-  header = "X-Rspamd-Fuzzy";
+use = ["fuzzy-hashes"];
+
+routines {
+  fuzzy-hashes {
+    header = "X-Rspamd-Fuzzy";
+  }
+}
 ~~~
 
 ### remove-header (1.6.2+)
@@ -192,8 +205,14 @@ For each matched fuzzy hash adds a header containing the hash.
 Removes a header with the specified name (`header` MUST be specified):
 
 ~~~ucl
-  header = "Remove-This";
-  remove = 0; # 0 means remove all, 1 means remove the first one , -1 remove the last and so on
+use = ["remove-header"];
+
+routines {
+  remove-header {
+    header = "Remove-This";
+    remove = 0; # 0 means remove all, 1 means remove the first one , -1 remove the last and so on
+  }
+}
 ~~~
 
 ### remove-headers (1.6.3+)
@@ -201,10 +220,16 @@ Removes a header with the specified name (`header` MUST be specified):
 Removes multiple headers (`headers` MUST be specified):
 
 ~~~ucl
-  headers {
-    "Remove-This" = 0;
-    "This-Too" = 0;
+use = ["remove-headers"];
+
+routines {
+  remove-headers {
+    headers {
+      "Remove-This" = 0;
+      "This-Too" = 0;
+    }
   }
+}
 ~~~
 
 ### remove-spam-flag (1.7.1+)
@@ -212,7 +237,13 @@ Removes multiple headers (`headers` MUST be specified):
 Removes pre-existing spam flag added by an upstream spam filter.
 
 ~~~ucl
-  header = "X-Spam";
+use = ["remove-spam-flag"];
+
+routines {
+  remove-spam-flag {
+    header = "X-Spam";
+  }
+}
 ~~~
 
 Default name of the header to be removed is `X-Spam` which can be manipulated using the `header` setting.
@@ -222,9 +253,15 @@ Default name of the header to be removed is `X-Spam` which can be manipulated us
 Adds a predefined header to mail identified as spam.
 
 ~~~ucl
-  header = "Deliver-To";
-  value = "Junk";
-  remove = 0;
+use = ["spam-header"];
+
+routines {
+  spam-header {
+    header = "Deliver-To";
+    value = "Junk";
+    remove = 0;
+  }
+}
 ~~~
 
 Default name/value of the added header is `Deliver-To`/`Junk` which can be manipulated using the `header` and `value` settings.
@@ -234,8 +271,14 @@ Default name/value of the added header is `Deliver-To`/`Junk` which can be manip
 Attaches the stat signature to the message.
 
 ~~~ucl
-  header = 'X-Stat-Signature';
-  remove = 0;
+use = ["stat-signature"];
+
+routines {
+  stat-signature {
+    header = 'X-Stat-Signature';
+    remove = 0;
+  }
+}
 ~~~
 
 ### x-rspamd-queue-id (1.5.8+)
@@ -243,8 +286,14 @@ Attaches the stat signature to the message.
 Adds a header containing the Rspamd queue id of the message [if it is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention).
 
 ~~~ucl
-  header = 'X-Rspamd-Queue-Id';
-  remove = 0;
+use = ["x-rspamd-queue-id"];
+
+routines {
+  x-rspamd-queue-id {
+    header = 'X-Rspamd-Queue-Id';
+    remove = 0;
+  }
+}
 ~~~
 
 ### x-spamd-result (1.5.8+)
@@ -252,8 +301,14 @@ Adds a header containing the Rspamd queue id of the message [if it is NOT origin
 Adds a header containing the scan results [if the message is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention).
 
 ~~~ucl
-  header = 'X-Spamd-Result';
-  remove = 0;
+use = ["x-spamd-result"];
+
+routines {
+  x-spamd-result {
+    header = 'X-Spamd-Result';
+    remove = 0;
+  }
+}
 ~~~
 
 ### x-rspamd-server (1.5.8+)
@@ -261,9 +316,15 @@ Adds a header containing the scan results [if the message is NOT originated from
 Adds a header containing the local computer host name of the Rspamd server that checked out the message [if it is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention). Since Rspamd 2.4 the host name can be replaced with a user-defined string specified in the `hostname` setting.
 
 ~~~ucl
-  header = 'X-Rspamd-Server';
-  remove = 0;
-  hostname = nil; -- Get the local computer host name (2.4+)
+use = ["x-rspamd-server"];
+
+routines {
+  x-rspamd-server {
+    header = 'X-Rspamd-Server';
+    remove = 0;
+    #hostname = "foo.com"; -- Local computer host name if unspecified (2.4+)
+  }
+}
 ~~~
 
 ### x-spamd-bar
@@ -271,11 +332,17 @@ Adds a header containing the local computer host name of the Rspamd server that 
 Adds a visual indicator of spam/ham level.
 
 ~~~ucl
-  header = "X-Spamd-Bar";
-  positive = "+";
-  negative = "-";
-  neutral = "/";
-  remove = 0;
+use = ["x-spamd-bar"];
+
+routines {
+  x-spamd-bar {
+    header = "X-Spamd-Bar";
+    positive = "+";
+    negative = "-";
+    neutral = "/";
+    remove = 0;
+  }
+}
 ~~~
 
 ### x-spam-level
@@ -283,9 +350,15 @@ Adds a visual indicator of spam/ham level.
 Another visual indicator of spam level- SpamAssassin style.
 
 ~~~ucl
-  header = "X-Spam-Level";
-  char = "*";
-  remove = 0;
+use = ["x-spam-level"];
+
+routines {
+  x-spamd-level {
+    header = "X-Spam-Level";
+    char = "*";
+    remove = 0;
+  }
+}
 ~~~
 
 ### x-spam-status
@@ -293,18 +366,30 @@ Another visual indicator of spam level- SpamAssassin style.
 SpamAssassin-style X-Spam-Status header indicating spam status.
 
 ~~~ucl
-  header = "X-Spam-Status";
-  remove = 0;
+use = ["x-spam-status"];
+
+routines {
+  x-spam-status {
+    header = "X-Spam-Status";
+    remove = 0;
+  }
+}
 ~~~
 
 ### x-virus
 
 ~~~ucl
-  header = "X-Virus";
-  remove = 0;
-  # The following setting is an empty list by default and required to be set
-  # These are user-defined symbols added by the antivirus module
-  symbols = ["CLAM_VIRUS", "FPROT_VIRUS"];
+use = ["x-virus"];
+
+routines {
+  x-virus {
+    header = "X-Virus";
+    remove = 0;
+    # The following setting is an empty list by default and required to be set
+    # These are user-defined symbols added by the antivirus module
+    symbols = ["CLAM_VIRUS", "FPROT_VIRUS"];
+  }
+}
 ~~~
 
 If the [Antivirus module]({{ site.baseurl }}/doc/modules/antivirus.html) detects any viruses in an email, the module adds a header that contains the names of the viruses detected by the configured scanners.
@@ -314,17 +399,19 @@ If the [Antivirus module]({{ site.baseurl }}/doc/modules/antivirus.html) detects
 User-defined routines can be defined in configuration in the `custom` section, for example:
 
 ~~~ucl
-  custom {
-    my_routine = <<EOD
-return function(task, common_meta)
-  -- parameters are task and metadata from previous functions
-  return nil, -- no error
+use = ["my_routine"];
+
+custom {
+  my_routine = <<EOD
+  return function(task, common_meta)
+    -- parameters are task and metadata from previous functions
+    return nil, -- no error
     {['X-Foo'] = 'Bar'}, -- add header: X-Foo: Bar
     {['X-Foo'] = 0 }, -- remove foreign X-Foo headers
     {} -- metadata to return to other functions
   end
 EOD;
-  }
+}
 ~~~
 
 You can reference the key `my_routine` in the `use` setting, just like you would with other routines.
@@ -332,24 +419,26 @@ You can reference the key `my_routine` in the `use` setting, just like you would
 Here's a more complex example: If a specific symbol is added, the module will add an additional header:
 
 ~~~ucl
+use = ["my_routine"];
+
 custom {
   my_routine = <<EOD
-return function(task, common_meta)
--- parameters are task and metadata from previous functions
+  return function(task, common_meta)
+    -- parameters are task and metadata from previous functions
 
-  if task:has_symbol('SYMBOL') then
+    if task:has_symbol('SYMBOL') then
+      return nil, -- no error
+      {['X-Foo'] = 'Bar'}, -- set extra header
+      {['X-Foo'] = 0}, -- remove foreign X-Foo headers
+      {} -- metadata to return to other functions
+    end
+
     return nil, -- no error
-    {['X-Foo'] = 'Bar'}, -- set extra header
+    {}, -- need to fill the parameter
     {['X-Foo'] = 0}, -- remove foreign X-Foo headers
     {} -- metadata to return to other functions
+
   end
-
-  return nil, -- no error
-  {}, -- need to fill the parameter
-  {['X-Foo'] = 0}, -- remove foreign X-Foo headers
-  {} -- metadata to return to other functions
-
-end
 EOD;
 }
 ~~~
