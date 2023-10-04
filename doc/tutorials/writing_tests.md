@@ -5,7 +5,7 @@ title: Writing tests for Rspamd
 
 # Writing tests for Rspamd
 
-Testing is an important part of maintaining stable product. In case of Rspamd, there was a historical lack of proper testing, however, we are working on improvements here. Any help from the community with regard to tests is much appreciated.
+Testing is a crucial aspect of ensuring the stability of a product. In the case of Rspamd, there has historically been a lack of comprehensive testing, but we are actively working to improve this. We welcome and greatly appreciate any contributions from the community.
 
 <div id="toc" markdown="1">
   * this unordered seed list will be replaced by toc as unordered list
@@ -21,7 +21,7 @@ Rspamd has two types of tests:
 
 ## Unit tests
 
-Unit tests are placed in `test/lua/unit`. Each tests defines testing context, where there are main definitions used by all test cases, for example, [FFI](https://luajit.org/ext_ffi.html) definitions:
+Unit tests are located in the `test/lua/unit` directory. Each test defines a testing context, which contains main definitions utilized by all test cases. For instance, it includes [FFI (Foreign Function Interface)](https://luajit.org/ext_ffi.html) definitions.
 
 ```lua
 context("Inet addr check functions", function()
@@ -62,25 +62,31 @@ Then, there could be some test cases:
     end)
 ```
 
-Bear in mind, that a single `test` invocation should define one specific case.
+Please note that a single `test` invocation should define one specific case.
 
-Running unit tests requires to build a special `rspamd-test` target. If you use `make` to build Rspamd from the sources, you should type `make rspamd-test` to do it. After that, you would have `test/rspamd-test` binary available in your build directory. 
+Running unit tests requires building a special `rspamd-test` target. If you use `make` to build Rspamd from the sources, you can do so by running `make rspamd-test`. This will create the `test/rspamd-test` binary in your build directory.
 
-To run unit tests, just type `test/rspamd-test -p /rspamd/lua`
+To run unit tests, simply execute `test/rspamd-test -p /rspamd/lua`.
 
-Unfortunately, it is currently impossible to execute specific unit tests only.
+However, it's important to note that it's currently not possible to execute specific unit tests individually.
 
 ## Functional tests
 
-Functional tests are intended to test the whole setup of Rspamd and you should first learn some basics about the [Robot Framework](https://robotframework.org/) that is used to write tests.
+Functional tests are designed to assess the entire Rspamd setup, and before diving into them, it's important to familiarize yourself with the [Robot Framework](https://robotframework.org/), which is used to write these tests.
 
-Functional tests live in `test/functional` directory. To run functional tests, you first need to **install** Rspamd in your system (or a container). Then you can run them manually using something like `RSPAMD_INSTALLROOT=/usr/local robot -s '280*' ~/rspamd/test/functional/cases`, where:
+Functional tests are located in the `test/functional` directory. To run them, you'll need to first **install** Rspamd on your system or within a container. After installation, you can execute the tests manually using a command like this:
+
+```
+RSPAMD_INSTALLROOT=/usr/local robot -s '280*' ~/rspamd/test/functional/cases
+```
+
+Here's what these components do:
 
 * `RSPAMD_INSTALLROOT` - a prefix where Rspamd is installed (e.g. `/usr` for the vast majority of Linux installations)
 * `-s` - pattern to match tests (may be skipped if all tests are needed)
 * `~/rspamd/test/functional/cases` - directory where test cases are placed
 
-Functional tests are also executed by [Rspamd CI](https://ci.rspamd.com/rspamd/rspamd). It also covers pull requests you send on the GitHub site.
+It's worth noting that functional tests are also executed by [Rspamd CI](https://ci.rspamd.com/rspamd/rspamd), which includes testing for pull requests submitted on the GitHub repository.
 
 ### Functional tests structure
 
@@ -90,9 +96,9 @@ Each test usually has 3 components:
 * Some configuration that lives in `test/functional/configs`
 * Messages to scan in `test/functional/messages`
 
-In many cases you'd also need to have some specific Lua code that should be placed in `test/functional/lua`. For complicated setups, e.g. if you need some fake or real external service, you could need to write some Python code that should be placed to `test/functional/lib` and, for fake services, in `test/functional/util`.
+In many cases, you may also require specific Lua code, which should be located in the `test/functional/lua` directory. For more complex setups, such as when you need to simulate fake or real external services, you might need to write some Python code. This Python code should be placed in the `test/functional/lib` directory and, for simulating fake services, in `test/functional/util`.
 
-You could find plenty of examples about how to run those fake servers in the existing tests.
+You can find numerous examples of how to run these fake servers in the existing tests, providing valuable guidance for your testing needs.
 
 ### Test case structure
 
