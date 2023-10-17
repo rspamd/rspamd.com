@@ -57,6 +57,7 @@ rbls {
 ### Global parameters
 
 - `local_exclude_ip_map`: map containing additional IPv4/IPv6 addresses/subnets that should be considered private and excluded from checks where `exclude_local` is `true` (the default).
+- `url_whitelist`: map containing host names which should be skipped by URL checks.
 
 ### RBL-specific parameters
 
@@ -180,12 +181,13 @@ Here are the default lists specified:
 
 ~~~ucl
 # local.d/rbl.conf
-# 'surbl' subsection under which the SURBL definitions are nested
-surbl {
-# List of domains that are not checked by surbl
-whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
 
-  rules {
+# List of domains that are not checked by surbl
+url_whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
+
+# 'rbls' subsection under which the SURBL definitions are nested
+rbls {
+
     "SURBL_MULTI" {
       ignore_defaults = true; # for compatibility with old defaults
       rbl = "multi.surbl.org";
@@ -280,7 +282,7 @@ whitelist = "file://$CONFDIR/local.d/maps.d/surbl-whitelist.inc.local";
         SEM_URIBL = 2;
       }
     }
-  }
+}
 ~~~
 
 Each list should have a `suffix` parameter that defines the list itself, and optionally, some replies processing logic either by `returnbits` or `returncodes` sections.
