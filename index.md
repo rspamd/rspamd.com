@@ -6,7 +6,7 @@ title: Rspamd spam filtering system
 <div class="row news_row" style="position: relative;">
 		<div class="col-xs-12 col-sm-10">
 				<h3 style="margin: 0px;">News: Rspamd 3.7.1 has been released</h3>
-				<span class="date"><small>2023-08-11</small></span>
+				<span class="date"><small>2023-10-11</small></span>
 				<p style="margin-bottom: 0px; margin-top: 5px">New stable release is now available.</p>
    </div>
    <div class="col-xs-12 col-sm-2 bottom-right">
