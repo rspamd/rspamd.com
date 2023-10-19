@@ -128,7 +128,7 @@ Once this is done, the standard procedure of compiling m4 to cf should be follow
 
 The Haraka email server, version 2.7.0 and above, offers support for Rspamd through the [Haraka Rspamd plugin](https://haraka.github.io/plugins/rspamd/){:target="&#95;blank"}.
 
-To activate this feature, add `rspamd` to the `DATA` section of your `config/plugins` file and customize the `config/rspamd.ini` file to suit your needs.
+To activate this feature: run `npm install haraka-plugin-rspamd`, add `rspamd` to the `DATA` section of your `config/plugins` file and create a `config/rspamd.ini` file to suit your needs if needed.
 
 ## Integration with EmailSuccess MTA
 
