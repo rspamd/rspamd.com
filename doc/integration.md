@@ -7,12 +7,12 @@ title: MTA integration
 
 This document describes several methods of integrating rspamd with some popular MTAs. Among them are:
 
-* [Postfix](({{ site.url }}{{ site.baseurl }}/doc/integration.html#using-rspamd-with-postfix-mta)
-* [Exim](({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-exim-mta)
-* [Sendmail](({{ site.url }}{{ site.baseurl }}/doc/integration.html#using-rspamd-with-sendmail-mta)
-* [Haraka](({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-haraka-mta)
-* [EmailSuccess](({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-emailsuccess-mta)
-* [Apache James](({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-apache-james)
+* [Postfix]({{ site.url }}{{ site.baseurl }}/doc/integration.html#using-rspamd-with-postfix-mta)
+* [Exim]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-exim-mta)
+* [Sendmail]({{ site.url }}{{ site.baseurl }}/doc/integration.html#using-rspamd-with-sendmail-mta)
+* [Haraka]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-haraka-mta)
+* [EmailSuccess]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-emailsuccess-mta)
+* [Apache James]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-apache-james)
 * [Stalwart Mail]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-stalwart-mail-server)
 
 In addition, this document delves into the Rspamd LDA proxy mode, a versatile tool that can be employed with any MTA.
