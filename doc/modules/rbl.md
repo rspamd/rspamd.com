@@ -110,6 +110,7 @@ Optional parameters (and their defaults if applicable) are as follows:
 - `resolve_ip` - resolve the domain to IP address
 - `returnbits` - dictionary of symbols mapped to bit positions; if the bit in the specified position is set the symbol will be returned
 - `returncodes` - dictionary of symbols mapped to lua patterns; if result returned by the RBL matches the pattern the symbol will be returned
+- `returncodes_matcher` - a specific mechanism for testing `returncodes`, see [details]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html#returncodes-matchers)
 - `selector_flatten` (false) - lookup result of chained selector as a single label
 - `selector` - one or more selectors producing data to look up in this RBL; see section on selectors for more information
 - `unknown` (false) - yield default symbol if `returncodes` or `returnbits` is specified and RBL returns unrecognised result
@@ -146,6 +147,7 @@ rbls {
       dkim_match_from = true;
       ignore_whitelist = true;
       unknown = false;
+      returncodes_matcher = "luapattern";
 
       returncodes {
         DNS_WL_NONE = "127.0.%d+.0";
@@ -157,6 +159,49 @@ rbls {
     }
   }
   
+~~~
+
+## Returncodes Matchers
+
+From version 3.7.2 Rspamd supports different strategies for handling `returncodes` via the `returncodes_matcher` setting.
+
+By default return codes are tested for equality with the result of the DNS query. For backwards compatibility values containing the percent character implicitly enable the `luapattern` matcher if one is not set.
+
+Matcher types:
+
+ - `equality`: the default, not useful for actual configuration
+ - `luapattern`: match query results using [Lua patterns](http://lua-users.org/wiki/PatternsTutorial), the old default
+ - `radix`: check for query results inside collection of subnets and IP addresses
+ - `glob`: match query results against "globbed" strings
+ - `regexp`: match query results using regular expressions
+
+Examples:
+~~~
+  returncodes_matcher = "radix";
+  returncodes {
+    SYMBOL_ONE = "127.0.0.0/24";
+    SYMBOL_TWO = ["192.168.0.0/16", "1.2.3.4"];
+  }
+
+  returncodes_matcher = "glob";
+  returncodes {
+    SYMBOL_ONE = "127.0.0.*";
+    SYMBOL_TWO = ["192.168.*.*", "1.2.3.4"];
+  }
+
+  returncodes_matcher = "regexp";
+  returncodes {
+    # regexp is not automatically anchored
+    SYMBOL_ONE = '^127\.0\.0\.\d+$';
+    SYMBOL_TWO = ['^192\.168\.\d+\.\d+$", '^1\.2\.3\.4$'];
+  }
+
+  returncodes_matcher = "luapattern";
+  returncodes {
+    # lua patterns are automatically anchored by ^ and $
+    SYMBOL_ONE = '127%.0%.0%.%d+';
+    SYMBOL_TWO = ['192%.168%.%d+%.%d+", '1%.2%.3%.4'];
+  }
 ~~~
 
 ## URL rules
