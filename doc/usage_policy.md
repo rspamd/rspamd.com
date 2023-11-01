@@ -33,7 +33,7 @@ Hence, we are kindly asking to [contact us](mailto:support@rspamd.com) before em
 
 ## Premium service
 
-If you do not meet these criteria, you can either stop using this service or contact us for a premium service that covers our costs for providing free access. Please use the following email address for inquiries: <mailto:support@rspamd.com>
+If you do not meet these criteria, you can either stop using this service or contact us for a [premium service](https://rspamd.com/commercial.html) that covers our costs for providing free access. Please use the following email address for inquiries: <mailto:support@rspamd.com>
 
 In addition, the premium service also offers more hashes and longer retention policies, as well as lower latency between a spamtrap hit and the fuzzy hash being placed in storage.
 
