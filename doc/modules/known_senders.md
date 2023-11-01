@@ -1,3 +1,7 @@
+---
+layout: doc
+title: known_senders module
+---
 # Rspamd `known_senders` Plugin Documentation
 
 The `known_senders` plugin is designed to help you track and categorize email senders based on their domains. It allows you to maintain a list of known senders and classify incoming emails from these senders. This documentation will guide you through the configuration and usage of the `known_senders` plugin.
