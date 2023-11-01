@@ -59,8 +59,6 @@ symbol_unknown = 'UNKNOWN_SENDER';
 
 ### Use Bloom Filters
 
-## Use Bloom Filters
-
 - **Description**: The `use_bloom` parameter enables or disables the use of bloom filters for faster and memory-efficient lookup of known sender domains. To use bloom filters, follow these steps:
 
    1. **Enable Redis Bloom Plugin**: In your Redis configuration (usually `redis.conf`), enable the Redis Bloom plugin. This typically involves adding or uncommenting the following line (please bear in mind that you might need to [compile this plugin](https://github.com/RedisBloom/RedisBloom) manually):
