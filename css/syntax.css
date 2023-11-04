@@ -4,10 +4,12 @@
   color: #93a1a1;
   background-color: #002b36;
 }
+/* To support better `ucl` -> `hcl` mapping
 .highlight .err {
   color: #002b36;
   background-color: #dc322f;
 }
+*/
 .highlight .c, .highlight .ch, .highlight .cd, .highlight .cm, .highlight .cpf, .highlight .c1, .highlight .cs {
   color: #657b83;
 }
@@ -34,7 +36,7 @@
   background-color: #002b36;
   font-weight: bold;
 }
-.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv, .highlight .err {
   color: #6c71c4;
 }
 .highlight .kc {
