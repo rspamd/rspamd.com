@@ -172,20 +172,20 @@ On the `master` side configure Rspamd to use distinct Redis instances respective
 
 `local.d/redis.conf`:
 
-```ucl
+```hcl
 servers = "localhost";
 ```
 
 `local.d/classifier-bayes.conf`:
 
-```ucl
+```hcl
 backend = "redis";
 servers = "localhost:6378";
 ```
 
 `override.d/worker-fuzzy.inc`:
 
-```ucl
+```hcl
 backend = "redis";
 servers = "localhost:6377";
 ```
@@ -196,7 +196,7 @@ On the `replica` side Rspamd should use local `redis` instance for both reading 
 
 `local.d/redis.conf`:
 
-```ucl
+```hcl
 servers = "localhost";
 ```
 
@@ -204,7 +204,7 @@ Since local `bayes` and `fuzzy` Redis instances are replicas, Rspamd should use 
 
 `local.d/classifier-bayes.conf`:
 
-```ucl
+```hcl
 backend = "redis";
 read_servers = "localhost:6378";
 write_servers = "localhost:6478";
@@ -212,7 +212,7 @@ write_servers = "localhost:6478";
 
 `override.d/worker-fuzzy.inc`:
 
-```ucl
+```hcl
 backend = "redis";
 read_servers = "localhost:6377";
 write_servers = "localhost:6477";

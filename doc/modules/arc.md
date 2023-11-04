@@ -28,7 +28,7 @@ The ARC signing module follows a configurable policy for choosing signing domain
 
 ## Configuration
 
-~~~ucl
+~~~hcl
 # local.d/arc.conf
 
 # Allowed settings id
@@ -97,7 +97,7 @@ domain {
 
 To use ARC keys stored in Redis you should add the following to configuration:
 
-~~~ucl
+~~~hcl
 # local.d/arc.conf
 use_redis = true;
 key_prefix = "ARC_KEYS";
@@ -134,7 +134,7 @@ You can use either `selector_map` or `path_map` to access selectors and private 
 
 Our configuration defines a templated path for the ARC signing key, a default selector, and an optional selector map that can override the default. All eligible emails will be signed if a key with the appropriate name is present on the disk.
 
-~~~ucl
+~~~hcl
 # local.d/arc.conf
 try_fallback = true;
 path = "${DBDIR}/arc/$domain.$selector.key";
@@ -144,7 +144,7 @@ selector = "arc";
 
 In the following configuration, we attempt to sign only domains which are present in both `selector_map` and `path_map`:
 
-~~~ucl
+~~~hcl
 # local.d/arc.conf
 try_fallback = false;
 selector_map = "/etc/rspamd/arc_selectors.map";

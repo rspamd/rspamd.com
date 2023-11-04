@@ -38,7 +38,7 @@ listens on an UDP port and does not save any state information.
 
 All workers share a set of common options. Here's a typical example of a normal worker configuration that utilizes only the common worker options:
 
-~~~ucl
+~~~hcl
 worker "normal" {
     bind_socket = "*:11333";
 }
@@ -53,7 +53,7 @@ Here are options available to all workers:
 `bind_socket` is the most commonly used option. It defines the address where the worker should accept
 connections. Rspamd allows both names and IP addresses for this option:
 
-~~~ucl
+~~~hcl
 bind_socket = "localhost:11333";
 bind_socket = "127.0.0.1:11333";
 bind_socket = "[::1]:11333"; # note that you need to enclose ipv6 in '[]'
@@ -61,7 +61,7 @@ bind_socket = "[::1]:11333"; # note that you need to enclose ipv6 in '[]'
 
 Also universal listening addresses are defined:
 
-~~~ucl
+~~~hcl
 bind_socket = "*:11333"; # any ipv4 and ipv6 address
 bind_socket = "*v4:11333"; # any ipv4 address
 bind_socket = "*v6:11333"; # any ipv6 address
@@ -70,7 +70,7 @@ bind_socket = "*v6:11333"; # any ipv6 address
 It is possible to use systemd sockets as configured via a [socket unit file](https://www.freedesktop.org/software/systemd/man/systemd.socket.html). 
 However, this is not recommended, especially if one is using official packages or requires the use of multiple sockets:
 
-~~~ucl
+~~~hcl
 # Use the first socket passed through a systemd .socket file.
 bind_socket = "systemd:0";
 # Starting with Rspamd 2.4, one can use named socket files too. If the systemd
@@ -80,7 +80,7 @@ bind_socket = "systemd:rspamd.socket";
 
 For UNIX sockets, it is also possible to specify owner and mode using this syntax:
 
-~~~ucl
+~~~hcl
 bind_socket = "/tmp/rspamd.sock mode=0666 owner=user";
 ~~~
 

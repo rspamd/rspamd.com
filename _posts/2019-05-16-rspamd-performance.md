@@ -163,7 +163,7 @@ It is interesting that this Rspamd setup accepts all connections encrypted using
 
 This particular instance of Rspamd is slightly tuned to use more memory to save some CPU cycles:
 
-~~~ucl
+~~~hcl
 # local.d/options.inc
 
 lua_gc_step = 100;

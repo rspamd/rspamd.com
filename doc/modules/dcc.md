@@ -24,7 +24,7 @@ To use the `dccifd` module, you must have the `dccifd` daemon properly configure
 Once the `dccifd`, it will listen on the UNIX domain socket /var/dcc/dccifd.
 To complete the setup, simply inform rspamd of the location where the `dccifd` is listening:
 
-~~~ucl
+~~~hcl
 # local.d/dcc.conf
 
 enabled = true; # Required as default is to disable DCC plugin

@@ -38,7 +38,7 @@ The available strategies are as follows:
 
 Because this module is disabled by default it should be explicitly enabled.
 
-~~~ucl
+~~~hcl
 ## /etc/rspamd/local.d/external_relay.conf
 
 # enable the module

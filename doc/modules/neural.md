@@ -23,7 +23,7 @@ By default, this module is explicitly **disabled**, so you will need to enable i
 
 Ensure that at least one Redis server is [specified]({{ site.baseurl }}/doc/configuration/redis.html) in the common `redis` section. Alternatively, you can define the Redis server in the module configuration:
 
-~~~ucl
+~~~hcl
 # local.d/neural.conf
 servers = "localhost";
 enabled = true; # Important after 1.7
@@ -31,7 +31,7 @@ enabled = true; # Important after 1.7
 
 It is also necessary to **define the scores** for symbols added by this module, as they are set to zero by default. To accomplish this, you must edit the `local.d/neural_group.conf` file:
 
-~~~ucl
+~~~hcl
 # local.d/neural_group.conf
 
 symbols = {
@@ -52,7 +52,7 @@ The neural networks module supports various configuration options for setting up
 
 By default, you can use the old configuration style, such as:
 
-~~~ucl
+~~~hcl
 # local.d/neural.conf
 
 servers = "127.0.0.1:6379";
@@ -81,7 +81,7 @@ To set which rules in `neural.conf` apply to different settings IDs, you can eit
 
 Starting from version 1.7, Rspamd offers support for multiple neural networks that can be defined in the configuration. This feature can be useful when setting up long or short neural networks, where one network has a high `max_usages` and a large `max_trains`, while the other reacts quickly to newly detected patterns. However, in practice, this setup is not usually more effective, so it is recommended to use a single network instead.
 
-~~~ucl
+~~~hcl
 # local.d/neural.conf
 rules {
   "LONG" {
@@ -109,7 +109,7 @@ rules {
 }
 ~~~
 
-~~~ucl
+~~~hcl
 # local.d/neural_group.conf
 
 symbols = {

@@ -20,7 +20,7 @@ This plugin is based on the [plugin](https://github.com/Menta2L/rspamd-elastic) 
 
 Configuration is fairly simple:
 
-~~~ucl
+~~~hcl
 # local.d/elastic.conf
 # Push update when 10 records are collected (10 if unset)
 limit = 10;

@@ -27,34 +27,34 @@ Furthermore, Redis is used to store Bayes tokens in the [statistics]({{ site.bas
 
 There are couple of ways to configure Redis for a module. First of all, you can place all Redis options inside the relevant module's section:
 
-~~~ucl
+~~~hcl
 dmarc {
   servers = "127.0.0.1";
 }
 ~~~
 
 However, it is recommended to use the local and override directories for such configurations. For instance, you can create a file called `/etc/rspamd/local.d/dmarc.conf` for this specific case:
-~~~ucl
+~~~hcl
 # local.d/dmarc.conf
 servers = "127.0.0.1";
 ~~~
 
 You can specify multiple servers by separating them with commas. Each server can also have an optional port value:
 
-~~~ucl
+~~~hcl
   servers = "serv1,serv2:6371";
 ~~~
 
 By default, Rspamd uses port `6379` for Redis. Alternatively, you can define the full features of upstream options when specifying servers:
 
-~~~ucl
+~~~hcl
   servers = "master-slave:127.0.0.1,10.0.1.1";
 ~~~
 
 You can simplify the configuration of Redis options for each individual module by using a common `redis` section. This can be done by defining the section in a separate file, such as `/etc/rspamd/local.d/redis.conf`. This approach helps streamline the configuration process and make it more organized. 
 For more detailed information, you can refer to the [upstreams documentation]({{ site.baseurl }}/doc/configuration/upstream.html).
 
-~~~ucl
+~~~hcl
 # /etc/rspamd/local.d/redis.conf
 read_servers = "127.0.0.1,10.0.0.1";
 write_servers = "127.0.0.1";
@@ -64,7 +64,7 @@ Please bear in mind that you should either use `servers` for both `read_servers`
 
 Additionally, you have the option to redefine Redis options inside the `redis` section specifically for the desired module or modules. This provides flexibility in configuring Redis options on a per-module basis:
 
-~~~ucl
+~~~hcl
 # /etc/rspamd/local.d/redis.conf
 read_servers = "127.0.0.1,10.0.0.1";
 write_servers = "127.0.0.1";
@@ -76,7 +76,7 @@ dmarc {
 
 In this example, the `dmarc` module will use a different set of servers than other modules. If you want to exclude specific modules from using the common Redis options, you can add them to the `disabled_modules` list, like this:
 
-~~~ucl
+~~~hcl
 # /etc/rspamd/local.d/redis.conf
 servers = "127.0.0.1";
 
@@ -121,7 +121,7 @@ Given this setting is enabled, where-ever names of keys could be specified in co
 
 From the version 1.8.3, Rspamd supports [Redis Sentinel](https://redis.io/topics/sentinel). Sentinels could be defined as following:
 
-~~~ucl
+~~~hcl
 # local.d/redis.conf
 sentinels = "127.0.0.1,10.0.0.1,10.0.0.2"; # Servers list (default port 5000)
 sentinel_watch_time = 1min; # How often Rspam will query sentinels for masters and slaves

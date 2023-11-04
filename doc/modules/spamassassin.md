@@ -13,7 +13,7 @@ The purpose of this plugin is to integrate these rules seamlessly into Rspamd. T
 process for this plugin is straightforward. All you need to do is compile your SpamAssassin rules 
 into a single file and feed it to the SpamAssassin module:
 
-~~~ucl
+~~~hcl
 spamassassin {
 	ruleset = "/path/to/file";
 	base_ruleset = "/var/db/spamassassin/3.004002/updates_spamassassin_org/*.cf";

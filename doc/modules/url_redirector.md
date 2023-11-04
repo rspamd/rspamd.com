@@ -7,7 +7,7 @@ title: URL redirector module
 
 This module provides a hook for [RBL]({{ site.baseurl }}/doc/modules/rbl.html) module to resolve redirects.
 To enable this module one should add a `redirector_hosts_map` option to the module's configuration, i.e. by adding the following to `local.d/url_redirector.conf`:
-~~~ucl
+~~~hcl
 redirector_hosts_map = "${LOCAL_CONFDIR}/local.d/maps.d/redirectors.inc";
 ~~~
 
@@ -19,7 +19,7 @@ Dereferenced links are cached in Redis (see [here]({{ site.baseurl }}/doc/config
 
 The following settings could be set in `local.d/url_redirector.conf` to control behaviour of the URL redirector module.
 
-~~~ucl
+~~~hcl
 # How long to cache dereferenced links in Redis (default 1 day)
 expire = 1d;
 # Timeout for HTTP requests (10 seconds by default)

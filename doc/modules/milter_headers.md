@@ -20,7 +20,7 @@ The `milter headers` module offers several routines for adding common headers, w
 
 ## Configuration
 
-~~~ucl
+~~~hcl
 # local.d/milter_headers.conf:
 
 # Options
@@ -63,7 +63,7 @@ custom {
 
 Add "extended Rspamd headers" to messages [NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention) (default `false`). Enables the following routines: `x-spamd-result`, `x-rspamd-server` and `x-rspamd-queue-id`. 
 
-~~~ucl
+~~~hcl
 extended_spam_headers = true;
 ~~~
 
@@ -71,7 +71,7 @@ extended_spam_headers = true;
 
 List of headers to be enabled for authenticated users (default `empty`).
 
-~~~ucl
+~~~hcl
 authenticated_headers = ["authentication-results"];
 ~~~
 
@@ -79,7 +79,7 @@ authenticated_headers = ["authentication-results"];
 
 Set `false` to keep pre-existing spam flag added by an upstream spam filter (default `true`). This will enable the `remove-spam-flag` option.
 
-~~~ucl
+~~~hcl
 remove_upstream_spam_flag = true;
 ~~~
 
@@ -87,7 +87,7 @@ remove_upstream_spam_flag = true;
 
 List of headers to be enabled for local IPs (default `empty`).
 
-~~~ucl
+~~~hcl
 local_headers = ["x-spamd-bar"];
 ~~~
 
@@ -95,7 +95,7 @@ local_headers = ["x-spamd-bar"];
 
 Set false to always add headers for local IPs (default `true`).
 
-~~~ucl
+~~~hcl
 skip_local = true;
 ~~~
 
@@ -103,7 +103,7 @@ skip_local = true;
     
 Do not add extended headers for any messages (except those matching extended_headers_rcpt) (default `false`)
 
-~~~ucl
+~~~hcl
 skip_all = true;
 ~~~
 
@@ -111,7 +111,7 @@ skip_all = true;
     
 Set false to always add headers for authenticated users (default `true`)
 
-~~~ucl
+~~~hcl
 skip_authenticated = true;
 ~~~
 
@@ -121,7 +121,7 @@ List of recipients (default `empty`).
 
 When [`extended_spam_headers`](#extended_spam_headers) is enabled, also add extended Rspamd headers to messages if **EVERY** envelope recipient match this list (e.g. a list of domains mail server responsible for).
 
-~~~ucl
+~~~hcl
 extended_headers_rcpt = ["user1", "@example1.com", "user2@example2.com"];
 ~~~
 
@@ -132,7 +132,7 @@ extended_headers_rcpt = ["user1", "@example1.com", "user2@example2.com"];
 
 Routines to use- this is the only required setting (may be omitted if using `extended_spam_headers`)
 
-~~~ucl
+~~~hcl
 use = ["x-spamd-bar", "authentication-results"];
 ~~~
 
@@ -144,7 +144,7 @@ Available routines and their settings are as below, default values are as indica
 
 Add an [authentication-results](https://tools.ietf.org/html/rfc7001) header.
 
-~~~ucl
+~~~hcl
 use = ["authentication-results"];
 #authenticated_headers = ["authentication-results"]; # to add this header for authenticated users
 
@@ -190,7 +190,7 @@ routines {
 
 For each matched fuzzy hash adds a header containing the hash.
 
-~~~ucl
+~~~hcl
 use = ["fuzzy-hashes"];
 
 routines {
@@ -204,7 +204,7 @@ routines {
 
 Removes a header with the specified name (`header` MUST be specified):
 
-~~~ucl
+~~~hcl
 use = ["remove-header"];
 
 routines {
@@ -219,7 +219,7 @@ routines {
 
 Removes multiple headers (`headers` MUST be specified):
 
-~~~ucl
+~~~hcl
 use = ["remove-headers"];
 
 routines {
@@ -236,7 +236,7 @@ routines {
 
 Removes pre-existing spam flag added by an upstream spam filter.
 
-~~~ucl
+~~~hcl
 use = ["remove-spam-flag"];
 
 routines {
@@ -252,7 +252,7 @@ Default name of the header to be removed is `X-Spam` which can be manipulated us
 
 Adds a predefined header to mail identified as spam.
 
-~~~ucl
+~~~hcl
 use = ["spam-header"];
 
 routines {
@@ -270,7 +270,7 @@ Default name/value of the added header is `Deliver-To`/`Junk` which can be manip
 
 Attaches the stat signature to the message.
 
-~~~ucl
+~~~hcl
 use = ["stat-signature"];
 
 routines {
@@ -285,7 +285,7 @@ routines {
 
 Adds a header containing the Rspamd queue id of the message [if it is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention).
 
-~~~ucl
+~~~hcl
 use = ["x-rspamd-queue-id"];
 
 routines {
@@ -300,7 +300,7 @@ routines {
 
 Adds a header containing the scan results [if the message is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention).
 
-~~~ucl
+~~~hcl
 use = ["x-spamd-result"];
 
 routines {
@@ -315,7 +315,7 @@ routines {
 
 Adds a header containing the local computer host name of the Rspamd server that checked out the message [if it is NOT originated from authenticated users or `our_networks`](#scan-results-exposure-prevention). Since Rspamd 2.4 the host name can be replaced with a user-defined string specified in the `hostname` setting.
 
-~~~ucl
+~~~hcl
 use = ["x-rspamd-server"];
 
 routines {
@@ -331,7 +331,7 @@ routines {
 
 Adds a visual indicator of spam/ham level.
 
-~~~ucl
+~~~hcl
 use = ["x-spamd-bar"];
 
 routines {
@@ -349,7 +349,7 @@ routines {
 
 Another visual indicator of spam level- SpamAssassin style.
 
-~~~ucl
+~~~hcl
 use = ["x-spam-level"];
 
 routines {
@@ -365,7 +365,7 @@ routines {
 
 SpamAssassin-style X-Spam-Status header indicating spam status.
 
-~~~ucl
+~~~hcl
 use = ["x-spam-status"];
 
 routines {
@@ -378,7 +378,7 @@ routines {
 
 ### x-virus
 
-~~~ucl
+~~~hcl
 use = ["x-virus"];
 
 routines {
@@ -398,7 +398,7 @@ If the [Antivirus module]({{ site.baseurl }}/doc/modules/antivirus.html) detects
 
 User-defined routines can be defined in configuration in the `custom` section, for example:
 
-~~~ucl
+~~~hcl
 use = ["my_routine"];
 
 custom {
@@ -418,7 +418,7 @@ You can reference the key `my_routine` in the `use` setting, just like you would
 
 Here's a more complex example: If a specific symbol is added, the module will add an additional header:
 
-~~~ucl
+~~~hcl
 use = ["my_routine"];
 
 custom {

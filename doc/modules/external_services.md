@@ -19,7 +19,7 @@ To configure an external service, rules must be defined. If the service detects 
 
 In case of connection errors or failures reported by the external service, the fail symbol (e.g. ICAP_VIRUS_FAIL) will be set with an error message as its description. Patterns can be used for both symbols to assign a dedicated symbol for any threat name or error message.
 
-~~~ucl
+~~~hcl
 ...
   patterns {
     # symbol_name = "pattern";
@@ -36,7 +36,7 @@ By default, the complete email will be sent to the external service system. You 
 
 Furthermore, there are two types of MIME part filters available:
 
-~~~ucl
+~~~hcl
 ...
   mime_parts_filter_regex {
     FILE1 = "^invoice\.xls$"
@@ -60,7 +60,7 @@ By default, if [Redis]({{ site.baseurl }}/doc/configuration/redis.html) is confi
 
 To add settings, modify the `/etc/rspamd/local.d/external_services.conf` file:
 
-~~~ucl
+~~~hcl
 # local.d/external_services.conf
 
 # multiple scanners could be checked, for each we create a configuration block with an arbitrary name
@@ -140,7 +140,7 @@ This module has been tested with the following ICAP implementations:
 
 Please report other working or non-working icap implementations.
 
-~~~ucl
+~~~hcl
 # local.d/external_services.conf
 
 clamav_icap {
@@ -158,7 +158,7 @@ If typical error responses are encountered, such as `X-Infection-Found: Type=2; 
 
 Depending on the ICAP software there are some extra options available:
 
-~~~ucl
+~~~hcl
 # local.d/external_services.conf
 
 icap {
@@ -172,7 +172,7 @@ icap {
 
 Here some configuration examples for ICAP capable products:
 
-~~~ucl
+~~~hcl
 # local.d/external_services.conf
 
 # C-ICAP Squidclamav
@@ -288,7 +288,7 @@ Olefy communicates with Rspamd over TCP and utilizes olevba to generate a report
 
 In order to send only office files to the olevba analyzer enable scan_mime_parts (needed for versions < 1.9.5) set mime_parts_filter_regex and mime_parts_filter_ext like shown below (maybe this list is still incomplete). It is worth noting that sometimes office files may be sent with the generic content-type `application/octet-stream`. You can enable the `UNKNOWN` option to capture these, but this may also capture non-office file attachments such as images, PDFs, and so on. Attempting to send non-office files to olevba will result in error messages.
 
-~~~ucl
+~~~hcl
 # local.d/external_services.conf
 
 oletools {
@@ -350,7 +350,7 @@ If you enable debug mode for external_services the oletools module will also rep
 
 In extended mode, the oletools module does not trigger on specific categories but always sets a threat string with all the found flags whenever a macro is detected. These flags are sorted alphabetically and displayed at the same position every time they are set. Additionally, all reported functions are set as individual threats. For instance, `OLETOOLS (4.00)[A----MS-, Document_open, Shell, Chr]`indicates four threats reported: one for the flag list and one for each reported function. Note that the symbol score is counted four times. If you want to modify this behavior, you can use `one_shot = true`.
 
-~~~ucl
+~~~hcl
 # local.d/external_services_group.conf
 ...
   "OLETOOLS" {
@@ -363,7 +363,7 @@ In extended mode, the oletools module does not trigger on specific categories bu
 
 By having the flags and functions as individual threats, it becomes possible to use the pattern configuration to convert the reported threats into symbols that can be utilized in force_actions or composites.
 
-~~~ucl
+~~~hcl
 # local.d/external_services.conf
 
 oletools {
@@ -384,7 +384,7 @@ oletools {
 
 You can then use those patterns in the group configuration:
 
-~~~ucl
+~~~hcl
 # local.d/external_services_group.conf
 description = "Oletools content rules";
 symbols = {
@@ -443,7 +443,7 @@ Then start the daemon by running `/var/dcc/libexec/rcDCC start`.
 Once the `dccifd` daemon is started it will listen on the UNIX domain socket /var/dcc/dccifd or on localhost port 10045
 and all you have to do is tell the rspamd where `dccifd` is listening.
 
-~~~ucl
+~~~hcl
 # local.d/external_services.conf
 
 dcc {
@@ -470,7 +470,7 @@ To integrate Pyzor with Rspamd, a wrapper isn't needed as it will be exposed to 
 
 After installing Pyzor, enable the module by:
 
-~~~ucl
+~~~hcl
 # local.d/external_services.conf
 ...
 pyzor {
@@ -483,7 +483,7 @@ Restart rspamd `systemctl restart rspamd`
 
 Add the systemd socket and service:
 
-~~~ucl
+~~~hcl
 # /usr/lib/systemd/system/pyzor.socket
 
 [Unit]
@@ -497,7 +497,7 @@ Accept=yes
 WantedBy=sockets.target
 ~~~
 
-~~~ucl
+~~~hcl
 # /usr/lib/systemd/system/pyzor@.service
 
 [Unit]
@@ -544,7 +544,7 @@ To install Razor on CentOS/Rocky Linux, run the command yum install `perl-Razor-
 
 After installation, enable the module by modifying the configuration file.
 
-~~~ucl
+~~~hcl
 # local.d/external_services.conf
 ...
 razor {
@@ -557,7 +557,7 @@ Restart rspamd `systemctl restart rspamd`
 
 Add the systemd socket and service:
 
-~~~ucl
+~~~hcl
 # /usr/lib/systemd/system/razor.socket
 
 [Unit]
@@ -571,7 +571,7 @@ Accept=yes
 WantedBy=sockets.target
 ~~~
 
-~~~ucl
+~~~hcl
 # /usr/lib/systemd/system/razor@.service
 
 [Unit]
@@ -612,7 +612,7 @@ To use the VadeSecure module, a valid installation of Filterd from [VadeSecure](
 
 Once installed, you can use VadeSecure to adjust symbols based on the category returned by Filterd. The default settings for this module are listed below and can be redefined in the `local.d/external_services.conf` file as needed:
 
-~~~ucl
+~~~hcl
 vadesecure {
   servers = 127.0.0.1,
   default_port = 23808,
@@ -715,7 +715,7 @@ Enable the spamassassin spamd daemon to listen on a socket or a TCP port. To imp
 
 By default, no special configuration is required for this module. It will automatically set all reported SpamAssassin symbols as strings into the Rspamd SPAMD symbol, and the score reported by spamd will be set as the dynamic score. If you specify a weight for the symbol, it will be used as a multiplier. So, the total score will be calculated as `dynamic_score * weight`.
 
-~~~ucl
+~~~hcl
 # local.d/external_services.conf
 
 spamassassin {
@@ -727,7 +727,7 @@ spamassassin {
 
 ### spamassassin module extended setup
 
-~~~ucl
+~~~hcl
 # local.d/external_services.conf
 
 spamassassin {
@@ -739,7 +739,7 @@ spamassassin {
 
 When setting `extended = true` the module will set all reported symbols as dedicated threats. However, keep in mind that in the extended configuration, the score is calculated by multiplying the number of threats with the dynamic score and weight, resulting in the total score. If you want to change this behavior, you can `set one_shot = true`.
 
-~~~ucl
+~~~hcl
 # local.d/external_services_group.conf
 symbols = {
 ...
@@ -754,7 +754,7 @@ symbols = {
 
 Having every symbol set as dedicated threat it is possible to set a Rspamd symbol for reported spamassassin symbols using patters.
 
-~~~ucl
+~~~hcl
 # local.d/external_services.conf
 
 spamassassin {
@@ -772,7 +772,7 @@ spamassassin {
 
 To receive results, Rspamd utilizes the [`file/report`](https://developers.virustotal.com/reference#file-report) endpoint of Virustotal. However, due to the strict policies of Virustotal, it is crucial that you have set your own key in the plugin configuration:
 
-~~~ucl
+~~~hcl
 # local.d/antivirus.conf
 virustotal {
   # Obtained from Virustotal

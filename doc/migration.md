@@ -118,7 +118,7 @@ This version introduces several incompatibilities that may affect your setup.
 
 [Libucl](https://github.com/vstakhov/libucl) the library used to parse Rspamd's configuration files, has been modified in a way that prevents loading incomplete chunks of data. This means that each include file **MUST** be a valid configuration snippet on its own. For example, consider the following artificial example:
 
-~~~ucl
+~~~hcl
 .include "top.conf"
 var = "bar";
 .include "bottom.conf"
@@ -141,7 +141,7 @@ The following will no longer be valid: libucl now requires that all braces are p
 
 However, it still allows implicit braces on the top-level object. So the following file will still be **valid**:
 
-~~~ucl
+~~~hcl
 # Some include
 
 section "foo" {
@@ -153,7 +153,7 @@ param = "value";
 
 or this:
 
-~~~ucl
+~~~hcl
 # Implicit object
 param = "value";
 ~~~
@@ -221,7 +221,7 @@ Additionally, a [proxy worker]({{ site.url }}{{ site.baseurl }}/doc/workers/rspa
 
 This release also eliminates the configuration split for systemd/sysv platforms. To ensure proper functionality, custom init scripts should utilize `rspamd.conf` instead of `rspamd.sysvinit.conf`. For those utilizing systemd and prefer logging to the systemd journal, the following should be added to `local.d/logging.inc`:
 
-~~~ucl
+~~~hcl
 systemd = true;
 type = "console";
 ~~~
@@ -236,7 +236,7 @@ The Rmilter tool is now deprecated in favor of milter protocol support in the [r
 
 For example, if you need the old behaviour for `extended_spam_headers` in Rmilter is desired, the following snippet can be added to `local.d/milter_headers.conf`:
 
-~~~ucl
+~~~hcl
 # local.d/milter_headers.conf
 extended_spam_headers = true;
 ~~~
@@ -275,7 +275,7 @@ All duplicate features are still present in Rmilter for compatibility purposes. 
 
 From version `1.9.1` it is possible to specify `enable` option in `greylisting` and `ratelimit` sections. It is also possible for `dkim` section since `1.9.2`. These options are `true` by default. Here is an example of configuration where greylisting and ratelimit are disabled:
 
-~~~ucl
+~~~hcl
 # /etc/rmilter.conf.local
 limits {
     enable = false;
@@ -377,7 +377,7 @@ Both `redis` and `sqlite3` now follow a consistent approach for per-user statist
 
 If the previous behavior is desired, a separate classifier for per-user statistics must be implemented, for example:
 
-~~~ucl
+~~~hcl
     classifier {
         tokenizer {
             name = "osb";
@@ -419,7 +419,7 @@ If the previous behavior is desired, a separate classifier for per-user statisti
 
 Rspamd 1.0 has introduced changes to the default settings for statistics tokenization. The new default setting is `modern`, which generates tokens from normalized words and includes various improvements. However, these changes are not compatible with the statistics model used in pre-1.0 versions. To use these new features you should either **relearn** your statistics or continue using your old statistics **without** new features by adding a `compat` parameter:
 
-~~~ucl
+~~~hcl
 classifier {
 ...
     tokenizer {
@@ -431,7 +431,7 @@ classifier {
 
 The recommended way to store statistics now is the `sqlite3` backend (which is incompatible with the old mmap backend):
 
-~~~ucl
+~~~hcl
 classifier {
     type = "bayes";
     tokenizer {
@@ -466,7 +466,7 @@ Furthermore, there are now two levels of password protection for Rspamd: `passwo
 
 Here is an example of the full configuration of the Rspamd controller worker to serve the WebUI:
 
-~~~ucl
+~~~hcl
 worker {
 	type = "controller";
 	bind_socket = "localhost:11334";

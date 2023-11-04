@@ -17,7 +17,7 @@ Rspamd employs the Universal Configuration Language (UCL) for its configuration.
 
 UCL adopts the JSON data model, although Rspamd's documentation frequently refers to `sections`. Consider these sections as straightforward sub-objects of the main object. For instance, the following two definitions are equivalent in both `UCL` and `JSON` syntax:
 
-```ucl
+```hcl
 section "foo" {
     opt = 10;
 }
@@ -58,7 +58,7 @@ This is used to add new configuration directives.
 
 Here is an example of how `.include` is used to achieve a desired configuration.
 
-```ucl
+```hcl
 # fileA.conf
 obj {
     key = 1;
@@ -81,7 +81,7 @@ obj {
 
 will form the following configuration:
 
-```ucl
+```hcl
 obj {
     key = 2; # fileB overrides fileA
     nkey = 1; # added from fileB
@@ -94,7 +94,7 @@ obj {
 
 Typical _section_ in Rspamd (where _section_ is replaced with an actual section name):
 
-```ucl
+```hcl
 section {
   default_key = "value";
   subsection {
@@ -109,7 +109,7 @@ section {
 
 If you want to add or redefine some of those default values, you can use a `local.d/section` file:
 
-```ucl
+```hcl
 # local.d/section.conf
 new_key = "new_value";
 subsection {
@@ -152,7 +152,7 @@ Each core Rspamd file incorporates an include to the `local.d` folder for local 
 ### Detail
 The `rspamd.conf` file commences by incorporating `common.conf`:
 
-~~~ucl
+~~~hcl
 .include "$CONFDIR/common.conf"
 ~~~
 
@@ -162,7 +162,7 @@ Note: The variable `$RULESDIR` typically corresponds to a path like `/usr/share/
 
 Subsequently, additional files are included to establish rules, set rule priorities, and define Rspamd actions.
 
-~~~ucl
+~~~hcl
 lua = "$RULESDIR/rspamd.lua"
 .include "$CONFDIR/metrics.conf"
 .include "$CONFDIR/actions.conf"
@@ -183,7 +183,7 @@ Each of these `.conf` files defines a specific section, along with corresponding
 - Rspamd manages module configurations (both for Lua and internal modules) through `.conf` files located in the [modules.d](../modules/index.html) folder. For instance, configurations for the [RBL module](../modules/rbl.html) are specified in "/modules.d/rbl.conf". The `modules.conf` file primarily serves to `.include` all of these module configuration files.
 - User settings receive thorough coverage in the [settings.conf](settings.html) documentation. Each setting can define a unique set of custom metric weights, symbols or action scores, as well as enable or disable specific checks.
   
-~~~ucl
+~~~hcl
 .include(try=true) "$LOCAL_CONFDIR/rspamd.conf.local"
 .include(try=true,priority=10) "$LOCAL_CONFDIR/rspamd.conf.local.override"
 .include(try=true,priority=10) "$LOCAL_CONFDIR/rspamd.conf.override"
@@ -199,7 +199,7 @@ The modules section establishes paths for directories or specific files. When a 
 
 Returning to `rspamd.conf`, it encompasses a global [options](options.html) section, followed by the configuration for [logging](logging.html).
 
-~~~ucl
+~~~hcl
 options {
     pidfile = "$RUNDIR/rspamd.pid";
     .include "$CONFDIR/options.inc"
@@ -265,7 +265,7 @@ return {
 You can then use the variables as follows in config files:
 
 {% raw %}
-~~~ucl
+~~~hcl
 {% if env.var2.subvar2 %}
 foo = {= env.var1 =};
 baz = {= env.var2.subvar2 =};
@@ -276,7 +276,7 @@ baz = {= env.var2.subvar2 =};
 You can also use this for secure storage of passwords. This code sample would be used in a config file, and demonstrates many details for using Jinja.
 
 {% raw %}
-~~~ucl
+~~~hcl
 # local.d/controller.inc
 {% if env.password %}
 password = "{= env.password|pbkdf =}"; # Password is encrypted using `catena` PBKDF

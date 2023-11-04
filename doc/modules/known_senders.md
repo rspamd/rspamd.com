@@ -26,7 +26,7 @@ The `known_senders` plugin is used to maintain a list of known sender domains an
 
 To configure the `known_senders` plugin, you need to define it in your Rspamd configuration file (usually `local.d/known_senders.conf`). Below is an example configuration with explanations for each parameter:
 
-```ucl
+```hcl
 # This plugin must be explicitly enabled to work
 enabled = true;
 # Domains to track senders

@@ -26,7 +26,7 @@ When mime type is not listed then `MIME_UNKNOWN` symbol is inserted.
 
 `extension_map` option allows to specify map from a known extension to a specific mime type:
 
-~~~ucl
+~~~hcl
 extension_map = {
   html = "text/html";
   txt = "text/plain";
@@ -40,7 +40,7 @@ When an attachment extension matches left part but the content type does not mat
 
 Since 1.3, this module supports archives processing (rar and zip formats) and can check files inside archives. There are additional options added for more precise archives checks, for example, a special symbol for nested archives. Here is the default configuration of mime_types with comments:
 
-~~~ucl
+~~~hcl
 extension_map = {
   html = 'text/html',
   txt = 'text/plain',
@@ -87,7 +87,7 @@ archive_extensions = {
 
 From version 1.9.1, it is possible to tune this module via [Users settings](https://rspamd.com/doc/configuration/settings.html). To use that, one can apply the following settings:
 
-~~~ucl
+~~~hcl
 test {
   from = "user@example.com";
 
@@ -110,7 +110,7 @@ test {
 
 It's possible to add a regex whitelist map of filenames you want to bypass the mime_type scanning:
 
-~~~ucl
+~~~hcl
 # local.d/mime_types.conf
 
   filename_whitelist = "$LOCAL_CONFDIR/maps.d/mime_types.wl";

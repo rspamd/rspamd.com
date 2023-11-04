@@ -34,7 +34,7 @@ For example, this is important if you want to revert an action that is decided u
 
 ### Examples
 
-~~~ucl
+~~~hcl
 # Rules are defined in the rules {} block
 rules {
 

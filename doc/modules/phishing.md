@@ -23,7 +23,7 @@ And the following URLs are considered as phished:
 
 Here is an example of full module configuration.
 
-~~~ucl
+~~~hcl
 phishing {
 	symbol = "R_PHISHING"; # Default symbol
 
@@ -64,7 +64,7 @@ Moreover, if you are using a research or commercial data feed, Rspamd can also l
 
 To configure the openphish module, there are a couple of available options:
 
-~~~ucl
+~~~hcl
 phishing {
 	# Enable openphish support (default disabled)
 	openphish_enabled = true;
@@ -82,14 +82,14 @@ phishing {
 
 Rspamd has included support for [phishtank](https://phishtank.com) ssince version 1.3. Starting from version 1.8, phishtank is enabled by default in the stock configuration, and queries the phishtank.rspamd.com via DNS. If you wish to disable the phishtank feed, you can modify the `local.d/phishing.conf` file by adding the following lines:
 
-~~~ucl
+~~~hcl
 # local.d/phishing.conf
 phishtank_enabled = false
 ~~~
 
 You can also use your own phishtank DNS zone:
 
-~~~ucl
+~~~hcl
 # local.d/phishing.conf
 local phishtank_suffix = 'phishtank.rspamd.com'; # Replace with your own zone
 ~~~
@@ -99,7 +99,7 @@ local phishtank_suffix = 'phishtank.rspamd.com'; # Replace with your own zone
 To enable support for custom phishing maps from a local file or online URL catalog, you need to enable the generic service support by creating and enabling a service definition. You'll also need to have a local file or URL containing the map data. For instance, you can use a local map from the [CaUMa](https://cauma.pop-ba.rnp.br/about.html) URLs catalog.
 
 
-~~~ucl
+~~~hcl
 # local.d/phishing.conf
 generic_service_enabled = true;
 generic_service_name = 'CaUMa';
@@ -109,7 +109,7 @@ generic_service_map = "file:///path/to/map";;
 
 The following definition is also necessary to define a weight value to the symbol.
 
-~~~ucl
+~~~hcl
 # local.d/phishing_group.conf
 symbols {
     "PHISHED_CAUMA" {
@@ -124,7 +124,7 @@ symbols {
 
 To exclude hosts from phishing feed checks (Openphish, Phishtank, or Generic) you need to enable phishing feed exclusion and configure map data to a local file or online hosts catalog. The exclusion map should only contain a list of host names without a scheme and path. It is available in version 3.7 and greater.
 
-~~~ucl
+~~~hcl
 # local.d/phishing.conf
 phishing_feed_exclusion_enabled = true;
 phishing_feed_exclusion_map = "file:///path/to/map";

@@ -36,7 +36,7 @@ For example, you can write the same configuration in the following ways:
 
 * in nginx like:
 
-~~~ucl
+~~~hcl
 param = value;
 section {
     param = value;
@@ -100,7 +100,7 @@ is equal to:
 
 * There is no requirement of quotes for strings and keys, moreover, `:` may be replaced `=` or even be skipped for objects:
 
-~~~ucl
+~~~hcl
 key = value;
 section {
     key = value;
@@ -150,7 +150,7 @@ is converted to:
 
 UCL allows for named keys and organizes them into a hierarchical object structure internally. For example, this process can be illustrated as follows:
 
-~~~ucl
+~~~hcl
 section "blah" {
 	key = value;
 }
@@ -161,7 +161,7 @@ section foo {
 
 is converted to the following object:
 
-~~~ucl
+~~~hcl
 section {
 	blah {
 		key = value;
@@ -174,7 +174,7 @@ section {
 
 Plain definitions may be more complex and contain more than a single level of nested objects:
 
-~~~ucl
+~~~hcl
 section "blah" "foo" {
 	key = value;
 }
@@ -182,7 +182,7 @@ section "blah" "foo" {
 
 is presented as:
 
-~~~ucl
+~~~hcl
 section {
 	blah {
 		foo {
@@ -226,7 +226,7 @@ Multiline comments may be nested:
 
 UCL supports external macros both multiline and single line ones:
 
-~~~ucl
+~~~hcl
 .macro "sometext";
 .macro {
     Some long text
@@ -236,7 +236,7 @@ UCL supports external macros both multiline and single line ones:
 
 In addition, each macro can accept an optional list of arguments in braces. These arguments are themselves a UCL object that is parsed and passed to the macro as options:
 
-~~~ucl
+~~~hcl
 .macro(param=value) "something";
 .macro(param={key=value}) "something";
 .macro(.include "params.conf") "something";
@@ -247,7 +247,7 @@ param = [value1, value2]) "something";
 
 UCL also provides a convenient `include` macro that allows you to load the contents of another file into the current UCL object. This macro accepts either a file path or URL as an argument:
 
-~~~ucl
+~~~hcl
 .include "/full/path.conf"
 .include "./relative/path.conf"
 .include "${CURDIR}/path.conf"

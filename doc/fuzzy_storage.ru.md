@@ -82,7 +82,7 @@ title: Использование fuzzy хешей
 
 За хранение нечетких хешей отвечает процесс rspamd под названием `fuzzy_storage`. Для включения и настройки этого процесса можно использовать локальный файл конфигурации rspamd: `etc/rspamd/rspamd.conf.local`:
 
-~~~ucl
+~~~hcl
 worker "fuzzy" {
   # Socket to listen on (UDP and TCP from rspamd 1.3)
   bind_socket = "*:11335";
@@ -108,7 +108,7 @@ worker "fuzzy" {
 
 По умолчанию rspamd не разрешает модифицировать данные в хранилище. Для того чтобы обучение было возможно, необходимо задать список доверенных IP-адресов и/или сетей. Как правило, лучше всего разрешить запись только с локальных адресов (127.0.0.1 и ::1), так как fuzzy storage использует портокол UDP, который не имеет защиты от подделки IP-адреса источника (что можно исправить путем настройки верификации обратного маршрута на маршрутизаторе, но это зачастую игнорируется системными администраторами):
 
-~~~ucl
+~~~hcl
 worker "fuzzy" {
   # Same options as before ...
 
@@ -128,7 +128,7 @@ worker "fuzzy" {
 
 Чтобы настроить транспортное шифрование, в первую очередь нужно создать пару ключей для сервера хранилища с помощью команды `rspamadm keypair -u`:
 
-~~~ucl
+~~~hcl
 keypair {
     pubkey = "og3snn8s37znxz53mr5yyyzktt3d5uczxecsp3kkrs495p4iaxzy";
     privkey = "o6wnij9r4wegqjnd46dyifwgf5gwuqguqxzntseectroq7b3gwty";
@@ -143,7 +143,7 @@ keypair {
 
 Каждое хранилище может работать одновременно с произвольным числом ключей:
 
-~~~ucl
+~~~hcl
 worker "fuzzy" {
   # Same options as before ...
   keypair {
@@ -167,7 +167,7 @@ worker "fuzzy" {
 
 Для включения режима обязательного шифрования используется опция `encrypted_only`:
 
-~~~ucl
+~~~hcl
 worker "fuzzy" {
   # Same options as before ...
   encrypted_only = true;
@@ -274,7 +274,7 @@ $ rspamc -S FUZZY_DENIED -w 10 fuzzy_add <message|directory|stdin>
 
 Пример local.d/fuzzy_check.conf:
 
-~~~ucl
+~~~hcl
 rule "local" {
     # Fuzzy storage server list
     servers = "localhost:11335";
@@ -315,7 +315,7 @@ rule "local" {
 
 Пример local.d/fuzzy_group.conf:
 
-~~~ucl
+~~~hcl
 max_score = 12.0;
 symbols = {
     "LOCAL_FUZZY_UNKNOWN" {
@@ -347,7 +347,7 @@ symbols = {
 
 Очень важной является опция `read_only`, если вы хотите обучать ваше хранилище. По умолчанию `read_only=true`, что означает невозможность обучения хранилища:
 
-~~~ucl
+~~~hcl
 read_only = true; # disallow learning
 read_only = false; # allow learning
 ~~~
@@ -378,7 +378,7 @@ test/rspamd-test -p /rspamd/shingles
 
 Так как плагин `fuzzy_check` отвечает в том числе и за обучение, то именно в его конфигурации задается скрипт, определяющий, какие сообщения будут поступать на обучение, а какие нет. Этот скрипт представляет собой функцию Lua с одним аргументом типа [`rspamd_task`]({{ site.baseurl }}/doc/lua/rspamd_task.html) и возвращает либо булево значение: `true` - обучать или `false` - не обучать, либо пару - булево значение и новый флаг, если в ходе выполнения скрипта выяснилось, что необходимо изменить исходный флаг обучения. Для задания условного скрипта служит параметр `learn_condition`, а  для записи скрипта удобнее всего использовать многострочный синтаксис `heredoc`, который поддерживается `UCL`:
 
-~~~ucl
+~~~hcl
 # Fuzzy check plugin configuration snippet
 learn_condition = <<EOD
 return function(task)
@@ -485,7 +485,7 @@ sqlite3 /var/lib/rspamd/fuzzy.db ".restore fuzzy.sql"
 
 Репликация настраивается в конфигурационном файле хранилища хешей - worker-fuzzy.inc. Мастер репликации настраивается следующим образом:
 
-~~~ucl
+~~~hcl
 # Fuzzy storage worker configuration snippet
 # Local keypair (rspamadm keypair -u)
 sync_keypair {
@@ -512,7 +512,7 @@ slave {
 
 Настройка слейва выглядит похоже:
 
-~~~ucl
+~~~hcl
 # Fuzzy storage worker configuration snippet
 # We assume it is slave1 with pubkey 'yyy'
 sync_keypair {
@@ -531,7 +531,7 @@ master_key = "xxx";
 
 Также на слейве можно настроить трансляцию флагов, получаемых с мастера, чтобы избежать коллизий с локальными хешами. Например, если мы хотим транслировать флаги `1`, `2` и `3` во флаги `10`, `20` и `30` соответственно, то можно написать такую конфигурацию:
 
-~~~ucl
+~~~hcl
 # Fuzzy storage worker configuration snippet
 master_flags {
   "1" = 10;

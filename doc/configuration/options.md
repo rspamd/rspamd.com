@@ -8,7 +8,7 @@ title: Rspamd Options
 
 The options section defines basic Rspamd behaviour. Options are global for all types of workers. Some default options are shown in the following example snippet:
 
-~~~ucl
+~~~hcl
 filters = "chartable,dkim,regexp,fuzzy_check";
 raw_mode = false;
 one_shot = false;
@@ -120,7 +120,7 @@ These options fall under a dedicated subsection called `dns` and control the nam
 
 * `nameserver`: A list (or array) of DNS servers to be used. If this option is omitted, Rspamd will parse the `/etc/resolv.conf` file. Additionally, you can specify weights for DNS servers to balance the load. For example:
 
-~~~ucl
+~~~hcl
 options {
 	dns {
 		# 9/10 on 127.0.0.1 and 1/10 to 8.8.8.8
@@ -131,7 +131,7 @@ options {
 
 You can also specify another configuration of DNS servers selection strategy using [upstream](./upstream.html) syntax, e.g.:
 
-~~~ucl
+~~~hcl
 options {
 	dns {
 		nameserver = "master-slave:127.0.0.1:53:10,8.8.8.8:53:1";
@@ -151,7 +151,7 @@ The WebUI supports displaying and aggregating statistics from a cluster of Rspam
 
 On the Rspamd server at which you want to point your web-browser add a neighbours list to the `local.d/options.inc`:
 
-~~~ucl
+~~~hcl
 neighbours {
     server1 { host = "host1.example.com"; }
     server2 { host = "host2.example.com"; }
@@ -165,7 +165,7 @@ For some reason (ask @cebka on IRC about that) you should have such a list in th
 
 A dummy entry like this is enough:
 
-~~~ucl
+~~~hcl
 neighbours {
     server1 {host = ""; }
 }
@@ -175,7 +175,7 @@ However, if you plan to access the WebUI on this particular host, it is advisabl
 
 If you have [a reverse proxy with TLS]({{ site.baseurl }}/doc/quickstart.html#setting-up-the-webui) in front of Rspamd, you need to explicitly specify the protocol and port in the `host` directive:
 
-~~~ucl
+~~~hcl
 neighbours {
     server1 { host = "https://host1.example.com:443"; }
     server2 { host = "https://host2.example.com:443"; }
@@ -186,7 +186,7 @@ Otherwise it defaults to `http` and `11334` respectively.
 
 Also you can use the same host name but set different paths:
 
-~~~ucl
+~~~hcl
 neighbours {
     server1 {
         host = "https://host.example.com:443";

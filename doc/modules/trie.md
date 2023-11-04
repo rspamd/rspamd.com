@@ -17,7 +17,7 @@ This module offers a user-friendly interface for working with the search trie st
 
 Here is an example of trie configuration:
 
-~~~ucl
+~~~hcl
 trie {
 	# Each subsection defines a single rule with associated symbol
 	SYMBOL1 {

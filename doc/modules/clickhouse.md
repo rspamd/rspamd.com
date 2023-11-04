@@ -20,7 +20,7 @@ Additionally, this module enables you to construct your custom analytical dashbo
 
 Example configuration shown below, for the minimum working configuration you need to define Clickhouse servers:
 
-~~~ucl
+~~~hcl
 # local.d/clickhouse.conf
 
 # Push update when 1000 records are collected (1000 if unset) (until 2.1, see limits section below for >2.1)
@@ -144,7 +144,7 @@ These options allow you to control how often Rspamd sends data to the ClickHouse
 
 Privacy is a crucial consideration in many email systems. The Clickhouse dumps may contain sensitive client data. Rspamd supports automatic cleanup of the outdated data using **retention policies**. By default, data is not expired in Clickhouse, but expiration can be set to comply with regulations such as the General Data Protection Regulation (GDPR) as follows:
 
-~~~ucl
+~~~hcl
 # local.d/clickhouse.conf
 retention {
   enable = true;
@@ -164,7 +164,7 @@ To remove data for particular users, you might consider using of the [Clickhouse
 
 Similarly to previous, from the version 1.9, you can store email subject in Clickhouse (disabled by default). The following settings are available:
 
-~~~ucl
+~~~hcl
 insert_subject = false; 
 # Privacy is off
 subject_privacy = false; 
@@ -183,7 +183,7 @@ You can use obfuscated subjects to group messages with a same subject for exampl
 
 You can also extract additional data and add it to a set of extra columns. This feature is available from the version Rspamd 2.4 and Clickhouse 19.3.
 
-~~~ucl
+~~~hcl
 # local.d/clickhouse.conf
 
 extra_columns = {

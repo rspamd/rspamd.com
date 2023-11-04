@@ -20,7 +20,7 @@ Rules are defined by [modules](../modules/). For instance, if there is a module 
 
 Rspamd supports two main types of modules: internal modules written in C and external modules written in Lua. There is no real difference between the two types with the exception that C modules are embedded and can be enabled in a `filters` attribute in the `options` section of the config:
 
-~~~ucl
+~~~hcl
 options {
  filters = "chartable,dkim,surbl,regexp,fuzzy_check";
  ...

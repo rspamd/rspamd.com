@@ -12,7 +12,7 @@ Configuring this module is quite straightforward: you simply need to define a `s
 
 ## Example
 
-~~~ucl
+~~~hcl
 once_received {
     good_host = "^mail";
     bad_host = "static";

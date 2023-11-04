@@ -11,7 +11,7 @@ The `Bayes expiry` module provides intelligent expiration of statistical tokens 
 
 The configuration settings for the `bayes expiry` module should be incorporated into the appropriate `classifier` section, such as the `local.d/classifier-bayes.conf `file. Additionally, as the `Bayes expiry` module necessitates the use of the new statistics schema, it is imperative to enable it within the classifier configuration:
 
-```ucl
+```hcl
 new_schema = true;    # Enabled by default for classifier "bayes" in the stock statistic.conf since 2.0
 ```
 
@@ -23,7 +23,7 @@ The following settings are valid:
 - **lazy** (before 2.0): `true` - enable lazy expiration mode (disabled by default). See [expiration modes](#expiration-modes) for detail.
 
 Configuration example:
-```ucl
+```hcl
 new_schema = true;    # Enabled by default for classifier "bayes" in the stock statistic.conf since 2.0
 expire = 8640000;
 #lazy = true;    # Before 2.0
@@ -84,7 +84,7 @@ To ensure that the memory limit and eviction policy only apply to the Bayesian s
 
 `local.d/classifier-bayes.conf`:
 
-```ucl
+```hcl
 backend = "redis";    # Enabled by default for classifier "bayes" in the stock statistic.conf since 2.0 
 servers = "localhost:6378";
 

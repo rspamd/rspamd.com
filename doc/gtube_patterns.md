@@ -15,7 +15,7 @@ Unlike SpamAssassin where GTUBE carries a spam score, in Rspamd it triggers an a
 
 Because non-reject GTUBE-like patterns can be used to bypass spam filtering, they are disabled by default unless you add this option to the `local.d/options` (2.3+):
 
-~~~ucl
+~~~hcl
 enable_test_patterns = true;
 ~~~
 

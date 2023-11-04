@@ -11,7 +11,7 @@ To activate this module, modify `enabled = true` in `/etc/rspamd/local.d/mx_chec
 
 Here is an example of the module configuration in `local.d/mx_check.conf`:
 
-~~~ucl
+~~~hcl
 # Set this to enable the module
 enabled = true;
 # Module-specific redis-server configuration
@@ -35,7 +35,7 @@ exclude_domains = [
 
 Module default settings:
 
-~~~ucl
+~~~hcl
 # This module is *DISABLED* by default
 enabled = false;
 # connection timeout in seconds

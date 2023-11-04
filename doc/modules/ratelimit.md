@@ -55,7 +55,7 @@ This means that you can opt to use either a selector or one of the predefine rat
 - `to_ip_from`: limit per triplet: recipient, sender's envelope from and sender's IP
 - `user`: limit per authenticated user (useful for outbound limits)
 
-~~~ucl
+~~~hcl
 # local.d/ratelimit.conf
   rates {
     # Selector based ratelimit
@@ -131,7 +131,7 @@ Users can define their own keywords to create ratelimits by following these step
 
 First, add the `custom_keywords` setting to the configuration file, pointing to a Lua script that will be created:
 
-~~~ucl
+~~~hcl
 ratelimit {
    custom_keywords = "/etc/rspamd/custom_ratelimit.lua";
    # other settings ...
@@ -214,7 +214,7 @@ Valid suffixes for amounts are:
 
 **From version 3.1**, buckets can also define their custom symbols or messages, for example like this:
 
-~~~ucl
+~~~hcl
 # local.d/ratelimit.conf
 rates = {
   my_bucket = { symbol = "SOME_NAME"; selector = ...; rate = ...;}  # inserts SOME_NAME symbol

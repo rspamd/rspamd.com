@@ -11,7 +11,7 @@ This module is actually a set of rules that are historically implemented as a se
 
 The module configuration is quite limited: you can disable or enable hfilter rules by switching the corresponding groups on and off as following:
 
-~~~ucl
+~~~hcl
 # local.d/hfilter.conf
 
 helo_enabled = true; # helo patterns (e.g. unresolved domains, bare ip addresses etc)

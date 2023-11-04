@@ -26,7 +26,7 @@ Like many other modules, this module requires a set of rules to be defined. Each
 
 Below are a few examples of such configurations:
 
-~~~ucl
+~~~hcl
 # local.d/reputation.conf
 rules {
   ip_reputation = {
@@ -71,7 +71,7 @@ rules {
 
 You also need to **define the scores** for symbols added by this module:
 
-~~~ucl
+~~~hcl
 # local.d/groups.conf
 group "reputation" {
     symbols = {
@@ -121,7 +121,7 @@ When filling these buckets, the score may also be taken into account. Additional
 
 Each bucket uses discrete time windows that are specified. By default, two buckets are defined for Redis:
 
-~~~ucl
+~~~hcl
 buckets = [
   {
     time = 1h,

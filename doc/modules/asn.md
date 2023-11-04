@@ -13,7 +13,7 @@ The module exports `asn`, `country` and `ipnet`<sup>[1](#fn)</sup> as mempool va
 
 The ASN module is enabled by default and its settings can be found in `/etc/rspamd/local.d/asn.conf`.
 
-~~~ucl
+~~~hcl
 # Provider: just "rspamd" for now
 provider_type = "rspamd";
 # Provider-specific configuration

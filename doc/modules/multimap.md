@@ -35,7 +35,7 @@ By default, the configuration of this module actively utilises compound maps, wh
 
 The module includes a set of rules in the following format:
 
-~~~ucl
+~~~hcl
 MAP_SYMBOL1 { 
   type = "type"; 
   map = "url"; 
@@ -92,7 +92,7 @@ It is important to note that there is often confusion between the `type` and `fi
 
 A combination of files and HTTP can be used to create a resulting map that is a joint list of its elements, as shown in the following example:
 
-~~~ucl
+~~~hcl
 map = [
   "https://maps.rspamd.com/rspamd/mime_types.inc.zst",
   "${DBDIR}/mime_types.inc.local",
@@ -183,7 +183,7 @@ DNS maps are considered legacy and it is not encouraged to use them in new proje
 
 Maps can also be specified as [CDB](https://www.corpit.ru/mjt/tinycdb.html) databases, which might be useful for large maps:
 
-~~~ucl
+~~~hcl
 SOME_SYMBOL {
     map = "cdb:///path/to/file.cdb";
     type = "from";
@@ -206,7 +206,7 @@ For performance considerations, it is recommended to use only expressions suppor
 
 To enable the `regexp` mode, you should set the `regexp` option to `true`:
 
-~~~ucl
+~~~hcl
 # local.d/multimap.conf
 SENDER_FROM_WHITELIST {
   type = "from";
@@ -339,7 +339,7 @@ following values:
 
 If a map matches, no filters will be processed for a message. It is important to note that prefilter maps do not support multiple symbols or symbol conditions by design.
 
-~~~ucl
+~~~hcl
 # local.d/multimap.conf
 IP_WHITELIST { 
   type = "ip"; 
@@ -361,7 +361,7 @@ SPAMHAUS_PBL_BLACKLIST {
 
 Starting from version 1.3.1, it is now possible to define multiple symbols and scores using the multimap module. To achieve this, all possible symbols should be defined using the `symbols` option in the multimap:
 
-~~~ucl
+~~~hcl
 # local.d/multimap.conf
 CONTENT_BLACKLISTED {
   type = "content";
@@ -395,7 +395,7 @@ If symbols used in a map are not defined in the `symbols` attribute, they will b
 
 If you want to match all possible regexps/globs in that list, not a single one, then you need to define `multi` flag for that map:
 
-~~~ucl
+~~~hcl
 # local.d/multimap.conf
 CONTENT_BLACKLISTED {
   type = "content";
@@ -411,7 +411,7 @@ CONTENT_BLACKLISTED {
 
 Starting from version 1.3.1, it is possible to create maps that depend on other rules and are only checked if certain conditions are met. For example, you may want to perform some whitelisting based on whether a message has a valid SPF policy, but not for messages that are sent to a mailing list. In this case, you can use the following map condition:
 
-~~~ucl
+~~~hcl
 # local.d/multimap.conf
 FROM_WHITELISTED {
   require_symbols = "R_SPF_ALLOW & !MAILLIST";
@@ -431,7 +431,7 @@ Starting from version 1.3.3, Rspamd allows working with maps stored in a Redis b
 
 From version 2.0, you can create maps with multiple values to be checked and joint via expression:
 
-~~~ucl
+~~~hcl
 COMBINED_MAP_AND {
   type = "combined";
   rules {
@@ -477,7 +477,7 @@ TODO: write more
 
 Here are some examples of multimap configurations:
 
-~~~ucl
+~~~hcl
 # local.d/multimap.conf
 SENDER_FROM_WHITELIST_USER {
   type = "from";
@@ -579,7 +579,7 @@ local_wl_from.map.inc local_wl_ip.map.inc local_wl_rcpt.map.inc
 
 * edit `multimap.conf` (you should be in `/etc/rspamd/local.d/` folder)
 
-~~~ucl
+~~~hcl
 # local.d/multimap.conf
 
 # Blacklists

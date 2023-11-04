@@ -77,7 +77,7 @@ The `valid_dkim = true` check goes beyond verifying the triggering of just `R_DK
 
 ## Configuration example
 
-~~~ucl
+~~~hcl
 whitelist {
     rules {
         WHITELIST_SPF = {

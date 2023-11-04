@@ -31,7 +31,7 @@ In addition to the `SYMBOLNAME` and `SYMBOLNAME_FAIL` symbols, there are current
 
 For virus, encrypted and macro symbols, patterns can be used to set a dedicated symbol for any virus name or error message. For the fail symbol, the `patterns_fail` option must be used.
 
-~~~ucl
+~~~hcl
 ...
   patterns {
     # symbol_name = "pattern";
@@ -46,7 +46,7 @@ For virus, encrypted and macro symbols, patterns can be used to set a dedicated 
 
 From version 3.5, you are able to use two more types of mime part filters:
 
-~~~ucl
+~~~hcl
 ...
   mime_parts_filter_regex {
     FILE1 = "^invoice\.xls$"
@@ -70,7 +70,7 @@ By default, if [Redis]({{ site.baseurl }}/doc/configuration/redis.html) is confi
 
 Settings should be added to `/etc/rspamd/local.d/antivirus.conf` file:
 
-~~~ucl
+~~~hcl
 # local.d/antivirus.conf
 
 # multiple scanners could be checked, for each we create a configuration block with an arbitrary name
@@ -127,7 +127,7 @@ From version 1.7.2 up to 1.8.3, there are two special configuration parameters f
 If you don't want to handle those pseudo virus names like everything else you could use patterns to set
 a different symbol and maybe set a score or use the symbol in `force_actions`.
 
-~~~ucl
+~~~hcl
 # local.d/antivirus.conf
 
 sophos {
@@ -154,7 +154,7 @@ Additionally, it is important to set the `product_id` to match the id for your H
 
 In terms of Kaspersky specific configurations, it is possible to use the `clamav` socket for data scanning. However, it should be noted that it is a unix socket and can only be used for local scans. It is also important that Rspamd should be able to write into Kaspersky Unix socket. For example, you can add Rspamd user (`_rspamd` on Linux most likely) into `klusers` group: `usermod -G klusers _rspamd` in Linux. Rspamd will also write data into some intermediate files that are normally placed in `/tmp` folder.
 
-~~~ucl
+~~~hcl
 # local.d/antivirus.conf
 kaspersky {
   symbol = "KAS_VIRUS";
@@ -169,7 +169,7 @@ kaspersky {
 
 The engine utilizes the HTTP REST API version 1.0, as outlined in the Kaspersky [documentation](https://help.kaspersky.com/ScanEngine/1.0/en-US/181038.htm). Rspamd can operate in both file and TCP stream modes. The file mode may be useful if you have a fast `tmpfs` in-memory storage and wish to reduce the amount of data transferred over a socket for the local machine. However, this mode is not recommended for any type of real storage, including SSDs. The following settings are available for this engine:
 
-~~~ucl
+~~~hcl
 # local.d/antivirus.conf
 kaspersky_se {
   symbol = "KAS_SE_VIRUS";
@@ -192,7 +192,7 @@ With the parameter option, you can set any option for the rest-api from Rspamd.
 
 Here are possible settings for this engine:
 
-~~~ucl
+~~~hcl
 # local.d/antivirus.conf
 avast {
 

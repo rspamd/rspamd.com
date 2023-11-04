@@ -11,7 +11,7 @@ The purpose of the MID module is to suppress the `INVALID_MSGID` (malformed Mess
 
 The default configuration of this module is shown below:
 
-~~~ucl
+~~~hcl
 mid = {
   url = [
     "${CONFDIR}/mid.inc",

@@ -47,7 +47,7 @@ Afterwards, these values can be used in various plugins:
 
 Here is an example of Rspamd multimap rule that uses selectors to block bad Sendgrid senders using [Invaluement SPBL](https://www.invaluement.com/serviceproviderdnsbl/):
 
-~~~ucl
+~~~hcl
 # local.d/multimap.conf
 INVALUEMENT_SENDGRID_ID {
   type = "selector";

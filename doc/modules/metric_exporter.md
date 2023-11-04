@@ -16,7 +16,7 @@ for further information.
 
 Non-backend-specific settings are shown below. Configuration could be added to `/etc/rspamd/local.d/metric_exporter.conf`:
 
-~~~ucl
+~~~hcl
 # Backend: just "graphite" for now - MUST be set
 backend = "graphite";
 # List of metrics to export - MUST be set.
@@ -61,7 +61,7 @@ metrics = [
 
 Additionally, backend-specific settings may be set. Graphite-specific settings are shown below:
 
-~~~ucl
+~~~hcl
 # Hostname for Carbon: "localhost" if unset
 host = "localhost";
 # Port for Carbon: 2003 if unset

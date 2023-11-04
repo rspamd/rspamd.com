@@ -69,7 +69,7 @@ Hence, it is **strongly** recommended to have your own recursive resolver when u
 
 Then you can either set your local resolver globally via `/etc/resolv.conf` or set it explicitly for Rspamd in `local.d/options.inc` file:
 
-~~~ucl
+~~~hcl
  # local.d/options.inc
 dns {
   nameserver = ["127.0.0.1"];
@@ -78,7 +78,7 @@ dns {
 
 or, if you want some backup as a last resort, you can use `master-slave` [rotation](configuration/upstream.html) as following:
 
-~~~ucl
+~~~hcl
  # local.d/options.inc
 dns {
   nameserver = "master-slave:127.0.0.1,8.8.8.8";
@@ -87,7 +87,7 @@ dns {
 
 If you use large scale DNS system you might want to set up `hash` rotation algorithm. It will significantly increase cache hit rate and reduce number of recursive queries if you have more than one upstream resolver:
 
-~~~ucl
+~~~hcl
  # local.d/options.inc
 dns {
   nameserver = "hash:10.0.0.1,10.1.0.1,10.3.0.1";
@@ -239,7 +239,7 @@ The more information about core dumps and systemd could be found here: <https://
 
 Rspamd can stop dumping cores upon reaching a specific limit. To enable this functionality you can add the following lines to `/etc/rspamd/local.d/options.inc`:
 
-```ucl
+```hcl
 cores_dir = "/coreland/";
 max_cores_size = 1G;
 ```
@@ -315,7 +315,7 @@ rspamadm confighelp -k timeout
 
 If you are unaware about some functions of Rspamd [modules]({{ site.url }}{{ site.baseurl }}/doc/modules/) then it is usually useful to enable debugging for this module. To do that, write something like:
 
-```ucl
+```hcl
 # local.d/logging.inc
 debug_modules = ["module_name"];
 ```
@@ -449,7 +449,7 @@ Unfortunately, it is not an easy question. If you use [WebUI](../webui/) then it
 
 If you want to change some symbol's score in the configuration, you should do it in the file `local.d/groups.conf`. It can be done by the following syntax:
 
-~~~ucl
+~~~hcl
 # local.d/groups.conf
 
 symbols {
@@ -461,7 +461,7 @@ symbols {
 
 Despite of the name of this file, this syntax does not change the group of the symbol, but it changes it's weight. You can also define your own symbols groups in this file:
 
-~~~ucl
+~~~hcl
 group "mygroup" {
   max_score = 10.0;
   
@@ -481,7 +481,7 @@ You can check your new scores by using `rspamadm configdump -g` from version 2.5
 
 Have you added an extra `section_name {}` to `local.d/section.conf` file? For example, this one will **NOT** work:
 
-```ucl
+```hcl
 # local.d/dkim_signing.conf
 dkim_signing { # !!!! DO NOT ADD THIS
  domain {
@@ -492,7 +492,7 @@ dkim_signing { # !!!! DO NOT ADD THIS
 
 The correct version is the following:
 
-```ucl
+```hcl
 # local.d/dkim_signing.conf
 domain {
    ...
@@ -536,7 +536,7 @@ From version 1.9, there are also some more actions:
 
 From version 1.9, you can also define any action you'd like with it's own threshold or use that in `force_actions` module:
 
-```ucl
+```hcl
 actions {
   # Generic threshold
   my_action = {
@@ -551,7 +551,7 @@ actions {
 
 This might be a bit confusing but internally Rspamd operates with rules. Each rule can add positive or negative score to the result. Therefore it is required to have some thresholds for actions that are applied to a message. These thresholds are defined in `actions` section:
 
-```ucl
+```hcl
 actions {
   reject = 15;
   add_header = 6;
@@ -573,7 +573,7 @@ Historically, Rspamd provided user-editable configuration files. However, as the
 
 An override configuration (`/etc/rspamd/rspamd.conf.override`) is used to ultimately redefine the default values in Rspamd. In this file, you can redefine **whole sections** of the default configuration. For example, if you have a module `example` defined in the default configuration as follows:
 
-```ucl
+```hcl
 example {
   option1 = "value";
   option2 = true;
@@ -582,7 +582,7 @@ example {
 
 and you wanted to override `option2` by adding the following to `/etc/rspamd/rspamd.conf.override`:
 
-```ucl
+```hcl
 example {
   option2 = false;
 }
@@ -590,7 +590,7 @@ example {
 
 this might work unexpectedly: the new config would have an `example` section with a single key `option2`, while `option1` would be ignored. The global local file, namely `rspamd.conf.local`, has the same limitation: you can add your own configuration there but you should **NOT** redefine anything from the default configuration there or it will just be ignored. The only exception to this rule is the _metric_ section. So you could use something like:
 
-```ucl
+```hcl
 metric "default" {
   symbol "MY_SYMBOL" {
     score = 10.0;
@@ -612,7 +612,7 @@ Types of settings which can be merged are collections (`{}`) and lists (`[]`); o
 
 An important difference from the global override and local rules is that these files are included within each section. Here is an example of utilizing local.d for the `modules.d/example.conf` configuration file:
 
-```ucl
+```hcl
 example {
   # WebUI include
   .include(try=true,priority=5) "${DBDIR}/dynamic/example.conf"
@@ -627,21 +627,21 @@ example {
 
 in `local.d/example.conf`:
 
-```ucl
+```hcl
 option2 = false;
 option3 = 1.0;
 ```
 
 in `override.d/example.conf`:
 
-```ucl
+```hcl
 option3 = 2.0;
 option4 = ["something"];
 ```
 
 and the target configuration (that you could see using `rspamadm configdump example`):
 
-```ucl
+```hcl
 example {
   option1 = "value"; # From default settings
   option2 = false; # From local.d
@@ -652,7 +652,7 @@ example {
 
 Here is another example with more complicated structures inside. Here is the original configuration:
 
-```ucl
+```hcl
 # orig.conf
 rule "something" {
   key1 = value1;
@@ -667,7 +667,7 @@ rule "other" {
 
 and there is some `local.d/orig.conf` that looks like this:
 
-```ucl
+```hcl
 # local.d/orig.conf
 rule "something" {
   key1 = other_value; # overwrite "value1"
@@ -682,7 +682,7 @@ rule "local" { # add new rule
 
 then we will have the following merged configuration:
 
-```ucl
+```hcl
 # config with local.d/orig.conf
 rule "something" {
   key1 = other_value; # from local
@@ -701,7 +701,7 @@ rule "local" { # from local
 
 If you have the same config but in `override.d` directory, then it will **completely** override all rules defined in the original file:
 
-```ucl
+```hcl
 # config with override.d/orig.conf
 rule "something" {
   key1 = other_value;
@@ -734,7 +734,7 @@ All maps behave in the same way so you have some choices about how to define a m
 
 For the second option it is also possible to have a composite path with fallback:
 
-~~~ucl
+~~~hcl
 exceptions = [
   "https://maps.rspamd.com/rspamd/2tld.inc.zst",
   "${DBDIR}/2tld.inc.local",
@@ -814,7 +814,7 @@ In this case, the first three backends will be used when the HTTP map is availab
 
 From Rspamd version 1.2 onwards, each map can have a digital signature using the `EdDSA` algorithm. To sign a map you can use `rspamadm signtool` and to generate a signing keypair - `rspamadm keypair -s -u`:
 
-```ucl
+```hcl
 keypair {
    pubkey = "zo4sejrs9e5idqjp8rn6r3ow3x38o8hi5pyngnz6ktdzgmamy48y";
    privkey = "pwq38sby3yi68xyeeuup788z6suqk3fugrbrxieri637bypqejnqbipt1ec9tsm8h14qerhj1bju91xyxamz5yrcrq7in8qpsozywxy";
@@ -857,7 +857,7 @@ In Rspamd, each rule can be triggered multiple times. For example, if a message 
 
 Symbol groups are intended to group similar rules. This is most useful when group names are used in composite expressions such as `gr:<group_name>`. It is also possible to set a joint limit for the score of a specific group:
 
-```ucl
+```hcl
 group "test" {
   symbol "test1" {
     score = 10;
@@ -914,7 +914,7 @@ To disable an entire module you can set `enabled = false` in its configuration.
 
 You can dynamically enable/disable actions with [settings module]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html). From version 1.8.1, you can set `null` to some module there:
 
-~~~ucl
+~~~hcl
 settings {
   some_settings {
     authenticated = true;
@@ -931,7 +931,7 @@ settings {
 
 Just disable `greylisting` module by adding the following configuration:
 
-~~~ucl
+~~~hcl
 # local.d/greylist.conf
 enabled = false;
 ~~~
@@ -945,7 +945,7 @@ Please bear in mind that this mode is enabled **by default** for both **authenti
 
 Yes, use [user settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html) and enable just `DKIM_SIGN` symbol (and `DKIM_SIGNED` in case if `dkim_signing` module is used), e.g.
 
-```ucl
+```hcl
 # rspamd.conf.local
 settings { 
   sign_id {
@@ -1002,7 +1002,7 @@ Normally, you might want to check the final log line, for example, `rspamd_task_
 
 Yes, there is `log_format` option in `logging.inc`. Here is a useful configuration snippet that allows you to add more information in comparison to the default Rspamd logger output:
 
-```ucl
+```hcl
 # local.d/logging.inc
 
 log_format =<<EOD
@@ -1031,7 +1031,7 @@ As you can see, you can use both embedded log variables and Lua code to customiz
 
 It is sometimes useful to get debug information about some particular module in Rspamd. In this case, you can use `debug_modules` option in the logging configuration:
 
-```ucl
+```hcl
 # local.d/logging.inc
 
 debug_modules = ["spf"];
@@ -1060,13 +1060,13 @@ Finally, you need to change the default `sqlite` backend to `redis` and restart 
 
 local.d/classifier-bayes.conf:
 
-```ucl
+```hcl
 backend = "redis";
 ```
 
 override.d/worker-fuzzy.inc:
 
-```ucl
+```hcl
 backend = "redis";
 ```
 
@@ -1223,7 +1223,7 @@ lnk
 
 Then define the following multimap rule in `local.d/multimap.conf`:
 
-```ucl
+```hcl
 file_extension_blacklist {
   type = "filename";
   filter = "extension";
@@ -1511,7 +1511,7 @@ However, you should consider using regexp maps with [multimap module]({{ site.ba
 
 From version 1.7.0 onwards, proxy worker can pass a special header called `settings-id` when doing checks (both proxy and self-scan modes). This header allows Rspamd to apply specific settings for a message. You can set custom scores for a message or disable some rules or even a group of rules when scanning. For example, if we want to disable some rules for outbound scanning we could create an entry in the [settings]({{ site.url }}{{ site.baseurl }}/doc/configuration/settings.html) module:
 
-```ucl
+```hcl
 settings {
   outbound {
     priority = high;
@@ -1534,7 +1534,7 @@ settings {
 
 Then, we can apply this setting ID on the outbound MTA using the proxy configuration:
 
-```ucl
+```hcl
 upstream "local" {
   default = yes;
   self_scan = yes; # Enable self-scan

@@ -23,7 +23,7 @@ Additionally, you will need to set up Redis servers to store data, such as `serv
 
 Configuration should be added to `/etc/rspamd/local.d/replies.conf`:
 
-~~~ucl
+~~~hcl
 # This setting is non-default & may be desirable
 #action = "no action";
 # These are default settings you may want to change

@@ -14,7 +14,7 @@ DMARC can also be configured to request reports from remote MTAs about these mes
 
 By default, the DMARC module in rspamd is configured with an empty collection, as shown below:
 
-~~~ucl
+~~~hcl
 dmarc {
 }
 ~~~
@@ -40,7 +40,7 @@ DMARC reporting information is stored in Redis. Please refer to [this guide]({{ 
 
 Below are the configuration parameters for DMARC reporting, along with corresponding comments:
 
-~~~ucl
+~~~hcl
 # local.d/dmarc.conf
   reporting {
     # Required attributes
@@ -92,7 +92,7 @@ An example of this technique is [documented](https://mailman.readthedocs.io/en/r
 
 There is a configuration example below that demonstrates how to set up DMARC munging in Rspamd:
 
-~~~ucl
+~~~hcl
 # local.d/dmarc.conf
 munging {
   list_map = "/etc/rspamd/maps.d/dmarc_munging.map"; # map of maillist domains (mandatory)

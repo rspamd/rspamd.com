@@ -79,7 +79,7 @@ For built-in rules scores are placed in the file called `${CONFDIR}/metrics.conf
 
 1. Define scores in `local.d/groups.conf` as following:
 
-~~~ucl
+~~~hcl
 symbol "MY_SYMBOL" {
   description = "my cool rule";
   score = 1.5;

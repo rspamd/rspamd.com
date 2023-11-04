@@ -110,7 +110,7 @@ An `.include` directive there links to `/etc/rspamd/local.d/worker-fuzzy.inc`, w
 
 The following is a sample configuration for this fuzzy storage worker process, which will be explained and referred to below. Please refer to [this page]({{ site.baseurl }}/doc/workers/fuzzy_storage.html#configuration) for any settings not profiled here.
 
-~~~ucl
+~~~hcl
 worker "fuzzy" {
   # Socket to listen on (UDP and TCP from rspamd 1.3)
   bind_socket = "*:11335";
@@ -165,7 +165,7 @@ It is a good idea to compare the volume of hashes learned over a certain period 
 
 By default, Rspamd does not allow changes to the fuzzy storage. Any system that connects to the fuzzy_storage process via UDP must be authorized, and a list of trusted IP addresses and/or networks must be provided to enable learning. In practice, it is better to write from the local address only (127.0.0.1) because fuzzy storage uses UDP, which is not protected from source IP forgery.
 
-~~~ucl
+~~~hcl
 worker "fuzzy" {
   # Same options as before ...
   allow_update = ["127.0.0.1"];
@@ -192,7 +192,7 @@ The encryption architecture uses cryptobox construction: <https://nacl.cr.yp.to/
 
 To configure transport encryption, create a keypair for the storage server, using the command `rspamadm keypair -u`. Each time this command is run, unique output is returned, as shown in this example (the order of the name=value pairs may change each time this is run) :
 
-~~~ucl
+~~~hcl
 keypair {
     pubkey = "og3snn8s37znxz53mr5yyyzktt3d5uczxecsp3kkrs495p4iaxzy";
     privkey = "o6wnij9r4wegqjnd46dyifwgf5gwuqguqxzntseectroq7b3gwty";
@@ -207,7 +207,7 @@ The  **public** `pubkey` should be copied manually to the remote host, or publis
 
 Each storage can use any number of keys simultaneously, one for each remote client (or a group of clients):
 
-~~~ucl
+~~~hcl
 worker "fuzzy" {
   # Same options as before ...
   keypair {
@@ -227,7 +227,7 @@ worker "fuzzy" {
 
 This mechanism is optional, but it can be made mandatory by adding the `encrypted_only` option. In this mode, client systems that do not have a valid public key will be unable to access the storage.
 
-~~~ucl
+~~~hcl
 worker "fuzzy" {
   # Same options as before ...
   encrypted_only = true;
@@ -278,7 +278,7 @@ The FUZZY_DENIED symbol is equivalent to flag=1, as defined in modules.d/fuzzy_c
 
 local.d/fuzzy_check.conf example:
 
-~~~ucl
+~~~hcl
 rule "local" {
     # Fuzzy storage server list
     servers = "localhost:11335";
@@ -319,7 +319,7 @@ rule "local" {
 
 local.d/fuzzy_group.conf example:
 
-~~~ucl
+~~~hcl
 max_score = 12.0;
 symbols = {
     "LOCAL_FUZZY_UNKNOWN" {
@@ -351,7 +351,7 @@ The `mime_types` option specifies which attachment types are checked (or learned
 
 `read_only` is quite an important option required for storage learning. It is set to `read_only=true` by default, restricting thus a storage's learning:
 
-~~~ucl
+~~~hcl
 read_only = true; # disallow learning
 read_only = false; # allow learning
 ~~~
@@ -386,7 +386,7 @@ test/rspamd-test -p /rspamd/shingles
 
 As the `fuzzy_check` plugin is responsible for learning, we create the script within its configuration. This script determines whether an email is suitable for learning. The script should return a Lua function with a single argument of type [`rspamd_task`]({{ site.baseurl }}/doc/lua/rspamd_task.html) type. The function should return a boolean value (`true` to learn, `false` to skip learning), or a pair consisting of a boolean value and a numeric value (to modify the hash flag value, if necessary). Parameter `learn_condition` is used to setup learn script. The most convenient way to set the script is to write it as a multiline string supported by `UCL`:
 
-~~~ucl
+~~~hcl
 # Fuzzy check plugin configuration snippet
 learn_condition = <<EOD
 return function(task)
@@ -495,7 +495,7 @@ After all, you can run rspamd on the slaves and then switch on the master.
 
 You can set the replication in the hashes storage configuration file, namely `worker-fuzzy.inc`. Master replication is configured as follows:
 
-~~~ucl
+~~~hcl
 # Fuzzy storage worker configuration snippet
 # Local keypair (rspamadm keypair -u)
 sync_keypair {
@@ -522,7 +522,7 @@ Let’s focus on configuring the encryption keys. Typically, rspamd automaticall
 
 The slave setup looks similar:
 
-~~~ucl
+~~~hcl
 # Fuzzy storage worker configuration snippet
 # We assume it is slave1 with pubkey 'yyy'
 sync_keypair {
@@ -541,7 +541,7 @@ master_key = "xxx";
 
 To avoid conflicts with local hashes, you can set a flag translation from the master to the slave. For example, the following configuration can be used to translate the flags `1`, `2`, and `3` to `10`, `20`, and `30`, respectively:
 
-~~~ucl
+~~~hcl
 # Fuzzy storage worker configuration snippet
 master_flags {
   "1" = 10;

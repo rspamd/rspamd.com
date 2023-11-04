@@ -233,7 +233,7 @@ Firstly, refer to the principles of basic configuration [here](configuration/ind
 
 Additionally, it is advisable to utilize the specialized include files as referenced in the default configuration. Typically, each configuration file located in the directory `/etc/rspamd/` will incorporate two such includes:
 
-~~~ucl
+~~~hcl
 # /etc/rspamd/modules.d/imaginary_module.conf
 imaginary_module {
   # there would probably be some settings in this area
@@ -250,7 +250,7 @@ You can gain further insight on actions, scores, and related configuration param
 
 Starting from Rspamd version 1.7, the thresholds setup can be edited in the file `local.d/actions.conf`:
 
-~~~ucl
+~~~hcl
 # local.d/actions.conf
 
  reject = 150; # Reject when reaching this score
@@ -277,7 +277,7 @@ The weights of rules can also be modified through the Rspamd WebUI. To obtain cu
 
 For those who wish to create their own rule or simply adjust the score without considering groups, the file `local.d/groups.conf` can be used in the following manner:
 
-~~~ucl
+~~~hcl
 # /etc/rspamd/local.d/groups.conf
 
 # Just scores for Rspamd defined symbols
@@ -346,7 +346,7 @@ Rspamd's normal worker will, by default, listen on all interfaces on port 11333.
 
 If Rspamd is running on the same machine as the mailer or any other application that will be querying it, it is recommended to set this option to 'localhost'. This option should be defined in `/etc/rspamd/local.d/worker-normal.inc`:
 
-~~~ucl
+~~~hcl
 # /etc/rspamd/local.d/worker-normal.inc
 bind_socket = "localhost:11333";
 ~~~
@@ -357,7 +357,7 @@ By default, the Rspamd controller worker listens on port `11334`, and the proxy 
 
 As Rspamd does not perform certain checks for local networks, it may be necessary to adjust the global `local_addrs` map accordingly.
 
-~~~ucl
+~~~hcl
 # /etc/rspamd/local.d/options.inc
 
 # Local networks (default)
@@ -378,14 +378,14 @@ For better security, it is recommended to store an encrypted password. To genera
 
 The configuration to be modified is shown below, you should replace the password with the output generated from your chosen password:
 
-~~~ucl
+~~~hcl
 # /etc/rspamd/local.d/worker-controller.inc
 password = "$2$g95ywihfinjqx4r69u6mgfs9cqbfq1ay$1h4bm5uod9njfu3hdbwd3w5xf5d9u8gb7i9xnimm5u8ddq3c5byy";
 ~~~
 
 By setting the `enable_password` option, data-changing operations, such as Bayes training or fuzzy storage, will require a password for execution. For example:
 
-~~~ucl
+~~~hcl
 # /etc/rspamd/local.d/worker-controller.inc
 enable_password = "$2$qda98oexjhcf6na4mfujqjwf4qmbi545$ijkrmjx96iyj56an9jfzbba6mf1iezpog4axpeym9qhtf6nhjswy";
 ~~~
@@ -493,7 +493,7 @@ Here, we describe the simplest `self-scan` option:
 
 In this mode, `rspamd_proxy` scans messages itself and talks to MTA directly using the Milter protocol. The advantage of this approach is its simplicity. Here is a sample configuration for this mode:
 
-~~~ucl
+~~~hcl
 # local.d/worker-proxy.inc
 milter = yes; # Enable milter mode
 timeout = 120s; # Needed for Milter usually
@@ -515,7 +515,7 @@ For more advanced proxy usage, please see the corresponding [documentation]({{ s
 
 Starting with version 1.1, it is now possible to utilize Redis as a backend for statistics and caching of learned messages. Redis is particularly recommended for clustered configurations as it enables concurrent learning and checking, and also performs very quickly. To configure Redis, you can specify the `redis` backend for a classifier, and the cache will automatically be set to the same servers.
 
-{% highlight ucl %}
+{% highlight hcl %}
 # /etc/rspamd/local.d/classifier-bayes.conf
 servers = "127.0.0.1";
 backend = "redis";
@@ -540,7 +540,7 @@ All maps behaves in the same way so you can have some choices about how to defin
 
 For the second option it is also possible to have a composite path with a fallback:
 
-~~~ucl
+~~~hcl
 exceptions = [
   "https://maps.rspamd.com/rspamd/2tld.inc.zst",
   "${DBDIR}/2tld.inc.local",
@@ -684,7 +684,7 @@ There is also an add-on for Thunderbird MUA written by Alexander Moisseev to vis
 
 To enable extended spam headers in [Milter headers module]({{ site.baseurl }}/doc/modules/milter_headers.html) add the following line to `local.d/milter_headers.conf`:
 
-{% highlight ucl %}
+{% highlight hcl %}
 extended_spam_headers = true;
 {% endhighlight %}
 
@@ -716,7 +716,7 @@ You might also want to enable the following modules:
 * [IP score]({{ site.baseurl }}/doc/modules/ip_score.html): IP reputation module, requires volatile Redis instance (or shared volatile Redis instance). In some cases, it can provide your results common to the expensive IP DNS blacklists. However, it also depends on the quality of your rules and your scale.
 * [Neural networks]({{ site.baseurl }}/doc/modules/neural.html): this module provides significant improvement for your filtering quality but it requires CPU resources (SandyBridge or newer Intel CPUs are strongly adviced) and somehow good rules set. It also requires some setup and a persistent Redis instance. From version 2.0 Rspamd uses `libkann` for neural networks which demonstrates better performance and preciseness than the pre 1.7 implementations based on `libfann`. Here is a minimal setup for neural networks module:
 
-```ucl
+```hcl
 # local.d/neural.conf
  servers = "redis:6384";
 timeout = 25s; # Sometimes ANNs are very large

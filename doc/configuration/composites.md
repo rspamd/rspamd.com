@@ -21,7 +21,7 @@ You could use `local.d/composites.conf` (which effects changes **inside** the `c
 
 For example, you can define a composite that fires when two specific symbols are found and **replace** these symbols weights with its score:
 
-~~~ucl
+~~~hcl
 TEST_COMPOSITE {
     expression = "SYMBOL1 and SYMBOL2";
     score = 5.0;
@@ -40,7 +40,7 @@ You can use the following operations in a composite expression:
 
 You can use braces to specify the priority of operations in composite rules. If braces are not used, the operators will be evaluated from left to right. For example:
 
-~~~ucl
+~~~hcl
 TEST {
     expression = "SYMBOL1 and SYMBOL2 and ( not SYMBOL3 | not SYMBOL4 | not SYMBOL5 )";
     score = 10.0;
@@ -50,7 +50,7 @@ TEST {
 
 Composite rule can include another composites in the body. There is no restriction on the order in which composite rules are defined:
 
-~~~ucl
+~~~hcl
 TEST1 {
     expression = "SYMBOL1 AND TEST2";
 }
@@ -77,7 +77,7 @@ You can also set up policies for composites regarding the symbols that are inclu
 
 E.g.
 
-~~~ucl
+~~~hcl
 TEST_COMPOSITE {
     expression = "SYMBOL1 and SYMBOL2";
     policy = "leave";
@@ -99,7 +99,7 @@ Composites can record symbols in a metric, which can be used to create non-capti
 
 If you have multiple composites that include the same symbol, and one composite wants to remove the symbol while another composite wants to preserve it, the symbol will be preserved by default. Here are some more examples:
 
-~~~ucl
+~~~hcl
 COMP1 {
     expression = "BLAH | !DATE_IN_PAST";
 }
@@ -115,7 +115,7 @@ Both `BLAH` and `DATE_IN_PAST` exist in the message's check results. However, `C
 
 If we rewrite the previous example but replace `-` with `~` then `DATE_IN_PAST` will be removed (however, its weight won't be removed):
 
-~~~ucl
+~~~hcl
 COMP1 {
     expression = "BLAH | !DATE_IN_PAST";
 }
@@ -129,7 +129,7 @@ COMP3 {
 
 When we want to remove a symbol, despite other composites combinations, it is possible to add the prefix `^` to the symbol:
 
-~~~ucl
+~~~hcl
 COMP1 {
     expression = "BLAH | !DATE_IN_PAST";
 }
@@ -153,7 +153,7 @@ It is possible to include a group of symbols in a composite rule. This effective
 
 Removal policies are applied only to the matched symbols and not to the entire group.
 
-~~~ucl
+~~~hcl
 TEST2 {
     expression = "SYMBOL2 & !g:mua & g+:fuzzy";
 }
@@ -163,7 +163,7 @@ TEST2 {
 
 You can disable a composite rule by adding `enabled = false` to its definition. For example, to disable the `DKIM_MIXED` composite defined in the stock configuration, you can add the following to `local.d/composites.conf`:
 
-~~~ucl
+~~~hcl
 DKIM_MIXED {
     enabled = false;
 }
@@ -175,7 +175,7 @@ You can also disable composites from the [users settings](settings.html) from Rs
 
 Starting from version 2.0, it is also possible to augment the conditions of composite rules by adding required symbol options. For example, if a symbol `SYM` can insert options `opt1` and `opt2`, you can create a composite expression that only triggers if the `opt2` option is presented:
 
-~~~ucl
+~~~hcl
 TEST2 {
     expression = "SYM[opt2]";
 }

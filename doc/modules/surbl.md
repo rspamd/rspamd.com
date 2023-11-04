@@ -25,7 +25,7 @@ a specific sort of license.
 Nonetheless, they can be used by personal services or low volume requests free
 of charge.
 
-~~~ucl
+~~~hcl
 # local.d/surbl.conf
 # List of domains that are not checked by surbl
 whitelist = "file://$CONFDIR/surbl-whitelist.inc";
@@ -87,7 +87,7 @@ it is possible to specify either `bit` or `ips` sections.
 
 Since some URL lists do not accept `IP` addresses, it is also possible to disable sending of URLs with IP address in the host to such lists. That could be done by specifying `noip = true` option:
 
-~~~ucl
+~~~hcl
 "DBL" {
     suffix = "dbl.spamhaus.org";
     # Do not check numeric URL's
@@ -97,7 +97,7 @@ Since some URL lists do not accept `IP` addresses, it is also possible to disabl
 
 It is also possible to check HTML images URLs using URL blacklists. Just specify `images = true` for such list and you are done:
 
-~~~ucl
+~~~hcl
 "RAMBLER_URIBL" {
     suffix = "uribl.rambler.ru";
     # Also check images
@@ -107,7 +107,7 @@ It is also possible to check HTML images URLs using URL blacklists. Just specify
 
 By default, Rspamd checks each SURBL `sanity` by querying of `facebook.com` domain. URL black list must NOT reply by some positive result (other than NXDOMAIN) to such a query. However, sometimes you might need to change that to another domain (e.g. to `INVALID`), so you can use `monitored_domain` option from Rspamd 1.6:
 
-~~~ucl
+~~~hcl
 "HOSTKARMA_URIBL" {
     suffix = "hostkarma.junkemailfilter.com";
     noip = true;
@@ -197,7 +197,7 @@ In general this procedure could be represented as following:
 
 For example, [SBL list](https://www.spamhaus.org/sbl/) of `spamhaus` project provides such functions using `ZEN` multi list. This is included in rspamd default configuration:
 
-~~~ucl
+~~~hcl
     rule {
         suffix = "zen.spamhaus.org";
         symbol = "ZEN_URIBL";
@@ -212,7 +212,7 @@ For example, [SBL list](https://www.spamhaus.org/sbl/) of `spamhaus` project pro
 
 Rules can be disabled by setting the `enabled` setting to `false`. This allows for easily disabling SURBLs without overriding the full default configuration. The example below could be added to `/etc/rspamd/local.d/surbl.conf` to disable the `RAMBLER_URIBL` URIBL.
 
-~~~ucl
+~~~hcl
 rules {
   "RAMBLER_URIBL" {
     enabled = false;

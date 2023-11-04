@@ -22,7 +22,7 @@ From version 1.9, there are also some more actions:
 
 Starting from version 1.9, you have the flexibility to define custom actions with their own threshold in Rspamd. You can also utilize these custom actions in the `force_actions` module. This allows you to tailor the actions according to your specific requirements:
 
-```ucl
+```hcl
 actions {
   # Generic threshold
   my_action = {
@@ -51,7 +51,7 @@ Symbols are defined by an object with the following properties:
 
 A symbol definition can look like this:
 
-~~~ucl
+~~~hcl
 symbol "RWL_SPAMHAUS_WL_IND" {
     weight = -0.7;
     description = "Sender listed at Spamhaus whitelist";
@@ -60,7 +60,7 @@ symbol "RWL_SPAMHAUS_WL_IND" {
 
 Rspamd rules are typically organized into groups, with each symbol capable of belonging to multiple groups. For instance, the `DKIM_ALLOW` symbol is part of both the `dkim` group and the `policies` metagroup. You have the flexibility to group or not group your own rules. If you wish to adjust the scores of your symbols, you can do so by modifying the `local.d/groups.conf` file as shown below:
 
-~~~ucl
+~~~hcl
 # local.d/groups.conf
 
 symbols {
@@ -72,7 +72,7 @@ symbols {
 
 Or, for grouped symbols: 
 
-~~~ucl
+~~~hcl
 group "mygroup" {
   max_score = 10.0;
   
@@ -90,7 +90,7 @@ To modify symbols for existing groups, it is advisable to utilize dedicated file
 
 Actions thresholds and configuration are defined in `local.d/actions.conf`:
 
-```ucl
+```hcl
 # local.d/actions.conf
 # Generic threshold
 my_action = {

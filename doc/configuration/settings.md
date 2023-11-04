@@ -10,13 +10,13 @@ Rspamd offers the flexibility to apply various settings for scanned messages. Ea
 
 To load settings as a dynamic map, you can set the 'settings' to a map string as follows:
 
-~~~ucl
+~~~hcl
 settings = "http://host/url"
 ~~~
 
 If you prefer not to use dynamic updates, you can define settings as an object using the following format:
 
-~~~ucl
+~~~hcl
 settings {
 	setting1 = {
 	...
@@ -29,7 +29,7 @@ settings {
 
 To define static settings, you can edit the `local.d/settings.conf` file (from Rspamd 1.8 onwards). On the other hand, if you want to use a dynamic map for settings, it's recommended to define it in the override file `rspamd.conf.override`:
 
-~~~ucl
+~~~hcl
 settings = "http://host/url"
 ~~~
 
@@ -52,7 +52,7 @@ Settings can also be indexed by ID, enabling the selection of a specific setting
 
 Let's assume we have the following settings in the configuration with an ID of `dkim`:
 
-~~~ucl
+~~~hcl
 # local.d/settings.conf
 dkim {
 	id = "dkim";
@@ -79,7 +79,7 @@ rspamc --header="settings-id=dkim" message.eml
 
 The settings file should contain a single section called "settings":
 
-~~~ucl
+~~~hcl
 # local.d/settings.conf
 some_users {
 	id = "some_users";
@@ -190,7 +190,7 @@ Where "setting:" is a prefix we have chosen for our settings and "example.com" i
 
 We would then define configuration as follows in `/etc/rspamd/rspamd.conf.override`:
 
-~~~ucl
+~~~hcl
 # Redis settings are configured in a "settings_redis" block
 settings_redis {
   # Here we will define our Lua functions

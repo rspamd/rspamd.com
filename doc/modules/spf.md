@@ -20,7 +20,7 @@ To configure the SPF module, you have the option to manually specify the cache s
 
 ## Example configuration
 
-~~~ucl
+~~~hcl
 # local.d/spf.conf
 
 	spf_cache_size = 1k; # cache up to 1000 of the most recent SPF records

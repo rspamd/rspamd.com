@@ -29,7 +29,7 @@ Statistical tokens are stored in statfiles, which are then mapped to specific ba
 
 Starting from Rspamd 2.0, we recommend using `redis` as the backend and `osb` as the tokenizer, which are set as the default settings. The default configuration settings can be found in the `$CONFDIR/statistic.conf` file.
 
-~~~ucl
+~~~hcl
 classifier "bayes" {
   tokenizer {
     name = "osb";

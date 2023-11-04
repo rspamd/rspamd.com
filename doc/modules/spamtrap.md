@@ -39,7 +39,7 @@ Parameters for the spamtrap modules are listed here.
 
 Configuration example `/etc/rspamd/local.d/spamtrap.conf`:
 
-~~~ucl
+~~~hcl
 action = "no action";
 score = 1.0;
 learn_fuzzy = true;
@@ -68,7 +68,7 @@ The following is an example that you can use for the spamtrap module. It will lo
 in Redis and collect settings for dealing with spam trapped emails or domains. You
 can place this in `/etc/rspamd/rspamd.conf.local`:
 
-~~~ucl
+~~~hcl
 # Return spamtrap e-mail addresses from Redis
 settings_redis {
         handlers = {

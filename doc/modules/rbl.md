@@ -21,7 +21,7 @@ For example, you can use [Abusix Mail Intelligence](https://docs.abusix.com/abus
 
 Configuration for this module is structured as following:
 
-~~~ucl
+~~~hcl
 # local.d/rbl.conf
 
 # 'rbls' subsection under which the RBL definitions are nested
@@ -77,7 +77,7 @@ The required parameters `rbl` and `checks` set the address used for testing and 
 
 You can use selectors to look up arbitrary data. Please refer to the section on selectors for more information.
 
-~~~ucl
+~~~hcl
 # /etc/rspamd/local.d/rbl.conf
 rules {
   # minimal configuration example
@@ -118,7 +118,7 @@ Optional parameters (and their defaults if applicable) are as follows:
 
 Some examples of using RBL:
 
-~~~ucl
+~~~hcl
 rbls {
 
     blocklist {
@@ -224,7 +224,7 @@ Nevertheless, these lists can be used free of charge by personal services or low
 
 Here are the default lists specified:
 
-~~~ucl
+~~~hcl
 # local.d/rbl.conf
 
 # List of domains that are not checked by surbl
@@ -334,7 +334,7 @@ Each list should have a `suffix` parameter that defines the list itself, and opt
 
 As some URL lists do not accept `IP` addresses, it is possible to disable the sending of URLs with IP addresses in the host to such lists. This can be done by specifying the `no_ip = true` option.
 
-~~~ucl
+~~~hcl
 "DBL" {
     rbl = "dbl.spamhaus.org";
     # Do not check numeric URLs
@@ -344,7 +344,7 @@ As some URL lists do not accept `IP` addresses, it is possible to disable the se
 
 URL blacklists can also be used to check DKIM signature domains, HTML image URLs, and email addresses (domain part) in the mail's body part for URLs.
 
-~~~ucl
+~~~hcl
     "RSPAMD_URIBL" {
       ignore_defaults = true; # for compatibility with old defaults
       rbl = "uribl.rspamd.com";
@@ -372,7 +372,7 @@ In this example, we also enable privacy for requests by hashing all elements bef
 
 Rspamd checks each RBL rule to ensure it's a valid DNS list as defined in [RFC 5782](https://datatracker.ietf.org/doc/html/rfc5782) by default. This is done to avoid situations where a single RBL blacklists the entire world or becomes unresponsive. For the IP-based rules, meaning that an IP address is queried, Rspamd will query for the `127.0.0.1` address, as per the RFC, this must return an `NXDOMAIN` response. However, some DNS lists are non RFC compatible, so you can disable monitoring for them as follows:
 
-~~~ucl
+~~~hcl
     "HOSTKARMA_URIBL" {
       rbl = "hostkarma.junkemailfilter.com";
       no_ip = true;
@@ -450,7 +450,7 @@ local excl_rules1 = {
 
 To define a specific map for these rules, the following syntax can be used:
 
-~~~ucl
+~~~hcl
 # local.d/rbl.conf
 rules {
   EXAMPLE_RBL = {
@@ -518,7 +518,7 @@ In general, this procedure can be represented as follows:
 To disable a rule in SURBL, you can set the `enabled` setting to `false`. This makes it easy to disable specific SURBLs without overriding the entire default configuration. For instance, if you want to disable the `RAMBLER_URIBL` URIBL, you can add the following example to `/etc/rspamd/local.d/surbl.conf`:
 
 
-~~~ucl
+~~~hcl
 rules {
   "RAMBLER_URIBL" {
     enabled = false;

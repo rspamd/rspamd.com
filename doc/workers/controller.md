@@ -27,7 +27,7 @@ To generate a keypair for the scanner you could use:
 
 After running this command, the keypair should appear as follows:
 
-~~~ucl
+~~~hcl
 keypair {
     pubkey = "tm8zjw3ougwj1qjpyweugqhuyg4576ctg6p7mbrhma6ytjewp4ry";
     privkey = "ykkrfqbyk34i1ewdmn81ttcco1eaxoqgih38duib1e7b89h9xn3y";

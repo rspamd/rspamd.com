@@ -26,7 +26,7 @@ All duplicating features are still kept in Rmilter for compatibility reasons. Ho
 
 From version `1.9.1` it is possible to specify `enable` option in `greylisting` and `ratelimit` sections. It is also possible for `dkim` section since `1.9.2`. These options are `true` by default. Here is an example of configuration where greylisting and ratelimit are disabled:
 
-~~~ucl
+~~~hcl
 # /etc/rmilter.conf.local
 limits {
     enable = false;
@@ -64,7 +64,7 @@ This section contains a number of useful configuration recipes and best practice
 
 Since version 1.9, Rmilter supports macros `.try_include` that can be used to conditionally include some user specific file. There is also globbing support in all `include` macros, so you can use `*` or `?` in your patterns. By default, Rmilter tries to include `/etc/rmilter.conf.local` and then all files that match the pattern `/etc/rmilter.conf.d/*.conf` (there could be a different prefix for your system). The settings are natively overridden by files inside files included. Hence, settings that are defined **later** will override settings that are defined earlier:
 
-~~~ucl
+~~~hcl
 # /etc/rmilter.conf
 spamd {
     servers = localhost:11333; # overridden
@@ -75,7 +75,7 @@ spamd {
 .try_include /etc/rmilter.conf.d/*.conf
 ~~~
 
-~~~ucl
+~~~hcl
 # /etc/rmilter.conf.local
 spamd {
     servers = example.com:11333; # overridden
@@ -83,7 +83,7 @@ spamd {
 }
 ~~~
 
-~~~ucl
+~~~hcl
 # /etc/rmilter.conf.d/spamd.conf
 spamd {
     servers = other.com:11333;
@@ -92,7 +92,7 @@ spamd {
 
 will produce the following configuration:
 
-~~~ucl
+~~~hcl
 # resulting configuration
 spamd {
     servers = other.com:11333;
@@ -102,7 +102,7 @@ spamd {
 
 It is also possible to add elements to lists (from Rmilter `1.9.2`) using `+=` operator:
 
-~~~ucl
+~~~hcl
 # /etc/rmilter.conf.local
 spamd {
     servers = example.com:11333;
@@ -110,7 +110,7 @@ spamd {
 }
 ~~~
 
-~~~ucl
+~~~hcl
 # /etc/rmilter.conf.d/spamd.conf
 spamd {
     servers += other.com:11333;
@@ -119,7 +119,7 @@ spamd {
 
 will produce the following configuration:
 
-~~~ucl
+~~~hcl
 # resulting configuration
 spamd {
     servers = example.com:11333, other.com:11333;
@@ -129,7 +129,7 @@ spamd {
 
 Using of empty lists can remove the default lists content:
 
-~~~ucl
+~~~hcl
 ratelimit {
     whitelist = ; # Will remove the default whitelist
 }

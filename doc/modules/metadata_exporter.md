@@ -21,7 +21,7 @@ A number of such functions are defined in the plugin which can be used in additi
 
 ### Configuration
 
-~~~ucl
+~~~hcl
 metadata_exporter {
 
   # Each rule defines some export process
@@ -175,7 +175,7 @@ Metadata as returned by the `json` formatter can be referenced by key in `email_
 
 It is possible to define custom selectors/pushers/backends. Functions are defined in the `custom_select`/`custom_format`/`custom_push` groups and referenced by name in the `selector`/`formatter`/`backend` settings:
 
-~~~ucl
+~~~hcl
 metadata_exporter {
 
   # Define custom selector(s)

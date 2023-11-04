@@ -10,7 +10,7 @@ Then `chartable` module evaluates number of script changes in words, e.g. 'aç¶²ç
 
 After normalization procedure, Rspamd compares the `badness` value with the threshold, which is `0.3` by default. This value means that about 30% of words have different charsets within a single word.
 
-~~~ucl
+~~~hcl
 chartable {
   symbol = "R_MIXED_CHARSET";
   threshold = 0.3;
@@ -19,6 +19,6 @@ chartable {
 
 If you see too many false-positives for the R_MIXED_CHARSET symbol (eg. for multilingual or Slavic emails) you can disable it in `/etc/rspamd/local.d/chartable.conf`:
 
-~~~ucl
+~~~hcl
 enabled = false;
 ~~~

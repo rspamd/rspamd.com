@@ -17,7 +17,7 @@ C modules provide the core functionality of Rspamd and are statically linked to 
 main Rspamd code. C modules are defined in options.inc with the `filters` attribute.
 The default configuration enables all C modules explicitly:
 
-~~~ucl
+~~~hcl
 filters = "chartable,dkim,regexp,fuzzy_check";
 ~~~
 
@@ -50,7 +50,7 @@ reconfiguration. Should you want to write a Lua module, consult the
 [Lua API documentation](../lua/). To define a path to Lua modules there is a section
 named `modules` in common.conf:
 
-~~~ucl
+~~~hcl
 modules {
   path = "${PLUGINSDIR}";
   fallback_path = "${SHAREDIR}/lua"; # Legacy path

@@ -54,7 +54,7 @@ To install Rspamd, I recommend using one of the [official packages]({{ site.url 
 
 For those who have a lot of custom rules, there is good news: Rspamd supports a certain set of SpamAssassin rules via a special [plugin](../modules/spamassassin.html) that allows **direct** loading of SA rules into Rspamd. You just need to specify your SA configuration files in the plugin configuration:
 
-~~~ucl
+~~~hcl
 spamassassin {
 	sa_main = "/etc/spamassassin/conf.d/*";
 	sa_local = "/etc/spamassassin/local.cf";

@@ -53,7 +53,7 @@ If you want to skip greylisting based on other conditions, you can simply disabl
 
 To enable the module with its default settings, you must define at least one [redis]({{ site.baseurl }}/doc/configuration/redis.html) server to store greylisting data. You can do this by adding the following lines to `local.d/greylist.conf`:
 
-~~~ucl
+~~~hcl
 # local.d/greylist.conf
 servers = "127.0.0.1:6379";
 ~~~

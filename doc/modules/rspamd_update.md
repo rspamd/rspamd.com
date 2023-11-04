@@ -13,7 +13,7 @@ For your own updates that are loaded from the filesystem or from some trusted ne
 
 For your own updates that are loaded from the file system or a trusted network, you might be able to use unsigned files. However, we recommend that you sign even in this scenario. To sign a map, you can use `rspamadm signtool`, and to generate a signing keypair, use `rspamadm keypair -s -u`.
 
-~~~ucl
+~~~hcl
 keypair {
    pubkey = "zo4sejrs9e5idqjp8rn6r3ow3x38o8hi5pyngnz6ktdzgmamy48y";
    privkey = "pwq38sby3yi68xyeeuup788z6suqk3fugrbrxieri637bypqejnqbipt1ec9tsm8h14qerhj1bju91xyxamz5yrcrq7in8qpsozywxy";
@@ -32,7 +32,7 @@ rspamadm signtool -e --editor=vim -k <keypair_file> <map_file>
 
 To enforce signing policies you should add `sign+` string to your map definition:
 
-~~~ucl
+~~~hcl
 map = "sign+http://example.com/map"
 ~~~
 
@@ -44,7 +44,7 @@ trusted_keys = ["<public key string>"];
 
 or add it as `key` definition to the map string:
 
-~~~ucl
+~~~hcl
 map = "sign+key=<key_string>+http://example.com/map"
 ~~~
 
@@ -56,7 +56,7 @@ The module itself has very few parameters:
 
 All other keys are threated as rules to load maps. By default, Rspamd tries to load signed updates from `rspamd.com` site using trusted key `qxuogdh5eghytji1utkkte1dn3n81c3y5twe61uzoddzwqzuxxyb`:
 
-~~~ucl
+~~~hcl
 rspamd_update {
     rules = "sign+http://rspamd.com/update/rspamd-${BRANCH_VERSION}.ucl";
     key = "qxuogdh5eghytji1utkkte1dn3n81c3y5twe61uzoddzwqzuxxyb";
@@ -73,7 +73,7 @@ Update files are quite simple: they have 3 sections:
 
 Here is an example of update file:
 
-~~~ucl
+~~~hcl
 rules = {
 	test =<<EOD
 rspamd_config.TEST = {

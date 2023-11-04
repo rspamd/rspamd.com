@@ -154,7 +154,7 @@ RBL FROM HIT
 
 * Always use fake DNS records:
 
-~~~ucl
+~~~hcl
 dns {
  fake_records = [
  { # ed25519

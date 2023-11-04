@@ -27,7 +27,7 @@ ip_score = action_multiplier * tanh (e * (metric_score/score_divisor))
 
 Default multipliers are shown below:
 
-~~~ucl
+~~~hcl
 actions {
   reject = 1.0;
   "add header" = 0.25;
@@ -57,7 +57,7 @@ subscore = floor(subscore * 10)
 
 Score multiplier is dependent on the component the subscore is being generated for; default multipliers are shown below:
 
-~~~ucl
+~~~hcl
 scores {
   asn = 0.5;
   country = 0.1;
@@ -72,7 +72,7 @@ Subscores are added to each other to determine a total. If `min_score` or `max_s
 
 Refer to example configuration below for available settings. To use default settings, just [configure Redis]({{ site.baseurl }}/doc/configuration/redis.html) either globally or just for `ip_score` and assign a weight to the `IP_SCORE` symbol. Module configuration should be added to `/etc/rspamd/local.d/ip_score.conf`.
 
-~~~ucl
+~~~hcl
 # how each action is treated in scoring
 actions {
   reject = 1.0;
@@ -112,7 +112,7 @@ symbol = "IP_SCORE";
 
 You will also have to register some weight for the symbol in metric. For example you could add the following to `/etc/rspamd/local.d/metrics.conf`:
 
-~~~ucl
+~~~hcl
 symbol "IP_SCORE" {
   weight = 2.0;
   description = "IP reputation";

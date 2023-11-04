@@ -46,7 +46,7 @@ If your setup doesn't allow your MTA to reject emails, you can set `discard_on_r
 
 In this mode, the `rspamd_proxy` worker scans messages independently and communicates directly with the MTA using the Milter protocol. The advantage of this mode is its simplicity. Below is a sample configuration for this mode:
 
-~~~ucl
+~~~hcl
 # local.d/worker-proxy.inc
 upstream "local" {
   self_scan = yes; # Enable self-scan
@@ -58,7 +58,7 @@ upstream "local" {
 
 Also you can disable<sup>[1](#fn1)</sup> [normal](normal.html) worker to free up system resources as it is not necessary in `self-scan` mode:
 
-~~~ucl
+~~~hcl
 # local.d/worker-normal.inc
 enabled = false;
 ~~~
@@ -82,7 +82,7 @@ rspamc -h rspamd.example.org:11334 input-file
 
 In this mode, a dedicated layer of Rspamd scanners is employed, featuring load-balancing and optional encryption and/or compression. For this particular setup, the configuration may vary. Below is a concise example of proxy mode with four scanners, where two of them are allocated more resources to handle a higher volume of requests. Additionally, the local worker is disabled:
 
-~~~ucl
+~~~hcl
 # local.d/worker-proxy.inc
 upstream "local" {
   disabled = true;
@@ -110,7 +110,7 @@ The proxy can be utilized for testing purposes, including:
 
 In this mode, Rspamd mirrors a portion of its traffic to a test cluster. The scan results from the test cluster are disregarded when responding to clients. However, optional comparison scripts can be initiated to assess the mirrored results. Below is a sample configuration for this setup, with no utilization of milter mode in this example:
 
-~~~ucl
+~~~hcl
 # local.d/worker-proxy.inc
 # Main scan layer
 upstream "scan" {
@@ -132,7 +132,7 @@ mirror "test" {
 
 Comparison scripts are designed for executing straightforward actions with the results obtained from a mirror and the main cluster machine. These scripts do not support asynchronous requests, so your options are limited to logging or writing to files. Below is a basic example of such a script in the configuration:
 
-~~~ucl
+~~~hcl
 # local.d/worker-proxy.inc
   script =<<EOD
 return function(results)

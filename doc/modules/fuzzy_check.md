@@ -23,7 +23,7 @@ Note that attachments and images are currently not matched against fuzzy hashes.
 Instead, they are verified by blake2 digests using strict match.
 
 ## Module outline
-~~~ucl
+~~~hcl
 # local.d/fuzzy_check.conf
 fuzzy_check
 {
@@ -77,7 +77,7 @@ The ```fuzzy_check``` module has several global options, including:
 - `whitelist`: IPs in this list bypass all fuzzy checks
 
 e.g.
-~~~ucl
+~~~hcl
 # local.d/fuzzy_check.conf
 # the following are defaults in 1.9.4
 fuzzy_check {
@@ -114,7 +114,7 @@ The available parameters include:
 
 Here is an example `rule`:
 
-~~~ucl
+~~~hcl
 # local.d/fuzzy_check.conf
 ...
 rule "FUZZY_CUSTOM" {
@@ -144,7 +144,7 @@ fuzzy storage can contain both good and bad hashes that should have different sy
 and thus, different weights. To accommodate these varying needs, multiple `fuzzy_maps` 
 can be defined within a fuzzy `rule`, as follows:
 
-~~~ucl
+~~~hcl
 # local.d/fuzzy_check.conf
 rule "FUZZY_LOCAL" {
 ...
@@ -184,7 +184,7 @@ likely calculated through hyperbolic tangent as `0.2`.
 
 In the following configuration:
 
-~~~ucl
+~~~hcl
 metric {
     name = "default";
     ...

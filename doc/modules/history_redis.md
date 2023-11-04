@@ -29,7 +29,7 @@ Web Interface automatically recognises that history is stored in Redis and load 
 
 The configuration of this module is pretty straightforward (use `local.d/history_redis.conf` to define your own values:
 
-~~~ucl
+~~~hcl
 servers = 127.0.0.1:6379; # Redis server to store history
 key_prefix = "rs_history"; # Default key name
 nrows = 200; # Default rows limit
