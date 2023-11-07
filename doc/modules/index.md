@@ -93,7 +93,7 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [reputation](reputation.html) - a plugin that manages reputation evaluation based on various rules.
 - [rspamd_update](rspamd_update.html) - load dynamic rules and other Rspamd updates (requires configuration)
 - [spamassassin](spamassassin.html) - load spamassassin rules (requires configuration)
-- [spf.html](spf.html) - perform SPF checks
+- [spf](spf.html) - perform SPF checks
 - [trie](trie.html) - uses suffix trie for extra-fast patterns lookup in messages. (requires configuration)
 - [whitelist](whitelist.html) - provides a flexible way to whitelist (or blacklist) messages based on SPF/DKIM/DMARC combinations
 - [url_redirector](url_redirector.html) - dereferences redirects (requires Redis configuration)
