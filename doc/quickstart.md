@@ -565,13 +565,13 @@ There is a special module called `multimap` that allows you to define your maps 
 
 ## Configuring RBLs
 
-While Rspamd is free to use for any purpose, it is important to note that some of the RBLs included in the default configuration may require a fee or have usage restrictions. It is crucial to ensure that your use of these RBLs does not violate any rights. The following notes provide additional information about specific RBLs (you can follow the links for more details):
-
-[Abusix Mail Intelligence](https://abusix.com/products/abusix-mail-intelligence/){:target="&#95;blank"} - Free for home/non-commercial use up to 100k queries per day (requires registration), commercial use requires a subscription
+While Rspamd is free to use for any purpose, it is important to note that some of the RBLs included in the default configuration may require a fee or have usage restrictions. It is crucial to ensure that your use of these RBLs does not violate any rights. The following notes provide additional information about limitations of specific RBLs enabled in the default configuration (you can follow the links for more details):
 
 [DNSWL](https://www.dnswl.org/?page_id=9){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 100k queries per day
 
 [Mailspike](https://mailspike.org/usage.html){:target="&#95;blank"} - Limit of 100k messages or queries per day
+
+[MSBL EBL](https://msbl.org/ebl.html){:target="&#95;blank"} - Organizations that have over 100 users should contact the reseller to arrange for commercial access
 
 [Rspamd URIBL](https://www.rspamd.com/doc/usage_policy.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
 
@@ -588,6 +588,10 @@ While Rspamd is free to use for any purpose, it is important to note that some o
 [URIBL](https://uribl.com/about.shtml){:target="&#95;blank"} - Requires a commercial subscription if 'excessive queries' are sent (numbers unclear).
 
 Refer to the [RBL]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html) module documentation for information about disabling RBLs/SURBLs.
+
+The following RBLs are not enabled in the default configuration but may be enabled via additional configuration:
+
+[Abusix Mail Intelligence](https://abusix.com/products/abusix-mail-intelligence/){:target="&#95;blank"} - Free for home/non-commercial use up to 100k queries per day (requires registration), commercial use requires a subscription
 
 ## Using Rspamd
 
