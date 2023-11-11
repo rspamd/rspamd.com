@@ -21,13 +21,23 @@ If the ports you need to use are different from the default ones, you have the o
 
     serv1.example.com:8080,serv2.example.com
 
-Later on, it will be explained how to define the priorities of upstreams. However, if you choose to do so, you must also indicate a port number:
+It is also possible to resolve both names and ports for some service using DNS **SRV** records. You can read more about this method in [this article](https://www.haproxy.com/blog/dns-service-discovery-haproxy#dns-srv-records). To specify such an upstream you can set it's name to the following syntax:
 
-    127.0.0.1:53:10,8.8.8.8:53:1
+    service=sentinel+redis-cluster.local
 
-You can specify Unix sockets by starting with either `/` or `.`. However, please note that priorities are not supported in this case.:
+In this case, Rspamd will resolve SRV record in format `_sentinel._tcp.redis-cluster.local` to get a list of names with the ports. A corresponding SRV record might look like this one:
+
+```
+_sentinel._tcp.redis-cluster.local. TTL IN SRV 1 1 6300 sentinel1.redis-cluster.local.
+```
+
+You can also specify Unix sockets by starting with either `/` or `.`. However, please note that the priorities are not supported in this case:
 
     /tmp/rspamd.sock,fallback.example.com
+
+It is also possible to define priorities for the upstreams (their logic can vary depending on the rotation algorithm). However, if you choose to do so, you must also indicate a port number:
+
+    127.0.0.1:53:10,8.8.8.8:53:1
 
 The upstreams line can be separated by commas or semicolons in any combination. Additionally, you can prepend a rotation algorithm to the upstreams line to override the default rotation method (specific for each upstream list definition):
 
@@ -72,4 +82,4 @@ When an upstream reaches the error rate limit, Rspamd marks it as inactive and w
 
 Rspamd treats upstreams defined with their names differently. During the `revive_time`, Rspamd attempts to re-resolve these names and inserts any new IP addresses into the upstream list. If a name has multiple addresses, Rspamd includes all of them. The addresses are then selected using round-robin rotation with error checking. Unlike upstream configurations, errors are persistent and not cleared after successful attempts. Therefore, Rspamd always selects an address with a lower error count. This approach is taken to disable an IPv6 address, for example, if IPv6 is improperly configured in the system.
 
-Starting from version 2.0, Rspamd also performs background resolution of all upstreams every `lazy_resolve_time` + `jitter(0.1 * lazy_resolve_time)`. By default, this value is set to 1 hour, but you can customize it in the configuration (options -> upstreams section). This allows Rspamd to update its knowledge of upstream IP addresses, ensuring efficient and reliable connections.
+Starting from version 2.0, Rspamd also performs background resolution of all upstreams every `lazy_resolve_time` + `jitter(0.1 * lazy_resolve_time)`. By default, this value is set to 1 hour, but you can customize it in the configuration (options -> upstreams section). This allows Rspamd to update its knowledge of upstream IP addresses, ensuring efficient and reliable connections. SRV based upstreams are resolved in two steps: one for SRV record resolution and one for targets resolution.
