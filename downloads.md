@@ -15,38 +15,59 @@ title: Downloads
 <div class="col-xs-12">
     <ul class="nav nav-tabs nav-justified" role="tablist">
         <li role="presentation" class="active">
-            <a href="#system1" aria-controls="system1" role="tab" data-toggle="tab"><img src="img/redhat.png" width="20"><span class="myHidden-sm">&nbsp;Fedora/CentOS</span></a>
+            <a href="#system1" aria-controls="system1" role="tab" data-toggle="tab"><img src="img/docker.png" width="20"><span class="myHidden-sm">&nbsp;Docker</span></a>
         </li>
         <li role="presentation">
-            <a href="#system2" aria-controls="system2" role="tab" data-toggle="tab"><img src="img/Ubuntu.png" width="20"><span class="myHidden-sm">&nbsp;Debian/Ubuntu</span></a>
+            <a href="#system2" aria-controls="system2" role="tab" data-toggle="tab"><img src="img/redhat.png" width="20"><span class="myHidden-sm">&nbsp;RHEL</span></a>
         </li>
         <li role="presentation">
-            <a href="#system3" aria-controls="system3" role="tab" data-toggle="tab"><img src="img/linux.png" width="20"><span class="myHidden-sm">&nbsp;Other&nbsp;Linux</span></a>
+            <a href="#system3" aria-controls="system3" role="tab" data-toggle="tab"><img src="img/Ubuntu.png" width="20"><span class="myHidden-sm">&nbsp;Debian/Ubuntu</span></a>
         </li>
         <li role="presentation">
-            <a href="#system4" aria-controls="system4" role="tab" data-toggle="tab"><img src="img/freebsd.png" width="20"><span class="myHidden-sm">&nbsp;BSD</span></a>
+            <a href="#system4" aria-controls="system4" role="tab" data-toggle="tab"><img src="img/linux.png" width="20"><span class="myHidden-sm">&nbsp;Other&nbsp;Linux</span></a>
         </li>
         <li role="presentation">
-            <a href="#system5" aria-controls="system5" role="tab" data-toggle="tab"><img src="img/octocat.png" width="20"><span class="myHidden-sm">&nbsp;Build&nbsp;rspamd</span></a>
+            <a href="#system5" aria-controls="system5" role="tab" data-toggle="tab"><img src="img/freebsd.png" width="20"><span class="myHidden-sm">&nbsp;BSD</span></a>
+        </li>
+        <li role="presentation">
+            <a href="#system6" aria-controls="system6" role="tab" data-toggle="tab"><img src="img/octocat.png" width="20"><span class="myHidden-sm">&nbsp;Build&nbsp;rspamd</span></a>
         </li>
     </ul>
     <!-- Tab - pane content -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="system1">
-            <h3>CentOS</h3>
+            <h3>Docker</h3>
 <div markdown="1">
-Supported distributions:
+An official docker image is available at [rspamd/rspamd on Dockerhub](https://hub.docker.com/r/rspamd/rspamd), sources are [on github](https://github.com/rspamd/rspamd-docker). It is a recommendable way to run Rspamd.
 
-- **CentOS 7** (x86_64), requires EPEL.
-- **CentOS 8** (x86_64), requires EPEL.
+In this build upstream config files are installed in `/usr/share/rspamd/config` allowing `/etc/rspamd` to contain only local configuration.
 
-Please note that `CentOS` rpm packages **requires** [EPEL](https://fedoraproject.org/wiki/EPEL) to be installed in your system as many dependencies are missing from the base CentOS repositories. You can learn how to install EPEL from their site: <https://fedoraproject.org/wiki/EPEL>.
-`Fedora` packages do not require EPEL or any other third-party repository. Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-debug` package and could be safely installed even in the production environment.
+This build provides a [language identification model](https://fasttext.cc/docs/en/language-identification.html) to enable language detection using `fasttext`, distributed under [version 3.0 of the Creative Commons Attribution-Share-Alike License](https://creativecommons.org/licenses/by-sa/3.0/).
+
+Volumes or bind mounts should be used for the `/var/lib/rspamd` directory and optionally for `/etc/rspamd`. If bind mounts are used, the `/var/lib/rspamd` directory should be writable by `11333:11333` on the host machine.
+
+The root directory may be set read-only for added security at cost of being less tactile for the administrator.
+
+Basic usage:
+
+    docker run -v rspamd_dbdir:/var/lib/rspamd -v rspamd_confdir:/etc/rspamd -ti rspamd/rspamd
+
+A [Docker compose example](https://github.com/rspamd/rspamd-docker/tree/main/examples/compose) is available in the source repo.
+</div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="system2">
+            <h3>RHEL-alike distributions</h3>
+<div markdown="1">
+Packages are available for RHEL-compatible distributions such as Oracle Linux, AlmaLinux, Rocky Linux and CentOS. Currently versions 7 through 9 are supported.
+
+Please note that these packages **require** [EPEL](https://fedoraproject.org/wiki/EPEL) to be installed on your system as many dependencies are missing from the base repositories. You can learn how to install EPEL from their site: <https://fedoraproject.org/wiki/EPEL>.
+Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-debug` package and could be safely installed even in the production environment.
 
 To install rspamd repo, please download the corresponding repository file and the signing key (both repo and all packages are signed with my GPG key). You could use the following commands to install rspamd <a class="undecor" href="#stableSys1">stable<sup>1</sup></a> RPM repository:
 
-    curl https://rspamd.com/rpm-stable/centos-7/rspamd.repo > /etc/yum.repos.d/rspamd.repo # For Centos-7
-    #curl https://rspamd.com/rpm-stable/centos-8/rspamd.repo > /etc/yum.repos.d/rspamd.repo # Uncomment for Centos-8
+    source /etc/os-release
+    export EL_VERSION=`echo -n $PLATFORM_ID | sed "s/.*el//"`
+    curl https://rspamd.com/rpm-stable/centos-${EL_VERSION}/rspamd.repo > /etc/yum.repos.d/rspamd.repo
     rpm --import https://rspamd.com/rpm-stable/gpg.key
     yum update
     yum install rspamd
@@ -54,8 +75,9 @@ To install rspamd repo, please download the corresponding repository file and th
 
 For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> branch packages, download `rpm-experimental` repofile as following:
 
-    curl https://rspamd.com/rpm/centos-7/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo # For Centos-7
-    #curl https://rspamd.com/rpm/centos-8/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo # Uncomment for Centos-8
+    source /etc/os-release
+    export EL_VERSION=`echo -n $PLATFORM_ID | sed "s/.*el//"`
+    curl https://rspamd.com/rpm/centos-${EL_VERSION}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo
     rpm --import https://rspamd.com/rpm/gpg.key
     yum update
     yum install rspamd
@@ -63,8 +85,9 @@ For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> bra
 
 For <a class="undecor" href="#asanSys1">asan<sup>2</sup></a> branch packages, download `rpm-experimental-asan` repofile as following:
 
-    curl https://rspamd.com/rpm-asan/centos-7/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo # For Centos-7
-    #curl https://rspamd.com/rpm-asan/centos-8/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo # Uncomment for Centos-8
+    source /etc/os-release
+    export EL_VERSION=`echo -n $PLATFORM_ID | sed "s/.*el//"`
+    curl https://rspamd.com/rpm-asan/centos-${EL_VERSION}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo
     rpm --import https://rspamd.com/rpm/gpg.key
     yum update
     yum install rspamd
@@ -75,7 +98,7 @@ For <a class="undecor" href="#asanSys1">asan<sup>2</sup></a> branch packages, do
 <p class="myFootnote" id="experimentalSys1">2. Use EXPERIMENTAL branch of packages: these packages are less stable and they are generated frequently from the current development branch. Experimental packages usually have more features but might be SOMETIMES broken in some points (nevertheless, bugs are usually quickly fixed after detection).</p>
 <p class="myFootnote" id="asanSys1">3. Use ASAN branch of packages: these are packages (both stable and experimental) designed to debug Rspamd issues, especially core files, using advanced debugging tools. Use these packages if you encounter an issue in Rspamd and you want it to be fixed.</p>
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="system2">
+        <div role="tabpanel" class="tab-pane fade" id="system3">
             <h3>Debian and Ubuntu Linux</h3>
 <div markdown="1">
 
@@ -138,10 +161,10 @@ Please **DO NOT** use those packages, as they are likely outdated and are not su
 <p class="myFootnote" id="experimentalSys2">2. Use EXPERIMENTAL branch of packages: these packages are less stable and they are generated frequently from the current development branch. Experimental packages usually have more features but might be SOMETIMES broken in some points (nevertheless, bugs are usually quickly fixed after detection).</p>
 <p class="myFootnote" id="asanSys2">3. Use ASAN branch of packages: these are packages (both stable and experimental) designed to debug Rspamd issues, especially core files, using advanced debugging tools. Use these packages if you encounter an issue in Rspamd and you want it to be fixed.</p>
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="system3">
+        <div role="tabpanel" class="tab-pane fade" id="system4">
             <h3>Other Linux</h3>
 <div markdown="1">
-Rspamd is also supported on the following Linux distributions:
+Rspamd is also available on the following Linux distributions:
 
 - **Alpine Linux**
 - **Arch Linux**
@@ -166,7 +189,7 @@ Packages for Void Linux are available in the main [package repository](https://g
 
 </div>
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="system4">
+        <div role="tabpanel" class="tab-pane fade" id="system5">
             <h3>BSD systems</h3>
 <div markdown="1">
 Rspamd has been ported to the following BSD like operating systems:
@@ -190,7 +213,7 @@ sudo port load rspamd
 
 </div>
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="system5">
+        <div role="tabpanel" class="tab-pane fade" id="system6">
             <h3>Build rspamd from the sources</h3>
 <div markdown="1">
 
@@ -224,21 +247,26 @@ It is also recommended to build Rspamd with Hyperscan (x86_64 only) or Vectorsca
 
 To build rspamd we recommend to create a separate build directory:
 
-	$ mkdir rspamd.build
-	$ cd rspamd.build
-	$ cmake ../rspamd -DENABLE_HYPERSCAN=ON -DENABLE_LUAJIT=ON -DCMAKE_BUILD_TYPE=RelWithDebuginfo
-	$ make
-	# make install
+	mkdir rspamd.build
+	cd rspamd.build
+	cmake ../rspamd -DENABLE_HYPERSCAN=ON -DENABLE_LUAJIT=ON -DCMAKE_BUILD_TYPE=RelWithDebuginfo
+	make
+	sudo make install
 
-Alternatively, you can create a distribution package and use it for build your own packages. Here is an example for
-[Debian](https://debian.org/) GNU Linux OS:
+On unsupported Debian-alike or RPM-based systems you might use in-repo fixtures to build a package.
 
-	$ mkdir rspamd.build
-	$ cd rspamd.build
-	$ ./dist.sh
-	$ tar xvf rspamd-<rspamd_version>.tar.xz
-	$ cd rspamd-<rspamd_version>
-	$ debuild
+An example for [Debian](https://debian.org/)-like systems.
+
+    export RSPAMD_VERSION=3.7.3 # set this to desired Rspamd version
+    git clone -b ${RSPAMD_VERSION} https://github.com/rspamd/rspamd.git
+    cd rspamd
+    sed -i s/\(.*\)/\(${RSPAMD_VERSION}\)/ debian/changelog
+    sed -i s/quilt/native/ debian/source/format
+    sudo apt install devscripts
+    mk-build-deps
+    sudo bash -c "dpkg -i rspamd-build-deps_${RSPAMD_VERSION}_*.deb && apt install -f -y"
+    debuild -us -uc
+    sudo "dpkg -i ../rspamd_${RSPAMD_VERSION}_*.deb"
 </div>
         </div>
     </div>
