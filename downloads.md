@@ -153,7 +153,7 @@ Check [the support policy document]({{ site.baseurl }}/packages_support_policy.h
 
 ### Debian `standard` repos notes
 
-Please **DO NOT** use those packages, as they are likely outdated and are not supported by Rspamd project in any way (so any associated issue will likely be closed automaticall). If you decide to use those packages then please address any issues to the Debian package maintainers. 
+Please **DO NOT** use those packages, as they are likely outdated and are not supported by Rspamd project in any way (so any associated issue will likely be closed automatically). If you decide to use those packages then please address any issues to the Debian package maintainers. 
 
 </div>
 <hr>
