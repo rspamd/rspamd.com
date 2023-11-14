@@ -37,6 +37,10 @@ Discover a reliable step-by-step process for upgrading your Rspamd cluster while
 
 10. Repeat the entire process starting from `step 1` for future updates. This approach ensures a smooth and controlled upgrade process that minimizes potential downtime and issues in your production environment.
 
+## Migration to Rspamd 3.7.4
+
+The `exclude_private_ips` setting in RBL module no longer exists in this release (and was broken in previous releases), it can be removed from configuration. This setting is equivalent to `exclude_local`.
+
 ## Migration to Rspamd 3.3
 
 When migrating to Rspamd 3.3, exercise caution if you are utilizing custom passthrough rules, particularly those defined by plugins that utilize `action` rather than `least action`). In versions prior to 3.3, these rules would still allow for processing of additional rules. However, in Rspamd 3.3 and beyond, passthrough denotes a final action and skips directly to the idempotent stage.
