@@ -68,8 +68,6 @@ To install rspamd repo, please download the corresponding repository file and th
     source /etc/os-release
     export EL_VERSION=`echo -n $PLATFORM_ID | sed "s/.*el//"`
     curl https://rspamd.com/rpm-stable/centos-${EL_VERSION}/rspamd.repo > /etc/yum.repos.d/rspamd.repo
-    rpm --import https://rspamd.com/rpm-stable/gpg.key
-    yum update
     yum install rspamd
 
 
@@ -78,8 +76,6 @@ For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> bra
     source /etc/os-release
     export EL_VERSION=`echo -n $PLATFORM_ID | sed "s/.*el//"`
     curl https://rspamd.com/rpm/centos-${EL_VERSION}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo
-    rpm --import https://rspamd.com/rpm/gpg.key
-    yum update
     yum install rspamd
 
 
