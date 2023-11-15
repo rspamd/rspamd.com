@@ -83,15 +83,7 @@ For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> bra
     yum install rspamd
 
 
-For <a class="undecor" href="#asanSys1">asan<sup>2</sup></a> branch packages, download `rpm-experimental-asan` repofile as following:
-
-    source /etc/os-release
-    export EL_VERSION=`echo -n $PLATFORM_ID | sed "s/.*el//"`
-    curl https://rspamd.com/rpm-asan/centos-${EL_VERSION}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo
-    rpm --import https://rspamd.com/rpm/gpg.key
-    yum update
-    yum install rspamd
-
+For <a class="undecor" href="#asanSys1">asan<sup>2</sup></a> packages, install `rspamd-asan`.
 </div>
 <hr>
 <p class="myFootnote" id="stableSys1">1. Use STABLE branch of packages: those packages are the official rspamd releases which are recommended for production usage.</p>
