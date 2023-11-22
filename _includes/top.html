@@ -24,6 +24,10 @@
     <!-- Ubuntu fonts from google -->
     <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,400italic,700' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="{{ site.baseurl }}/js/lib/TypeHelpers.min.js"></script>
+    <!-- Algolia search -->
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.20.0/dist/algoliasearch-lite.umd.js" integrity="sha256-DABVk+hYj0mdUzo+7ViJC6cwLahQIejFvC+my2M/wfM=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.60.0/dist/instantsearch.production.min.js" integrity="sha256-9242vN47QUX50UG5Gf5XDO1YREWCEJRyXHofh5fsl24=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.1.0/themes/satellite-min.css" integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA=" crossorigin="anonymous">    
     <link rel="icon" href="{{ site.baseurl }}/favicon.png?v=2" type="image/png"/>
     <link rel="alternate" type="application/rss+xml" title="Rspamd news" href="{{ site.baseurl }}/feed.xml">
     <script>
@@ -41,7 +45,9 @@
 
         ga('create', 'UA-5492966-5', 'auto');
         ga('send', 'pageview');
+
     </script>
+    <script type="module" src="{{ site.baseurl }}/js/lib/docsearch.js"></script>
     <style>
         .r-nav-container {
             padding-right: 18px;
@@ -175,6 +181,13 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <div class="ais-InstantSearch">
+                            <div id="docsearch"></div>
+                            <div id="hits"></div>
+                            <div id="pagination"></div>
+                        </div>
+                    </li>
                     <li>
                         <a class="btn" target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/{{ page.path }}"
                             title="Edit the current page and create a pull request on GitHub"><i class="fa fa-lg fa-pencil"></i>&nbsp;Edit</a>
