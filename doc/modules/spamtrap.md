@@ -35,6 +35,7 @@ Parameters for the spamtrap modules are listed here.
   this module
 - `check_authed`: A boolean that enables spamtrap checks for authenticated users. Defaults to 'true'
 - `check_local`: A boolean that enables spamtrap checks for local networks. Defaults to 'true'
+- `allow_multiple_rcpts`: A boolean that enables spamtrap checks if there are multiple recipients. Defaults to 'false'
 
 
 Configuration example `/etc/rspamd/local.d/spamtrap.conf`:
