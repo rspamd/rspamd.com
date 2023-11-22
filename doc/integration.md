@@ -5,17 +5,26 @@ title: MTA integration
 
 # MTA integration
 
-This document describes several methods of integrating rspamd with some popular MTAs. Among them are:
+Rspamd is easily integrable with [Exim]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-exim-mta) and [Postfix]({{ site.url }}{{ site.baseurl }}/doc/integration.html#using-rspamd-with-postfix-mta) among other opensource & commercial MTAs.
 
-* [Postfix]({{ site.url }}{{ site.baseurl }}/doc/integration.html#using-rspamd-with-postfix-mta)
-* [Exim]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-exim-mta)
-* [Sendmail]({{ site.url }}{{ site.baseurl }}/doc/integration.html#using-rspamd-with-sendmail-mta)
-* [Haraka]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-haraka-mta)
-* [EmailSuccess]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-emailsuccess-mta)
-* [Apache James]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-apache-james)
-* [Stalwart Mail]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-stalwart-mail-server)
+Refer to the table below for integration instructions relevant to your MTA:
 
-In addition, this document delves into the Rspamd LDA proxy mode, a versatile tool that can be employed with any MTA.
+| MTA | Integration | License |
+| --- | ----------- | ------- |
+| [Apache James]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-apache-james) | HTTP | Apache 2.0 |
+| Axigen | Milter | Proprietary |
+| Communigate Pro | Custom/HTTP | Proprietary |
+| [EmailSuccess]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-emailsuccess-mta) | HTTP? | Proprietary |
+| [**Exim**]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-exim-mta) | RSPAMC (Legacy); LDA; custom | GPL v2 |
+| [Haraka]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-haraka-mta) | HTTP | MIT |
+| [Maddy](https://maddy.email/reference/checks/rspamd) | HTTP | GPL v3 |
+| [OpenSMTPD](https://github.com/poolpOrg/filter-rspamd) | Custom/HTTP | ISC, BSD |
+| [**Postfix**]({{ site.url }}{{ site.baseurl }}/doc/integration.html#using-rspamd-with-postfix-mta) | Milter; LDA | IBM Public License or Eclipse Public License |
+| [Sendmail]({{ site.url }}{{ site.baseurl }}/doc/integration.html#using-rspamd-with-sendmail-mta) | Milter; LDA | Sendmail License |
+| SmarterMail | HTTP? | Proprietary |
+| [Stalwart Mail]({{ site.url }}{{ site.baseurl }}/doc/integration.html#integration-with-stalwart-mail-server) | Milter | AGPL v3 or Commercial |
+
+In addition, [this section of the document]({{ site.url }}{{ site.baseurl }}/doc/integration.html#lda-mode) delves into rspamc as LDA, a versatile tool that can be employed by virtually any MTA.
 
 ## Using Rspamd with Postfix MTA
 
