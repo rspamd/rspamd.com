@@ -1,0 +1,25 @@
+{
+    "extends": "stylelint-config-standard",
+    "overrides": [
+        {
+            "files": ["**/*.html"],
+            "customSyntax": "postcss-html"
+        }
+    ],
+    "ignoreFiles": [
+        "**/*.min.css",
+        "**/*.js",
+        "css/bootstrap-social.css"
+    ],
+    "rules": {
+        "alpha-value-notation": null,
+        "at-rule-empty-line-before": null,
+        "color-hex-length": null,
+        "comment-empty-line-before": null,
+        "media-feature-range-notation": "prefix",
+        "number-leading-zero": null,
+        "property-no-vendor-prefix": null,
+        "rule-empty-line-before": null,
+        "value-no-vendor-prefix": null
+    }
+}
