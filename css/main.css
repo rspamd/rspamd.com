@@ -483,3 +483,31 @@ div#toc {
   background: #0080ff;
   text-shadow: none;
 }
+
+/* Algolia search */
+/* stylelint-disable selector-class-pattern */
+.ais-SearchBox { margin: 1em 0; }
+.ais-SearchBox-form { border-radius: 3px; }
+.ais-SearchBox-form::before { /* Search icon */
+  height: 16px;
+  width: 16px;
+  margin-top: unset;
+  transform: translateY(-50%);
+  left: 0.5rem;
+}
+.ais-SearchBox-input { padding-right: 2.5rem; }
+.ais-SearchBox-loadingIndicator, .ais-SearchBox-reset { right: 0.5rem; }
+#pagination .ais-Panel { margin-bottom: 2px; }
+.ais-hits {
+  top: 54px;
+  padding: 0;
+}
+.ais-hits>.ais-InstantSearch {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 71px);
+}
+#hits { overflow-y: auto; }
+.ais-Hits-item:nth-child(odd) { background-image: linear-gradient(to right, white 0%, white 30%, #E8E8E8 70%, #E8E8E8 100%); }
+.ais-Hits-item:nth-child(even) { background-image: linear-gradient(to right, #E8E8E8 0%, #E8E8E8 30%, white 70%, white 100%); }
+/* stylelint-enable */
