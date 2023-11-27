@@ -12,9 +12,9 @@ since we appreciate any valuable contributions to rspamd project.
 
 ## Information for GSoC participants
 
-Prospective students are required to have [a github account](https://github.com), carefully examine the [rspamd source repository](https://github.com/vstakhov/rspamd) and join our discussion IRC channel: #rspamd at irc.oftc.net. All projects suggested requires medium to advanced knowledge in *C* and *Lua* programming languages or at least a strong desire to study the missing one (Lua will not be a problem most likely).
+Prospective students are required to have [a GitHub account](https://github.com), carefully examine the [rspamd source repository](https://github.com/vstakhov/rspamd) and join our discussion IRC channel: #rspamd at irc.oftc.net. All projects suggested requires medium to advanced knowledge in *C* and *Lua* programming languages or at least a strong desire to study the missing one (Lua will not be a problem most likely).
 
-You should also be familiar with git version control system. Should you want to study more about git then please read the following [book](http://git-scm.com/book/en/v2). For the project itself, we suppose to clone rspamd repo to your local github account and do all job there, synchronizing with the rspamd mainline repository by means of `git rebase`.
+You should also be familiar with git version control system. Should you want to study more about git then please read the following [book](http://git-scm.com/book/en/v2). For the project itself, we suppose to clone rspamd repo to your local GitHub account and do all job there, synchronizing with the rspamd mainline repository by means of `git rebase`.
 
 We encourage picking projects which you feel you can **realistically** do within the **12-week** timeline. Some of the projects imply certain research work, however, we have placed the **approximate** evaluation criteria for the timeline specified by the summer of code programme. Taking such a project is a challenging task but it could improve your research skills and hence lead to a good research project.
 

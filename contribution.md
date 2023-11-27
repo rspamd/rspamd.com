@@ -5,7 +5,7 @@ title: Contributing to rspamd
 
 # Contributing to rspamd
 
-Rspamd is an open-source software distributed under the terms of permissive [Apache license](license.txt). To contribute to rspamd you might want to go to the [github project page](https://github.com/vstakhov/rspamd), study the current issues and suggest solutions.
+Rspamd is an open-source software distributed under the terms of permissive [Apache license](license.txt). To contribute to rspamd you might want to go to the [GitHub project page](https://github.com/vstakhov/rspamd), study the current issues and suggest solutions.
 
 
 ## Ideas list

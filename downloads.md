@@ -6,7 +6,7 @@ title: Downloads
 <!--# Downloading rspamd->
 
 <!-- download button with tooltip
-<!-- github button >
+<!-- GitHub button >
 <p><iframe src="{{ site.baseurl }}/github-btn.html?user=vstakhov&repo=rspamd&type=watch&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe></p-->
 
@@ -38,7 +38,7 @@ title: Downloads
         <div role="tabpanel" class="tab-pane fade in active" id="system1">
             <h3>Docker</h3>
 <div markdown="1">
-An official docker image is available at [rspamd/rspamd on Dockerhub](https://hub.docker.com/r/rspamd/rspamd), sources are [on github](https://github.com/rspamd/rspamd-docker). It is a recommendable way to run Rspamd.
+An official docker image is available at [rspamd/rspamd on Dockerhub](https://hub.docker.com/r/rspamd/rspamd), sources are [on GitHub](https://github.com/rspamd/rspamd-docker). It is a recommendable way to run Rspamd.
 
 In this build upstream config files are installed in `/usr/share/rspamd/config` allowing `/etc/rspamd` to contain only local configuration.
 
@@ -200,7 +200,7 @@ sudo port load rspamd
             <h3>Build rspamd from the sources</h3>
 <div markdown="1">
 
-If there are no packages for your system or you want custom build options you can also build rspamd from the source code. To do that grab the source from [github](https://github.com/rspamd/rspamd) using `git`:
+If there are no packages for your system or you want custom build options you can also build rspamd from the source code. To do that grab the source from [GitHub](https://github.com/rspamd/rspamd) using `git`:
 
 	git clone --recursive https://github.com/rspamd/rspamd.git
 

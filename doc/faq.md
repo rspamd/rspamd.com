@@ -338,7 +338,7 @@ Without message samples, your bug reports will not be considered unless you prov
 
 Finally, we always prefer patches/pull requests to plain bug reports.
 
-To report bugs or suggest something about the documentation or the web site, please take a look at [this Github repo](https://github.com/vstakhov/rspamd.com).
+To report bugs or suggest something about the documentation or the web site, please take a look at [this GitHub repo](https://github.com/vstakhov/rspamd.com).
 
 ### What is the difference between `rspamc` and `rspamadm`
 
