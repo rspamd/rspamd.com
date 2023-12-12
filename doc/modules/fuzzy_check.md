@@ -122,7 +122,7 @@ rule "FUZZY_CUSTOM" {
   servers = "127.0.0.1:11335";
 
   # List of additional mime types to be checked in this fuzzy ("*" for any)
-  mime_types = ["application/*", "*/octet-stream"];
+  mime_types = ["application/*"];
 
   # Maximum global score for all maps combined
   max_score = 20.0;
@@ -135,6 +135,26 @@ rule "FUZZY_CUSTOM" {
 
   # Fast hash type
   algorithm = "mumhash";
+  # This is used for binary parts and for text parts (size in bytes)
+  min_bytes = 1024;
+  # Text parts only: minimum number of words
+  min_length = 64;
+  # Divide min_bytes by 4 for texts
+  text_multiplier = 4.0,
+
+  # Minimum dimensions for images (in pixels)
+  min_height = 500;
+  min_width = 500;
+
+  # Scan all archives mime parts (e.g. zip attachments)
+  scan_archives = true;
+  # If part has num words < min_length, use direct hash instead of fuzzy
+  short_text_direct_hash = true;
+
+  # Apply fuzzy logic for text parts
+  text_shingles = true;
+  # Skip images if needed
+  skip_images = false;
 }
 ...
 ~~~
