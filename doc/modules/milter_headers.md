@@ -6,7 +6,7 @@ title: Milter headers module
 # Milter headers module
 {:.no_toc}
 
-The `milter headers` module (formerly known as `rmilter headers`) has been added in Rspamd 1.5 to provide a relatively simple way to configure adding/removing of headers via Rmilter (the alternative being to use the [API]({{ site.baseurl }}/doc/lua/rspamd_task.html#me7351)). Despite its name, the module also functions with other mail servers such as [Haraka](https://haraka.github.io) and Communigate.
+The `milter headers` module (formerly known as `rmilter headers`) has been added in Rspamd 1.5 to provide a relatively simple way to configure adding/removing of headers via Rmilter (the alternative being to use the [API]({{ site.baseurl }}/doc/lua/rspamd_task.html#me7351)). Despite its name, it is not tied to the `milter` protocol and also works with supported mailservers that use the HTTP interface such as Haraka and OpenSMTPD.
 
 <div id="toc" markdown="1">
   <h2 class="toc-header">Contents</h2>
@@ -16,7 +16,7 @@ The `milter headers` module (formerly known as `rmilter headers`) has been added
 
 ## Principles of operation
 
-The `milter headers` module offers several routines for adding common headers, which can be selectively enabled and configured according to specific needs. Additionally, users have the flexibility to add their own custom routines to the configuration.
+The `milter headers` module offers several routines for adding/removing common headers, which can be selectively enabled and configured according to specific needs. Additionally, users have the flexibility to add their own custom routines to the configuration or add them directly from [Lua]({{ site.url }}{{ site.baseurl }}/doc/lua/rspamd_task.html#m70081).
 
 ## Configuration
 
@@ -28,17 +28,17 @@ The `milter headers` module offers several routines for adding common headers, w
 # Add "extended Rspamd headers" (default false) (enables x-spamd-result, x-rspamd-server & x-rspamd-queue-id routines)
 # extended_spam_headers = true;
 
-# List of headers to be enabled for authenticated users (default empty)
+# List of routines to enable for authenticated users (default empty); see also `skip_authenticated`
 # authenticated_headers = ["authentication-results"];
 
-# List of headers to be enabled for local IPs (default empty)
+# Set false to enable all used routines for authenticated users (default true)
+# skip_authenticated = true;
+
+# List of routines to enable for local IPs (default empty); see also `skip_local`
 # local_headers = ["x-spamd-bar"];
 
-# Set false to always add headers for local IPs (default true)
+# Set false to enable all used routines for local IPs (default true)
 # skip_local = true;
-
-# Set false to always add headers for authenticated users (default true)
-# skip_authenticated = true;
 
 # Routines to use- this is the only required setting (may be omitted if using extended_spam_headers)
 use = ["x-spamd-bar", "authentication-results"];
@@ -69,7 +69,7 @@ extended_spam_headers = true;
 
 ### authenticated_headers (1.6.1+)
 
-List of headers to be enabled for authenticated users (default `empty`).
+List of routines to be enabled for authenticated users (default `empty`). See also `skip_authenticated`.
 
 ~~~hcl
 authenticated_headers = ["authentication-results"];
@@ -85,7 +85,7 @@ remove_upstream_spam_flag = true;
 
 ### local_headers (1.6.1+)
 
-List of headers to be enabled for local IPs (default `empty`).
+List of routines to enable for local IPs (default `empty`). See also `skip_local`.
 
 ~~~hcl
 local_headers = ["x-spamd-bar"];
@@ -135,6 +135,14 @@ Routines to use- this is the only required setting (may be omitted if using `ext
 ~~~hcl
 use = ["x-spamd-bar", "authentication-results"];
 ~~~
+
+## Removing headers
+
+Configuration dealing with removing headers commonly sets a numeric parameter which is typically set to `0`.
+
+`0` means all headers with a given name should be removed.
+`1` means remove the first header with a given name, and so on
+`-1` means remove the last header with a given name, and so on
 
 ## Functions
 
@@ -196,6 +204,7 @@ use = ["fuzzy-hashes"];
 routines {
   fuzzy-hashes {
     header = "X-Rspamd-Fuzzy";
+    remove = 0;
   }
 }
 ~~~
