@@ -25,7 +25,7 @@ By default, no cache servers are specified in the configuration, meaning that th
 `Ratelimit` module supports the following configuration options:
 
 - `servers` - list of servers where ratelimit data is stored; [global settings]({{ site.baseurl }}/doc/configuration/redis.html) used if not set
-- `symbol` - if this option is specified, then `ratelimit` plugin just adds the corresponding symbol instead of setting pre-result, the value is scaled as $$ 2 * tanh(\frac{bucket}{threshold * 2}) $$, where `tanh` is the hyperbolic tanhent function
+- `symbol` - if this option is specified, then `ratelimit` plugin just adds the corresponding symbol instead of setting pre-result, the value is scaled as $$ 2 * tanh(\frac{bucket}{threshold * 2}) $$, where `tanh` is the hyperbolic tangent function
 - `info_symbol` (1.7.0+) - if this option is specified the corresponding symbol is inserted *in addition to* setting pre-result.
 - `whitelisted_rcpts` - comma separated list of whitelisted recipients. By default
 the value of this option is 'postmaster, mailer-daemon'. Supported entries are:
@@ -50,6 +50,7 @@ This means that you can opt to use either a selector or one of the predefine rat
 
 - `bounce_to`: limit bounces per recipient
 - `bounce_to_ip`: limit bounces per recipient per ip
+- `selector`: limit per arbitrary string returned by selector
 - `to`: limit per recipient
 - `to_ip`: limit per pair of recipient and sender's IP address
 - `to_ip_from`: limit per triplet: recipient, sender's envelope from and sender's IP
@@ -89,6 +90,13 @@ This means that you can opt to use either a selector or one of the predefine rat
     }
   }
 ~~~
+
+The following settings are valid inside `bucket` configuration:
+
+`burst`: numeric value specifying the capacity of the bucket
+`rate`: rate at which messages are leaked from the bucket, expressed as numeric value (messages per minute) or string (number per period)
+`symbol`: like the top-level `symbol` option but per-bucket; indicated symbol is inserted instead of applying `soft reject`
+`skip_soft_reject`: if set to `true`, `soft reject` is not applied
 
 ## Principles of work
 
