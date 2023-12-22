@@ -40,6 +40,7 @@ the value of this option is 'postmaster, mailer-daemon'. Supported entries are:
 - `spam_factor_burst` - multiplier for burst when a spam message arrives (default: 0.98)
 - `max_rate_mult` - maximum and minimum (1/X) dynamic multiplier for rate (default: 5)
 - `max_bucket_mult` -  maximum and minimum (1/X) dynamic multiplier for rate (default: 10)
+- `allow_local` - a boolean that enables rate-limiting of local requests from rspamc or controller, including WebUI (default: false)
 - `rates` - a table of allowed rates in several forms
 
 
