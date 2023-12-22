@@ -479,6 +479,15 @@ Here are some examples of multimap configurations:
 
 ~~~hcl
 # local.d/multimap.conf
+BLACKLIST_FROM_DISPLAYNAME {
+  # To work with MIME From use `header` type
+  type = "header";
+  header = "from";
+  filter = "email:name";
+  map = "file:///tmp/example.map";
+  score = 10.0;
+}
+
 SENDER_FROM_WHITELIST_USER {
   type = "from";
   filter = "email:user";
@@ -495,19 +504,22 @@ SENDER_FROM_WHITELIST_USER {
 SENDER_FROM_REGEXP {
   type = "header";
   header = "from";
-  filter = 'regexp:/.*@/';
+  filter = 'regexp:/.*@/'; # `"Jon" <jon@example.net>` -> `"Jon" <jon@`
   map = "file:///tmp/from_re.map";
 }
+
 URL_MAP {
   type = "url";
   filter = "tld";
   map = "file:///tmp/url.map";
 }
+
 URL_MAP_RE {
   type = "url";
   filter = 'tld:regexp:/\.[^.]+$/'; # Extracts the last component of URL
   map = "file:///tmp/url.map";
 }
+
 FILENAME_BLACKLISTED {
   type = "filename";
   filter = "extension";
@@ -515,6 +527,7 @@ FILENAME_BLACKLISTED {
   action = "reject";
   message = "A restricted file type was found";
 }
+
 CONTENT_BLACKLISTED {
   type = "content";
   filter = "body"; # can be headers, full, oneline, text, rawtext
@@ -522,10 +535,12 @@ CONTENT_BLACKLISTED {
   symbols = ["CONTENT_BLACKLISTED1", "CONTENT_BLACKLISTED2"];
   regexp = true;
 }
+
 ASN_BLACKLIST {
   type = "asn";
   map = "${LOCAL_CONFDIR}/asnlist.map";
 }
+
 LAST_RECEIVED_HEADER_IP_IF_AUTHED {
   type = "received";
   map = "${LOCAL_CONFDIR}/rcvd_ip.map";
@@ -533,12 +548,14 @@ LAST_RECEIVED_HEADER_IP_IF_AUTHED {
   min_pos = -1;
   flags = ["authenticated"];
 }
+
 SYMBOL_OPTIONS_DBL {
   type = "symbol_options";
   target_symbol = "DBL_ABUSE_REDIR";
   symbols = ["INTERESTING_DOMAIN"];
   map = "${LOCAL_CONFDIR}/dbl_redir_symbols.map";
 }
+
 WHITELIST_HELO_RCPT {
   type = "combined";
   prefilter = true;
