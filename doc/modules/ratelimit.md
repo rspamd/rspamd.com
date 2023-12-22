@@ -93,10 +93,14 @@ This means that you can opt to use either a selector or one of the predefine rat
 
 The following settings are valid inside `bucket` configuration:
 
-`burst`: numeric value specifying the capacity of the bucket
-`rate`: rate at which messages are leaked from the bucket, expressed as numeric value (messages per minute) or string (number per period)
-`symbol`: like the top-level `symbol` option but per-bucket; indicated symbol is inserted instead of applying `soft reject`
-`skip_soft_reject`: if set to `true`, `soft reject` is not applied
+- `burst`: numeric value specifying the capacity of the bucket
+- `rate`: rate at which messages are leaked from the bucket, expressed as numeric value (messages per minute) or string (number per period)
+Since 2.0:
+- `skip_recipients`: if set to `true` number of recipients is not used as a multiplier
+Since 3.1:
+- `message`: Message to use for soft-reject
+- `symbol`: like the top-level `symbol` option but per-bucket; indicated symbol is inserted instead of applying `soft reject`
+- `skip_soft_reject`: if set to `true`, `soft reject` is not applied
 
 ## Principles of work
 
@@ -135,7 +139,7 @@ It is important to note that the ratelimit module does not define any rates that
 
 ### User-defined ratelimits
 
-Users can define their own keywords to create ratelimits by following these steps:
+Users can define their own keywords to create ratelimits by following steps as below. Consider using `selectors` instead.
 
 First, add the `custom_keywords` setting to the configuration file, pointing to a Lua script that will be created:
 
