@@ -99,7 +99,7 @@ hr {
   overflow: hidden;
 }
 
-.footer-container .nav.navbar-nav {
+.footer-container #social-btn-grp {
   margin: 10px 0 0 0;
 }
 
