@@ -8,10 +8,10 @@ title: Compare Rspamd with other spam filters
     <table class="table">
       <thead>
         <tr>
-          <th class="col-xs-3"></th>
-          <th class="col-xs-3"><img src="img/rspamd_logo_small_black_simple.jpg" class="img-fluid"></th>
-          <th class="col-xs-3"><img src="img/spamassassin_logo.jpg" class="img-fluid"></th>
-          <th class="col-xs-3"><img src="img/dspam_logo.jpg" class="img-fluid"></th>
+          <th class="col-3"></th>
+          <th class="col-3"><img src="img/rspamd_logo_small_black_simple.jpg" class="img-fluid"></th>
+          <th class="col-3"><img src="img/spamassassin_logo.jpg" class="img-fluid"></th>
+          <th class="col-3"><img src="img/dspam_logo.jpg" class="img-fluid"></th>
         </tr>
       </thead>
       <tbody>

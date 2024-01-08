@@ -4,12 +4,12 @@ title: Rspamd spam filtering system
 ---
 
 <div class="row news_row" style="position: relative;">
-		<div class="col-xs-12 col-sm-10">
+		<div class="col-12 col-sm-10">
 				<h3 style="margin: 0px;">News: Rspamd 3.7.5 has been released</h3>
 				<span class="date"><small>2023-12-15</small></span>
 				<p style="margin-bottom: 0px; margin-top: 5px">New stable release is now available.</p>
    </div>
-   <div class="col-xs-12 col-sm-2 bottom-right">
+   <div class="col-12 col-sm-2 bottom-right">
 				<a class="btn btn-primary float-end" href="https://rspamd.com/announce/2023/12/15/rspamd-3.7.5.html" style="margin-top: 10px;">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
 	</div>
 </div>
@@ -60,10 +60,10 @@ title: Rspamd spam filtering system
 		            <div class="carousel-inner">
 										<div class="carousel-item active">
 												<div class="carousel-content"><div>
-														<div class="col-sm-3 col-xs-12">
+														<div class="col-sm-3 col-12">
 																<a href="https://www.locaweb.com.br/" target="_blank"><img src="img/logo_locaweb.png" class="img-fluid"></a>
 														</div>
-														<div class="col-sm-9 col-xs-12">
+														<div class="col-sm-9 col-12">
 																<blockquote>
 																		<p>Locaweb is the largest email provider in Brazil, Locaweb supports more than 10 million inbound email addresses and processes more than 200 million email messages a day.</p>
 																		<p>Beyond the Rspamd’s performance can be only compared with some extremely expensive brands available on the market, it has a bunch of powerful features and algorithms that constitute an amazing tool against Spam and other email abuses.</p>
@@ -75,10 +75,10 @@ title: Rspamd spam filtering system
 										</div>
 										<div class="carousel-item">
 												<div class="carousel-content"><div>
-														<div class="col-sm-3 col-xs-12">
+														<div class="col-sm-3 col-12">
 																<a href="https://mailcow.email/" target="_blank"><img src="img/cow_mailcow.svg" class="img-fluid" style="max-height: 200px;"></a>
 														</div>
-														<div class="col-sm-9 col-xs-12">
+														<div class="col-sm-9 col-12">
 																<blockquote>
 																		<p>Following its fast development and truly innovative ideas, mailcows migration to Rspamd was only a matter of time. The concept of Rspamd is to be expandable. If it is within the scope of a mail filter, Rspamd is able to handle it.</p> <p>Rspamd is an important enrichment for the open source community.</p>
 																		<footer>André Peters <cite title="Source Title">The author of the Mailcow project</cite></footer>
@@ -89,10 +89,10 @@ title: Rspamd spam filtering system
 										</div>
 										<div class="carousel-item">
 												<div class="carousel-content"><div>
-																<div class="col-sm-2 col-xs-12 col-sm-offset-1">
+																<div class="col-sm-2 col-12 col-sm-offset-1">
 																		<a href="https://www.adix.nl/" target="_blank"><img src="img/adix_logo.png" class="img-fluid"></a>
 																</div>
-																<div class="col-sm-9 col-xs-12">
+																<div class="col-sm-9 col-12">
 																		<blockquote>
 																				<p>Rspamd offers a plethora of filtering options and great performance. Per user settings enable us to provide spam filtering for multiple tenants. Furthermore Rspamd makes it very easy to write custom rules, which allows us to quickly react to spam outbreaks.</p>
 																				<footer>Arthur van Kleef <cite title="Source Title">System Engineer</cite></footer>
@@ -103,10 +103,10 @@ title: Rspamd spam filtering system
 										</div>
 										<div class="carousel-item">
 												<div class="carousel-content"><div>
-																<div class="col-sm-2 col-xs-12 col-sm-offset-1">
+																<div class="col-sm-2 col-12 col-sm-offset-1">
 																		<a href="https://www.ozon.ru/" target="_blank"><img src="img/ozon_logo.png" class="img-fluid"></a>
 																</div>
-																<div class="col-sm-9 col-xs-12">
+																<div class="col-sm-9 col-12">
 																		<blockquote>
 																				<p>We started to use the product with the first public versions and for us Rspamd is a natural choice, which is providing speed, flexibility and has rich set of features. </p>
 																				<footer>Andrey Zverev <cite title="Source Title">Lead Engineer</cite></footer>

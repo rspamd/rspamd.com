@@ -12,7 +12,7 @@ title: Downloads
 
 ## Rspamd packages
 <!-- Tab navigation -->
-<div class="col-xs-12">
+<div class="col-12">
     <ul class="nav nav-tabs nav-justified" role="tablist">
         <li role="presentation" class="active">
             <a href="#system1" aria-controls="system1" role="tab" data-toggle="tab"><img src="img/docker.png" width="20"><span class="myHidden-sm">&nbsp;Docker</span></a>
