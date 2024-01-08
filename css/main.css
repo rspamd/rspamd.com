@@ -279,7 +279,8 @@ h6:hover .header-link {
   opacity: 1;
 }
 
-.carousel-control {
+.carousel-control-next,
+.carousel-control-prev {
   width: 10%;
   border-radius: 4px;
 }
