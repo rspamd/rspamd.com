@@ -489,7 +489,7 @@ Alternatively, you could set up HTTP authentication in Nginx itself.
 
 Here, we describe the simplest `self-scan` option:
 
-<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
+<img class="img-fluid" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
 
 In this mode, `rspamd_proxy` scans messages itself and talks to MTA directly using the Milter protocol. The advantage of this approach is its simplicity. Here is a sample configuration for this mode:
 
@@ -696,7 +696,7 @@ To enable headers in Exim refer to the "Integration with Exim MTA" section of th
 
 Here is a screenshot of this addon in use:
 
-<img class="img-responsive" src="{{ site.baseurl }}/img/thunderbird_rspamd.png">
+<img class="img-fluid" src="{{ site.baseurl }}/img/thunderbird_rspamd.png">
 
 ### Using the WebUI
 

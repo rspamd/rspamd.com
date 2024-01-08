@@ -17,13 +17,13 @@ However, Rspamd employs more advanced techniques to combine probabilities, inclu
 
 The `OSB` algorithm goes beyond considering single words as tokens and instead takes into account combinations of words, taking into consideration their positions. This schema is visually represented in the following diagram:
 
-<img class="img-responsive" width="50%" src="{{ site.baseurl }}/img/rspamd-schemes.004.png">
+<img class="img-fluid" width="50%" src="{{ site.baseurl }}/img/rspamd-schemes.004.png">
 
 The main drawback of this approach is the increased number of tokens, which is multiplied by the size of the window. In Rspamd, we use a window size of 5 tokens, resulting in the number of tokens being approximately **5 times larger** than the number of words.
 
 Statistical tokens are stored in statfiles, which are then mapped to specific backends. This architecture is visually represented in the following diagram:
 
-<img class="img-responsive" width="50%" src="{{ site.baseurl }}/img/rspamd-schemes.005.png">
+<img class="img-fluid" width="50%" src="{{ site.baseurl }}/img/rspamd-schemes.005.png">
 
 ## Statistics Configuration
 

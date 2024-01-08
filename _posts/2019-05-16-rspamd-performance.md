@@ -187,15 +187,15 @@ As you can see, full GC iter takes quite a significant time. However, it still k
 
 Here are some UI captures taken from a previous machine:
 
-<img width="75%" class="img-responsive" src="{{ site.baseurl }}/img/perf_webui1.png">
+<img width="75%" class="img-fluid" src="{{ site.baseurl }}/img/perf_webui1.png">
 
-<img width="75%" class="img-responsive" src="{{ site.baseurl }}/img/perf_webui2.png">
+<img width="75%" class="img-fluid" src="{{ site.baseurl }}/img/perf_webui2.png">
 
 As you can observe, there was some HAM portion increase over the recent days, however, it was caused by adding new sampling logic and duplicates filtering to save CPU resources (these messages are marked as ham and excepted from scan).
 
 There is also a [Clickhouse](https://clickhouse.yandex) based dashboard that's created using [Redash](https://redash.io):
 
-<img width="75%" class="img-responsive" src="{{ site.baseurl }}/img/perf_redash.png">
+<img width="75%" class="img-fluid" src="{{ site.baseurl }}/img/perf_redash.png">
 
 Since we have Clickhouse on board, we can do various analytics. Here is an average scan time for messages:
 

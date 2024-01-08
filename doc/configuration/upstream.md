@@ -76,7 +76,7 @@ Rspamd monitors each upstream for errors. If an error occurs, Rspamd places the 
 
 When an upstream reaches the error rate limit, Rspamd marks it as inactive and waits for a certain period of time, configured by the `revive_time` option, before restoring the upstream to the active list. The entire process is illustrated in the following scheme:
 
-<img class="img-responsive" width="75%" src="{{ site.baseurl }}/img/upstreams.png">
+<img class="img-fluid" width="75%" src="{{ site.baseurl }}/img/upstreams.png">
 
 ## Name resolution
 

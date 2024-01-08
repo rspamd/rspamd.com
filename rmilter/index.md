@@ -45,7 +45,7 @@ These options are in their default enabled states merely for compatibility purpo
 
 Here is a scheme that demonstrates Rspamd and Postfix MTA integration using Rmilter:
 
-<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-schemes.007_2.png">
+<img class="img-fluid" src="{{ site.baseurl }}/img/rspamd-schemes.007_2.png">
 
 There are several useful settings for Postfix to work with this milter:
 

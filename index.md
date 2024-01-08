@@ -61,7 +61,7 @@ title: Rspamd spam filtering system
 										<div class="carousel-item active">
 												<div class="carousel-content"><div>
 														<div class="col-sm-3 col-xs-12">
-																<a href="https://www.locaweb.com.br/" target="_blank"><img src="img/logo_locaweb.png" class="img-responsive"></a>
+																<a href="https://www.locaweb.com.br/" target="_blank"><img src="img/logo_locaweb.png" class="img-fluid"></a>
 														</div>
 														<div class="col-sm-9 col-xs-12">
 																<blockquote>
@@ -76,7 +76,7 @@ title: Rspamd spam filtering system
 										<div class="carousel-item">
 												<div class="carousel-content"><div>
 														<div class="col-sm-3 col-xs-12">
-																<a href="https://mailcow.email/" target="_blank"><img src="img/cow_mailcow.svg" class="img-responsive" style="max-height: 200px;"></a>
+																<a href="https://mailcow.email/" target="_blank"><img src="img/cow_mailcow.svg" class="img-fluid" style="max-height: 200px;"></a>
 														</div>
 														<div class="col-sm-9 col-xs-12">
 																<blockquote>
@@ -90,7 +90,7 @@ title: Rspamd spam filtering system
 										<div class="carousel-item">
 												<div class="carousel-content"><div>
 																<div class="col-sm-2 col-xs-12 col-sm-offset-1">
-																		<a href="https://www.adix.nl/" target="_blank"><img src="img/adix_logo.png" class="img-responsive"></a>
+																		<a href="https://www.adix.nl/" target="_blank"><img src="img/adix_logo.png" class="img-fluid"></a>
 																</div>
 																<div class="col-sm-9 col-xs-12">
 																		<blockquote>
@@ -104,7 +104,7 @@ title: Rspamd spam filtering system
 										<div class="carousel-item">
 												<div class="carousel-content"><div>
 																<div class="col-sm-2 col-xs-12 col-sm-offset-1">
-																		<a href="https://www.ozon.ru/" target="_blank"><img src="img/ozon_logo.png" class="img-responsive"></a>
+																		<a href="https://www.ozon.ru/" target="_blank"><img src="img/ozon_logo.png" class="img-fluid"></a>
 																</div>
 																<div class="col-sm-9 col-xs-12">
 																		<blockquote>

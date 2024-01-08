@@ -16,7 +16,7 @@ Rspamd selectors is a Lua framework that allows functional extraction and proces
 
 ## Introduction
 
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/selectors.png" width="50%"></center>
+<center><img class="img-fluid" src="{{ site.baseurl }}/img/selectors.png" width="50%"></center>
 
 Starting from version 1.8, Rspamd introduces a framework designed for data extraction from messages and its subsequent utilization in plugins via transform functions. This functionality allows for a variety of operations. For instance, you can retrieve the SMTP from address and convert it to lowercase using the following selector:
 
