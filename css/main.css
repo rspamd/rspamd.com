@@ -282,7 +282,11 @@ h6:hover .header-link {
 .carousel-control-next,
 .carousel-control-prev {
   width: 10%;
-  border-radius: 4px;
+}
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+  width:5rem;
+  height:5rem;
 }
 .who-uses{
   padding-left: 10px;

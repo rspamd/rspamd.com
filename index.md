@@ -59,7 +59,7 @@ title: Rspamd spam filtering system
 		    <!-- Wrapper for slides -->
 		            <div class="carousel-inner">
 										<div class="carousel-item active">
-												<div class="carousel-content"><div>
+												<div class="carousel-content row">
 														<div class="col-sm-3 col-12">
 																<a href="https://www.locaweb.com.br/" target="_blank"><img src="img/logo_locaweb.png" class="img-fluid"></a>
 														</div>
@@ -71,10 +71,10 @@ title: Rspamd spam filtering system
 																		<footer>Rafael Abdo <cite title="Source Title">Computer Security Incident Coordinator</cite></footer>
 																</blockquote>
 														</div>
-												</div></div>
+												</div>
 										</div>
 										<div class="carousel-item">
-												<div class="carousel-content"><div>
+												<div class="carousel-content row">
 														<div class="col-sm-3 col-12">
 																<a href="https://mailcow.email/" target="_blank"><img src="img/cow_mailcow.svg" class="img-fluid" style="max-height: 200px;"></a>
 														</div>
@@ -85,11 +85,11 @@ title: Rspamd spam filtering system
 																		<div class="placeholder"></div>
 																</blockquote>
 														</div>
-												</div></div>
+												</div>
 										</div>
 										<div class="carousel-item">
-												<div class="carousel-content"><div>
-																<div class="col-sm-2 col-12 col-sm-offset-1">
+												<div class="carousel-content row">
+																<div class="col-sm-2 col-12 offset-sm-1">
 																		<a href="https://www.adix.nl/" target="_blank"><img src="img/adix_logo.png" class="img-fluid"></a>
 																</div>
 																<div class="col-sm-9 col-12">
@@ -99,11 +99,11 @@ title: Rspamd spam filtering system
 																				<div class="placeholder"></div>
 																		</blockquote>
 																</div>
-												</div></div>
+												</div>
 										</div>
 										<div class="carousel-item">
-												<div class="carousel-content"><div>
-																<div class="col-sm-2 col-12 col-sm-offset-1">
+												<div class="carousel-content row">
+																<div class="col-sm-2 col-12 offset-sm-1">
 																		<a href="https://www.ozon.ru/" target="_blank"><img src="img/ozon_logo.png" class="img-fluid"></a>
 																</div>
 																<div class="col-sm-9 col-12">
@@ -113,7 +113,7 @@ title: Rspamd spam filtering system
 																				<div class="placeholder"></div>
 																		</blockquote>
 																</div>
-												</div></div>
+												</div>
 										</div>
 		            </div>
 		</div>
