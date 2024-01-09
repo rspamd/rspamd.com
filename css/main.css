@@ -3,22 +3,44 @@
 ---
 
 
-/* Override bootstrap 4 changes */
+/* Override bootstrap 4 and 5 changes */
 html {
   font-size:10px;
 }
 body {
   font-size:14px;
+  line-height:1.42857143;
 }
-a {
+a, .btn:hover, .btn:focus {
   text-decoration: none;
 }
 a:hover, a:focus {
   color: #97310e;
   text-decoration: underline;
 }
+ul {
+  padding-left: 40px;
+}
+h1, h2, h3 {
+  margin-top:20px;
+  margin-bottom:10px;
+  line-height:1.1;
+}
+h1{
+  font-size: 36px;
+}
+h3 {
+  font-size: 24px;
+}
+code {
+  padding:2px 4px;
+}
+code {
+  padding:2px 4px;
+}
 .btn {
   font-size: 14px;
+  white-space: nowrap;
 }
 .navbar-default .navbar-nav .nav-link {
   color: #ffffff;
@@ -29,6 +51,9 @@ a:hover, a:focus {
   color: #ffffff;
   background-color: #97310e;
   text-decoration-line: none;
+}
+.r-docs-content ol {
+  padding-left: 40px;
 }
 
 /* Set some basic padding to keep content from hitting the edges */
