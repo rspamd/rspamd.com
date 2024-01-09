@@ -196,9 +196,8 @@ h2{
   background-color: transparent;
   padding-left: 0;
 }
-ul.nav-stacked li a{
-  padding-top: 5px;
-  padding-bottom: 5px;
+ul.nav-stacked .nav-link:hover {
+  background-color: rgb(238, 238, 238);
 }
 .compare-table span.icon-red {
     color: rgb(250, 57, 57);
