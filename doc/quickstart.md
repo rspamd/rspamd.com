@@ -40,8 +40,8 @@ Please note that this guide assumes that all services have the same certificate,
 
 It is assumed that you are using your operating system's package manager (e.g. `apt install postfix`) to install Postfix. The following configuration is desired for Postfix:
 
-<div><!-- Do not change the DOM structure -->
-    <a class="btn btn-info btn-block btn-code" data-bs-toggle="collapse" data-bs-target="#main_cf">
+<div class="d-grid gap-4"><!-- Do not change the DOM structure -->
+    <a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#main_cf">
         <i class="fa fa-caret-square-o-down fa-pull-right"></i>
         main.cf
     </a>
@@ -398,8 +398,8 @@ From version 1.7, the setting of passwords is also suggested by `rspamadm config
 
 The WebUI is managed by a controller worker, but for added functionality such as `TLS` support, it may be beneficial to proxy its requests through a tool like Nginx. Below is a minimal configuration needed to accomplish this using Nginx:
 
-<div>
-<a class="btn btn-info btn-block btn-code" data-bs-toggle="collapse" data-bs-target="#nginx_cf"><i class="fa fa-caret-square-o-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf" class="collapse collapse-block"><pre><code>
+<div class="d-grid gap-4">
+<a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#nginx_cf"><i class="fa fa-caret-square-o-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf" class="collapse collapse-block"><pre><code>
 {% highlight nginx %}
 worker_processes  2;
 user www-data www-data;
@@ -463,8 +463,8 @@ http {
 
 You might also use subdirs, as suggested by [@julienmalik](https://github.com/julienmalik){:target="&#95;blank"}:
 
-<div>
-<a class="btn btn-info btn-block btn-code" data-bs-toggle="collapse" data-bs-target="#nginx_cf1"><i class="fa fa-caret-square-o-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf1" class="collapse collapse-block"><pre><code>
+<div class="d-grid gap-4">
+<a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#nginx_cf1"><i class="fa fa-caret-square-o-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf1" class="collapse collapse-block"><pre><code>
 {% highlight nginx %}
 location /rspamd/ {
     proxy_pass       http://localhost:11334/;
