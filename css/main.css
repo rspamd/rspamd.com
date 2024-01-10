@@ -55,6 +55,7 @@ code {
 .r-docs-content ol {
   padding-left: 40px;
 }
+.page-link { text-decoration: none; }
 
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
