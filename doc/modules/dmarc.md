@@ -85,6 +85,8 @@ Here is the list of options explained:
 
 In versions of Rspamd prior to 3.3, you could exclude certain domains from reporting by configuring the `no_reporting_domains` setting, which is a map of domains or eSLDs to be excluded. Starting from Rspamd 3.3, this option is also available in the `reporting` section. However, the legacy option `settings.no_reporting_domains` is still supported (although it's not recommended).
 
+Starting from Rspamd 3.8, there is a new option `exclude_recipients` available in the reporting section. Here you can list recipient email addresses for which no reporting data should be collected (because the recipients generate bounces all the time).
+
 ## DMARC Munging
 
 Starting from version 3.0, Rspamd supports DMARC munging for mailing lists. In this mode, Rspamd will modify the `From:` header of messages with a **valid** DMARC policy of **reject/quarantine** to a pre-defined address (such as a mailing list address) to prevent delivery failure during mailing list forwarding.
