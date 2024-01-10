@@ -565,8 +565,10 @@ div#toc {
 .ais-SearchBox-loadingIndicator, .ais-SearchBox-reset { right: 0.5rem; }
 #pagination .ais-Panel { margin-bottom: 2px; }
 .ais-hits {
-  top: 47px;
+  top: 46px;
   padding: 0;
+  position:fixed;
+  background-color: #eeeeee;
 }
 .ais-hits>.ais-InstantSearch {
   display: flex;
@@ -574,6 +576,7 @@ div#toc {
   max-height: calc(100vh - 64px);
 }
 #hits { overflow-y: auto; }
+.ais-Hits-item a { font-size: 21px; }
 .ais-Hits-item:nth-child(odd) { background-image: linear-gradient(to right, white 0%, white 30%, #E8E8E8 70%, #E8E8E8 100%); }
 .ais-Hits-item:nth-child(even) { background-image: linear-gradient(to right, #E8E8E8 0%, #E8E8E8 30%, white 70%, white 100%); }
 #navbar .ais-InstantSearch { padding: 10px; }
