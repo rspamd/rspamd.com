@@ -12,30 +12,30 @@ title: Downloads
 
 ## Rspamd packages
 <!-- Tab navigation -->
-<div class="col-12">
+<div class="col-12 px-3">
     <ul class="nav nav-tabs nav-justified" role="tablist">
-        <li role="presentation" class="active">
-            <a href="#system1" aria-controls="system1" role="tab" data-toggle="tab"><img src="img/docker.png" width="20"><span class="myHidden-sm">&nbsp;Docker</span></a>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" aria-controls="system1" role="tab" data-bs-toggle="tab" data-bs-target="#system1"><img src="img/docker.png" width="20"><span class="myHidden-sm">&nbsp;Docker</span></a>
         </li>
-        <li role="presentation">
-            <a href="#system2" aria-controls="system2" role="tab" data-toggle="tab"><img src="img/redhat.png" width="20"><span class="myHidden-sm">&nbsp;RHEL</span></a>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" aria-controls="system2" role="tab" data-bs-toggle="tab" data-bs-target="#system2"><img src="img/redhat.png" width="20"><span class="myHidden-sm">&nbsp;RHEL</span></a>
         </li>
-        <li role="presentation">
-            <a href="#system3" aria-controls="system3" role="tab" data-toggle="tab"><img src="img/Ubuntu.png" width="20"><span class="myHidden-sm">&nbsp;Debian/Ubuntu</span></a>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" aria-controls="system3" role="tab" data-bs-toggle="tab" data-bs-target="#system3"><img src="img/Ubuntu.png" width="20"><span class="myHidden-sm">&nbsp;Debian/Ubuntu</span></a>
         </li>
-        <li role="presentation">
-            <a href="#system4" aria-controls="system4" role="tab" data-toggle="tab"><img src="img/linux.png" width="20"><span class="myHidden-sm">&nbsp;Other&nbsp;Linux</span></a>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" aria-controls="system4" role="tab" data-bs-toggle="tab" data-bs-target="#system4"><img src="img/linux.png" width="20"><span class="myHidden-sm">&nbsp;Other&nbsp;Linux</span></a>
         </li>
-        <li role="presentation">
-            <a href="#system5" aria-controls="system5" role="tab" data-toggle="tab"><img src="img/freebsd.png" width="20"><span class="myHidden-sm">&nbsp;BSD</span></a>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" aria-controls="system5" role="tab" data-bs-toggle="tab" data-bs-target="#system5"><img src="img/freebsd.png" width="20"><span class="myHidden-sm">&nbsp;BSD</span></a>
         </li>
-        <li role="presentation">
-            <a href="#system6" aria-controls="system6" role="tab" data-toggle="tab"><img src="img/octocat.png" width="20"><span class="myHidden-sm">&nbsp;Build&nbsp;rspamd</span></a>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" aria-controls="system6" role="tab" data-bs-toggle="tab" data-bs-target="#system6"><img src="img/octocat.png" width="20"><span class="myHidden-sm">&nbsp;Build&nbsp;rspamd</span></a>
         </li>
     </ul>
     <!-- Tab - pane content -->
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade in active" id="system1">
+        <div role="tabpanel" class="tab-pane fade show active" id="system1">
             <h3>Docker</h3>
 <div markdown="1">
 An official docker image is available at [rspamd/rspamd on Dockerhub](https://hub.docker.com/r/rspamd/rspamd), sources are [on GitHub](https://github.com/rspamd/rspamd-docker). It is a recommendable way to run Rspamd.
