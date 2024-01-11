@@ -14,7 +14,14 @@ body {
 a, .btn:hover, .btn:focus {
   text-decoration: none;
 }
-a:hover, a:focus {
+.dropdown a {
+  color:#dd4814;
+  white-space: unset;
+  padding: 0;
+}
+a:hover, a:focus,
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: transparent;
   color: #97310e;
   text-decoration: underline;
 }
@@ -65,6 +72,7 @@ code {
   padding-left: 40px;
 }
 .page-link { text-decoration: none; }
+.dropdown-menu { table-layout: fixed; }
 
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
@@ -366,19 +374,6 @@ blockquote {
   }
 }
 
-.nav > li.dropdown.open {
-  position: static;
-}
-
-.nav > li.dropdown.open .dropdown-menu {
-  display: table;
-  border-radius: 0px;
-  width: 100%;
-  left: 0;
-  right: 0;
-  table-layout: fixed;
-}
-
 .dropdown-menu > li {
   display: table-cell;
   font-weight: bold;
@@ -396,6 +391,11 @@ blockquote {
   .dropdown-menu > li {
     display: block;
   }
+}
+
+.dropdown-menu.show {
+  display: table;
+  table-layout: fixed;
 }
 
 ul.dropdown-menu > li {
