@@ -11,17 +11,15 @@ You can access enhanced support through Rspamd Ltd.'s commercial support option.
 
 By choosing the commercial support option, you will have the following extra features:
 
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingOne">
-      <h4 class="panel-title">
-        <a class="collapsed" role="button" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+<div class="accordion" id="accordion">
+  <div class="accordion-item">
+      <h4 class="accordion-header">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
           Premium fuzzy storage access
-        </a>
+        </button>
       </h4>
-    </div>
-    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-      <div class="panel-body">
+    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordion">
+      <div class="accordion-body">
         Premium fuzzy storage is a set of the dedicated fuzzy servers that provide the following features comparing to the free ones:
        <ul>
             <li><strong>No volume restrictions:</strong> Premium fuzzy storage offers you unlimited capacity within the agreed volumes.</li>
@@ -33,44 +31,38 @@ By choosing the commercial support option, you will have the following extra fea
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingTwo">
-      <h4 class="panel-title">
-        <a class="collapsed" role="button" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+  <div class="accordion-item">
+      <h4 class="accordion-header">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
           Additional fuzzy lists
-        </a>
+        </button>
       </h4>
-    </div>
-    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-      <div class="panel-body">
+    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordion">
+      <div class="accordion-body">
         We offer an exclusive supplementary list of fuzzy hashes, carefully curated for both high hit rates and an exceptionally low false positive rate. In practice, this list can significantly enhance your efficiency, often outperforming the default list by 2 to 3 times. It's important to note that access to this premium list is reserved exclusively for our commercial subscribers, providing them with a valuable edge in their anti-spam efforts.
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingThree">
-      <h4 class="panel-title">
-        <a class="collapsed" role="button" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+  <div class="accordion-item">
+      <h4 class="accordion-header">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
           Extra support and consulting
-        </a>
+        </button>
       </h4>
-    </div>
-    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-      <div class="panel-body">
+    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordion">
+      <div class="accordion-body">
        We offer priority support, which includes the option for custom feature development through a separate agreement. Additionally, we provide consultancy services for configuring effective anti-spam solutions, encompassing best practices and valuable configuration guidance. Our commitment is to ensure you have all the tools and expertise needed to tackle your specific requirements and optimize your anti-spam setup.
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingFour">
-      <h4 class="panel-title">
-        <a class="collapsed" role="button" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+  <div class="accordion-item">
+      <h4 class="accordion-header">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
           Rsync support for the list data
-        </a>
+        </button>
       </h4>
-    </div>
-    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-      <div class="panel-body">
+    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordion">
+      <div class="accordion-body">
         For customers seeking to maintain DNS lists within their own infrastructure, we offer access to our DNS lists through the rsync protocol.
       </div>
     </div>

@@ -84,6 +84,9 @@ code {
   display: block;
   min-height: unset;
 }
+#accordion .accordion-button {
+  font-size: 16px;
+}
 
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
