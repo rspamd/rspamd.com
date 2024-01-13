@@ -214,7 +214,8 @@ table {
   box-shadow: 2px 2px 8px #ddd;
   margin: 0 0 10px;
 }
-tr:nth-child(2n) {
+tr:nth-child(2n) > td,
+tr:nth-child(2n) > th {
   background-color: #f8f8f8;
 }
 th, td {
