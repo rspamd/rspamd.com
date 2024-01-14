@@ -34,7 +34,7 @@ title: Downloads
         </li>
     </ul>
     <!-- Tab - pane content -->
-    <div class="tab-content">
+    <div class="tab-content p-4 border-bottom">
         <div role="tabpanel" class="tab-pane fade show active" id="system1">
             <h3>Docker</h3>
 <div markdown="1">

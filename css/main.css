@@ -126,11 +126,6 @@ html.hasFontSmoothing-false code,kbd,pre,samp {
 	  margin-top: 50px;
   }
 }
-.tab-content {
-    border-bottom: 1px solid #ddd;
-    padding: 20px;
-    margin-bottom: 50px;
-}
 .nav-tabs {
     margin-top: 10px;
 }
