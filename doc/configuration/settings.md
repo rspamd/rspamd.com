@@ -170,7 +170,7 @@ In order to make matching case-insensitive, string comparisons convert input str
 
 The picture below describes the architecture of settings matching.
 
-<img class="img-responsive" width="50%" src="{{ site.baseurl }}/img/settings.png">
+<img class="img-fluid" width="50%" src="{{ site.baseurl }}/img/settings.png">
 
 ### Redis settings
 

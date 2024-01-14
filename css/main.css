@@ -2,6 +2,95 @@
 # Front matter added to ensure Jekyll processes file.
 ---
 
+
+/* Override bootstrap 4 and 5 changes */
+html {
+  font-size:10px;
+}
+body {
+  font-size:14px;
+  line-height:1.42857143;
+}
+a, .btn:hover, .btn:focus {
+  text-decoration: none;
+}
+.dropdown a {
+  color:#dd4814;
+  white-space: unset;
+  padding: 0;
+}
+a:hover, a:focus,
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: transparent;
+  color: #97310e;
+  text-decoration: underline;
+}
+ul {
+  padding-left: 40px;
+}
+h1, h2, h3 {
+  margin-top:20px;
+  margin-bottom:10px;
+  line-height:1.1;
+}
+h1{
+  font-size: 36px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+.highlight, pre { border-radius:4px; }
+pre {
+  padding:9.5px;
+  border:1px solid #cccccc;
+}
+pre code {
+  white-space: pre-wrap;
+}
+code {
+  padding:2px 4px;
+}
+.btn {
+  font-size: 14px;
+  white-space: nowrap;
+}
+.nav>li>a:hover,
+.nav>li>a:focus {
+  text-decoration:none;
+  background-color:#eeeeee
+}
+.navbar-default .navbar-nav .nav-link {
+  color: #ffffff;
+  padding: 13px;
+}
+.navbar-default .navbar-nav>li>a:hover,
+.navbar-default .navbar-nav>li>a:focus {
+  color: #ffffff;
+  background-color: #97310e;
+}
+.r-docs-content ol {
+  padding-left: 40px;
+}
+.page-link { text-decoration: none; }
+.dropdown-menu { table-layout: fixed; }
+.who-uses blockquote footer {
+  font-size:80%;
+  color:#aea79f
+}
+.who-uses blockquote footer:before {
+  content:'\2014 \00A0';
+}
+.who-uses blockquote > .placeholder {
+  display: block;
+  min-height: unset;
+}
+#accordion .accordion-button {
+  font-size: 16px;
+}
+
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
   padding-left: 15px;
@@ -37,14 +126,6 @@ html.hasFontSmoothing-false code,kbd,pre,samp {
 	  margin-top: 50px;
   }
 }
-.tab-content {
-    border-bottom: 1px solid #ddd;
-    padding: 20px;
-    margin-bottom: 50px;
-}
-.nav-tabs {
-    margin-top: 10px;
-}
 pre{
   /* code aria */
   background-color: #ffffff;
@@ -70,7 +151,7 @@ hr {
   overflow: hidden;
 }
 
-.footer-container .nav.navbar-nav {
+.footer-container #social-btn-grp {
   margin: 10px 0 0 0;
 }
 
@@ -108,21 +189,7 @@ code {
 code,kbd,pre,samp {
   font-family: monospace;
 }
-div.short-news {height: 200px;	overflow-y: hidden;}
-short-news p {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
-.thumbnail{
-  height: 240px;
-  padding: 8px;
-  margin: 0;
-}
-div.caption h2{
-  margin-top: 0;
-}
 h2{
   font-size: 32px;
 }
@@ -167,9 +234,8 @@ h2{
   background-color: transparent;
   padding-left: 0;
 }
-ul.nav-stacked li a{
-  padding-top: 5px;
-  padding-bottom: 5px;
+ul.nav-stacked .nav-link:hover {
+  background-color: rgb(238, 238, 238);
 }
 .compare-table span.icon-red {
     color: rgb(250, 57, 57);
@@ -186,7 +252,8 @@ table {
   box-shadow: 2px 2px 8px #ddd;
   margin: 0 0 10px;
 }
-tr:nth-child(2n) {
+tr:nth-child(2n) > td,
+tr:nth-child(2n) > th {
   background-color: #f8f8f8;
 }
 th, td {
@@ -250,9 +317,14 @@ h6:hover .header-link {
   opacity: 1;
 }
 
-.carousel-control {
+.carousel-control-next,
+.carousel-control-prev {
   width: 10%;
-  border-radius: 4px;
+}
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+  width:5rem;
+  height:5rem;
 }
 .who-uses{
   padding-left: 10px;
@@ -265,15 +337,6 @@ blockquote {
 }
 .carousel-content img{
   margin-bottom: 2px;
-}
-.btn-pp{
-  background-color: #ffcc66;
-  border: 1px solid #ff9933;
-  color: #000;
-}
-.btn-pp:hover{
-  background-color:#feb74b;
-  color: #000;
 }
 
 @media (max-width: 768px) {
@@ -297,19 +360,6 @@ blockquote {
   }
 }
 
-.nav > li.dropdown.open {
-  position: static;
-}
-
-.nav > li.dropdown.open .dropdown-menu {
-  display: table;
-  border-radius: 0px;
-  width: 100%;
-  left: 0;
-  right: 0;
-  table-layout: fixed;
-}
-
 .dropdown-menu > li {
   display: table-cell;
   font-weight: bold;
@@ -327,6 +377,11 @@ blockquote {
   .dropdown-menu > li {
     display: block;
   }
+}
+
+.dropdown-menu.show {
+  display: table;
+  table-layout: fixed;
 }
 
 ul.dropdown-menu > li {
@@ -357,82 +412,11 @@ li.tb-row a:hover,  li.tb-row a:focus{
   color: #993300;
 }
 
-.fix {
-  text-align: center;
-  width: 10ch;
-  background: #428dc9;
-  display: block;
-  font-weight: bold;
-}
-
-.critfix {
-  text-align: center;
-  width: 10ch;
-  background: #ff3300;
-  font-weight: bold;
-  display: block;
-}
-
-.feature {
-  text-align: center;
-  width: 10ch;
-  background: #6cc644;
-  font-weight: bold;
-  display: block;
-}
-
-.rework {
-  text-align: center;
-  width: 10ch;
-  background: #9361cc;
-  display: block;
-  font-weight: bold;
-}
-
-.conf {
-  text-align: center;
-  width: 10ch;
-  background: #99ccff;
-  display: block;
-  font-weight: bold;
-}
-
-.rules {
-  text-align: center;
-  width: 10ch;
-  background: #ffff66;
-  display: block;
-  font-weight: bold;
-}
-
-.dl-horizontal dt {
-  overflow: inherit;
-  width: 75px;
-}
-
-.dl-horizontal dd {
-  margin-left: 0px;
-}
-
-@media (max-width: 768px) {
-  .dl-horizontal dt {
-    float: left;
-    width: 75px;
-    clear: left;
-    text-align: right;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
 #navbar .donate button {
   border: 1px solid #CCC;
   height: 30px;
   margin: 8px;
   line-height: 10px;
-}
-
-.dl-changes {
-  margin-left: 20px;
 }
 
 div#toc {
@@ -468,7 +452,8 @@ div#toc {
   border: none;
   padding: 12px 15.5px;
 }
-.button-fixed-bottom:hover {
+.button-fixed-bottom:hover,
+.button-fixed-bottom:focus {
   background: #ca3e0c;
   color: white;
 }
@@ -505,8 +490,10 @@ div#toc {
 .ais-SearchBox-loadingIndicator, .ais-SearchBox-reset { right: 0.5rem; }
 #pagination .ais-Panel { margin-bottom: 2px; }
 .ais-hits {
-  top: 47px;
+  top: 46px;
   padding: 0;
+  position:fixed;
+  background-color: #eeeeee;
 }
 .ais-hits>.ais-InstantSearch {
   display: flex;
@@ -514,6 +501,7 @@ div#toc {
   max-height: calc(100vh - 64px);
 }
 #hits { overflow-y: auto; }
+.ais-Hits-item a { font-size: 21px; }
 .ais-Hits-item:nth-child(odd) { background-image: linear-gradient(to right, white 0%, white 30%, #E8E8E8 70%, #E8E8E8 100%); }
 .ais-Hits-item:nth-child(even) { background-image: linear-gradient(to right, #E8E8E8 0%, #E8E8E8 30%, white 70%, white 100%); }
 #navbar .ais-InstantSearch { padding: 10px; }

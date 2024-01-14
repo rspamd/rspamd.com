@@ -9,11 +9,7 @@
 
     <title>{{ page.title }}</title>
 
-    <!-- Bootstrap core CSS -->
-    <!--
-	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet">
-	-->
-
+    <!-- Bootswatch theme for Bootstrap -->
     <link href="{{ site.baseurl }}/css/bootstrap.min.css" rel="stylesheet">
     <!-- for glyphicons -->
     <link href="{{ site.baseurl }}/css/bootstrap-social.css" rel="stylesheet">
@@ -49,21 +45,34 @@
     </script>
     <script type="module" src="{{ site.baseurl }}/js/search.js"></script>
     <style>
-        .r-nav-container {
-            padding-right: 18px;
-        }
-
         .donate button {
             border: 1px solid #fff;
         }
 
-        .r-nav-container .navbar-toggle {
+        .r-nav-container .navbar-toggler {
+            padding:9px 10px;
+            margin-top:8px;
+            margin-bottom:8px;
+        }
+        .r-nav-container .navbar-toggler .icon-bar {
+            display:block;
+            width:22px;
+            height:2px;
+            border-radius:1px;
+            background-color: rgb(255, 255, 255);
+        }
+        .navbar-toggler .icon-bar + .icon-bar {
+            margin-top:4px
+        }
+
+        .r-nav-container .navbar-toggler {
             margin-right: 0;
             border-color: #fff !important;
         }
 
-        .r-nav-container .navbar-toggle:hover {
+        .r-nav-container .navbar-toggler:hover {
             border-color: #97310e !important;
+            background-color: #97310e !important;
         }
 
         @media screen and (min-width: 768px) and (max-width: 896px) {
@@ -84,113 +93,112 @@
 <body>
     <!-- Navigation -->
     <div id="wrapper">
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="r-nav-container">
-            <div class="navbar-header">
+    <nav class="navbar navbar-default navbar-expand-lg bg-primary fixed-top py-0" role="navigation">
+        <div class="r-nav-container container-fluid pe-lg-0">
+                <a class="navbar-brand" href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/img/rspamd_logo_navbar.png" style="width: 67px; margin-top: -3px;"></a>
                 <!--toggle button for xs-size-->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbar">
                       <span class="sr-only">Toggle navigation</span>
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                   </button>
-                <a class="navbar-brand" href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/img/rspamd_logo_navbar.png" style="width: 67px; margin-top: -13px;"></a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
+                </button>
+            <div id="navbar" class="navbar-collapse collapse navbar-nav-scroll">
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a href="{{ site.baseurl }}/downloads.html">Downloads <i class="fa fa-lg fa-download"></i></a></a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ site.baseurl }}/downloads.html">Downloads <i class="fa fa-lg fa-download"></i></a></a>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentation
+                    <li class="nav-item dropdown position-static">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentation
                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li class="tb-row"><a href="{{ site.baseurl }}/doc/index.html">Documentation index <small><i class="fa fa-chevron-right"></i></small></a></li>
+                        <ul class="dropdown-menu w-100 mt-0 border-top rounded-0">
+                            <li class="tb-row"><a class="dropdown-item" href="{{ site.baseurl }}/doc/index.html">Documentation index <small><i class="fa fa-chevron-right"></i></small></a></li>
                             <li>Installation and Administration
                               <ul>
-                                <li><a href="{{ site.baseurl }}/doc/quickstart.html">Quick start</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/faq.html">FAQ</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/integration.html">MTA integration</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/migration.html">Upgrading notes</a></li>
-                                <li><a href="{{ site.baseurl }}/webui/">Rspamd WebUI</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/gtube_patterns.html">GTUBE-like test patterns</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/tutorials/migrate_sa.html">Migrating from SA</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/tutorials/site_contributing.html">Contributing to rspamd.com web-site</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/configuration/redis.html">Using Redis in Rspamd</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/tutorials/redis_replication.html">Replication in Redis</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/tutorials/scanning_outbound.html">How to scan outbound emails</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/tutorials/stunnel_setup.html">Setup stunnel to protect Redis</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/quickstart.html">Quick start</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/faq.html">FAQ</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/integration.html">MTA integration</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/migration.html">Upgrading notes</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/webui/">Rspamd WebUI</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/gtube_patterns.html">GTUBE-like test patterns</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/migrate_sa.html">Migrating from SA</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/site_contributing.html">Contributing to rspamd.com web-site</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/redis.html">Using Redis in Rspamd</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/redis_replication.html">Replication in Redis</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/scanning_outbound.html">How to scan outbound emails</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/stunnel_setup.html">Setup stunnel to protect Redis</a></li>
                               </ul>
                             </li>
                             <li>Configuration guide
                               <ul>
-                                <li><a href="{{ site.baseurl }}/doc/configuration/">Configuration structure <small><i class="fa fa-chevron-right"></i></small></a>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/">Configuration structure <small><i class="fa fa-chevron-right"></i></small></a>
                                   <ul style="padding-left: 30px; list-style-type: circle;">
-                                    <li><a href="{{ site.baseurl }}/doc/configuration/settings.html">Users settings description</a></li>
-                                    <li><a href="{{ site.baseurl }}/doc/configuration/options.html">Top-level options</a></li>
-                                    <li><a href="{{ site.baseurl }}/doc/configuration/logging.html">Logging setup</a></li>
-                                    <li><a href="{{ site.baseurl }}/doc/configuration/metrics.html">Metrics, actions and symbols</a></li>
-                                    <li><a href="{{ site.baseurl }}/doc/configuration/composites.html">Composite symbols</a></li>
-                                    <li><a href="{{ site.baseurl }}/doc/configuration/statistic.html">Statistical module</a></li>
-                                    <li><a href="{{ site.baseurl }}/doc/configuration/selectors.html">Using selectors</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/settings.html">Users settings description</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/options.html">Top-level options</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/logging.html">Logging setup</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/metrics.html">Metrics, actions and symbols</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/composites.html">Composite symbols</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/statistic.html">Statistical module</a></li>
+                                    <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/selectors.html">Using selectors</a></li>
                                   </ul>
                                 </li>
-                                <li><a href="{{ site.baseurl }}/doc/modules/">Modules documentation</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/workers/">Workers documentation</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/rspamadm.html">Rspamadm utilities</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/usage_policy.html">Rspamd data usage policies</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/configuration/upstream.html">Upstreams article</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/modules/">Modules documentation</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/workers/">Workers documentation</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/rspamadm.html">Rspamadm utilities</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/usage_policy.html">Rspamd data usage policies</a></li>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/upstream.html">Upstreams article</a></li>
                               </ul>
                             </li>
                             <li>Developers documentation</a>
                               <ul>
-                                <li><a href="{{ site.baseurl }}/doc/lua/">Lua API reference</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/lua/examples.html">Lua rules examples</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/tutorials/writing_rules.html">Writing Rspamd rules</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/fuzzy_storage.html">Creating your fuzzy storage</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/architecture/index.html">Architecture information</a></li>
-                                <li><a href="{{ site.baseurl }}/doc/architecture/protocol.html">Protocol documentation</a></li>
+                                <li><a class="dropdown-item" class="dropdown-item" href="{{ site.baseurl }}/doc/lua/">Lua API reference</a></li>
+                                <li><a class="dropdown-item" class="dropdown-item" href="{{ site.baseurl }}/doc/lua/examples.html">Lua rules examples</a></li>
+                                <li><a class="dropdown-item" class="dropdown-item" href="{{ site.baseurl }}/doc/tutorials/writing_rules.html">Writing Rspamd rules</a></li>
+                                <li><a class="dropdown-item" class="dropdown-item" href="{{ site.baseurl }}/doc/fuzzy_storage.html">Creating your fuzzy storage</a></li>
+                                <li><a class="dropdown-item" class="dropdown-item" href="{{ site.baseurl }}/doc/architecture/index.html">Architecture information</a></li>
+                                <li><a class="dropdown-item" class="dropdown-item" href="{{ site.baseurl }}/doc/architecture/protocol.html">Protocol documentation</a></li>
                               </ul>
                             </li>
                             <li>External resources
                               <ul>
-                                <li><a href="https://thomas-leister.de/en/mailserver-debian-stretch/">Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian Stretch</a></li>
-                                <li><a href="https://www.c0ffee.net/blog/mail-server-guide">Mail self-hosting on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP</a></li>
-                                <li><a href="http://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/">An alternative introduction to rspamd configuration</a></li>
+                                <li><a class="dropdown-item" href="https://thomas-leister.de/en/mailserver-debian-stretch/">Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian Stretch</a></li>
+                                <li><a class="dropdown-item" href="https://www.c0ffee.net/blog/mail-server-guide">Mail self-hosting on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP</a></li>
+                                <li><a class="dropdown-item" href="http://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/">An alternative introduction to rspamd configuration</a></li>
                               </ul>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="{{ site.baseurl }}/blog/">News</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ site.baseurl }}/blog/">News</a>
                     </li>
-                    <li>
-                        <a href="{{ site.baseurl }}/doc/usage_policy.html">Usage policies</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ site.baseurl }}/doc/usage_policy.html">Usage policies</a>
                     </li>
-                    <li>
-                        <a href="{{ site.baseurl }}/commercial.html">Commercial support</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ site.baseurl }}/commercial.html">Commercial support</a>
                     </li>
-                    <li>
-                        <a href="{{ site.baseurl }}/support.html">Community</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ site.baseurl }}/support.html">Community</a>
                     </li>
-                    <li>
-                        <a href="https://bl.rspamd.com/" target="_blank">List removal</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://bl.rspamd.com/" target="_blank">List removal</a>
                     </li>
-                    <li>
-                        <a href="https://github.com/rspamd/rspamd" target="_blank"><i class="fa fa-lg fa-github" aria-hidden="true"></i>&nbsp;GitHub</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/rspamd/rspamd" target="_blank"><i class="fa fa-lg fa-github" aria-hidden="true"></i>&nbsp;GitHub</a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a class="ais-InstantSearch">
+                <ul class="nav navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="ais-InstantSearch d-block">
                             <div id="searchbox"></div>
                         </a>
                     </li>
-                    <li>
-                        <a target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/{{ page.path }}"
+                    <li class="nav-item">
+                        <a class="nav-link" target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/{{ page.path }}"
                             title="Edit the current page and create a pull request on GitHub"><i class="fa fa-lg fa-pencil"></i>&nbsp;Edit</a>
                     </li>
-                    <li>
+                    <li class="nav-item">
                         <form class="donate" action="https://www.paypal.com/cgi-bin/webscr" method="post">
                             <fieldset>
                                 <input type="hidden" name="cmd" value="_s-xclick">
@@ -205,7 +213,7 @@
             </div>
         </div>
     </nav>
-    <nav class="jumbotron navbar-fixed-top ais-hits">
+    <nav class="jumbotron fixed-top ais-hits">
         <div class="ais-InstantSearch">
             <div id="pagination"></div>
             <div id="hits"></div>

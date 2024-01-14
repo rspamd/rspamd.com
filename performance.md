@@ -11,7 +11,7 @@ You can also check the recent [performance analyse article](https://rspamd.com/m
 
 Rspamd can be regarded as a significantly faster alternative to the [SpamAssassin](https://spamassassin.apache.org) mail filter, with the capability to process **ten times** the number of messages while using the **same** rules (via the [SpamAssassin plugin]({{ site.baseurl }}/doc/modules/spamassassin.html)). The following graph illustrates how the transition from <abbr title="SpamAssassin">SA</abbr> to Rspamd has reduced CPU loads on scanning machines:
 
-<img class="img-responsive" src="{{ site.baseurl }}/img/graph2.png" width="50%">
+<img class="img-fluid" src="{{ site.baseurl }}/img/graph2.png" width="50%">
 
 For faster email processing, Rspamd uses a set of global and local optimization techniques.
 
@@ -21,7 +21,7 @@ Global optimizations are employed to enhance the overall message processing, imp
 
 * **Event-driven architecture** enables Rspamd to execute network and other time-consuming requests concurrently in the background, enabling the processing of other messages while awaiting responses:
 
-<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-events.png" width="50%">
+<img class="img-fluid" src="{{ site.baseurl }}/img/rspamd-events.png" width="50%">
 
 * **Rules reordering** is implemented to reduce message processing time. Rspamd prioritizes the inspection of rules with higher weight, shorter execution time, and a higher hit rate. Furthermore, Rspamd ceases processing when a message surpasses the spam threshold since additional checks are probably unnecessary.
 

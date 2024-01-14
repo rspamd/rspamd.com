@@ -10,18 +10,18 @@ Rspamd is free and open source software. Developers are mostly volunteers and e
 ## Reporting Bugs and Feature Requests
 If you find a bug or would like to ask for a specific feature then you can use issue tracker hosted on GitHub. We also welcome pull requests if you would like to submit patches for any part of the project: documentation, site, WebUI, and Rspamd itself.
 <div class="btn-support-group">
-    <a class="btn-support btn-github" href="https://github.com/rspamd/rspamd"><i class="fa fa-github"></i> GitHub</a>
+    <a class="btn btn-support btn-github" href="https://github.com/rspamd/rspamd"><i class="fa fa-github"></i> GitHub</a>
 </div>
 
 ## General Questions and Community Support
 Please join our community for updates, release announces and other news.
 
 <div class="btn-support-group">
-    <a class="btn-support btn-primary" href="https://lists.rspamd.com" target="_blank"><i class="fa fa-envelope-o"></i> Mailing lists</a>
-    <a class="btn-support btn-github" href="https://github.com/rspamd/rspamd/discussions" target="_blank"><i class="fa fa-github"></i> Discussions</a>
-    <a class="btn-support btn-telegram" href="https://t.me/rspamd"><i class="fa fa-paper-plane"></i> Telegram</a>
-    <a class="btn-support btn-telegram" href="https://t.me/rspamd_ru"><i class="fa fa-paper-plane"></i> Telegram RU</a>
-    <a class="btn-support btn-reddit" href="ircs://irc.oftc.net/rspamd" title="#rspamd on OFTC"><i class="fa fa-comments-o"></i> IRC channel</a>
+    <a class="btn btn-support btn-primary" href="https://lists.rspamd.com" target="_blank"><i class="fa fa-envelope-o"></i> Mailing lists</a>
+    <a class="btn btn-support btn-github" href="https://github.com/rspamd/rspamd/discussions" target="_blank"><i class="fa fa-github"></i> Discussions</a>
+    <a class="btn btn-support btn-telegram" href="https://t.me/rspamd"><i class="fa fa-paper-plane"></i> Telegram</a>
+    <a class="btn btn-support btn-telegram" href="https://t.me/rspamd_ru"><i class="fa fa-paper-plane"></i> Telegram RU</a>
+    <a class="btn btn-support btn-reddit" href="ircs://irc.oftc.net/rspamd" title="#rspamd on OFTC"><i class="fa fa-comments-o"></i> IRC channel</a>
 </div>
 
 ## Donations
@@ -31,7 +31,7 @@ If you would like to support Rspamd you can make donations to help us covering h
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
             <input type="hidden" name="cmd" value="_s-xclick">
             <input type="hidden" name="hosted_button_id" value="32NL9H6JS6K9C">
-            <button type="submit" class="btn-submit">
+            <button type="submit" class="btn btn-submit">
                 <i class="fa fa-paypal"></i> Paypal
             </button>
         </form>

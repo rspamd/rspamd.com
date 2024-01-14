@@ -104,7 +104,7 @@ The weight assigned to these symbols are merely examples and you should adjust t
 
 The image below illustrates the process of reputation token handling:
 
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/reputation1.png" width="50%"></center>
+<center><img class="img-fluid" src="{{ site.baseurl }}/img/reputation1.png" width="50%"></center>
 
 ### Backends configuration and principles of work
 
@@ -146,7 +146,7 @@ $$
 f(buckets)=\sum_{i=1}^n {(spam_{i} * mult_{spam} + ham_{i} * mult_{ham} + junk_{i} * mult_{junk}) * bscore_{i}}
 $$
 
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/reputation2.png" width="50%"></center>
+<center><img class="img-fluid" src="{{ site.baseurl }}/img/reputation2.png" width="50%"></center>
 
 ## Selector types
 

@@ -40,13 +40,13 @@ Please note that this guide assumes that all services have the same certificate,
 
 It is assumed that you are using your operating system's package manager (e.g. `apt install postfix`) to install Postfix. The following configuration is desired for Postfix:
 
-<div><!-- Do not change the DOM structure -->
-    <a class="btn btn-info btn-block btn-code" data-toggle="collapse" data-target="#main_cf">
+<div class="d-grid gap-4"><!-- Do not change the DOM structure -->
+    <a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#main_cf">
         <i class="fa fa-caret-square-o-down fa-pull-right"></i>
         main.cf
     </a>
 <div id="main_cf" class="collapse collapse-block">
-<pre><code>
+<pre class="highlight"><code>
 # TLS setup (we assume the same certs for IMAP and SMTP here)
 smtpd_tls_cert_file = /etc/letsencrypt/live/your.domain/fullchain.pem
 smtpd_tls_key_file = /etc/letsencrypt/live/your.domain/privkey.pem
@@ -118,7 +118,6 @@ smtpd_relay_restrictions = check_recipient_access hash:/etc/postfix/access, reje
 smtpd_milters = inet:localhost:11332
 milter_default_action = accept
 milter_protocol = 6
-
 </code></pre>
 </div></div>
 
@@ -398,8 +397,8 @@ From version 1.7, the setting of passwords is also suggested by `rspamadm config
 
 The WebUI is managed by a controller worker, but for added functionality such as `TLS` support, it may be beneficial to proxy its requests through a tool like Nginx. Below is a minimal configuration needed to accomplish this using Nginx:
 
-<div>
-<a class="btn btn-info btn-block btn-code" data-toggle="collapse" data-target="#nginx_cf"><i class="fa fa-caret-square-o-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf" class="collapse collapse-block"><pre><code>
+<div class="d-grid gap-4">
+<a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#nginx_cf"><i class="fa fa-caret-square-o-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf" class="collapse collapse-block">
 {% highlight nginx %}
 worker_processes  2;
 user www-data www-data;
@@ -456,15 +455,13 @@ http {
     }
 }
 {% endhighlight %}
-</code>
-</pre>
 </div>
 </div>
 
 You might also use subdirs, as suggested by [@julienmalik](https://github.com/julienmalik){:target="&#95;blank"}:
 
-<div>
-<a class="btn btn-info btn-block btn-code" data-toggle="collapse" data-target="#nginx_cf1"><i class="fa fa-caret-square-o-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf1" class="collapse collapse-block"><pre><code>
+<div class="d-grid gap-4">
+<a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#nginx_cf1"><i class="fa fa-caret-square-o-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf1" class="collapse collapse-block">
 {% highlight nginx %}
 location /rspamd/ {
     proxy_pass       http://localhost:11334/;
@@ -473,8 +470,6 @@ location /rspamd/ {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 }
 {% endhighlight %}
-</code>
-</pre>
 </div>
 </div>
 
@@ -489,7 +484,7 @@ Alternatively, you could set up HTTP authentication in Nginx itself.
 
 Here, we describe the simplest `self-scan` option:
 
-<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
+<img class="img-fluid" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
 
 In this mode, `rspamd_proxy` scans messages itself and talks to MTA directly using the Milter protocol. The advantage of this approach is its simplicity. Here is a sample configuration for this mode:
 
@@ -696,7 +691,7 @@ To enable headers in Exim refer to the "Integration with Exim MTA" section of th
 
 Here is a screenshot of this addon in use:
 
-<img class="img-responsive" src="{{ site.baseurl }}/img/thunderbird_rspamd.png">
+<img class="img-fluid" src="{{ site.baseurl }}/img/thunderbird_rspamd.png">
 
 ### Using the WebUI
 

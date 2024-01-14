@@ -114,7 +114,7 @@ The `leaked bucket` principle operates using the following actions:
 
 To better illustrate the concept of dynamic multipliers, refer to the sample graph below. It demonstrates how the burst multiplier varies depending on the number of received ham messages (x > 0) and spam messages (x < 0):
 
-<img class="img-responsive" width="75%" src="{{ site.baseurl }}/img/ratelimit.png">
+<img class="img-fluid" width="75%" src="{{ site.baseurl }}/img/ratelimit.png">
 
 Regarding bounce messages, there are special buckets that lack a `from` component and have more restricted limits. Rspamd identifies the following senders as bounce senders:
 

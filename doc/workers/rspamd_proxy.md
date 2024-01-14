@@ -42,7 +42,7 @@ If your setup doesn't allow your MTA to reject emails, you can set `discard_on_r
 
 ### Self-scan mode
 
-<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
+<img class="img-fluid" src="{{ site.baseurl }}/img/rspamd_milter_direct.png">
 
 In this mode, the `rspamd_proxy` worker scans messages independently and communicates directly with the MTA using the Milter protocol. The advantage of this mode is its simplicity. Below is a sample configuration for this mode:
 
@@ -78,7 +78,7 @@ rspamc -h rspamd.example.org:11334 input-file
 
 ### Proxy mode
 
-<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd_milter_proxy.png">
+<img class="img-fluid" src="{{ site.baseurl }}/img/rspamd_milter_proxy.png">
 
 In this mode, a dedicated layer of Rspamd scanners is employed, featuring load-balancing and optional encryption and/or compression. For this particular setup, the configuration may vary. Below is a concise example of proxy mode with four scanners, where two of them are allocated more resources to handle a higher volume of requests. Additionally, the local worker is disabled:
 
@@ -98,7 +98,7 @@ upstream "scan" {
 
 ## Mirroring
 
-<img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-testing.jpg">
+<img class="img-fluid" src="{{ site.baseurl }}/img/rspamd-testing.jpg">
 
 The proxy can be utilized for testing purposes, including:
 

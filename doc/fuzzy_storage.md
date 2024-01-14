@@ -74,7 +74,7 @@ When querying the storage, we will ignore hashes with weights that are less than
 
 Furthermore, Rspamd does not assign the maximum score immediately upon reaching the threshold value. Instead, the score gradually increases from zero to a maximum (up to the metric value) as the weight of the hash increases from the threshold value to twice the threshold value (t .. 2 * t).
 
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-1.png" width="50%"></center>
+<center><img class="img-fluid" src="{{ site.baseurl }}/img/rspamd-fuzzy-1.png" width="50%"></center>
 
 #### Learning filters
 
@@ -140,7 +140,7 @@ The `expire` and `sync` values are related to database cleanup and performance, 
 
 Fuzzy storage works with hashes and not with email messages. A [worker/scanner process](/doc/workers/normal.html) or a [controller process](/doc/workers/controller.html) convert emails to hashes before connecting to this process for fuzzy processing. In this sample, we see the fuzzy storage process that operates on the sqlite database is listening on socket 11335 for UDP requests from the other processes to query or update the storage. 
 
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-2.png" width="75%"></center>
+<center><img class="img-fluid" src="{{ site.baseurl }}/img/rspamd-fuzzy-2.png" width="75%"></center>
 
 
 ### Data storage
@@ -186,7 +186,7 @@ The fuzzy hashes protocol allows optional (opportunistic) or mandatory encryptio
 - The configuration is modified in `/etc/rspamd/local.d/worker-fuzzy.inc` of the local system running the fuzzy_storage worker. One public/private keypair is set for each remote UDP client that will connect on port 11335.
 - One unique **public** key is given to each unique client system, so that only that one system can use that one key.
 
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-3.png" width="75%"></center>
+<center><img class="img-fluid" src="{{ site.baseurl }}/img/rspamd-fuzzy-3.png" width="75%"></center>
 
 The encryption architecture uses cryptobox construction: <https://nacl.cr.yp.to/box.html> and it is similar to the algorithm for end-to-end encryption used in the DNSCurve protocol: <https://dnscurve.org/>.
 
@@ -266,7 +266,7 @@ The `-w` parameter is used to set the hash weight, as mentioned earlier, while t
 
 Flags enable the storage of hashes from different sources. For example, a hash may originate from a spam trap, another hash may be the result of user complaints, and a third hash may come from emails on a whitelist. Each flag can be associated with its own symbol and have a weight when checking emails:
 
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-4.png" width="75%"></center>
+<center><img class="img-fluid" src="{{ site.baseurl }}/img/rspamd-fuzzy-4.png" width="75%"></center>
 
 A symbol name can be used instead of a numeric flag during learning, for example:
 
@@ -345,7 +345,7 @@ Here are some useful options that can be set in the module:
 
 One option is `max_score`, which specifies the threshold for a hash weight:
 
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-1.png" width="50%"></center>
+<center><img class="img-fluid" src="{{ site.baseurl }}/img/rspamd-fuzzy-1.png" width="50%"></center>
 
 The `mime_types` option specifies which attachment types are checked (or learned) using this fuzzy rule. This option takes a list of valid types in the following format: `["type/subtype", "*/subtype", "type/*", "*"]`, where `*` represents any valid type. In practice, it can be useful to save the hashes for all `application/*` attachments. Texts and embedded images are implicitly checked by `fuzzy_check` plugin, so there is no need to add `image/*` in the list of scanned attachments. Note that attachments and images are searched for an exact match, while texts are matched using the approximate algorithm (shingles).
 
@@ -461,7 +461,7 @@ end
 
 It is often desired to have a local copy of the remote storage. Rspamd supports replication for this purposes that is implemented in the hashes storage since version 1.3:
 
-<center><img class="img-responsive" src="{{ site.baseurl }}/img/rspamd-fuzzy-5.png" width="75%"></center>
+<center><img class="img-fluid" src="{{ site.baseurl }}/img/rspamd-fuzzy-5.png" width="75%"></center>
 
 The hashes transfer is initiated by the replication **master**. It sends hash update commands, such as adding, modifying or deleting, to all specified slaves. Therefore, the slaves must be able to accept connections from the master. This should be taken into account when configuring the firewall.
 
