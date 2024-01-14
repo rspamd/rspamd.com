@@ -457,7 +457,8 @@ div#toc {
   border: none;
   padding: 12px 15.5px;
 }
-.button-fixed-bottom:hover {
+.button-fixed-bottom:hover,
+.button-fixed-bottom:focus {
   background: #ca3e0c;
   color: white;
 }
