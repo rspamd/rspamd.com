@@ -2,6 +2,9 @@
 # Front matter added to ensure Jekyll processes file.
 ---
 
+:root {
+  --navbar-height: 46px;
+}
 
 /* Override bootstrap 4 and 5 changes */
 html {
@@ -196,7 +199,7 @@ h2{
   min-height: 100vh;
   position: relative;
   padding-bottom: 100px;
-  padding-top: 50px;
+  padding-top: var(--navbar-height);
   box-sizing: border-box;
 }
 
@@ -464,7 +467,7 @@ div#toc {
 .ais-SearchBox-loadingIndicator, .ais-SearchBox-reset { right: 0.5rem; }
 #pagination .ais-Panel { margin-bottom: 2px; }
 .ais-hits {
-  top: 46px;
+  top: var(--navbar-height);
   padding: 0;
   position:fixed;
   background-color: #eeeeee;
