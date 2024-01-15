@@ -134,10 +134,6 @@ pre{
   background-color: #ffffff;
   color: #000000;
 }
-a.undecor {
-  text-decoration: none;
-  color: black;
-}
 hr {
     /* simple hr */
     display: block;

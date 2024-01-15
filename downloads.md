@@ -56,7 +56,7 @@ Packages are available for RHEL-compatible distributions such as Oracle Linux, A
 Please note that these packages **require** [EPEL](https://fedoraproject.org/wiki/EPEL) to be installed on your system as many dependencies are missing from the base repositories. You can learn how to install EPEL from their site: <https://fedoraproject.org/wiki/EPEL>.
 Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-debug` package and could be safely installed even in the production environment.
 
-To install rspamd repo, please download the corresponding repository file and the signing key (both repo and all packages are signed with my GPG key). You could use the following commands to install rspamd <a class="undecor" href="#stableSys1">stable<sup>1</sup></a> RPM repository:
+To install rspamd repo, please download the corresponding repository file and the signing key (both repo and all packages are signed with my GPG key). You could use the following commands to install rspamd <a class="text-decoration-none text-reset" href="#stableSys1">stable<sup>1</sup></a> RPM repository:
 
     source /etc/os-release
     export EL_VERSION=`echo -n $PLATFORM_ID | sed "s/.*el//"`
@@ -64,7 +64,7 @@ To install rspamd repo, please download the corresponding repository file and th
     yum install rspamd
 
 
-For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> branch packages, download `rpm-experimental` repofile as following:
+For <a class="text-decoration-none text-reset" href="#experimentalSys1">experimental<sup>2</sup></a> branch packages, download `rpm-experimental` repofile as following:
 
     source /etc/os-release
     export EL_VERSION=`echo -n $PLATFORM_ID | sed "s/.*el//"`
@@ -72,7 +72,7 @@ For <a class="undecor" href="#experimentalSys1">experimental<sup>2</sup></a> bra
     yum install rspamd
 
 
-For <a class="undecor" href="#asanSys1">asan<sup>2</sup></a> packages, install `rspamd-asan`.
+For <a class="text-decoration-none text-reset" href="#asanSys1">asan<sup>2</sup></a> packages, install `rspamd-asan`.
 </div>
 <hr>
 <p class="myFootnote" id="stableSys1">1. Use STABLE branch of packages: those packages are the official rspamd releases which are recommended for production usage.</p>
@@ -90,7 +90,7 @@ Rspamd supports the following .deb based distributives:
 - **Ubuntu focal** (since 2.5)
 - **Ubuntu jammy** (since 3.3)
 
-To install the rspamd <a class="undecor" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
+To install the rspamd <a class="text-decoration-none text-reset" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
 
 ~~~bash
 #apt update # if running a minimal system
@@ -108,7 +108,7 @@ sudo apt-get --no-install-recommends install rspamd
 
 For [Hyperscan](https://www.hyperscan.io/) and [LuaJIT](https://luajit.org) information see the [FAQ]({{ site.url }}{{ site.baseurl }}/doc/faq.html).
 
-For <a class="undecor" href="#experimentalSys2">experimental<sup>2</sup></a> branch replace `apt-stable` with just `apt`:
+For <a class="text-decoration-none text-reset" href="#experimentalSys2">experimental<sup>2</sup></a> branch replace `apt-stable` with just `apt`:
 
 ~~~bash
 #apt update # if running a minimal system
@@ -123,7 +123,7 @@ sudo apt-get update
 sudo apt-get --no-install-recommends install rspamd
 ~~~
 
-For <a class="undecor" href="#asanSys2">ASAN<sup>2</sup></a> branch install `rspamd-asan` package instead of `rspamd` (since 3.5).
+For <a class="text-decoration-none text-reset" href="#asanSys2">ASAN<sup>2</sup></a> branch install `rspamd-asan` package instead of `rspamd` (since 3.5).
 
 Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-dbg` (or `rspamd-asan-dbg`) package and could be safely installed even in the production environment.
 Check [the quick start document]({{ site.baseurl }}/doc/quickstart.html#rspamd-installation) for further steps.
