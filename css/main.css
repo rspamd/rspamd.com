@@ -167,12 +167,6 @@ hr {
     background-color: #E8E8E8;
     padding: 10px 0 30px 0;
 }
-.jumbotron {
-  padding-top: 10px;
-  padding-bottom: 15px;
-  margin-bottom: 0;
-
-}
 .btn-code {
   font-family: monospace;
   text-decoration: none;
