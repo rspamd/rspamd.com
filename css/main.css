@@ -187,26 +187,6 @@ code,kbd,pre,samp {
 h2{
   font-size: 32px;
 }
-#gh-btn{/*for git like counter*/
-  padding-top: 8px;
-  height:25px;
-}
-#gh-count{/*for git like counter*/
-  padding-top: 8px;
-  height:25px;
-}
-#jumbo-features{
-  background: url({{ site.baseurl }}/img/rspamd_jumbotron_features.png);
-  background-size: cover;
-}
-#jumbo-performance{
-  background: url({{ site.baseurl }}/img/rspamd_jumbotron_performance.png);
-  background-size: cover;
-}
-#jumbo-head{
-  background: url({{ site.baseurl }}/img/rspamd_jumbotron.png);
-  background-size: cover;
-}
 #jumbo-rmilter{
   background: url({{ site.baseurl }}/img/rmilter_jumbotron.png);
   background-size: cover;

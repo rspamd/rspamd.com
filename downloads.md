@@ -3,14 +3,7 @@ layout: doc
 title: Downloads
 ---
 
-<!--# Downloading rspamd->
-
-<!-- download button with tooltip
-<!-- GitHub button >
-<p><iframe src="{{ site.baseurl }}/github-btn.html?user=vstakhov&repo=rspamd&type=watch&count=true&size=large"
-  allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe></p-->
-
-## Rspamd packages
+# Rspamd packages
 <!-- Tab navigation -->
 <div class="col-12 px-3">
     <ul class="nav nav-tabs nav-justified" role="tablist">
