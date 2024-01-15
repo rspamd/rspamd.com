@@ -135,28 +135,7 @@ pre{
   color: #000000;
 }
 
-.footer-container {
-  width: calc(100vw - 40px);
-  margin: auto;
-  overflow: hidden;
-}
-
-.footer-container #social-btn-grp {
-  margin: 10px 0 0 0;
-}
-
-.footer-container .btn-link {
-  padding: 8px 2px;
-}
-
-.row-footer{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #E8E8E8;
-    padding: 10px 0 30px 0;
-}
+.row-footer{ background-color: #E8E8E8; }
 .btn-code {
   font-family: monospace;
   text-decoration: none;
