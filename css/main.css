@@ -13,6 +13,7 @@ html {
 body {
   font-size:14px;
   line-height:1.42857143;
+  padding-top: var(--navbar-height);
 }
 a, .btn:hover, .btn:focus {
   text-decoration: none;
@@ -159,14 +160,6 @@ h2{
 #jumbo-rmilter{
   background: url({{ site.baseurl }}/img/rmilter_jumbotron.png);
   background-size: cover;
-}
-
-#wrapper {/*for removing wite space after footer*/
-  min-height: 100vh;
-  position: relative;
-  padding-bottom: 100px;
-  padding-top: var(--navbar-height);
-  box-sizing: border-box;
 }
 
 .navbar { min-height: 42px; }

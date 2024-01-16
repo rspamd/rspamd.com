@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="h-100" lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -88,11 +88,8 @@
     </style>
 </head>
 
-<!--body style="padding-top: 50px" data-offset="50"-->
-
-<body>
+<body class="d-flex flex-column h-100">
     <!-- Navigation -->
-    <div id="wrapper">
     <nav class="navbar navbar-default navbar-expand-lg bg-primary fixed-top py-0" role="navigation">
         <div class="r-nav-container container-fluid pe-lg-0">
                 <a class="navbar-brand" href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/img/rspamd_logo_navbar.png" style="width: 67px; margin-top: -3px;"></a>
@@ -213,9 +210,10 @@
             </div>
         </div>
     </nav>
-    <nav class="jumbotron fixed-top ais-hits">
-        <div class="ais-InstantSearch">
-            <div id="pagination"></div>
-            <div id="hits"></div>
-        </div>
-    </nav>
+    <div class="flex-shrink-0">
+        <nav class="jumbotron fixed-top ais-hits">
+            <div class="ais-InstantSearch">
+                <div id="pagination"></div>
+                <div id="hits"></div>
+            </div>
+        </nav>
