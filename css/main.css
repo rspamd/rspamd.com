@@ -365,18 +365,7 @@ div#toc {
   text-align: center;
 }
 
-.edit-btn {
-  margin-left: 20px;
-  font-size: 14px;
-  border: none;
-  background-color: #e8e7e7;
-  border-radius: 5px;
-  padding: 4px 10px;
-  position: sticky;
-  top: 10px;
-  right: 0;
-  outline: none;
-}
+.edit-btn { background-color: #e8e7e7; }
 
 .button-fixed-bottom {
   position: fixed;
