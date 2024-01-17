@@ -95,7 +95,7 @@ To install the rspamd <a class="text-decoration-none text-reset" href="#stableSy
 ~~~bash
 #apt update # if running a minimal system
 #apt-get install sudo # if running a minimal system
-sudo apt-get install -y lsb-release wget gpg  # optional
+sudo apt-get install -y lsb-release wget gpg  # for install
 CODENAME=`lsb_release -c -s`
 sudo mkdir -p /etc/apt/keyrings
 wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
@@ -113,7 +113,7 @@ For <a class="text-decoration-none text-reset" href="#experimentalSys2">experime
 ~~~bash
 #apt update # if running a minimal system
 #apt-get install sudo # if running a minimal system
-sudo apt-get install -y lsb-release wget gpg  # optional
+sudo apt-get install -y lsb-release wget gpg  # for install
 CODENAME=`lsb_release -c -s`
 sudo mkdir -p /etc/apt/keyrings
 wget -O- https://rspamd.com/apt-stable/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/rspamd.gpg > /dev/null
