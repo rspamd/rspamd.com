@@ -49,6 +49,12 @@ title: Rspamd spam filtering system
 </div>
 <div class="row who-uses">
 		<div id="text-carousel" class="carousel slide" data-bs-ride="carousel">
+			<div class="carousel-indicators">
+				<button type="button" data-bs-target="#text-carousel" data-bs-slide-to="0" aria-label="Slide 1" class="active" aria-current="true"></button>
+				<button type="button" data-bs-target="#text-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+				<button type="button" data-bs-target="#text-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+				<button type="button" data-bs-target="#text-carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+			</div>
 				<!-- Controls carousel-->
 				<button class="carousel-control-prev" type="button" data-bs-target="#text-carousel" data-bs-slide="prev">
 						<span class="carousel-control-prev-icon"></span>

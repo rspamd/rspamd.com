@@ -242,6 +242,11 @@ h6:hover .header-link {
   opacity: 1;
 }
 
+.who-uses .carousel-indicators button,
+.who-uses .carousel-control-next-icon,
+.who-uses .carousel-control-prev-icon {
+  filter: invert(50%);
+}
 .carousel-control-next,
 .carousel-control-prev {
   width: 10%;
