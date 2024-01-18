@@ -7,11 +7,7 @@ title: General information
 
 Rspamd employs the Universal Configuration Language (UCL) for its configuration. You can find an extensive description of the UCL format in this [document](ucl.html). Additionally, Rspamd introduces a range of variables and macros to enhance UCL's functionality.
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## UCL sections and includes
 

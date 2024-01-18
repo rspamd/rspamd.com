@@ -8,11 +8,7 @@ title: Rspamd Selectors
 
 Rspamd selectors is a Lua framework that allows functional extraction and processing of data from messages.
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## Introduction
 

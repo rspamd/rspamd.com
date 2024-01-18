@@ -11,11 +11,7 @@ title: Usage of fuzzy hashes
 
 Fuzzy hashing can be used to search for similar messages, allowing us to identify messages with the same or slightly modified text. This technique is particularly useful for blocking spam that is sent to many users simultaneously.
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
+{% include toc.html %}
 
 The purpose of this page is to explain how to use fuzzy hashes, not to provide extensive details or a thorough understanding of how they work within Rspamd. However, the following summary should provide a basic understanding of the content covered on this page.
 

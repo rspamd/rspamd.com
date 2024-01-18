@@ -7,10 +7,7 @@ title: Writing rules for Rspamd
 
 In this tutorial, we describe how to create new rules for Rspamd - both using Lua and regular expressions.
 
-<div id="toc" markdown="1">
-  * this unordered seed list will be replaced by toc as unordered list
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## Introduction
 

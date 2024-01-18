@@ -8,11 +8,7 @@ title: Frequently asked questions
 
 This document includes some questions and practical examples that are frequently asked by Rspamd users.
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## General questions
 

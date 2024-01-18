@@ -8,11 +8,7 @@ title: Milter headers module
 
 The `milter headers` module (formerly known as `rmilter headers`) has been added in Rspamd 1.5 to provide a relatively simple way to configure adding/removing of headers via Rmilter (the alternative being to use the [API]({{ site.baseurl }}/doc/lua/rspamd_task.html#me7351)). Despite its name, it is not tied to the `milter` protocol and also works with supported mailservers that use the HTTP interface such as Haraka and OpenSMTPD.
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## Principles of operation
 

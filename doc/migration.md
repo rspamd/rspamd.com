@@ -7,11 +7,7 @@ title: Upgrading
 
 This document outlines the modifications to Rspamd in recent versions, including any incompatible changes, and provides instructions for updating your rules and configuration accordingly.
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## Efficient Rspamd Cluster Upgrade Guide
 

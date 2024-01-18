@@ -6,11 +6,7 @@ title: Rspamd Logging
 # Rspamd logging settings
 {:.no_toc}
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## Introduction
 

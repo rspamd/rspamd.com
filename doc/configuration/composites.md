@@ -8,12 +8,7 @@ title: Rspamd Composites
 
 Rspamd composites are used to combine rules and create more complex rules. Composite rules are defined in the `composites` section of the configuration. 
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
-
+{% include toc.html %}
 
 ## Configuration
 

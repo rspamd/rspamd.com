@@ -8,11 +8,7 @@ title: Greylisting module
 
 The purpose of this module is to delay messages that have a spam score above the `greylisting` action threshold.
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## Principles of work
 

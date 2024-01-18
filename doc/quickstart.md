@@ -13,11 +13,7 @@ This guide outlines the primary procedures for obtaining and initiating work wit
 - Redis cache
 - Dovecot with Sieve plugin to sort mail and learn by moving messages to `Junk` folder
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## Alternative guides (3rd party)
 

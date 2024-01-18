@@ -10,11 +10,7 @@ The Clickhouse module pushes a range of message-related metadata to an instance 
 
 Additionally, this module enables you to construct your custom analytical dashboard using [Redash](https://redash.io), similar to using Elastic and Kibana.
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## Module Configuration
 

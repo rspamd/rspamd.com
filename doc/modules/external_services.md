@@ -7,11 +7,7 @@ title: External Services module
 
 The External Services module, which has been available since Rspamd 1.9.0, enables integration with a range of external services.
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## Configuration
 

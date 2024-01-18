@@ -7,10 +7,7 @@ title: Writing tests for Rspamd
 
 Testing is a crucial aspect of ensuring the stability of a product. In the case of Rspamd, there has historically been a lack of comprehensive testing, but we are actively working to improve this. We welcome and greatly appreciate any contributions from the community.
 
-<div id="toc" markdown="1">
-  * this unordered seed list will be replaced by toc as unordered list
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## Introduction
 

@@ -11,11 +11,7 @@ By default, Rspamd comes with a set of RBL rules pre-configured for popular reso
 
 For example, you can use [Abusix Mail Intelligence](https://docs.abusix.com/abusix-mail-intelligence/getting-started/dmw9dcwSGSNQiLTssFAnBW#rspamd) or [Spamhaus DQS](https://github.com/spamhaus/rspamd-dqs) or any other RBL provider that suits your needs.
 
-<div id="toc" markdown="1">
-  <h2 class="toc-header">Contents</h2>
-  * TOC
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## Configuration structure
 

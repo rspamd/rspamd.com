@@ -7,10 +7,7 @@ title: Sync and Async API comparison
 
 This guide describes how to make asynchronous calls from Rspamd plugins and rules.
 
-<div id="toc" markdown="1">
-  * this unordered seed list will be replaced by toc as unordered list
-  {:toc}
-</div>
+{% include toc.html %}
 
 ## Overview {#overview}
 
