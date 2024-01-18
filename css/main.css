@@ -37,15 +37,10 @@ h1, h2, h3 {
   margin-bottom:10px;
   line-height:1.1;
 }
-h1{
-  font-size: 36px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
+h1, .h1 { font-size: 36px; }
+h2, .h2 { font-size: 32px; }
+h3, .h3 { font-size: 24px; }
+h4, .h4 { font-size: 18px; }
 .highlight, pre { border-radius:4px; }
 pre {
   padding:9.5px;
@@ -143,9 +138,6 @@ code,kbd,pre,samp {
   font-family: monospace;
 }
 
-h2{
-  font-size: 32px;
-}
 #jumbo-rmilter{
   background: url({{ site.baseurl }}/img/rmilter_jumbotron.png);
   background-size: cover;
