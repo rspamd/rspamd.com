@@ -142,8 +142,8 @@ code,kbd,pre,samp {
   background-size: cover;
 }
 
-.navbar { min-height: 42px; }
-.navbar-brand { height: 42px; }
+.navbar { min-height: var(--navbar-height); }
+.navbar-brand img { height: calc(var(--navbar-height) - 4px); }
 .nav>li>a { padding: 13px; }
 
 .breadcrumb{
