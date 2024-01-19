@@ -61,13 +61,12 @@ code {
   text-decoration:none;
   background-color:#eeeeee
 }
-.navbar-default .navbar-nav .nav-link {
+#navbar .navbar-nav .nav-link {
   color: #ffffff;
   padding: 13px;
 }
-.navbar-default .navbar-nav>li>a:hover,
-.navbar-default .navbar-nav>li>a:focus {
-  color: #ffffff;
+#navbar .navbar-nav>li>a:hover,
+#navbar .navbar-nav>li>a:focus {
   background-color: #97310e;
 }
 .r-docs-content ol {
