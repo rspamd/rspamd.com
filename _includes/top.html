@@ -45,10 +45,6 @@
     </script>
     <script type="module" src="{{ site.baseurl }}/js/search.js"></script>
     <style>
-        .donate button {
-            border: 1px solid #fff;
-        }
-
         .r-nav-container .navbar-toggler {
             padding:9px 10px;
             margin-top:8px;
@@ -74,17 +70,6 @@
             border-color: #97310e !important;
             background-color: #97310e !important;
         }
-
-        @media screen and (min-width: 768px) and (max-width: 896px) {
-            .navbar-nav > li > a {
-                padding: 15px 10px;
-                font-size: 12px;
-            }
-
-            .donate button {
-                font-size: 12px;
-            }
-        }
     </style>
 </head>
 
@@ -106,10 +91,10 @@
             <div id="navbar" class="navbar-collapse collapse navbar-nav-scroll">
                 <ul class="nav navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ site.baseurl }}/downloads.html">Downloads <i class="fa fa-lg fa-download"></i></a></a>
+                        <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/downloads.html">Downloads&nbsp;<i class="fa fa-lg fa-download"></i></a></a>
                     </li>
                     <li class="nav-item dropdown position-static">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentation
+                        <a href="#" class="nav-link d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentation
                            <span class="caret"></span></a>
                         <ul class="dropdown-menu w-100 mt-0 border-top rounded-0">
                             <li class="tb-row"><a class="dropdown-item" href="{{ site.baseurl }}/doc/index.html">Documentation index <small><i class="fa fa-chevron-right"></i></small></a></li>
@@ -169,22 +154,22 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ site.baseurl }}/blog/">News</a>
+                        <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/blog/">News</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ site.baseurl }}/doc/usage_policy.html">Usage policies</a>
+                        <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/doc/usage_policy.html">Usage policies</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ site.baseurl }}/commercial.html">Commercial support</a>
+                        <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/commercial.html">Commercial support</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ site.baseurl }}/support.html">Community</a>
+                        <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/support.html">Community</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://bl.rspamd.com/" target="_blank">List removal</a>
+                        <a class="nav-link d-flex align-items-center" href="https://bl.rspamd.com/" target="_blank">List removal</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/rspamd/rspamd" target="_blank"><i class="fa fa-lg fa-github" aria-hidden="true"></i>&nbsp;GitHub</a>
+                        <a class="nav-link d-flex align-items-center" href="https://github.com/rspamd/rspamd" target="_blank"><i class="fa fa-lg fa-github" aria-hidden="true"></i>&nbsp;GitHub</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav ms-auto">
@@ -194,18 +179,16 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/{{ page.path }}"
+                        <a class="nav-link d-flex align-items-center" target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/{{ page.path }}"
                             title="Edit the current page and create a pull request on GitHub"><i class="fa fa-lg fa-pencil"></i>&nbsp;Edit</a>
                     </li>
                     <li class="nav-item">
-                        <form class="donate" action="https://www.paypal.com/cgi-bin/webscr" method="post">
-                            <fieldset>
+                        <form class="donate nav-link d-flex align-items-center px-3" action="https://www.paypal.com/cgi-bin/webscr" method="post">
                                 <input type="hidden" name="cmd" value="_s-xclick">
                                 <input type="hidden" name="hosted_button_id" value="32NL9H6JS6K9C">
                                 <input name="currency_code" value="GBP" type="hidden"/>
                                 <input name="no_shipping" value="1" type="hidden"/>
-                                <button type='submit' class='btn btn-primary'>Donate</button>
-                            </fieldset>
+                                <button type="submit" class="btn btn-primary">Donate</button>
                         </form>
                     </li>
                 </ul>

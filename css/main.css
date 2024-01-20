@@ -18,7 +18,7 @@ body {
 a, .btn:hover, .btn:focus {
   text-decoration: none;
 }
-.dropdown a {
+.dropdown-item {
   color:#dd4814;
   white-space: unset;
   padding: 0;
@@ -61,10 +61,15 @@ code {
   text-decoration:none;
   background-color:#eeeeee
 }
-#navbar .navbar-nav .nav-link {
-  color: #ffffff;
-  padding: 13px;
+#navbar .nav-link{
+  height: var(--navbar-height);
 }
+#navbar .navbar-nav .nav-link,
+#navbar .ais-InstantSearch {
+  padding-left: 13px;
+  padding-right: 13px;
+}
+#navbar .navbar-nav .nav-link { color: #ffffff; }
 #navbar .navbar-nav>li>a:hover,
 #navbar .navbar-nav>li>a:focus {
   background-color: #97310e;
@@ -144,7 +149,6 @@ code,kbd,pre,samp {
 
 .navbar { min-height: var(--navbar-height); }
 .navbar-brand img { height: calc(var(--navbar-height) - 4px); }
-.nav>li>a { padding: 13px; }
 
 .breadcrumb{
   background-color: transparent;
@@ -331,12 +335,7 @@ li.tb-row a:hover,  li.tb-row a:focus{
   color: #993300;
 }
 
-#navbar .donate button {
-  border: 1px solid #CCC;
-  height: 30px;
-  margin: 8px;
-  line-height: 10px;
-}
+#navbar .donate button { border: 1px solid #CCC; }
 
 div#toc {
   display: inline-block;
