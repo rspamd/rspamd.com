@@ -64,8 +64,7 @@ code {
 #navbar .nav-link{
   height: var(--navbar-height);
 }
-#navbar .navbar-nav .nav-link,
-#navbar .ais-InstantSearch {
+#navbar .navbar-nav .nav-link {
   padding-left: 13px;
   padding-right: 13px;
 }
@@ -409,5 +408,4 @@ div#toc {
 .ais-Hits-item a { font-size: 21px; }
 .ais-Hits-item:nth-child(odd) { background-image: linear-gradient(to right, white 0%, white 30%, #E8E8E8 70%, #E8E8E8 100%); }
 .ais-Hits-item:nth-child(even) { background-image: linear-gradient(to right, #E8E8E8 0%, #E8E8E8 30%, white 70%, white 100%); }
-#navbar .ais-InstantSearch { padding: 10px; }
 /* stylelint-enable */
