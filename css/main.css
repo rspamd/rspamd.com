@@ -307,31 +307,13 @@ h6:hover .header-link {
 }
 
 ul.dropdown-menu > li {
-  padding: 0 10px;
+  padding: 0 1rem;
   line-height: 150%;
 }
 
 ul.dropdown-menu {
   padding: 20px 20px 50px 20px;
   background-color: #E8E8E8;
-}
-
-li.tb-row {
-  display: table-row !important;
-  font-size: 18px;
-  height: 40px;
-}
-
-li.tb-row a {
-  padding-left: 10px !important;
-  font-weight: bold;
-  color: #dd4814;
-}
-
-li.tb-row a:hover,  li.tb-row a:focus{
-  background-color: transparent !important;
-  text-decoration: underline;
-  color: #993300;
 }
 
 #navbar .donate button { border: 1px solid #CCC; }
