@@ -65,10 +65,9 @@ code {
   height: var(--navbar-height);
 }
 #navbar .navbar-nav .nav-link {
-  padding-left: 13px;
-  padding-right: 13px;
+  color: #ffffff;
+  padding: 0 9px;
 }
-#navbar .navbar-nav .nav-link { color: #ffffff; }
 #navbar .navbar-nav>li>a:hover,
 #navbar .navbar-nav>li>a:focus {
   background-color: #97310e;
@@ -369,9 +368,15 @@ div#toc {
   transform: translateY(-50%);
   left: 0.5rem;
 }
-.ais-SearchBox-input {
-  padding-right: 2.5rem;
-  width: 130px;
+.ais-SearchBox-input { padding-right: 2.5rem; }
+@media(max-width:1199px) {
+  form.ais-InstantSearch { width: 50%; }
+}
+@media(min-width:1200px) {
+  .ais-SearchBox-input { width: 130px; }
+}
+@media(min-width:1400px) {
+  .ais-SearchBox-input:focus { width: 300px; }
 }
 .ais-SearchBox-loadingIndicator, .ais-SearchBox-reset { right: 0.5rem; }
 #pagination .ais-Panel { margin-bottom: 2px; }

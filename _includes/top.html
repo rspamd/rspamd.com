@@ -75,11 +75,14 @@
 
 <body class="d-flex flex-column h-100">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg bg-primary fixed-top py-0" role="navigation">
+    <nav class="navbar navbar-expand-xl bg-primary fixed-top py-0" role="navigation">
         <div class="r-nav-container container-fluid pe-lg-0">
-                <a class="navbar-brand d-flex justify-content-center p-0" href="{{ site.baseurl }}/">
+                <a class="navbar-brand d-flex justify-content-center m-0 p-0" href="{{ site.baseurl }}/">
                     <img src="{{ site.baseurl }}/img/rspamd_logo_navbar.png">
                 </a>
+                <form class="ais-InstantSearch px-3">
+                    <div id="searchbox"></div>
+                </form>
                 <!--toggle button for xs-size-->
                 <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbar">
                       <span class="sr-only">Toggle navigation</span>
@@ -89,7 +92,7 @@
                   </button>
                 </button>
             <div id="navbar" class="navbar-collapse collapse navbar-nav-scroll">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/downloads.html">Downloads&nbsp;<i class="fa fa-lg fa-download"></i></a></a>
                     </li>
@@ -177,11 +180,6 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center px-3 ais-InstantSearch">
-                            <div id="searchbox" class="w-100"></div>
-                        </a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/{{ page.path }}"
                             title="Edit the current page and create a pull request on GitHub"><i class="fa fa-lg fa-pencil"></i>&nbsp;Edit</a>
