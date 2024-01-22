@@ -145,8 +145,25 @@ code,kbd,pre,samp {
   background-size: cover;
 }
 
-.navbar { min-height: var(--navbar-height); }
-.navbar-brand img { height: calc(var(--navbar-height) - 4px); }
+.navbar-brand { height: var(--navbar-height); }
+
+.r-nav-container .navbar-toggler {
+  padding: 8px 9px;
+  border-color: #fff;
+}
+.r-nav-container .navbar-toggler:hover {
+  border-color: #97310e;
+  background-color: #97310e;
+}
+.r-nav-container .navbar-toggler .icon-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: #fff;
+}
+.r-nav-container .navbar-toggler .icon-bar + .icon-bar {
+  margin-top: 4px;
+}
 
 .breadcrumb{
   background-color: transparent;

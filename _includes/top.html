@@ -44,41 +44,14 @@
         ga('send', 'pageview');
     </script>
     <script type="module" src="{{ site.baseurl }}/js/search.js"></script>
-    <style>
-        .r-nav-container .navbar-toggler {
-            padding:9px 10px;
-            margin-top:8px;
-            margin-bottom:8px;
-        }
-        .r-nav-container .navbar-toggler .icon-bar {
-            display:block;
-            width:22px;
-            height:2px;
-            border-radius:1px;
-            background-color: rgb(255, 255, 255);
-        }
-        .navbar-toggler .icon-bar + .icon-bar {
-            margin-top:4px
-        }
-
-        .r-nav-container .navbar-toggler {
-            margin-right: 0;
-            border-color: #fff !important;
-        }
-
-        .r-nav-container .navbar-toggler:hover {
-            border-color: #97310e !important;
-            background-color: #97310e !important;
-        }
-    </style>
 </head>
 
 <body class="d-flex flex-column h-100">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-xl bg-primary fixed-top py-0" role="navigation">
         <div class="r-nav-container container-fluid">
-                <a class="navbar-brand d-flex justify-content-center m-0 p-0" href="{{ site.baseurl }}/">
-                    <img src="{{ site.baseurl }}/img/rspamd_logo_navbar.png">
+                <a class="navbar-brand d-flex align-items-center justify-content-center m-0 px-0 py-1" href="{{ site.baseurl }}/">
+                    <img class="h-100" src="{{ site.baseurl }}/img/rspamd_logo_navbar.png">
                 </a>
                 <form class="ais-InstantSearch px-3">
                     <div id="searchbox"></div>
