@@ -9,11 +9,11 @@
 
 /* Override bootstrap 4 and 5 changes */
 html {
-  font-size:10px;
+  font-size: 10px;
 }
 body {
-  font-size:14px;
-  line-height:1.42857143;
+  font-size: 14px;
+  line-height: 1.4286;
   padding-top: var(--navbar-height);
 }
 a, .btn:hover, .btn:focus {
@@ -102,7 +102,7 @@ h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6,
     font-family: Tahoma, Arial, sans-serif;
 }
 html.hasFontSmoothing-false code,kbd,pre,samp {
-    font-family: Courier New, monospace;
+    font-family: "Courier New", monospace;
 }
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 1024px) {
@@ -240,7 +240,6 @@ table.table{
   left: 0.6em;
   opacity: 0;
   font-size: 0.8em;
-
   -webkit-transition: opacity 0.2s ease-in-out 0.1s;
   -moz-transition: opacity 0.2s ease-in-out 0.1s;
   -ms-transition: opacity 0.2s ease-in-out 0.1s;
