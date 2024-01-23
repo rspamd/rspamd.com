@@ -4,6 +4,7 @@
 
 :root {
   --navbar-height: 46px;
+  --nav-link-hover-color: #97310e;
 }
 
 /* Override bootstrap 4 and 5 changes */
@@ -26,7 +27,7 @@ a, .btn:hover, .btn:focus {
 a:hover, a:focus,
 .dropdown-item:hover, .dropdown-item:focus {
   background-color: transparent;
-  color: #97310e;
+  color: var(--nav-link-hover-color);
   text-decoration: underline;
 }
 ul {
@@ -70,7 +71,7 @@ code {
 }
 #navbar .navbar-nav>li>a:hover,
 #navbar .navbar-nav>li>a:focus {
-  background-color: #97310e;
+  background-color: var(--nav-link-hover-color);
 }
 .r-docs-content ol {
   padding-left: 40px;
@@ -152,8 +153,8 @@ code,kbd,pre,samp {
   border-color: #fff;
 }
 .r-nav-container .navbar-toggler:hover {
-  border-color: #97310e;
-  background-color: #97310e;
+  border-color: var(--nav-link-hover-color);
+  background-color: var(--nav-link-hover-color);
 }
 .r-nav-container .navbar-toggler .icon-bar {
   display: block;
