@@ -3,7 +3,7 @@ layout: home
 title: Rspamd spam filtering system
 ---
 
-<div class="row news_row mx-auto">
+<div class="row news_row rounded-3 mx-auto my-4 p-3">
 		<div class="col-12 col-sm-10">
 				<h3 style="margin: 0px;">News: Rspamd 3.8.0 has been released</h3>
 				<span class="date"><small>2024-01-19</small></span>
@@ -14,7 +14,7 @@ title: Rspamd spam filtering system
 	</div>
 </div>
 
-<div class="r-tiles-group">
+<div class="d-flex flex-wrap justify-content-between my-4">
     <a href="{{ site.baseurl }}/performance.html" class="r-tile">
         <img src="img/performance.jpg" alt="">
         <h2>Performance&nbsp;<i class="fa fa-chevron-right"></i></h2>
@@ -47,8 +47,8 @@ title: Rspamd spam filtering system
         <p>Check this page if you need help or want to make a donation or contribute to Rspamd</p>
     </a>
 </div>
-<div class="row who-uses">
-		<div id="text-carousel" class="carousel slide" data-bs-ride="carousel">
+<div class="row who-uses mx-auto my-4">
+		<div id="text-carousel" class="carousel slide rounded-3 px-5" data-bs-ride="carousel">
 			<div class="carousel-indicators">
 				<button type="button" data-bs-target="#text-carousel" data-bs-slide-to="0" aria-label="Slide 1" class="active" aria-current="true"></button>
 				<button type="button" data-bs-target="#text-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>

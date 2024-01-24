@@ -266,11 +266,6 @@ h6:hover .header-link {
   width:5rem;
   height:5rem;
 }
-.who-uses{
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
 .who-uses .blockquote {
   font-size: 14px;
   border-color: #E8E8E8;
@@ -282,11 +277,8 @@ h6:hover .header-link {
     font-size: 10px;
   }
 }
-.news_row{
+.news_row {
   background-image: linear-gradient(to right, #E8E8E8 0%, white 30%, white 70%, #E8E8E8 100%);
-  border-radius: 4px;
-  margin-top: 20px;
-  padding: 10px;
 }
 @media (min-width: 768px) {
   .bottom-right {

@@ -38,14 +38,6 @@
 		font-size: 21px;
 	}
 
-	.r-tiles-group {
-		display: flex;
-		flex-flow: wrap;
-		justify-content: space-between;
-		margin-top: 40px;
-		margin-bottom: 40px;
-	}
-
 	.r-tile {
 		display: flex;
 		flex-basis: calc(33.33% - 10px);
@@ -54,7 +46,7 @@
 		flex-direction: column;
 		padding: 10px;
 		border: 1px solid #dddddd;
-		border-radius: 4px;
+		border-radius: var(--bs-border-radius-lg);
 		margin: 8px 0;
 		min-height: 250px;
 		color: #333;
@@ -98,10 +90,7 @@
 	}
 
 	.who-uses #text-carousel {
-		padding: 20px;
 		background-image: linear-gradient(to right, #E8E8E8 0%, white 30%, white 70%, #E8E8E8 100%);
-		border-radius: 4px;
-		margin-bottom: 50px;
 	}
 
 	.who-uses .carousel-control-next,
