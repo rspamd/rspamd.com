@@ -3,7 +3,7 @@ layout: home
 title: Rspamd spam filtering system
 ---
 
-<div class="row news_row" style="position: relative;">
+<div class="row news_row mx-auto" style="position: relative;">
 		<div class="col-12 col-sm-10">
 				<h3 style="margin: 0px;">News: Rspamd 3.8.0 has been released</h3>
 				<span class="date"><small>2024-01-19</small></span>
