@@ -3,33 +3,14 @@
 
 <style>
 	.r-banner {
-		min-height: calc(100vh - 160px);
 		background-color: #bde7fb;
 		background-image: url("img/r-bg.jpg");
 		background-size: cover;
-		margin-top: -20px;
-		display: flex;
-		align-items: center;
 	}
-
-	.r-banner .container {
-		text-align: center;
-		padding-top: 50px;
-		padding-bottom: 50px;
-	}
-
-	.r-banner h1 {
-		padding: 0;
-		font-size: 75px;
-	}
-
-	.r-banner p {
-		font-size: 20px;
-	}
-
+	.r-banner h1 { font-size: 75px;	}
+	.r-banner p { font-size: 20px; }
 	.r-banner a {
 		font-size: 20px;
-		margin-top: 8px;
 		padding: 8px 30px;
 	}
 
@@ -150,16 +131,6 @@
 		}
 	}
 </style>
-	<div class="r-banner">
-		<div class="container">
-			<h1>Rspamd</h1>
-			<p>Fast, free and open-source spam filtering system.</p>
-			<a class="btn btn-primary btn-large" href="{{ site.baseurl }}/doc/quickstart.html">Quick start <small><i class="fa fa-chevron-right"></i></small></a>
-		</div>
-	</div>
-
-	<div class="container-fluid w-auto mx-2">
-		{{ content }}
-	</div>
+{{ content }}
 {% include bottom.html %}
 </html>
