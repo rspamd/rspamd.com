@@ -189,22 +189,22 @@ table {
   box-shadow: 2px 2px 8px #ddd;
   margin: 2rem 1rem;
 }
-tr:nth-child(2n) > td,
-tr:nth-child(2n) > th {
-  background-color: #f8f8f8;
-}
+
 th, td {
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   padding: 6px 13px;
 }
-th:last-child, td:last-child { border-right: none; }
-tbody tr:last-child td, thead:last-child td { border-bottom: none; }
-
-th{
+th {
   padding-left: 30px !important;
   background-color: #E8E8E8 !important;
 }
+th:last-child, td:last-child { border-right: none; }
+tr:nth-child(2n) > td,
+tr:nth-child(2n) > th {
+  background-color: #f8f8f8;
+}
+thead:last-child td, tbody tr:last-child td { border-bottom: none; }
 
 /* Anchors for headings */
 .header-link {
