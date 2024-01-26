@@ -5,6 +5,7 @@
 :root {
   --navbar-height: 46px;
   --nav-link-hover-color: #97310e;
+  --table-border-color: #ddd;
 }
 
 /* Override bootstrap 4 and 5 changes */
@@ -183,16 +184,16 @@ ul.nav-stacked .nav-link:hover {
 
 table {
   border-radius: 5px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--table-border-color);
   border-collapse: separate;
   border-spacing: 0;
-  box-shadow: 2px 2px 8px #ddd;
+  box-shadow: 2px 2px 8px var(--table-border-color);
   margin: 2rem 1rem;
 }
 
 th, td {
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  border-right: 1px solid var(--table-border-color);
+  border-bottom: 1px solid var(--table-border-color);
   padding: 6px 13px;
 }
 th {
