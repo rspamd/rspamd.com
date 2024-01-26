@@ -10,24 +10,10 @@ At build time Markdown sources are being converted into HTML pages and their fil
 
 To keep web-site portable please use `site.url` and `site.baseurl` variables when creating local links. Absolute local links should start with {{ "{{" }}&nbsp;site.url&nbsp;}}{{ "{{" }}&nbsp;site.baseurl&nbsp;}} and root-relative ones with {{ "{{" }}&nbsp;site.baseurl&nbsp;}}:
 
-<table>
-  <thead>
-    <tr>
-      <th>correct</th>
-      <th>incorrect</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>[link]({{ "{{ site.url " }}}}{{ "{{ site.baseurl " }}}}/dir/doc.html)</code></td>
-      <td><code>[link](https://rspamd.com/dir/doc.html)</code></td>
-    </tr>
-    <tr>
-      <td><code>[link]({{ "{{ site.baseurl " }}}}/dir/doc.html)</code></td>
-      <td><code>[link](/dir/doc.html)</code></td>
-    </tr>
-  </tbody>
-</table>
+| Correct | Incorrect |
+| ------- | --------- |
+| `[link]({{ "{{ site.url " }}}}{{ "{{ site.baseurl " }}}}/dir/doc.html)` | `[link](https://rspamd.com/dir/doc.html)` |
+| `[link]({{ "{{ site.baseurl " }}}}/dir/doc.html)` | `[link](/dir/doc.html)` |
 
 ## Testing changes
 
