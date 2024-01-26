@@ -187,7 +187,7 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   box-shadow: 2px 2px 8px #ddd;
-  margin: 0 0 10px;
+  margin: 2rem 1rem;
 }
 tr:nth-child(2n) > td,
 tr:nth-child(2n) > th {
@@ -199,7 +199,7 @@ th, td {
   padding: 6px 13px;
 }
 th:last-child, td:last-child { border-right: none; }
-tr:last-child td, thead:last-child th { border-bottom: none; }
+tbody tr:last-child td, thead:last-child td { border-bottom: none; }
 
 th{
   padding-left: 30px !important;
