@@ -13,7 +13,7 @@ To keep web-site portable please use `site.url` and `site.baseurl` variables whe
 <div class="table-responsive">
   <table class="table">
     <thead>
-      <tr class="info">
+      <tr>
         <th>correct</th>
         <th>incorrect</th>
       </tr>

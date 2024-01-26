@@ -8,14 +8,14 @@ title: Compare Rspamd with other spam filters
     <table class="table">
       <thead>
         <tr>
-          <th class="col-3"></th>
-          <th class="col-3"><img src="img/rspamd_logo_small_black_simple.jpg" class="img-fluid"></th>
-          <th class="col-3"><img src="img/spamassassin_logo.jpg" class="img-fluid"></th>
-          <th class="col-3"><img src="img/dspam_logo.jpg" class="img-fluid"></th>
+          <td class="col-3"></td>
+          <td class="col-3"><img src="img/rspamd_logo_small_black_simple.jpg" class="img-fluid"></td>
+          <td class="col-3"><img src="img/spamassassin_logo.jpg" class="img-fluid"></td>
+          <td class="col-3"><img src="img/dspam_logo.jpg" class="img-fluid"></td>
         </tr>
       </thead>
       <tbody>
-        <tr class="info">
+        <tr>
           <th colspan="4">
             General
           </th>
@@ -68,7 +68,7 @@ title: Compare Rspamd with other spam filters
           <td><span class="fa fa-lg fa-check icon-green"></span> active</td>
           <td><span class="fa fa-lg fa-times icon-red"></span> abandoned</td>
         </tr>
-        <tr class="info">
+        <tr>
           <th colspan="4">
             Mail filtering features
           </th>
@@ -97,7 +97,7 @@ title: Compare Rspamd with other spam filters
           <td><span class="fa fa-lg fa-check icon-green"></span></td>
           <td><span class="fa fa-lg fa-times icon-red"></span></td>
         </tr>
-        <tr class="info">
+        <tr>
           <th colspan="4">
             Filtering methods
           </th>
@@ -198,7 +198,7 @@ title: Compare Rspamd with other spam filters
           <td><span class="fa fa-lg fa-check icon-green"></span></td>
           <td><span class="fa fa-lg fa-times icon-red"></span></td>
         </tr>
-        <tr class="info">
+        <tr>
           <th colspan="4">
             Statistical methods
           </th>
@@ -251,17 +251,17 @@ title: Compare Rspamd with other spam filters
           <td><span class="fa fa-lg fa-times icon-red"></span></td>
           <td><span class="fa fa-lg fa-times icon-red"></span></td>
         </tr>
-        <tr class="info">
+        <tr>
           <th colspan="4">&nbsp;
           </th>
         </tr>
       </tbody>
       <thead>
         <tr>
-          <th></th>
-          <th><img src="img/rspamd_logo_small_black_simple.jpg" class="img-fluid"></th>
-          <th><img src="img/spamassassin_logo.jpg" class="img-fluid"></th>
-          <th><img src="img/dspam_logo.jpg" class="img-fluid"></th>
+          <td></td>
+          <td><img src="img/rspamd_logo_small_black_simple.jpg" class="img-fluid"></td>
+          <td><img src="img/spamassassin_logo.jpg" class="img-fluid"></td>
+          <td><img src="img/dspam_logo.jpg" class="img-fluid"></td>
         </tr>
       </thead>
     </table>

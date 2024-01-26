@@ -201,10 +201,9 @@ th, td {
 th:last-child, td:last-child { border-right: none; }
 tr:last-child td, thead:last-child th { border-bottom: none; }
 
-tr.info th{
+th{
   padding-left: 30px !important;
   background-color: #E8E8E8 !important;
-  border-right: none;
 }
 
 /* Anchors for headings */
