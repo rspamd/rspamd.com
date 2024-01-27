@@ -83,10 +83,6 @@ code {
   font-size: 16px;
 }
 
-.affix {
-  width: auto;
-  position: static;
-}
 /* Use only web safe fonts when font-smoothing is not enabled */
 html.hasFontSmoothing-false body,
 h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6,
@@ -97,15 +93,17 @@ h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6,
 html.hasFontSmoothing-false code,kbd,pre,samp {
     font-family: "Courier New", monospace;
 }
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 1024px) {
+
+/* _layouts/rmilter.html */
+.affix { position: static; }
+@media screen and (min-width: 768px) {
   .affix {
     position: fixed;
     top: 50px;
-    width: auto;
 	  margin-top: 50px;
   }
 }
+
 pre{
   /* code aria */
   background-color: #ffffff;
