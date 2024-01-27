@@ -83,14 +83,6 @@ code {
   font-size: 16px;
 }
 
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-  padding-left: 15px;
-  padding-right: 15px;
-}
-body {
-  position: relative;
-}
 .affix {
   width: auto;
   position: static;
@@ -107,10 +99,6 @@ html.hasFontSmoothing-false code,kbd,pre,samp {
 }
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 1024px) {
-  /* Remove padding from wrapping element since we kick in the grid classes here */
-  .body-content {
-    padding: 0;
-  }
   .affix {
     position: fixed;
     top: 50px;
