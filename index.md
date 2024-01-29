@@ -12,7 +12,7 @@ title: Rspamd spam filtering system
 		</div>
 		</div>
 		<div class="container-fluid w-auto mx-2">
-		<div class="row news_row rounded-3 mx-auto my-4 p-3">
+		<div class="row news-row rounded-3 mx-auto my-4 p-3">
 			<div class="col-12 col-sm-10">
 				<h3 style="margin: 0px;">News: Rspamd 3.8.1 has been released</h3>
 				<span class="date"><small>2024-01-25</small></span>

@@ -236,9 +236,7 @@ h6:hover .header-link {
     font-size: 10px;
   }
 }
-.news_row {
-  background-image: linear-gradient(to right, #E8E8E8 0%, white 30%, white 70%, #E8E8E8 100%);
-}
+.news-row { background-image: linear-gradient(to right, #E8E8E8, white 30% 70%, #E8E8E8); }
 @media (min-width: 768px) {
   .bottom-right {
     position: absolute;
@@ -359,6 +357,6 @@ div#toc {
 }
 #hits { overflow-y: auto; }
 .ais-Hits-item a { font-size: 21px; }
-.ais-Hits-item:nth-child(odd) { background-image: linear-gradient(to right, white 0%, white 30%, #E8E8E8 70%, #E8E8E8 100%); }
-.ais-Hits-item:nth-child(even) { background-image: linear-gradient(to right, #E8E8E8 0%, #E8E8E8 30%, white 70%, white 100%); }
+.ais-Hits-item:nth-child(odd) { background-image: linear-gradient(to right, white 0% 30%, #E8E8E8 70% 100%); }
+.ais-Hits-item:nth-child(even) { background-image: linear-gradient(to right, #E8E8E8 0% 30%, white 70% 100%); }
 /* stylelint-enable */
