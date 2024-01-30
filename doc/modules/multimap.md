@@ -67,6 +67,7 @@ Optional map configuration attributes:
 * `group` - group for the symbol (can be redefined in `metric`)
 * `require_symbols` - expression of symbols that have to match for a specific message: [learn more](#conditional-maps)
 * `filter` - match specific part of the input (for example, email domain): [here](#map-filters) is the complete definition of maps filters
+* `extract_from` - attribute extracts values of the sender/recipient from the SMTP dialog or the From/To header. To achieve this, set the value to `smtp`, `mime`, or `both` to match both sources. It's important to note that `extract_from` is solely utilized in conjunction with the `from` or `rcpt` map [type](#map-types).
 
 When using header maps, it is essential to specify the exact `header` by utilizing the header option.
 
@@ -353,6 +354,7 @@ SPAMHAUS_PBL_BLACKLIST {
 }
 ~~~
 
+
 ## Multiple symbol maps
 
 Starting from version 1.3.1, it is now possible to define multiple symbols and scores using the multimap module. To achieve this, all possible symbols should be defined using the `symbols` option in the multimap:
@@ -487,6 +489,7 @@ BLACKLIST_FROM_DISPLAYNAME {
 SENDER_FROM_WHITELIST_USER {
   type = "from";
   filter = "email:user";
+  extract_from = "smtp"; 
   map = "file:///tmp/from.map";
   action = "accept"; # Prefilter mode
 }
