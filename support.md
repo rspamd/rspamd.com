@@ -27,13 +27,9 @@ Please join our community for updates, release announces and other news.
 ## Donations
 If you would like to support Rspamd you can make donations to help us covering hardware and conferences costs used for Rspamd development and promotion. You can donate via PayPal, GitHub Sponsors, or contact <support@rspamd.com>.
 <div class="btn-toolbar gap-3">
-    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-        <input type="hidden" name="cmd" value="_s-xclick">
-        <input type="hidden" name="hosted_button_id" value="32NL9H6JS6K9C">
-        <button type="submit" class="btn btn-lg btn-support btn-dropbox">
-            <i class="fa fa-paypal"></i> Paypal
-        </button>
-    </form>
+{% include paypal-form.html
+    button-class="btn btn-lg btn-support btn-dropbox"
+    button-text='<i class="fa fa-paypal"></i> Paypal' %}
 </div>
 
 ## Commercial Support
