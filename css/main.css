@@ -6,7 +6,7 @@
   --navbar-height: 46px;
   --nav-link-hover-color: #97310e;
   --table-border-color: #ddd;
-  --r-docs-nav-padding-top: 14px;
+  --r-docs-nav-padding-top: 10px;
 }
 
 /* Override bootstrap 4 and 5 changes */

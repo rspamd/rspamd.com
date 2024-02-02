@@ -13,11 +13,11 @@
 		position: fixed;
 		top: var(--navbar-height);
 		padding-top: var(--r-docs-nav-padding-top);
-		overflow: scroll;
-		height: calc(100vh - 70px);
+		overflow: auto;
+		max-height: calc(100vh - var(--navbar-height));
 		margin-left: -2px;
 		padding-left: 2px;
-		padding-bottom: 80px;
+		padding-bottom: 30px;
 	}
 
 	.r-docs-nav ul {
@@ -96,8 +96,7 @@
 		.r-docs-nav {
 			width: 100%;
 			position: static;
-			height: auto;
-			margin-top: 10px;
+			max-height: unset;
 			overflow: visible;
 			padding-bottom: 0;
 		}
@@ -298,7 +297,7 @@
 			</ul>
 		</div>
 
-		<div class="r-docs-content doc-content">
+		<div class="r-docs-content doc-content d-flex flex-column">
 			{{ content }}
 		<a class="button-fixed-bottom z-2" href="#top"><i class="fa fa-arrow-up"></i></a>
 		</div>
