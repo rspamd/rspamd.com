@@ -11,7 +11,8 @@
 	.r-docs-nav {
 		width: 300px;
 		position: fixed;
-		top: 70px;
+		top: var(--navbar-height);
+		padding-top: var(--r-docs-nav-padding-top);
 		overflow: scroll;
 		height: calc(100vh - 70px);
 		margin-left: -2px;
@@ -83,13 +84,12 @@
 		margin-left: 300px;
 	}
 
-	.r-docs-content h1, .r-docs-content h2, .r-docs-content h3 {
-		padding-top: 70px;
-		margin-top: -50px;
-		display: flex;
-    justify-content: start;
-    align-items: center;
-    line-height: 2;
+	.r-docs-content h1,
+	.r-docs-content h2,
+	.r-docs-content h3,
+	.r-docs-content h4 {
+		padding-top: calc(var(--navbar-height) + var(--r-docs-nav-padding-top));
+	  	margin-top: calc(14px - var(--navbar-height));
 	}
 
 	@media screen and (max-width: 768px) {
