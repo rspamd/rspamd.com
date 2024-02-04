@@ -2,12 +2,6 @@
 {% include top.html %}
 
 <style>
-	.r-docs-container {
-		width: calc(100vw - 44px);
-		margin: auto;
-		overflow: hidden;
-	}
-
 	.r-docs-nav {
 		width: 300px;
 		position: fixed;
@@ -19,25 +13,18 @@
 		padding-left: 2px;
 		padding-bottom: 30px;
 	}
+	.r-docs-nav a { color: black; }
+	.r-docs-nav a.active-link {
+		font-weight: bold;
+		color: #de4700;
+	}
 
-	.r-docs-nav ul {
+	.r-docs-subnav ul {
 		list-style: none;
 		padding-left: 15px;
 	}
-
-	.r-docs-nav > ul {
-		padding-left: 0;
-		padding-right: 28px;
-	}
-
-	.r-docs-subnav {
-		border-top: 1px solid #e4e4e4;
-		position: relative;
-	}
-
-	.r-docs-subnav:first-child {
-		border-top: none;
-	}
+	.r-docs-subnav > ul { display: none; }
+	.r-docs-subnav ul a { line-height: 1.6;	}
 
 	.r-docs-subnav.active-subnav::before {
 		content: '';
@@ -48,41 +35,10 @@
 		width: 2px;
 		background-color: #de4700;
 	}
+	.r-docs-subnav.active-subnav > ul {	display: block;	}
+	.r-docs-subnav.active-subnav > a { font-weight: bold; }
 
-	.r-docs-subnav > ul {
-		display: none;
-		padding-left: 21px;
-		padding-bottom: 6px;
-	}
-
-	.r-docs-subnav.active-subnav > ul {
-		display: block;
-	}
-
-	.r-docs-subnav.active-subnav > a {
-		font-weight: bold;
-	}
-
-	.r-docs-nav a {
-		color: black;
-		display: block;
-		padding: 8px 5px 5px 8px;
-		line-height: 1;
-	}
-
-	.r-docs-nav .r-docs-subnav ul a {
-		padding: 5px 0;
-	}
-
-	.r-docs-nav a.active-link {
-		font-weight: bold;
-		color: #de4700;
-	}
-
-	.r-docs-content {
-		width: calc(100% - 300px);
-		margin-left: 300px;
-	}
+	.r-docs-content { margin-left: 300px; }
 
 	.r-docs-content h1,
 	.r-docs-content h2,
@@ -92,7 +48,7 @@
 	  	margin-top: calc(14px - var(--navbar-height));
 	}
 
-	@media screen and (max-width: 768px) {
+	@media screen and (max-width: 767px) {
 		.r-docs-nav {
 			width: 100%;
 			position: static;
@@ -100,24 +56,14 @@
 			overflow: visible;
 			padding-bottom: 0;
 		}
-
-		.r-docs-content {
-			width: 100%;
-			margin-left: 0;
-		}
-
-		.r-docs-nav > ul {
-			padding-right: 0;
-		}
+		.r-docs-content { margin-left: 0; }
 	}
-
 </style>
 
 <div class="r-docs-container">
-	<div class="r-docs">
-		<div class="r-docs-nav">
-			<ul>
-				<li class="r-docs-subnav">
+		<div class="r-docs-nav px-4">
+			<ul class="list-group list-group-flush">
+				<li class="r-docs-subnav list-group-item">
 					<a href="{{ site.baseurl }}/doc/index.html">About Rspamd</a>
 					<ul>
 							<li><a href="{{ site.baseurl }}/downloads.html">Downloads</a></li>
@@ -128,7 +74,7 @@
 					</ul>
 				</li>
 
-				<li class="r-docs-subnav">
+				<li class="r-docs-subnav list-group-item">
 					<a href="#">Tutorials and Guides</a>
 					<ul>
 						<li><a href="{{ site.baseurl }}/doc/quickstart.html">Quick start</a></li>
@@ -141,11 +87,11 @@
 					</ul>
 				</li>
 
-				<li class="r-docs-subnav">
+				<li class="r-docs-subnav list-group-item">
 						<a href="{{ site.baseurl }}/doc/faq.html">FAQ</a>
 				</li>
 
-				<li class="r-docs-subnav">
+				<li class="r-docs-subnav list-group-item">
 					<a href="{{ site.baseurl }}/doc/configuration/index.html">Rspamd configuration</a>
 					<ul>
 						<li><a href="{{ site.baseurl }}/doc/configuration/ucl.html">Universal configuration language (UCL)</a></li>
@@ -161,7 +107,7 @@
 					</ul>
 				</li>
 
-				<li class="r-docs-subnav">
+				<li class="r-docs-subnav list-group-item">
 					<a href="{{ site.baseurl }}/doc/modules/">Modules documentation</a>
 					<ul>
 						<li><a href="{{ site.baseurl }}/doc/modules/antivirus.html"><strong>Antivirus</strong></a></li>
@@ -210,7 +156,7 @@
 					</ul>
 				</li>
 
-				<li class="r-docs-subnav">
+				<li class="r-docs-subnav list-group-item">
 					<a href="{{ site.baseurl }}/doc/workers/">Workers documentation</a>
 					<ul>
 						<li><a href="{{ site.baseurl }}/doc/workers/normal.html">Normal worker (scanner)</a></li>
@@ -220,7 +166,7 @@
 					</ul>
 				</li>
 
-				<li class="r-docs-subnav">
+				<li class="r-docs-subnav list-group-item">
 					<a href="#">Developers documentation</a>
 					<ul>
 						<li><a href="{{ site.baseurl }}/doc/tutorials/writing_rules.html">Writing Rspamd rules</a></li>
@@ -232,7 +178,7 @@
 					</ul>
 				</li>
 
-				<li class="r-docs-subnav">
+				<li class="r-docs-subnav list-group-item">
 					<a href="{{ site.baseurl }}/doc/lua/">Lua API reference</a>
 					<ul>
 						<li>
@@ -274,7 +220,7 @@
 					</ul>
 				</li>
 
-				<li class="r-docs-subnav">
+				<li class="r-docs-subnav list-group-item">
 					<a href="#">Other topics</a>
 					<ul>
 						<li><a href="{{ site.baseurl }}/doc/gtube_patterns.html">GTUBE-like test patterns</a></li>
@@ -285,7 +231,7 @@
 					</ul>
 				</li>
 
-				<li class="r-docs-subnav">
+				<li class="r-docs-subnav list-group-item">
 					<a href="#">External resources</a>
 					<ul>
 						<li><a href="https://thomas-leister.de/en/mailserver-debian-stretch/" target="_blank">Dovecot, Postfix, MySQL, Rspamd on Debian 9 Stretch</a></li>
@@ -297,12 +243,10 @@
 			</ul>
 		</div>
 
-		<div class="r-docs-content doc-content d-flex flex-column">
+		<div class="r-docs-content doc-content px-4">
 			{{ content }}
 		<a class="button-fixed-bottom z-2" href="#top"><i class="fa fa-arrow-up"></i></a>
 		</div>
-		</div>
-		
 </div>
 {% include bottom.html %}
 <script>
