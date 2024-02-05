@@ -57,11 +57,15 @@
 {% include bottom.html %}
 
 <script>
-    $( document ).ready(function() {
-        $('h2:contains("Full list of the meaningful changes")').addClass('r-post-changes').append('<i class="fa fa-chevron-down"></i>').on('click', function(e) {
-            $( this ).toggleClass('open');
-            $( this ).next().toggleClass('visible');
-        });
+    $(document).ready(() => {
+        "use strict";
+        $('h2:contains("Full list of the meaningful changes")')
+            .addClass("r-post-changes")
+            .append('<i class="fa fa-chevron-down"></i>')
+            .on("click", (e) => {
+                $(e.currentTarget).toggleClass("open");
+                $(e.currentTarget).next().toggleClass("visible");
+            });
     });
 </script>
 </html>
