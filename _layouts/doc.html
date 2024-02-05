@@ -253,20 +253,22 @@
 </div>
 {% include bottom.html %}
 <script>
-    $( document ).ready(function() {
-        $('.r-docs-subnav').on('click', function(e) {
-            if (!$( this ).hasClass( 'active-subnav' )) {
-                $('.r-docs-subnav.active-subnav').removeClass('active-subnav');
-                $(this).addClass('active-subnav');
+    $(document).ready(() => {
+        "use strict";
+
+        $(".r-docs-subnav").on("click", () => {
+            if (!$(this).hasClass("active-subnav")) {
+                $(".r-docs-subnav.active-subnav").removeClass("active-subnav");
+                $(this).addClass("active-subnav");
             }
         });
 
-    $('.r-docs-nav a[href$="' + window.location.pathname + '"]').addClass('active-link')
-			.closest('.r-docs-subnav').addClass('active-subnav');
+        $('.r-docs-nav a[href$="' + window.location.pathname + '"]').addClass("active-link")
+            .closest(".r-docs-subnav").addClass("active-subnav");
 
-    var path = "{{ page.path }}";
-		$("h1").append('<a target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/' + path +
-			 '" class="edit-btn btn btn-lg text-decoration-none text-reset ms-4"><i class="fa fa-pencil"></i> Edit Page</a>');
+        const path = "{{ page.path }}";
+        $("h1").append('<a target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/' + path +
+            '" class="edit-btn btn btn-lg text-decoration-none text-reset ms-4"><i class="fa fa-pencil"></i> Edit Page</a>');
     });
 </script>
 </html>

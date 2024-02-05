@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "jquery": true
     },
     "extends": [
         "eslint:all",
@@ -14,7 +15,8 @@
         "ecmaVersion": 2018
     },
     "plugins": [
-      "@stylistic"
+      "@stylistic",
+      "html"
     ],
     "rules": {
         "camelcase": "off",
@@ -60,6 +62,9 @@
         "@stylistic/space-before-function-paren": ["error", {
             "anonymous": "always",
             "named": "never"
-        }]
+        }],
+
+        // Temporarily disabled rules
+        "@stylistic/indent-binary-ops": "off"
     }
 }
