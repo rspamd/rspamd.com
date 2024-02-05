@@ -295,6 +295,7 @@ div#toc {
   background: #dc4813;
   color: white;
   padding: 22px;
+  display: none;
 }
 .button-fixed-bottom:hover,
 .button-fixed-bottom:focus {

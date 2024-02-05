@@ -256,6 +256,17 @@
     $(document).ready(() => {
         "use strict";
 
+        // Hide/show "back-to-top" floating action button
+        const fab = $("a.button-fixed-bottom");
+        if ($("html").scrollTop() > 20) fab.show();
+        $(window).scroll(() => {
+            if ($(this).scrollTop() > 20) {
+                fab.fadeIn();
+            } else {
+                fab.fadeOut();
+            }
+        });
+
         $(".r-docs-subnav").on("click", () => {
             if (!$(this).hasClass("active-subnav")) {
                 $(".r-docs-subnav.active-subnav").removeClass("active-subnav");
