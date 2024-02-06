@@ -267,10 +267,10 @@
             }
         });
 
-        $(".r-docs-subnav").on("click", () => {
-            if (!$(this).hasClass("active-subnav")) {
+        $(".r-docs-subnav").on("click", (e) => {
+            if (!$(e.currentTarget).hasClass("active-subnav")) {
                 $(".r-docs-subnav.active-subnav").removeClass("active-subnav");
-                $(this).addClass("active-subnav");
+                $(e.currentTarget).addClass("active-subnav");
             }
         });
 
