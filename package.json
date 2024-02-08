@@ -9,6 +9,6 @@
     },
     "eslintIgnore": [
         "*.min.js",
-        "*.html"
+        "_includes/top.html"
     ]
 }
