@@ -46,7 +46,7 @@
 
 
         $(document).ready(() => {
-            const [contentBlock] = $(".doc-content");
+            const [contentBlock] = $(".linkify-headers");
             if (contentBlock) {
                 for (let level = 2; level <= 6; level++) {
                     linkifyAnchors(level, contentBlock);
