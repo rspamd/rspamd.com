@@ -239,8 +239,10 @@ rbls {
       returnbits = {
         CRACKED_SURBL = 128; # From February 2016
         ABUSE_SURBL = 64;
+        CT_SURBL = 32;
         MW_SURBL_MULTI = 16;
         PH_SURBL_MULTI = 8;
+        DM_SURBL = 4;
         SURBL_BLOCKED = 1;
       }
     }
