@@ -27,6 +27,7 @@
         "id-length": ["error", { "min": 1 }],
         "line-comment-position": "off",
         "logical-assignment-operators": ["error", "never"],
+        "max-statements": ["error", 20],
         "multiline-comment-style": "off",
         "no-continue": "off",
         "no-inline-comments": "off",

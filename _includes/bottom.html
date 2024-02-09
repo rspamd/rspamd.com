@@ -53,6 +53,11 @@
                 }
             }
 
+            // Open tab containing anchor from external link
+            const targetAnchor = $(window.location.hash);
+            const tabId = targetAnchor.closest(".tab-pane").attr("id");
+            if (typeof tabId !== "undefined") $('[data-bs-target="#' + tabId + '"]').tab("show");
+
             // Initialize tooltips
             $('[data-bs-toggle="tooltip"]').tooltip();
 
