@@ -28,8 +28,9 @@ title: Downloads
     </ul>
     <!-- Tab - pane content -->
     <div class="tab-content p-4 border-bottom">
-        <div role="tabpanel" class="tab-pane fade show active" id="system1">
-            <h3>Docker</h3>
+        <div markdown="1" role="tabpanel" class="tab-pane fade show active" id="system1">
+
+## Docker
 <div markdown="1">
 An official docker image is available at [rspamd/rspamd on Dockerhub](https://hub.docker.com/r/rspamd/rspamd), sources are [on GitHub](https://github.com/rspamd/rspamd-docker). It is a recommendable way to run Rspamd.
 
@@ -47,9 +48,10 @@ Basic usage:
 
 A [Docker compose example](https://github.com/rspamd/rspamd-docker/tree/main/examples/compose) is available in the source repo.
 </div>
-        </div>
-        <div role="tabpanel" class="tab-pane fade" id="system2">
-            <h3>RHEL-alike distributions</h3>
+</div>
+<div markdown="1" role="tabpanel" class="tab-pane fade" id="system2">
+
+## RHEL-alike distributions
 <div markdown="1">
 Packages are available for RHEL-compatible distributions such as Oracle Linux, AlmaLinux, Rocky Linux and CentOS. Currently versions 7 through 9 are supported.
 
@@ -78,9 +80,10 @@ For <a class="text-decoration-none text-reset" href="#asanSys1">asan<sup>2</sup>
 <p class="myFootnote" id="stableSys1">1. Use STABLE branch of packages: those packages are the official rspamd releases which are recommended for production usage.</p>
 <p class="myFootnote" id="experimentalSys1">2. Use EXPERIMENTAL branch of packages: these packages are less stable and they are generated frequently from the current development branch. Experimental packages usually have more features but might be SOMETIMES broken in some points (nevertheless, bugs are usually quickly fixed after detection).</p>
 <p class="myFootnote" id="asanSys1">3. Use ASAN branch of packages: these are packages (both stable and experimental) designed to debug Rspamd issues, especially core files, using advanced debugging tools. Use these packages if you encounter an issue in Rspamd and you want it to be fixed.</p>
-        </div>
-        <div role="tabpanel" class="tab-pane fade" id="system3">
-            <h3>Debian and Ubuntu Linux</h3>
+</div>
+<div markdown="1" role="tabpanel" class="tab-pane fade" id="system3">
+
+## Debian and Ubuntu Linux
 <div markdown="1">
 
 Rspamd supports the following .deb based distributives:
@@ -141,9 +144,10 @@ Please **DO NOT** use those packages, as they are likely outdated and are not su
 <p class="myFootnote" id="stableSys2">1. Use STABLE branch of packages: those packages are the official rspamd releases which are recommended for production usage.</p>
 <p class="myFootnote" id="experimentalSys2">2. Use EXPERIMENTAL branch of packages: these packages are less stable and they are generated frequently from the current development branch. Experimental packages usually have more features but might be SOMETIMES broken in some points (nevertheless, bugs are usually quickly fixed after detection).</p>
 <p class="myFootnote" id="asanSys2">3. Use ASAN branch of packages: these are packages (both stable and experimental) designed to debug Rspamd issues, especially core files, using advanced debugging tools. Use these packages if you encounter an issue in Rspamd and you want it to be fixed.</p>
-        </div>
-        <div role="tabpanel" class="tab-pane fade" id="system4">
-            <h3>Other Linux</h3>
+</div>
+<div markdown="1" role="tabpanel" class="tab-pane fade" id="system4">
+
+## Other Linux
 <div markdown="1">
 Rspamd is also available on the following Linux distributions:
 
@@ -164,9 +168,10 @@ Ebuilds for Gentoo Linux users are available in the main [Gentoo Portage reposit
 ### OpenSUSE
 Packages for OpenSUSE Leap & Tumbleweed are available on [OBS](https://build.opensuse.org/package/show/server:mail/rspamd).
 </div>
-        </div>
-        <div role="tabpanel" class="tab-pane fade" id="system5">
-            <h3>BSD systems</h3>
+</div>
+<div markdown="1" role="tabpanel" class="tab-pane fade" id="system5">
+
+## BSD systems
 <div markdown="1">
 Rspamd has been ported to the following BSD like operating systems:
 
@@ -188,9 +193,10 @@ sudo port load rspamd
 ```
 
 </div>
-        </div>
-        <div role="tabpanel" class="tab-pane fade" id="system6">
-            <h3>Build rspamd from the sources</h3>
+</div>
+<div markdown="1" role="tabpanel" class="tab-pane fade" id="system6">
+            
+## Build rspamd from the sources
 <div markdown="1">
 
 If there are no packages for your system or you want custom build options you can also build rspamd from the source code. To do that grab the source from [GitHub](https://github.com/rspamd/rspamd) using `git`:
@@ -244,6 +250,6 @@ An example for [Debian](https://debian.org/)-like systems.
     debuild -us -uc
     sudo "dpkg -i ../rspamd_${RSPAMD_VERSION}_*.deb"
 </div>
-        </div>
-    </div>
+</div>
+</div>
 </div>
