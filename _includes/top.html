@@ -153,8 +153,9 @@
                 </ul>
                 <ul class="nav navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" target="_blank" href="https://github.com/rspamd/rspamd.com/edit/master/{{ page.path }}"
-                            title="Edit the current page and create a pull request on GitHub"><i class="fa fa-lg fa-pencil"></i>&nbsp;Edit</a>
+                        <a class="nav-link d-flex align-items-center" href="https://github.com/rspamd/rspamd.com/edit/master/{{ page.path }}"
+                            target="_blank" data-bs-toggle="tooltip" data-bs-title="Edit the current page and create a pull request on GitHub">
+                            <i class="fa fa-lg fa-pencil"></i>&nbsp;Edit</a>
                     </li>
                     <li class="nav-item">
 {% include paypal-form.html
