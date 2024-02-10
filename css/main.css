@@ -7,6 +7,7 @@
   --nav-link-hover-color: #97310e;
   --table-border-color: #ddd;
   --r-docs-nav-padding-top: 10px;
+  --tooltip-border-color: var(--bs-gray-500);
 }
 
 /* Override bootstrap 4 and 5 changes */
@@ -356,4 +357,30 @@ div#toc {
 .ais-Hits-item a { font-size: 21px; }
 .ais-Hits-item:nth-child(odd) { background-image: linear-gradient(to right, white, white 30%, #E8E8E8 70%, #E8E8E8); }
 .ais-Hits-item:nth-child(even) { background-image: linear-gradient(to right, #E8E8E8, #E8E8E8 30%, white 70%, white); }
+/* stylelint-enable */
+
+.tooltip-inner {
+    border: 1px solid;
+    border-color: var(--tooltip-border-color);
+    background-color: #FFFFE1;
+    color: var(--bs-body-fg);
+    font-size: 1.2rem;
+}
+/* stylelint-disable no-descending-specificity */
+.bs-tooltip-top .tooltip-arrow::before,
+.bs-tooltip-auto[data-popper-placement^="top"] .tooltip-arrow::before {
+    border-top-color: var(--tooltip-border-color);
+}
+.bs-tooltip-end .tooltip-arrow::before,
+.bs-tooltip-auto[data-popper-placement^="right"] .tooltip-arrow::before {
+    border-right-color: var(--tooltip-border-color);
+}
+.bs-tooltip-bottom .tooltip-arrow::before,
+.bs-tooltip-auto[data-popper-placement^="bottom"] .tooltip-arrow::before {
+    border-bottom-color: var(--tooltip-border-color);
+}
+.bs-tooltip-start .tooltip-arrow::before,
+.bs-tooltip-auto[data-popper-placement^="left"] .tooltip-arrow::before {
+    border-left-color: var(--tooltip-border-color);
+}
 /* stylelint-enable */
