@@ -61,21 +61,6 @@
             // Initialize tooltips
             $('[data-bs-toggle="tooltip"]').tooltip();
 
-            // change icon inside collapse btn
-            $(".collapse-block").on("hide.bs.collapse", function () {
-                $(this).prev().children(":first").replaceWith('<i class="fa fa-caret-square-o-down fa-pull-right"></i>');
-            });
-            $(".collapse-block").on("show.bs.collapse", function () {
-                $(this).prev().children(":first").replaceWith('<i class="fa fa-caret-square-o-up fa-pull-right"></i>');
-            });
-            // change icon inside collapse link
-            $(".collapse-link").on("hide.bs.collapse", function () {
-                $(this).prev().children(":last").children(":last").replaceWith('<i class="fa fa-caret-square-o-down"></i>');
-            });
-            $(".collapse-link").on("show.bs.collapse", function () {
-                $(this).prev().children(":last").children(":last").replaceWith('<i class="fa fa-caret-square-o-up"></i>');
-            });
-
             // Stop video on closing tab panels
             $(".video-tab").on("hide.bs.tab", () => {
                 const iframe = ".video-pane.active iframe";

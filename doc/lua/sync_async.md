@@ -89,7 +89,7 @@ It returns two values:
 
 
 <div>
-    <a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#async_http">
+    <a class="btn btn-info btn-code collapsed" data-bs-toggle="collapse" data-bs-target="#async_http">
         <i class="fa fa-caret-square-o-down fa-pull-right"></i>
         Full example
     </a>
@@ -151,7 +151,7 @@ rspamd_config:register_symbol({
 ~~~~~~~~~~~~
 
 <div><!-- Do not change the DOM structure -->
-    <a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#sync_http">
+    <a class="btn btn-info btn-code collapsed" data-bs-toggle="collapse" data-bs-target="#sync_http">
         <i class="fa fa-caret-square-o-down fa-pull-right"></i>
         Full example
     </a>
@@ -215,7 +215,7 @@ task:get_resolver():resolve_a({
 ~~~
 
 <div><!-- Do not change the DOM structure -->
-    <a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#async_dns">
+    <a class="btn btn-info btn-code collapsed" data-bs-toggle="collapse" data-bs-target="#async_dns">
         <i class="fa fa-caret-square-o-down fa-pull-right"></i>
         Full example
     </a>
@@ -270,7 +270,7 @@ rspamd_config:register_symbol({
 ~~~
 
 <div><!-- Do not change the DOM structure -->
-    <a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#sync_dns">
+    <a class="btn btn-info btn-code collapsed" data-bs-toggle="collapse" data-bs-target="#sync_dns">
         <i class="fa fa-caret-square-o-down fa-pull-right"></i>
         Full example
     </a>
@@ -329,7 +329,7 @@ It is recommended to use `lua_tcp_sync` module to work TCP.
 ~~~
 
 <div><!-- Do not change the DOM structure -->
-    <a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#async_tcp">
+    <a class="btn btn-info btn-code collapsed" data-bs-toggle="collapse" data-bs-target="#async_tcp">
         <i class="fa fa-caret-square-o-down fa-pull-right"></i>
         Full example
     </a>
@@ -397,7 +397,7 @@ rspamd_config:register_symbol({
 ~~~
 
 <div><!-- Do not change the DOM structure -->
-    <a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#sync_tcp">
+    <a class="btn btn-info btn-code collapsed" data-bs-toggle="collapse" data-bs-target="#sync_tcp">
         <i class="fa fa-caret-square-o-down fa-pull-right"></i>
         Full example
     </a>
@@ -504,7 +504,7 @@ rspamd_config:register_symbol({
 ~~~
 
 <div><!-- Do not change the DOM structure -->
-    <a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#async_redis">
+    <a class="btn btn-info btn-code collapsed" data-bs-toggle="collapse" data-bs-target="#async_redis">
         <i class="fa fa-caret-square-o-down fa-pull-right"></i>
         Full example
     </a>
@@ -577,7 +577,7 @@ rspamd_config:register_symbol({
 ~~~
 
 <div><!-- Do not change the DOM structure -->
-    <a class="btn btn-info btn-code" data-bs-toggle="collapse" data-bs-target="#sync_redis">
+    <a class="btn btn-info btn-code collapsed" data-bs-toggle="collapse" data-bs-target="#sync_redis">
         <i class="fa fa-caret-square-o-down fa-pull-right"></i>
         Full example
     </a>

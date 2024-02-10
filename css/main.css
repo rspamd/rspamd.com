@@ -130,6 +130,15 @@ code,kbd,pre,samp {
   font-family: monospace;
 }
 
+a.btn i.fa-caret-square-o-down,
+.r-post-changes i {
+  transition: .35s ease-in-out;
+}
+a.btn:not(.collapsed) i.fa-caret-square-o-down,
+.r-post-changes.open i {
+  transform: rotateX(180deg);
+}
+
 #jumbo-rmilter{
   background: url({{ site.baseurl }}/img/rmilter_jumbotron.png);
   background-size: cover;
