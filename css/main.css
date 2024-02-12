@@ -85,16 +85,19 @@ code {
   font-size: 16px;
 }
 
-/* Use only web safe fonts when font-smoothing is not enabled */
-html.hasFontSmoothing-false body,
-h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6,
-.tooltip,.popover
-{
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: Tahoma, Arial, sans-serif;
 }
-html.hasFontSmoothing-false code,kbd,pre,samp {
+
+/* Use only web safe fonts when font-smoothing is not enabled */
+/* stylelint-disable selector-class-pattern */
+html.hasFontSmoothing-false :is(body, .tooltip, .popover) {
+    font-family: Ubuntu, Tahoma, Arial, sans-serif;
+}
+html.hasFontSmoothing-false :is(code, kbd, pre, samp, .btn-code, .term) {
     font-family: "Courier New", monospace;
 }
+/* stylelint-enable */
 
 /* _layouts/rmilter.html */
 .affix { position: static; }
