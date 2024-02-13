@@ -8,7 +8,7 @@ title: Rspamd spam filtering system
 		<div class="container text-center py-5">
 			<h1 class="mt-0">Rspamd</h1>
 			<p>Fast, free and open-source spam filtering system.</p>
-			<a class="btn btn-primary btn-large mt-3" href="{{ site.baseurl }}/doc/quickstart.html">Quick start <small><i class="fa fa-chevron-right"></i></small></a>
+			<a class="btn btn-primary btn-large mt-3" href="{{ site.baseurl }}/doc/quickstart.html">Quick start <small><i class="fa-solid fa-chevron-right"></i></small></a>
 		</div>
 		</div>
 		<div class="container-fluid w-auto mx-2">
@@ -19,7 +19,7 @@ title: Rspamd spam filtering system
 				<p style="margin-bottom: 0px; margin-top: 5px">New stable release is now available.</p>
 			</div>
 			<div class="col-12 col-sm-2 d-flex justify-content-end align-items-end">
-				<a class="btn btn-primary mb-2" href="https://rspamd.com/announce/2024/01/25/rspamd-3.8.1.html">Learn more&nbsp;<i class="fa fa-chevron-right"></i></a>
+				<a class="btn btn-primary mb-2" href="https://rspamd.com/announce/2024/01/25/rspamd-3.8.1.html">Learn more&nbsp;<i class="fa-solid fa-chevron-right"></i></a>
 			</div>
 		</div>
 	</div>
@@ -29,33 +29,33 @@ title: Rspamd spam filtering system
     <div class="d-flex flex-wrap justify-content-between my-4">
         <a href="{{ site.baseurl }}/performance.html" class="r-tile">
             <img src="img/performance.jpg" alt="">
-            <h2>Performance&nbsp;<i class="fa fa-chevron-right"></i></h2>
+            <h2>Performance&nbsp;<i class="fa-solid fa-chevron-right"></i></h2>
             <p>Rspamd is designed to be fast and can process up to 100 emails per second
             using a single CPU core</p>
         </a>
         <a href="{{ site.baseurl }}/features.html" class="r-tile">
             <img src="img/features.jpg" alt="">
-            <h2>Features&nbsp;<i class="fa fa-chevron-right"></i></h2>
+            <h2>Features&nbsp;<i class="fa-solid fa-chevron-right"></i></h2>
             <p>Learn about the wide range of technologies supported by Rspamd to filter spam</p>
         </a>
         <a href="{{ site.baseurl }}/comparison.html" class="r-tile">
             <img src="img/compare.jpg" alt="">
-            <h2>Compare&nbsp;<i class="fa fa-chevron-right"></i></h2>
+            <h2>Compare&nbsp;<i class="fa-solid fa-chevron-right"></i></h2>
             <p>Compare Rspamd with other spam filtering systems</p>
         </a>
         <a href="{{ site.baseurl }}/doc/" class="r-tile">
             <img src="img/documentation.jpg" alt="">
-            <h2>Documentation&nbsp;<i class="fa fa-chevron-right"></i></h2>
+            <h2>Documentation&nbsp;<i class="fa-solid fa-chevron-right"></i></h2>
             <p>Study how to install, configure and extend Rspamd using the documentation provided</p>
         </a>
         <a href="{{ site.baseurl }}/media.html" class="r-tile">
             <img src="img/media.jpg" alt="">
-            <h2>Media&nbsp;<i class="fa fa-chevron-right"></i></h2>
+            <h2>Media&nbsp;<i class="fa-solid fa-chevron-right"></i></h2>
             <p>Watch videos and presentations about Rspamd</p>
         </a>
         <a href="{{ site.baseurl }}/support.html" class="r-tile">
             <img src="img/support.jpg" alt="">
-            <h2>Donation &amp; Support&nbsp;<i class="fa fa-chevron-right"></i></h2>
+            <h2>Donation &amp; Support&nbsp;<i class="fa-solid fa-chevron-right"></i></h2>
             <p>Check this page if you need help or want to make a donation or contribute to Rspamd</p>
         </a>
     </div>

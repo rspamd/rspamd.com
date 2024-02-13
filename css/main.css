@@ -125,12 +125,12 @@ pre code {
   white-space: pre-wrap;
 }
 
-a.btn i.fa-caret-square-o-down,
-.r-post-changes i {
+a.btn svg.fa-square-caret-down,
+.r-post-changes svg {
   transition: .35s ease-in-out;
 }
-a.btn:not(.collapsed) i.fa-caret-square-o-down,
-.r-post-changes.open i {
+a.btn:not(.collapsed) svg.fa-square-caret-down,
+.r-post-changes.open svg {
   transform: rotateX(180deg);
 }
 
@@ -166,11 +166,11 @@ a.btn:not(.collapsed) i.fa-caret-square-o-down,
 ul.nav-stacked .nav-link:hover {
   background-color: rgb(238, 238, 238);
 }
-.compare-table span.icon-red {
+.compare-table .icon-red {
     color: rgb(250, 57, 57);
 }
 
-.compare-table span.icon-green {
+.compare-table .icon-green {
     color: #00E025;
 }
 

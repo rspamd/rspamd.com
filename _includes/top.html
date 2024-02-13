@@ -13,7 +13,12 @@
     <link href="{{ site.baseurl }}/css/bootstrap.min.css" rel="stylesheet">
     <!-- for glyphicons -->
     <link href="{{ site.baseurl }}/css/bootstrap-social.css" rel="stylesheet">
-    <link href="{{ site.baseurl }}/css/font-awesome.min.css" rel="stylesheet">
+
+    <script defer src="{{ site.baseurl }}/js/lib/fontawesome/solid.min.js"></script>
+    <script defer src="{{ site.baseurl }}/js/lib/fontawesome/regular.min.js"></script>
+    <script defer src="{{ site.baseurl }}/js/lib/fontawesome/brands.min.js"></script>
+    <script defer src="{{ site.baseurl }}/js/lib/fontawesome/fontawesome.min.js"></script>
+
     <!-- Ubuntu fonts from google -->
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <script type="text/javascript" src="{{ site.baseurl }}/js/lib/TypeHelpers.min.js"></script>
@@ -66,7 +71,7 @@
             <div id="navbar" class="navbar-collapse collapse navbar-nav-scroll">
                 <ul class="nav navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/downloads.html">Downloads&nbsp;<i class="fa fa-lg fa-download"></i></a>
+                        <a class="nav-link d-flex align-items-center" href="{{ site.baseurl }}/downloads.html">Downloads&nbsp;<i class="fa-solid fa-lg fa-download"></i></a>
                     </li>
                     <li class="nav-item dropdown position-static">
                         <a href="#" class="nav-link d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentation
@@ -74,7 +79,7 @@
                         <ul class="dropdown-menu w-100 mt-0 border-top rounded-0">
                             <li class="d-table-row">
                                 <a class="dropdown-item text-nowrap fw-bold mb-3 px-3" href="{{ site.baseurl }}/doc/index.html">
-                                    Documentation index <small><i class="fa fa-chevron-right"></i></small>
+                                    Documentation index <small><i class="fa-solid fa-chevron-right"></i></small>
                                 </a>
                             </li>
                             <li>Installation and Administration
@@ -95,7 +100,7 @@
                             </li>
                             <li>Configuration guide
                               <ul>
-                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/">Configuration structure <small><i class="fa fa-chevron-right"></i></small></a>
+                                <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/">Configuration structure <small><i class="fa-solid fa-chevron-right"></i></small></a>
                                   <ul style="padding-left: 30px; list-style-type: circle;">
                                     <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/settings.html">Users settings description</a></li>
                                     <li><a class="dropdown-item" href="{{ site.baseurl }}/doc/configuration/options.html">Top-level options</a></li>
@@ -148,14 +153,14 @@
                         <a class="nav-link d-flex align-items-center" href="https://bl.rspamd.com/" target="_blank">List removal</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="https://github.com/rspamd/rspamd" target="_blank"><i class="fa fa-lg fa-github" aria-hidden="true"></i>&nbsp;GitHub</a>
+                        <a class="nav-link d-flex align-items-center" href="https://github.com/rspamd/rspamd" target="_blank"><i class="fa-brands fa-lg fa-github" aria-hidden="true"></i>&nbsp;GitHub</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="https://github.com/rspamd/rspamd.com/edit/master/{{ page.path }}"
                             target="_blank" data-bs-toggle="tooltip" data-bs-title="Edit the current page and create a pull request on GitHub">
-                            <i class="fa fa-lg fa-pencil"></i>&nbsp;Edit</a>
+                            <i class="fa-solid fa-lg fa-pencil"></i>&nbsp;Edit</a>
                     </li>
                     <li class="nav-item">
 {% include paypal-form.html
