@@ -45,17 +45,6 @@ h1, .h1 { font-size: 36px; }
 h2, .h2 { font-size: 32px; }
 h3, .h3 { font-size: 24px; }
 h4, .h4 { font-size: 18px; }
-.highlight, pre { border-radius:4px; }
-pre {
-  padding:9.5px;
-  border:1px solid #cccccc;
-}
-pre code {
-  white-space: pre-wrap;
-}
-code {
-  padding:2px 4px;
-}
 .btn {
   font-size: 14px;
   white-space: nowrap;
@@ -109,12 +98,6 @@ html.hasFontSmoothing-false :is(code, kbd, pre, samp, .btn-code, .term) {
   }
 }
 
-pre{
-  /* code aria */
-  background-color: #ffffff;
-  color: #000000;
-}
-
 .row-footer{ background-color: #E8E8E8; }
 .btn-code {
   font-family: monospace;
@@ -124,13 +107,22 @@ pre{
   border: 1px solid #cccccc;
   border-radius: 4px;
 }
+
+code, kbd, pre, samp { font-family: monospace; }
+.highlight, pre { border-radius: 4px; }
+pre {
+  padding: 9.5px;
+  border: 1px solid #cccccc;
+  background-color: #ffffff;
+  color: #000000;
+}
 code {
-  background-color: rgba(0,0,0,0.04) !important;
+  padding: 2px 4px;
+  background-color: rgba(0 0 0 / 0.04) !important;
   color: inherit;
 }
-/* Override Bootstrap's CSS to not force specific fonts */
-code,kbd,pre,samp {
-  font-family: monospace;
+pre code {
+  white-space: pre-wrap;
 }
 
 a.btn i.fa-caret-square-o-down,
