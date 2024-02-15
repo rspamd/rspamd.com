@@ -21,7 +21,12 @@ Please join our community for updates, release announces and other news.
     <a class="btn btn-lg btn-support btn-github" target="_blank" href="https://github.com/rspamd/rspamd/discussions">
         <i class="fa-lg fa-brands fa-github"></i> Discussions</a>
     <a class="btn btn-lg btn-support btn-telegram" target="_blank" href="https://t.me/rspamd"><i class="fa-lg fa-solid fa-paper-plane"></i> Telegram</a>
-    <a class="btn btn-lg btn-support btn-telegram" target="_blank" href="https://t.me/rspamd_ru"><i class="fa-lg fa-solid fa-paper-plane"></i> Telegram RU</a>
+    <a class="btn btn-lg btn-support btn-telegram" target="_blank" href="https://t.me/rspamd_ru">
+        <span class="fa-layers fa-fw">
+            <i class="fa-solid fa-paper-plane fa-lg"></i>
+            <i class="fa-solid fa-star fa-flip-vertical" style="color: red" data-fa-transform="shrink-13 left-5 down-1"></i>
+            <i class="fa-solid fa-star fa-flip-vertical" style="color: red" data-fa-transform="shrink-13 right-5 down-5"></i>
+        </span> Telegram RU</a>
     <a class="btn btn-lg btn-support btn-reddit" target="_blank" href="ircs://irc.oftc.net/rspamd" data-bs-toggle="tooltip" data-bs-title="#rspamd on OFTC">
         <i class="fa-lg fa-regular fa-comments"></i> IRC channel</a>
 </div>
