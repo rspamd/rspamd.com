@@ -388,3 +388,7 @@ div#toc {
     border-left-color: var(--tooltip-border-color);
 }
 /* stylelint-enable */
+
+.btn-social-icon.btn-xs :first-child {
+    font-size: 1em;
+}
