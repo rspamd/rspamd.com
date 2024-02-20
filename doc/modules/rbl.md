@@ -557,7 +557,7 @@ symbols_prefixes {
 }
 ~~~
 
-To combine multiply selectors in one query you can set `selector_flatten` to `false`. For example to create query to RBL like: `from-sha256.rcpt-sha256`:
+To combine multiple selectors in one query you can set `selector_flatten` to `false`. For example to create query to RBL like: `from-sha256.rcpt-sha256`:
 
 ~~~hcl
 selector_flatten = false;
