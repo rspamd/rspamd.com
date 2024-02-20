@@ -107,7 +107,7 @@ Optional parameters (and their defaults if applicable) are as follows:
 - `returnbits` - dictionary of symbols mapped to bit positions; if the bit in the specified position is set the symbol will be returned
 - `returncodes` - dictionary of symbols mapped to lua patterns; if result returned by the RBL matches the pattern the symbol will be returned
 - `returncodes_matcher` - a specific mechanism for testing `returncodes`, see [details]({{ site.url }}{{ site.baseurl }}/doc/modules/rbl.html#returncodes-matchers)
-- `selector_flatten` (false) - lookup result of chained selector as a single label
+- `selector_flatten` (true) - when disabled will lookup result of chained selector as a single label without any separator
 - `selector` - one or more selectors producing data to look up in this RBL; see section on selectors for more information
 - `unknown` (false) - yield default symbol if `returncodes` or `returnbits` is specified and RBL returns unrecognised result
 - `whitelist_exception` - for whitelists; list of symbols which will not act as whitelists
@@ -534,7 +534,7 @@ Selectors can be used to look up arbitrary values in RBLs.
 
 The `selector` field could be configured as a string in the rule settings if only one selector is needed:
 
-~~~
+~~~hcl
 checks = ["replyto"];
 selector = "from('mime'):addr";
 hash = "sha1";
@@ -546,7 +546,7 @@ symbols_prefixes {
 
 Or they could be specified as a map of user-specified names to selectors if more than one is needed:
 
-~~~
+~~~hcl
 selector = {
   mime_domain = "from('mime'):domain";
   subject_digest = "header('subject').lower.digest('hex')";
@@ -555,4 +555,11 @@ symbols_prefixes {
   mime_domain = "MIME_DOMAIN";
   subject_digest = "SUBJECT_DIGEST"
 }
+~~~
+
+To combine multiple selectors in one query you can set `selector_flatten` to `false`. For example to create query to RBL like: `from-sha256.rcpt-sha256`:
+
+~~~hcl
+selector_flatten = false;
+selector = "from('mime').digest('hex','sha256').append('.');rcpts('smtp').first.digest('hex','sha256')";
 ~~~
