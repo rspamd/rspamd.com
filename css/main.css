@@ -65,7 +65,6 @@ h4, .h4 { font-size: 18px; }
   padding-left: 40px;
 }
 .page-link { text-decoration: none; }
-.dropdown-menu { table-layout: fixed; }
 #accordion .accordion-button {
   font-size: 16px;
 }
@@ -242,38 +241,25 @@ h6:hover .header-link {
   }
 }
 
+.dropdown-menu { background-color: #E8E8E8; }
 .dropdown-menu > li {
   display: table-cell;
   font-weight: bold;
   font-size: 18px;
+  padding: 1rem 1rem 0 1rem;
+  line-height: 150%;
 }
-
+@media screen and (max-width: 767px) {
+  .dropdown-menu > li { display: block; }
+}
 .dropdown-menu ul {
   list-style: none;
   padding-left: 0;
-  font-weight: normal;
   font-size: 14px;
 }
-
-@media screen and (max-width: 767px) {
-  .dropdown-menu > li {
-    display: block;
-  }
-}
-
 .dropdown-menu.show {
   display: table;
   table-layout: fixed;
-}
-
-ul.dropdown-menu > li {
-  padding: 0 1rem;
-  line-height: 150%;
-}
-
-ul.dropdown-menu {
-  padding: 20px 20px 50px 20px;
-  background-color: #E8E8E8;
 }
 
 #navbar .donate button { border: 1px solid #CCC; }
