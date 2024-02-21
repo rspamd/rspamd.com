@@ -1,7 +1,3 @@
----
-# Front matter added to ensure Jekyll processes file.
----
-
 :root {
   --navbar-height: 46px;
   --nav-link-hover-color: #97310e;
@@ -132,11 +128,6 @@ a.btn svg.fa-square-caret-down,
 a.btn:not(.collapsed) svg.fa-square-caret-down,
 .r-post-changes.open svg {
   transform: rotateX(180deg);
-}
-
-#jumbo-rmilter{
-  background: url({{ site.baseurl }}/img/rmilter_jumbotron.png);
-  background-size: cover;
 }
 
 .navbar-brand { height: var(--navbar-height); }
