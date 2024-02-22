@@ -246,7 +246,7 @@ h6:hover .header-link {
   display: table-cell;
   font-weight: bold;
   font-size: 18px;
-  padding: 1rem 1rem 0 1rem;
+  padding: 1rem 1rem 0;
   line-height: 150%;
 }
 @media screen and (max-width: 767px) {
