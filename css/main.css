@@ -153,16 +153,10 @@ a.btn:not(.collapsed) svg.fa-square-caret-down,
   background-color: transparent;
   padding-left: 0;
 }
-ul.nav-stacked .nav-link:hover {
-  background-color: rgb(238, 238, 238);
-}
-.compare-table .icon-red {
-    color: rgb(250, 57, 57);
-}
+ul.nav-stacked .nav-link:hover { background-color: rgb(238 238 238); }
 
-.compare-table .icon-green {
-    color: #00E025;
-}
+.compare-table .icon-red { color: rgb(250 57 57); }
+.compare-table .icon-green { color: #00E025; }
 
 table {
   border-radius: 5px;
@@ -288,7 +282,7 @@ div#toc {
 /* _posts\2019-05-16-rspamd-performance.md */
 .term {
   background-color: black;
-  background-image: radial-gradient(rgba(0, 150, 0, 0.75), black 120%);
+  background-image: radial-gradient(rgb(0 150 0 / 0.75), black 120%);
   margin: 0;
   overflow: hidden;
   padding: 2rem;
