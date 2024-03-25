@@ -27,7 +27,7 @@ To configure the SPF module, you have the option to manually specify the cache s
 	spf_cache_expire = 1d; # default max expire for an element in this cache
 	max_dns_nesting = 10; # maximum number of recursive DNS subrequests
 	max_dns_requests = 30; # maximum count of DNS requests per record
-	min_cache_ttl = 5m; # minimum TTL enforced for all elements in SPF records
+	min_cache_ttl = 5min; # minimum TTL enforced for all elements in SPF records
 	disable_ipv6 = false; # disable all IPv6 lookups
 	whitelist = "/path/to/some/file"; # whitelist IPs from checks
 ~~~
