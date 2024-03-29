@@ -41,8 +41,9 @@ It is assumed that you are using your operating system's package manager (e.g. `
         <i class="fa-regular fa-square-caret-down fa-pull-right"></i>
         main.cf
     </a>
-<div id="main_cf" class="collapse collapse-block">
-<pre class="highlight"><code>
+<div id="main_cf" class="collapse collapse-block" markdown="1">
+
+~~~sh
 # TLS setup (we assume the same certs for IMAP and SMTP here)
 smtpd_tls_cert_file = /etc/letsencrypt/live/your.domain/fullchain.pem
 smtpd_tls_key_file = /etc/letsencrypt/live/your.domain/privkey.pem
@@ -114,7 +115,8 @@ smtpd_relay_restrictions = check_recipient_access hash:/etc/postfix/access, reje
 smtpd_milters = inet:localhost:11332
 milter_default_action = accept
 milter_protocol = 6
-</code></pre>
+~~~
+
 </div></div>
 
 You also need to create maps for access control and virtual aliases:
@@ -394,8 +396,9 @@ From version 1.7, the setting of passwords is also suggested by `rspamadm config
 The WebUI is managed by a controller worker, but for added functionality such as `TLS` support, it may be beneficial to proxy its requests through a tool like Nginx. Below is a minimal configuration needed to accomplish this using Nginx:
 
 <div class="d-grid gap-4">
-<a class="btn btn-info btn-code collapsed" data-bs-toggle="collapse" data-bs-target="#nginx_cf"><i class="fa-regular fa-square-caret-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf" class="collapse collapse-block">
-{% highlight nginx %}
+<a class="btn btn-info btn-code collapsed" data-bs-toggle="collapse" data-bs-target="#nginx_cf"><i class="fa-regular fa-square-caret-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf" class="collapse collapse-block" markdown="1">
+
+~~~nginx
 worker_processes  2;
 user www-data www-data;
 
@@ -450,22 +453,25 @@ http {
         server_tokens off;
     }
 }
-{% endhighlight %}
+~~~
+
 </div>
 </div>
 
 You might also use subdirs, as suggested by [@julienmalik](https://github.com/julienmalik){:target="&#95;blank"}:
 
 <div class="d-grid gap-4">
-<a class="btn btn-info btn-code collapsed" data-bs-toggle="collapse" data-bs-target="#nginx_cf1"><i class="fa-regular fa-square-caret-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf1" class="collapse collapse-block">
-{% highlight nginx %}
+<a class="btn btn-info btn-code collapsed" data-bs-toggle="collapse" data-bs-target="#nginx_cf1"><i class="fa-regular fa-square-caret-down fa-pull-right"></i>nginx.conf</a><div id="nginx_cf1" class="collapse collapse-block" markdown="1">
+
+~~~nginx
 location /rspamd/ {
     proxy_pass       http://localhost:11334/;
 
     proxy_set_header Host      $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 }
-{% endhighlight %}
+~~~
+
 </div>
 </div>
 
@@ -506,11 +512,11 @@ For more advanced proxy usage, please see the corresponding [documentation]({{ s
 
 Starting with version 1.1, it is now possible to utilize Redis as a backend for statistics and caching of learned messages. Redis is particularly recommended for clustered configurations as it enables concurrent learning and checking, and also performs very quickly. To configure Redis, you can specify the `redis` backend for a classifier, and the cache will automatically be set to the same servers.
 
-{% highlight hcl %}
+~~~hcl
 # /etc/rspamd/local.d/classifier-bayes.conf
 servers = "127.0.0.1";
 backend = "redis";
-{% endhighlight %}
+~~~
 
 Please review the full [statistics documentation]({{ site.baseurl }}/doc/configuration/statistic.html) for further information as well as the [Redis configuration documentation]({{ site.baseurl }}/doc/configuration/redis.html) if you plan to use Redis.
 
@@ -660,13 +666,13 @@ See [here]({{ site.url }}{{ site.baseurl }}/doc/rspamadm.html) for more informat
 
 It is also useful to have a simple `Sieve` script to place all messages marked as spam in the `Junk` folder. Here is an example of such a script (~/.dovecot.sieve):
 
-{% highlight nginx %}
+~~~nginx
 require ["fileinto"];
 
 if header :is "X-Spam" "Yes" {
         fileinto "Junk";
 }
-{% endhighlight %}
+~~~
 
 It is also possible to set up Rspamc to learn by forwarding messages to a specific email address. I recommend using `/etc/aliases` for these purposes and `mail-redirect` command (e.g. provided by [Mail Redirect addon](https://addons.mozilla.org/en-GB/thunderbird/addon/mailredirect/){:target="&#95;blank"} for `Thunderbird` MUA). The desired aliases could be the following:
 
@@ -679,9 +685,9 @@ There is also an add-on for Thunderbird MUA written by Alexander Moisseev to vis
 
 To enable extended spam headers in [Milter headers module]({{ site.baseurl }}/doc/modules/milter_headers.html) add the following line to `local.d/milter_headers.conf`:
 
-{% highlight hcl %}
+~~~hcl
 extended_spam_headers = true;
-{% endhighlight %}
+~~~
 
 To enable headers in Exim refer to the "Integration with Exim MTA" section of the [MTA integration]({{ site.baseurl }}/doc/integration.html) document.
 

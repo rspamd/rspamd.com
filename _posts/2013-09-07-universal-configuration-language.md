@@ -16,7 +16,7 @@ For example, you can write the same configuration in the following ways:
 
 * in nginx like:
 
-{% highlight nginx %}
+~~~nginx
 param = value;
 section {
 	param = value;
@@ -36,11 +36,11 @@ section {
 		}	
 	}
 }
-{% endhighlight %}
+~~~
 
 * or in JSON:
 
-{% highlight json %}
+~~~json
 {
 	"param": "value",
 	"param1": "value1",
@@ -58,7 +58,7 @@ section {
 		]
 	}
 }
-{% endhighlight %}
+~~~
 
 ## Improvements to the json notation.
 
@@ -66,55 +66,61 @@ There are various things that makes json parsing more convenient for editing:
 
 * Braces are not necessary to enclose the top object: it is automatically treated as object:
 
-{% highlight json %}
+~~~json
 "key": "value"
-{% endhighlight %}
+~~~
+
 is the equivalent to:
-{% highlight json %}
+
+~~~json
 {"key": "value"}
-{% endhighlight %}
+~~~
 
 * There is no requirement of quotes for strings and keys, moreover, `:` sign may be replaced with `=` sign or even skipped for objects:
 
-{% highlight nginx %}
+~~~nginx
 key = value;
 section {
 	key = value;
 }
-{% endhighlight %}
+~~~
+
 is the equivalent to:
-{% highlight json %}
+
+~~~json
 {
 	"key": "value",
 	"section": {
 		"key": "value"
 	}
 }
-{% endhighlight %}
+~~~
 
 * No commas mess: you can safely place a comma or semicolon for the last element in array or object:
 
-{% highlight json %}
+~~~json
 {
 	"key1": "value",
 	"key2": "value",
 }
-{% endhighlight %}
+~~~
 
 * Non-unique keys in an object are allowed and automatically converted to the arrays internally:
 
-{% highlight json %}
+~~~json
 {
 	"key": "value1",
 	"key": "value2"
 }
-{% endhighlight %}
+~~~
+
 is converted to:
-{% highlight json %}
+
+~~~json
 {
 		"key": ["value1", "value2"]
 }
-{% endhighlight %}
+~~~
 
 * Numbers can have suffixes to specify standard multipliers:
 	* `[kKmMgG]` - standard 10 base multipliers (so `1k` is translated to 1000)
@@ -131,23 +137,26 @@ RCL supports different style of comments:
 * multiline: `/* ... */`
 
 Multiline comments may be nested:
-{% highlight c %}
+
+~~~c
 # Sample single line comment
 /* 
  some comment
  /* nested comment */
  end of comment
 */
-{% endhighlight %}
+~~~
 
 RCL supports external macroes both multiline and single line ones:
-{% highlight nginx %}
+
+~~~nginx
 .macro "sometext";
 .macro {
 	Some long text
 	....
 };
-{% endhighlight %}
+~~~
+
 There are two internal macroes provided by RCL:
 
 * `include` - read a file `/path/to/file` or an url `http://example.com/file` and include it to the current place of
