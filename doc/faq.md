@@ -66,7 +66,7 @@ Therefore, it is strongly advised to employ your own recursive resolver when usi
 Following that, you can configure your local resolver globally via `/etc/resolv.conf` or explicitly for Rspamd in the `local.d/options.inc` file:
 
 ~~~hcl
- # local.d/options.inc
+# local.d/options.inc
 dns {
   nameserver = ["127.0.0.1"];
 }
@@ -75,7 +75,7 @@ dns {
 or, if you want some backup as a last resort, you can use `master-slave` [rotation](configuration/upstream.html) as following:
 
 ~~~hcl
- # local.d/options.inc
+# local.d/options.inc
 dns {
   nameserver = "master-slave:127.0.0.1,8.8.8.8";
 }
@@ -84,7 +84,7 @@ dns {
 If you use large scale DNS system you might want to set up `hash` rotation algorithm. It will significantly increase cache hit rate and reduce number of recursive queries if you have more than one upstream resolver:
 
 ~~~hcl
- # local.d/options.inc
+# local.d/options.inc
 dns {
   nameserver = "hash:10.0.0.1,10.1.0.1,10.3.0.1";
 }
