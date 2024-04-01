@@ -3,6 +3,7 @@ highlighter: rouge
 plugins:
   - jekyll-paginate
   - jekyll-seo-tag
+  - jekyll-sitemap
 
 # Explicitly turn off the old code
 paginate: 5
