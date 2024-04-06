@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: About Rspamd
+title: Documentation
 ---
 
 ## Introduction

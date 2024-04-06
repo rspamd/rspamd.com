@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamd Architecture
+title: Rspamd protocol
 ---
 # Rspamd protocol
 

@@ -1,6 +1,6 @@
 ---
 layout: rmilter_main
-title: About rmilter
+title: Rmilter
 ---
 
 # Project state
