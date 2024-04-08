@@ -366,3 +366,6 @@ div#toc {
 .btn-social-icon.btn-xs :first-child {
     font-size: 1em;
 }
+
+.site-map h2 { font-size: 24px; }
+.site-map > div > ul { padding-left: 1.5rem; }

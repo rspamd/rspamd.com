@@ -1,0 +1,57 @@
+<ul>
+  {%- assign sorted_pages = include.pages | sort: "dir" -%}
+  {%- for page in sorted_pages -%}
+    {%- if page.layout == nil or page.layout == 'none' or page.dir contains '/blog/page' -%}
+      {%- continue -%}
+    {%- endif -%}
+    {% unless page.dir == prev_page_dir -%}
+        {%- assign path = page.dir | split: "/" -%}
+        {%- comment -%}
+        # Split returns [] for "/" but ["", "doc"] "/doc/" as removes empty strings.
+        {%- endcomment -%}
+        {%- unless path.size > 0 -%}
+          {%- assign path = path | push: "" -%}
+        {%- endunless -%}
+        {%- assign prev_path = prev_page_dir | split: "/" -%}
+        {%- unless prev_path.size > 0 -%}
+          {%- assign prev_path = prev_path | push: "" -%}
+        {%- endunless -%}
+        {%- assign levels_back = nil -%}
+        {%- assign levels_match = nil -%}
+        {%- for dir in prev_path -%}
+          {%- unless dir == path[forloop.index0] -%}
+            {%- assign levels_back = forloop.rindex -%}
+            {%- break -%}
+          {%- endunless -%}
+        {%- endfor -%}
+        {%- for dir in path -%}
+          {%- assign index0 = forloop.index0 -%}
+          {%- unless dir == prev_path[index0] -%}
+            {%- assign levels_match = index0 -%}
+            {%- break -%}
+          {%- endunless -%}
+        {%- endfor -%}
+        {%- for num in (1..levels_back) %}
+    </ul>
+  </li>
+        {%- endfor -%}
+      {% for dir in path offset:levels_match -%}
+        {%- assign dir_index_page = include.pages | where: "dir", page.dir | where: "name", "index.md" | first -%}
+        {%- unless dir_index_page -%}
+          {%- assign dir_index_page = include.pages | where: "dir", page.dir | where: "name", "index.html" | first -%}
+        {%- endunless %}
+  <li>
+    <a href="{{ site.baseurl }}{{ page.dir }}"><strong>{{ dir_index_page.title }}</strong></a>
+    <ul>
+      {%- endfor %}
+      {%- assign prev_page_dir = page.dir -%}
+    {%- endunless %}
+    {%- unless page.name == "index.md" or page.name == "index.html" %}
+      <li><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
+    {%- endunless -%}
+  {% endfor -%}
+  {%- for dir in path %}
+    </ul>
+  </li>
+  {%- endfor %}
+</ul>
