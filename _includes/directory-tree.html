@@ -1,13 +1,61 @@
-<ul>
-  {%- assign sorted_pages = include.pages | sort: "dir" -%}
-  {%- for page in sorted_pages -%}
-    {%- if page.layout == nil or page.layout == 'none' or page.dir contains '/blog/page' -%}
+{%- comment -%}
+Build a directory tree (e.g. sitemap)
+
+Page Front Matter directory-tree hash parameters:
+
+  emphasize     Emphasize the page in the tree.
+                Default: false.
+
+  de-emphasize  De-emphasize the page in the tree.
+                Default: false.
+
+Tree include parameters:
+
+  dir           The top-level directory of the tree.
+                If the path ends with a slash, the directory itself will be excluded from the tree.
+                Default: The root directory.
+
+Tree parameters that can be passed as include hash, Front Matter directory-tree hash or Liquid variables with directory-tree- prefix:
+
+  li            The generated tree is a list item. Do not wrap an <ul> tag around it.
+
+  dir_class     Add a class attribute with the specified classes to <li> tags of all directories.
+                If not set, wrap a <strong> tag around titles of all directories.
+
+  strong        Wrap a <strong> tag around titles of the pages that have set `emphasize: true` in the Front Matter.
+                Default: false.
+
+  del           Wrap a <del> tag around titles of the pages that have set `de-emphasize: true` in the Front Matter.
+                Default: false.
+{%- endcomment -%}
+{%- unless include.li or page.directory-tree.li or directory-tree-li %}<ul>{%- endunless %}
+  {%- assign dir_class = include.dir_class | default: directory-tree-dir_class | default: page.directory-tree.dir_class -%}
+  {%- if dir_class -%}
+    {%- assign dir_li = '<li class="' | append:  dir_class | append: '">' -%}
+  {%- else -%}
+    {%- assign dir_li = "<li>" -%}
+    {%- assign dir_strong = "<strong>" -%}
+    {%- assign dir_strong_closing = "</strong>" -%}
+  {%- endif -%}
+  {%- assign prev_page_dir = include.dir -%}
+  {%- assign sorted_pages = site.pages | sort: "dir" -%}
+  {%- for pg in sorted_pages -%}
+    {%- comment -%}
+    # Skip page unless its directory starts with include.dir.
+    {%- endcomment -%}
+    {%- if include.dir -%}
+      {%- assign check_str = pg.dir | split: include.dir | first -%}
+      {%- if check_str.size > 0 -%}
+        {%- continue -%}
+      {%- endif -%}
+    {%- endif -%}
+    {%- if pg.layout == nil or pg.layout == 'none' or pg.dir contains '/blog/page' -%}
       {%- continue -%}
     {%- endif -%}
-    {% unless page.dir == prev_page_dir -%}
-        {%- assign path = page.dir | split: "/" -%}
+    {% unless pg.dir == prev_page_dir -%}
+        {%- assign path = pg.dir | split: "/" -%}
         {%- comment -%}
-        # Split returns [] for "/" but ["", "doc"] "/doc/" as removes empty strings.
+        # Split returns [] for "/" but ["", "doc"] "/doc/" as removes trailing empty strings.
         {%- endcomment -%}
         {%- unless path.size > 0 -%}
           {%- assign path = path | push: "" -%}
@@ -30,28 +78,55 @@
             {%- assign levels_match = index0 -%}
             {%- break -%}
           {%- endunless -%}
+          {%- if forloop.last -%}
+            {%- assign levels_match = forloop.index0 -%}
+          {%- endif -%}
         {%- endfor -%}
         {%- for num in (1..levels_back) %}
     </ul>
   </li>
         {%- endfor -%}
-      {% for dir in path offset:levels_match -%}
-        {%- assign dir_index_page = include.pages | where: "dir", page.dir | where: "name", "index.md" | first -%}
-        {%- unless dir_index_page -%}
-          {%- assign dir_index_page = include.pages | where: "dir", page.dir | where: "name", "index.html" | first -%}
-        {%- endunless %}
-  <li>
-    <a href="{{ site.baseurl }}{{ page.dir }}"><strong>{{ dir_index_page.title }}</strong></a>
+      {% for dir in path offset:levels_match %}
+  {{ dir_li }}
+        {%- if forloop.last -%}
+          {%- assign dir_pages = site.pages | where: "dir", pg.dir -%}
+          {%- assign dir_index_page = dir_pages | where: "name", "index.md" | first -%}
+          {%- unless dir_index_page -%}
+            {%- assign dir_index_page = dir_pages | where: "name", "index.html" | first -%}
+          {%- endunless %}
+    <a href="{{ site.baseurl }}{{ pg.dir }}">{{ dir_strong }}{{ dir_index_page.title }}{{ dir_strong_closing }}</a>
+        {%- else %}
+    {{ dir_strong }}{{ dir }}{{ dir_strong_closing }}
+        {%- endif %}
     <ul>
       {%- endfor %}
-      {%- assign prev_page_dir = page.dir -%}
+      {%- assign prev_page_dir = pg.dir -%}
     {%- endunless %}
-    {%- unless page.name == "index.md" or page.name == "index.html" %}
-      <li><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
+    {%- unless pg.name == "index.md" or pg.name == "index.html" -%}
+      {%- if pg.directory-tree.emphasize and include.strong or page.directory-tree.strong or directory-tree-strong -%}
+        {%- assign strong = "<strong>" -%}
+        {%- assign strong_closing = "</strong>" -%}
+      {%- else -%}
+        {%- assign strong = "" -%}
+        {%- assign strong_closing = "" -%}
+      {%- endif -%}
+      {%- if pg.directory-tree.de-emphasize and include.del or page.directory-tree.del or directory-tree-del -%}
+        {%- assign del = "<del>" -%}
+        {%- assign del_closing = "</del>" -%}
+      {%- else -%}
+        {%- assign del = "" -%}
+        {%- assign del_closing = "" -%}
+      {%- endif %}
+      <li><a href="{{ site.baseurl }}{{ pg.url }}">{{ strong }}{{ del }}{{ pg.title }}{{ del_closing }}{{ strong_closing }}</a></li>
     {%- endunless -%}
   {% endfor -%}
-  {%- for dir in path %}
+  {%- assign offset = include.dir | split: "/" | size -%}
+  {%- assign last_char = include.dir | slice: -1 -%}
+  {%- unless last_char == "/" -%}
+    {%- assign offset = offset | minus: 1 -%}
+  {%- endunless -%}
+  {%- for dir in path offset: offset %}
     </ul>
   </li>
   {%- endfor %}
-</ul>
+{% unless include.li or page.directory-tree.li  or directory-tree-li -%}</ul>{%- endunless -%}
