@@ -1,6 +1,10 @@
 <!-- remove the white space after footer-->
 {% include top.html %}
 
+{%- assign directory-tree-li = true -%}
+{%- assign directory-tree-strong = true -%}
+{%- assign directory-tree-dir_class = "r-docs-subnav list-group-item" %}
+
 <style>
 	.r-docs-nav {
 		width: 300px;
@@ -107,54 +111,7 @@
 				</ul>
 			</li>
 
-			<li class="r-docs-subnav list-group-item">
-				<a href="{{ site.baseurl }}/doc/modules/">Modules documentation</a>
-				<ul>
-					<li><a href="{{ site.baseurl }}/doc/modules/antivirus.html"><strong>Antivirus</strong></a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/arc.html">ARC module</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/asn.html">ASN module</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/bayes_expiry.html">Bayes expiry module</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/clickhouse.html"><strong>Clickhouse module</strong></a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/chartable.html">Chartable</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/dcc.html">DCC module</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/dkim.html">DKIM</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/dkim_signing.html">DKIM signing</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/dmarc.html">DMARC</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/elastic.html">Elasticsearch exporter</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/emails.html">Emails scan</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/external_relay.html">External relay</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/external_services.html"><strong>External services</strong></a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/force_actions.html"><strong>Force Actions</strong></a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/fuzzy_check.html">Fuzzy check</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/greylisting.html">Greylisting module</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/hfilter.html">Hfilter</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/history_redis.html">History redis module</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/known_senders.html">Known senders module</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/maillist.html">Mailing list</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/metadata_exporter.html">Metadata exporter</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/metric_exporter.html">Metric exporter</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/mid.html">MID module</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/milter_headers.html"><strong>Milter headers</strong></a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/mime_types.html">Mime types</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/multimap.html"><strong>Multimap</strong></a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/mx_check.html">MX Check</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/neural.html">Neural network module</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/phishing.html">Phishing check</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/ratelimit.html"><strong>Ratelimit</strong></a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/rbl.html"><strong>RBL</strong></a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/regexp.html"><strong>Regexp</strong></a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/reputation.html">Reputation</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/once_received.html">Received policy</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/replies.html">Replies module</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/rspamd_update.html">Rspamd update</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/spamassassin.html">Spamassassin rules</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/spamtrap.html">Spamtrap</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/spf.html">SPF</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/trie.html">Trie matcher</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/url_redirector.html">URL redirector</a></li>
-					<li><a href="{{ site.baseurl }}/doc/modules/whitelist.html">Whitelist</a></li>
-				</ul>
-			</li>
+			{% include directory-tree.html dir="/doc/modules" %}
 
 			<li class="r-docs-subnav list-group-item">
 				<a href="{{ site.baseurl }}/doc/workers/">Workers documentation</a>
