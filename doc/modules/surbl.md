@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: SURBL module
+directory-tree:
+  de-emphasize: true
 ---
 
 # SURBL module

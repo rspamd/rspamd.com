@@ -3,6 +3,7 @@
 
 {%- assign directory-tree-li = true -%}
 {%- assign directory-tree-strong = true -%}
+{%- assign directory-tree-del = true -%}
 {%- assign directory-tree-dir_class = "r-docs-subnav list-group-item" %}
 
 <style>
@@ -22,6 +23,7 @@
 		font-weight: bold;
 		color: #de4700;
 	}
+	.r-docs-nav a:not(.active-link) > del { opacity: 0.4; }
 
 	.r-docs-subnav ul {
 		list-style: none;
