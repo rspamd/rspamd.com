@@ -1,8 +1,8 @@
 ---
 layout: doc
-title: Spamassassin module
+title: SpamAssassin rules module
 ---
-# Spamassassin rules module
+# SpamAssassin rules module
 
 This module is intended to enable the adoption and reading of SpamAssassin rules within Rspamd.
 

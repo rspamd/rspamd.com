@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamd updates module
+title: Rspamd update module
 ---
 # Rspamd update module
 
