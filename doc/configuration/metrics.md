@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamd Metrics
+title: Actions and scores
 ---
 # Rspamd actions and scores
 

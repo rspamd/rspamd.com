@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamd normal worker
+title: Normal worker (scanner)
 ---
 # Rspamd normal worker
 

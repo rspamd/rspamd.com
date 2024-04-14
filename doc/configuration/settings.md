@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Users settings description
+title: User settings
 ---
 # Rspamd user settings
 

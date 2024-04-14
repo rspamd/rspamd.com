@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamd Statistics
+title: Statistics settings
 ---
 # Rspamd statistic settings
 

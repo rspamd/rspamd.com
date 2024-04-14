@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamd proxy worker
+title: Proxy worker
 ---
 
 # Rspamd proxy worker

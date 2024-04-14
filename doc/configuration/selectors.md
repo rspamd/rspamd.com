@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamd Selectors
+title: Selectors
 ---
 
 # Rspamd selectors settings

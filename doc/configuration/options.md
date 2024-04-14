@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamd Options
+title: Common options
 ---
 # Rspamd options settings
 
