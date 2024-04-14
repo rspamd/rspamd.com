@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: Multimap module
+directory-tree:
+  emphasize: true
 ---
 # Multimap module
 {:.no_toc}

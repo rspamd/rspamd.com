@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: Clickhouse module
+directory-tree:
+  emphasize: true
 ---
 
 # Clickhouse module

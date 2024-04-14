@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: Milter headers module
+directory-tree:
+  emphasize: true
 ---
 
 # Milter headers module
