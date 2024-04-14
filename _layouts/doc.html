@@ -97,33 +97,9 @@
 				<a href="{{ site.baseurl }}/doc/faq.html">FAQ</a>
 			</li>
 
-			<li class="r-docs-subnav list-group-item">
-				<a href="{{ site.baseurl }}/doc/configuration/index.html">Rspamd configuration</a>
-				<ul>
-					<li><a href="{{ site.baseurl }}/doc/configuration/ucl.html">Universal configuration language (UCL)</a></li>
-					<li><a href="{{ site.baseurl }}/doc/configuration/composites.html">Composite symbols</a></li>
-					<li><a href="{{ site.baseurl }}/doc/configuration/logging.html">Logging setup</a></li>
-					<li><a href="{{ site.baseurl }}/doc/configuration/metrics.html">Symbols scores and metrics setup</a></li>
-					<li><a href="{{ site.baseurl }}/doc/configuration/options.html">Common options</a></li>
-					<li><a href="{{ site.baseurl }}/doc/configuration/redis.html">Redis server setup</a></li>
-					<li><a href="{{ site.baseurl }}/doc/configuration/statistic.html">Statistical module setup</a></li>
-					<li><a href="{{ site.baseurl }}/doc/configuration/settings.html">Users settings</a></li>
-					<li><a href="{{ site.baseurl }}/doc/configuration/upstream.html">Upstreams setup</a></li>
-					<li><a href="{{ site.baseurl }}/doc/configuration/selectors.html">Selectors</a></li>
-				</ul>
-			</li>
-
+			{% include directory-tree.html dir="/doc/configuration" %}
 			{% include directory-tree.html dir="/doc/modules" %}
-
-			<li class="r-docs-subnav list-group-item">
-				<a href="{{ site.baseurl }}/doc/workers/">Workers documentation</a>
-				<ul>
-					<li><a href="{{ site.baseurl }}/doc/workers/normal.html">Normal worker (scanner)</a></li>
-					<li><a href="{{ site.baseurl }}/doc/workers/rspamd_proxy.html">Proxy worker</a></li>
-					<li><a href="{{ site.baseurl }}/doc/workers/controller.html">Controller worker</a></li>
-					<li><a href="{{ site.baseurl }}/doc/workers/fuzzy_storage.html">Fuzzy hashes storage</a></li>
-				</ul>
-			</li>
+			{% include directory-tree.html dir="/doc/workers" %}
 
 			<li class="r-docs-subnav list-group-item">
 				<a href="#">Developers documentation</a>
