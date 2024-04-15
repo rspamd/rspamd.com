@@ -37,7 +37,6 @@ Tree parameters that can be passed as include hash, Front Matter directory-tree 
     {%- assign dir_strong = "<strong>" -%}
     {%- assign dir_strong_closing = "</strong>" -%}
   {%- endif -%}
-  {%- assign prev_page_dir = include.dir -%}
   {%- assign filtered_pages = "" | split: "," -%}
   {%- for pg in site.pages -%}
     {%- comment -%}
@@ -54,7 +53,25 @@ Tree parameters that can be passed as include hash, Front Matter directory-tree 
     {%- endif -%}
     {%- assign filtered_pages = filtered_pages | push: pg -%}
   {%- endfor -%}
-  {%- assign sorted_pages = filtered_pages | sort: "dir" -%}
+  {%- assign sorted_by_dir = filtered_pages | sort_natural: "dir" -%}
+  {%- assign subdir_pages = "" | split: "," -%}
+  {%- assign sorted_pages = "" | split: "," -%}
+  {%- for pg in sorted_by_dir -%}
+    {%- unless pg.dir == prev_page_dir -%}
+      {%- if subdir_pages.size > 0 -%}
+        {%- assign sorted_subdir_pages = subdir_pages | sort_natural: "title" -%}
+        {%- assign sorted_pages = sorted_pages | concat: sorted_subdir_pages -%}
+      {%- endif -%}
+      {%- assign subdir_pages = "" | split: "," -%}
+      {%- assign prev_page_dir = pg.dir -%}
+    {%- endunless -%}
+    {%- assign subdir_pages = subdir_pages | push: pg -%}
+  {%- endfor -%}
+  {%- if subdir_pages.size > 0 -%}
+    {%- assign sorted_subdir_pages = subdir_pages | sort_natural: "title" -%}
+    {%- assign sorted_pages = sorted_pages | concat: sorted_subdir_pages -%}
+  {%- endif -%}
+  {%- assign prev_page_dir = include.dir -%}
   {%- for pg in sorted_pages -%}
     {% unless pg.dir == prev_page_dir -%}
         {%- assign path = pg.dir | split: "/" -%}
