@@ -38,8 +38,8 @@ Tree parameters that can be passed as include hash, Front Matter directory-tree 
     {%- assign dir_strong_closing = "</strong>" -%}
   {%- endif -%}
   {%- assign prev_page_dir = include.dir -%}
-  {%- assign sorted_pages = site.pages | sort: "dir" -%}
-  {%- for pg in sorted_pages -%}
+  {%- assign filtered_pages = "" | split: "," -%}
+  {%- for pg in site.pages -%}
     {%- comment -%}
     # Skip page unless its directory starts with include.dir.
     {%- endcomment -%}
@@ -52,6 +52,10 @@ Tree parameters that can be passed as include hash, Front Matter directory-tree 
     {%- if pg.layout == nil or pg.layout == 'none' or pg.dir contains '/blog/page' -%}
       {%- continue -%}
     {%- endif -%}
+    {%- assign filtered_pages = filtered_pages | push: pg -%}
+  {%- endfor -%}
+  {%- assign sorted_pages = filtered_pages | sort: "dir" -%}
+  {%- for pg in sorted_pages -%}
     {% unless pg.dir == prev_page_dir -%}
         {%- assign path = pg.dir | split: "/" -%}
         {%- comment -%}
