@@ -89,7 +89,7 @@ Supported parameters for the Redis backend are:
 - `db` (optional): Database to use (though it is recommended to use dedicated Redis instances and not databases in Redis)
 - `min_tokens`: minimum number of words required for statistics processing
 - `min_learns` (optional): minimum learn to count for **both** spam and ham classes to perform  classification
-- `auto-learn` (optional): see below for details
+- `autolearn` (optional): see below for details
 - `per_user` (optional): enable perusers statistics. See above
 - `statfile`: Define keys for spam and ham mails.
 - `learn_condition` (optional): Lua function for autolearning as described below.
