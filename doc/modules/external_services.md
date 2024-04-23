@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: External Services module
+directory-tree:
+  emphasize: true
 ---
 
 # External Services module

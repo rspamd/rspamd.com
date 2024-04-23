@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: Antivirus module
+directory-tree:
+  emphasize: true
 ---
 
 # Antivirus module

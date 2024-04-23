@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: Force Actions module
+directory-tree:
+  emphasize: true
 ---
 
 # Force Actions module

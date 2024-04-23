@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamd Logging
+title: Logging settings
 ---
 
 # Rspamd logging settings

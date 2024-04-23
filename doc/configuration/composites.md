@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamd Composites
+title: Composite symbols
 ---
 
 # Rspamd composite symbols

@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: RBL module
+directory-tree:
+  emphasize: true
 ---
 # RBL module
 {:.no_toc}

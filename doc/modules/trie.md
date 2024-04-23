@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: Trie module
+directory-tree:
+  de-emphasize: true
 ---
 
 # Trie plugin

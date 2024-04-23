@@ -9,8 +9,7 @@ title: Site map
   <div class="col-md">
     <h2 class="mt-3">Pages</h2>
 
-{% include directory-tree.html
-  pages=site.pages %}
+{% include directory-tree.html %}
 
   </div>
   <div class="col-md">

@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: Emails module
+directory-tree:
+  de-emphasize: true
 ---
 
 # Emails module

@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: UCL language
+title: Universal configuration language (UCL)
 ---
 # UCL configuration language
 

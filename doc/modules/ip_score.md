@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: IP Score module
+directory-tree:
+  de-emphasize: true
 ---
 
 # IP Score

@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: Ratelimit module
+directory-tree:
+  emphasize: true
 ---
 
 # Ratelimit plugin

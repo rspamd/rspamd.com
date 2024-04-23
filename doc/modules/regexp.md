@@ -1,6 +1,8 @@
 ---
 layout: doc
 title: Regexp module
+directory-tree:
+  emphasize: true
 ---
 
 # Rspamd regexp module
