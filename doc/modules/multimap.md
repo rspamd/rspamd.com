@@ -470,9 +470,6 @@ Combined maps support merely **selectors** syntax, not general multimap rules.
 
 Version 2.0 introduces the capability to create dependent maps in Redis, where the map key is dependent on some other data extracted from the same message. This allows for the creation of per-user based whitelists, among other use cases.
 
-TODO: write more
-
-
 ## Examples
 
 Here are some examples of multimap configurations:
