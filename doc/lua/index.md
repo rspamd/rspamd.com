@@ -11,7 +11,7 @@ title: Lua API documentation
 
 Lua plugins are a powerful tool for creating complex filters that can access practically all features of Rspamd. Lua plugins can be used for writing custom rules which could interact with Rspamd in many ways such as using maps and making DNS requests. Rspamd is shipped with a number of Lua plugins that could be used as examples while writing your own plugins.
 
-Please read the [guide]({{ site.url }}{{ site.baseurl }}/doc/tutorials/writing_rules.html) about writing Lua rules.
+Please read the [guide]({{ site.baseurl }}/doc/developers/writing_rules.html) about writing Lua rules.
 
 ## Lua API reference
 
@@ -19,7 +19,7 @@ You can select the module you are interested in in the list on the left. Some of
 
 ## Using async requests inside plugins
 
-Please read the following [document]({{ site.url }}{{ site.baseurl }}/doc/lua/sync_async.html) that describes the main principles of writing async code in Rspamd.
+Please read the following [document]({{ site.baseurl }}/doc/developers/sync_async.html) that describes the main principles of writing async code in Rspamd.
 
 ## References
 

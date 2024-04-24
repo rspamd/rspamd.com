@@ -175,7 +175,7 @@ config.regexp.BLA = {
 }
 ~~~
 
-Please note that you **cannot** use asynchronous functions, including those with  [coroutines](../lua/sync_async.html), in these Lua snippets, as Rspamd will not wait for them to finish. The only way to use such functions in Regexp expressions is to create a dedicated rule that performs asynchronous tasks, register the dependency for the regexp symbol using `rspamd_config:register_dependency('RE_SYMBOL', 'ASYNC_SYMBOL')`, and then call `task:has_symbol('ASYNC_SYMBOL')` in the Lua function defined in the Regexp expression.
+Please note that you **cannot** use asynchronous functions, including those with  [coroutines]({{ site.baseurl }}/doc/developers/sync_async.html), in these Lua snippets, as Rspamd will not wait for them to finish. The only way to use such functions in Regexp expressions is to create a dedicated rule that performs asynchronous tasks, register the dependency for the regexp symbol using `rspamd_config:register_dependency('RE_SYMBOL', 'ASYNC_SYMBOL')`, and then call `task:has_symbol('ASYNC_SYMBOL')` in the Lua function defined in the Regexp expression.
 
 ## Regexp prefilters
 

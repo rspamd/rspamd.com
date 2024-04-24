@@ -364,7 +364,7 @@ Initially, rspamd only supported the [siphash](https://en.wikipedia.org/wiki/Sip
 
 For the vast majority of configurations we recommend `mumhash` or `fasthash` (also called `fast`). These algorithms perform well on a wide range of platforms, and `mumhash` is currently the default for all new storage. `siphash` (also called `old`) is only supported for legacy purposes.
 
-You can evaluate the performance of different algorithms yourself by [compiling the tests set]({{ site.baseurl }}/doc/tutorials/writing_tests.html) from rspamd sources:
+You can evaluate the performance of different algorithms yourself by [compiling the tests set]({{ site.baseurl }}/doc/developers/writing_tests.html) from rspamd sources:
 
 ```
 $ make rspamd-test

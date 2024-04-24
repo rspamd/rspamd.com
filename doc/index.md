@@ -27,7 +27,7 @@ You can also watch some [videos about Rspamd]({{ site.url }}{{ site.baseurl }}/m
 Rspamd is shipped with various spam filtering modules and features enabled just out of the box.
 The full list of built-in modules could be found in the [modules documentation]({{ site.url }}{{ site.baseurl }}/doc/modules/).
 
-If that is not enough, Rspamd provides an extensive [Lua API]({{ site.url }}{{ site.baseurl }}/doc/lua/) to write your own rules and plugins: <{{ site.url }}{{ site.baseurl }}/doc/tutorials/writing_rules.html>
+If that is not enough, Rspamd provides an extensive [Lua API]({{ site.baseurl }}/doc/lua/) to write your own rules and plugins: <{{ site.baseurl }}/doc/developers/writing_rules.html>
 
 
 ## License

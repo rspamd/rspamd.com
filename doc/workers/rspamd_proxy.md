@@ -31,7 +31,7 @@ For users who do not need Milter support, it's generally more efficient to use n
 
 Starting from Rspamd 1.6, the rspamd proxy worker supports the `milter` protocol, which is compatible with popular MTAs like Postfix and Sendmail. This new feature also marks the obsolescence of the [Rmilter](https://rspamd.com/rmilter/) project in recognition of the improved integration method.
 
-To enable Milter mode, use the `milter` boolean worker option. When enabled, the proxy communicates exclusively in the Milter protocol. If disabled, the proxy can be used with Rspamd's native [HTTP protocol](https://rspamd.com/doc/architecture/protocol.html) and the legacy protocol used by Exim.
+To enable Milter mode, use the `milter` boolean worker option. When enabled, the proxy communicates exclusively in the Milter protocol. If disabled, the proxy can be used with Rspamd's native [HTTP protocol]({{ site.baseurl }}/doc/developers/protocol.html) and the legacy protocol used by Exim.
 
 It's important to note that Milter support is available in the `rspamd_proxy` worker only. There are two ways to use the Milter protocol:
 

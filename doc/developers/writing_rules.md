@@ -400,7 +400,7 @@ if rule['score'] then
 end
 ~~~
 
-You can also use [`coroutines`](https://rspamd.com/doc/lua/sync_async.html) to simplify your asynchronous code.
+You can also use [`coroutines`]({{ site.baseurl }}/doc/developers/sync_async.html) to simplify your asynchronous code.
 
 ## Redis requests
 

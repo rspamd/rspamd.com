@@ -7,7 +7,7 @@ title: Rspamd Tutorials
 In this section you can find the current step-by-step tutorials coverign various topics about rspamd.
 
 * [Migrating from SA](migrate_sa.html) - the guide for those who wants to migrate an existing SpamAssassin system to Rspamd
-* [Writing rspamd rules](writing_rules.html) - how to extend rspamd by writing your own rules
+* [Writing rspamd rules]({{ site.baseurl }}/doc/developers/writing_rules.html) - how to extend rspamd by writing your own rules
 * [Creating your fuzzy storage]({{ site.url }}{{ site.baseurl }}/doc/fuzzy_storage.html) - learn how to make your own fuzzy storage
 * [Contributing to rspamd.com web-site](site_contributing.html) describes general conventions and how to test web-site changes
 * [Getting feedback from users with IMAPSieve](feedback_from_users_with_IMAPSieve.html) - how to get a copy of the message moved by user from or into the `Junk` folder
