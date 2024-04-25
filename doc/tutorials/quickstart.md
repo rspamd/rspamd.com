@@ -23,7 +23,7 @@ This guide outlines the primary procedures for obtaining and initiating work wit
 
 ## Preparation steps
 
-First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. This guide covers the setup of the [Postfix MTA](https://www.postfix.org/){:target="&#95;blank"}, but note that Rspamd can also work with other MTA software. For more information, see the [integration document]({{ site.baseurl }}/doc/integration.html). Keep in mind that Exim MTA has limited support for Rspamd, so it's not recommended to run them together.
+First of all, you need a working <abbr title="Mail Transfer Agent">MTA</abbr> that can send and receive email for your domain using <abbr title="Simple Mail Transfer Protocol">SMTP</abbr> protocol. This guide covers the setup of the [Postfix MTA](https://www.postfix.org/){:target="&#95;blank"}, but note that Rspamd can also work with other MTA software. For more information, see the [integration document]({{ site.baseurl }}/doc/tutorials/integration.html). Keep in mind that Exim MTA has limited support for Rspamd, so it's not recommended to run them together.
 
 You should also consider to setup your own [local  DNS resolver]({{ site.baseurl }}/doc/faq.html#resolver-setup).
 
@@ -622,7 +622,7 @@ rspamc -f 1 -w 1 fuzzy_add file.eml
 rspamc -f 2 fuzzy_del file2.eml
 ~~~
 
-* Acting as a local delivery agent (read the [integration document]({{ site.baseurl }}/doc/integration.html))
+* Acting as a local delivery agent (read the [integration document]({{ site.baseurl }}/doc/tutorials/integration.html))
 
 ### The rspamadm command
 
@@ -689,7 +689,7 @@ To enable extended spam headers in [Milter headers module]({{ site.baseurl }}/do
 extended_spam_headers = true;
 ~~~
 
-To enable headers in Exim refer to the "Integration with Exim MTA" section of the [MTA integration]({{ site.baseurl }}/doc/integration.html) document.
+To enable headers in Exim refer to the "Integration with Exim MTA" section of the [MTA integration]({{ site.baseurl }}/doc/tutorials/integration.html) document.
 
 Here is a screenshot of this addon in use:
 

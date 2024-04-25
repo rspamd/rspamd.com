@@ -62,9 +62,9 @@ and learning messages and viewing the history of scans. The interface is self-ho
 web server or application server to run the web UI - you just need to run rspamd itself.
 
 * **Integration with MTA** - Rspamd can work with the most popular mail transfer systems, such as postfix, exim or sendmail.
-whilst for exim there are several solutions to work with rspamd. Should you require MTA integration then please consult with the [integration guide]({{ site.url }}{{ site.baseurl }}/doc/integration.html).
+whilst for exim there are several solutions to work with rspamd. Should you require MTA integration then please consult with the [integration guide]({{ site.baseurl }}/doc/tutorials/integration.html).
 
-* **Extensive Lua API** - rspamd ships with hundreds of [lua functions]({{ site.url }}{{ site.baseurl }}/doc/lua) that are available to write one's own rules for efficient and targeted spam filtering.
+* **Extensive Lua API** - rspamd ships with hundreds of [lua functions]({{ site.baseurl }}/doc/lua) that are available to write one's own rules for efficient and targeted spam filtering.
 
 * **Dynamic tables** - rspamd supports `dynamic maps` containing strings or IP addresses that are checked during runtime and updated in memory when changed. Maps can be stored on disk or accessed over HTTP/HTTPS.
 

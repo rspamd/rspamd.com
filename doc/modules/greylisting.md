@@ -26,7 +26,7 @@ The hashes lifetime is depicted in the following scheme:
 
 <img class="img-fluid" width="75%" src="{{ site.baseurl }}/img/greylisting.png">
 
-The greylisting module triggers a `soft reject` action, which is intended to be interpreted by the MTA as a temporary rejection (typically through the Milter interface). For Exim, you can configure it to recognize `soft reject` using the guidelines provided in the [integration guide]({{ site.baseurl }}/doc/integration.html#integration-with-exim-mta) for details. For Haraka, support is available from version 2.9.0 onward.
+The greylisting module triggers a `soft reject` action, which is intended to be interpreted by the MTA as a temporary rejection (typically through the Milter interface). For Exim, you can configure it to recognize `soft reject` using the guidelines provided in the [integration guide]({{ site.baseurl }}/doc/tutorials/integration.html#integration-with-exim-mta) for details. For Haraka, support is available from version 2.9.0 onward.
 
 ## Module configuration
 

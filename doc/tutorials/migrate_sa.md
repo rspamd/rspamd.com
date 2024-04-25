@@ -48,7 +48,7 @@ SA `spam` is almost equal to the Rspamd `add header` action in the default setup
 
 ## First steps with Rspamd
 
-To install Rspamd, I recommend using one of the [official packages]({{ site.url }}{{ site.baseurl }}/downloads.html) that are available for many popular platforms. If you'd like to have more features then you can consider the `experimental` branch of packages, while if you would like to have more stability then you can select the `stable` branch. However, normally even the `experimental` branch is stable enough for production use, and bugs are fixed more quickly in the `experimental` branch.
+To install Rspamd, I recommend using one of the [official packages]({{ site.baseurl }}/downloads.html) that are available for many popular platforms. If you'd like to have more features then you can consider the `experimental` branch of packages, while if you would like to have more stability then you can select the `stable` branch. However, normally even the `experimental` branch is stable enough for production use, and bugs are fixed more quickly in the `experimental` branch.
 
 ## General SpamAssassin rules
 
@@ -65,7 +65,7 @@ On the other hand, if you don't have a lot of custom rules and primarily use the
 
 ## Integration
 
-If you have your SA up and running it is usually possible to switch the system to Rspamd using the existing tools. However, please check the [integration document]({{ site.url }}{{ site.baseurl }}/doc/integration.html) for further details.
+If you have your SA up and running it is usually possible to switch the system to Rspamd using the existing tools. However, please check the [integration document]({{ site.baseurl }}/doc/tutorials/integration.html) for further details.
 
 ## Statistics
 

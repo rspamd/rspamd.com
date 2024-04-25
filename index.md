@@ -8,7 +8,7 @@ title: Rspamd spam filtering system
 		<div class="container text-center py-5">
 			<h1 class="mt-0">Rspamd</h1>
 			<p>Fast, free and open-source spam filtering system.</p>
-			<a class="btn btn-primary btn-large mt-3" href="{{ site.baseurl }}/doc/quickstart.html">Quick start <small><i class="fa-solid fa-chevron-right"></i></small></a>
+			<a class="btn btn-primary btn-large mt-3" href="{{ site.baseurl }}/doc/tutorials/quickstart.html">Quick start <small><i class="fa-solid fa-chevron-right"></i></small></a>
 		</div>
 		</div>
 		<div class="container-fluid w-auto mx-2">

@@ -5,7 +5,7 @@ title: Rspamd Support
 
 # Support
 
-Rspamd is free and open source software. Developers are mostly volunteers and every user support is provided in their free time. If you have questions about installation or how to use Rspamd, please check our <a href="/doc/index.html">Documentation</a> first, especially <a href="/doc/quickstart.html">Rspamd quick start</a> and <a href="/doc/faq.html">Frequently asked questions</a>.
+Rspamd is free and open source software. Developers are mostly volunteers and every user support is provided in their free time. If you have questions about installation or how to use Rspamd, please check our [Documentation]({{ site.baseurl }}/doc/index.html) first, especially [Rspamd quick start]({{ site.baseurl }}/doc/tutorials/quickstart.html) and [Frequently asked questions]({{ site.baseurl }}/doc/faq.html).
 
 ## Reporting Bugs and Feature Requests
 If you find a bug or would like to ask for a specific feature then you can use issue tracker hosted on GitHub. We also welcome pull requests if you would like to submit patches for any part of the project: documentation, site, WebUI, and Rspamd itself.
@@ -40,4 +40,4 @@ If you would like to support Rspamd you can make donations to help us covering h
 </div>
 
 ## Commercial Support
-If you require the additional level of support related to large or custom Rspamd setup that could involve NDA signing, consulting, direct and unlimited access to the fuzzy storage, DNS lists and so on, you might go with the [commercial support option](https://rspamd.com/commercial.html). 
+If you require the additional level of support related to large or custom Rspamd setup that could involve NDA signing, consulting, direct and unlimited access to the fuzzy storage, DNS lists and so on, you might go with the [commercial support option]({{ site.baseurl }}/commercial.html). 

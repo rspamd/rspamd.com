@@ -129,7 +129,7 @@ sudo apt-get --no-install-recommends install rspamd
 For <a class="text-decoration-none text-reset" href="#asanSys2">ASAN<sup>2</sup></a> branch install `rspamd-asan` package instead of `rspamd` (since 3.5).
 
 Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-dbg` (or `rspamd-asan-dbg`) package and could be safely installed even in the production environment.
-Check [the quick start document]({{ site.baseurl }}/doc/quickstart.html#rspamd-installation) for further steps.
+Check [the quick start document]({{ site.baseurl }}/doc/tutorials/quickstart.html#rspamd-installation) for further steps.
 
 ### Packages support policy
 

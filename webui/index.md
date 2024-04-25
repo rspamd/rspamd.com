@@ -16,7 +16,7 @@ viewing statistic and learning.
 ## Rspamd setup
 
 Default configuration is expected to work but it's strongly recommended to [change
-the default controller password]({{ site.baseurl }}/doc/quickstart.html#setting-the-controller-password)
+the default controller password]({{ site.baseurl }}/doc/tutorials/quickstart.html#setting-the-controller-password)
 (whether you plan on using webui or not).
 
 Furthermore, if you intend to expose the webui via a proxy running on the same
