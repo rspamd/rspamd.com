@@ -104,12 +104,7 @@
 			<li class="r-docs-subnav list-group-item">
 				<a href="#">Developers documentation</a>
 				<ul>
-					<li><a href="{{ site.baseurl }}/doc/developers/writing_rules.html">Writing Rspamd rules</a></li>
-					<li><a href="{{ site.baseurl }}/doc/developers/sync_async.html">Coroutines and async calls</a></li>
-					<li><a href="{{ site.baseurl }}/doc/developers/architecture.html">Architecture information</a></li>
-					<li><a href="{{ site.baseurl }}/doc/developers/protocol.html">Protocol documentation</a></li>
-					<li><a href="{{ site.baseurl }}/doc/developers/writing_tests.html">Writing Rspamd tests</a></li>
-					<li><a href="{{ site.baseurl }}/doc/developers/examples.html">Useful Lua rules examples</a></li>
+					{% include directory-tree.html dir="/doc/developers/" %}
 				</ul>
 			</li>
 
