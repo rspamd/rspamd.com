@@ -1,9 +1,9 @@
 ---
 layout: doc
-title: Sync and Async API comparison
+title: Coroutines and async calls
 ---
 
-# Rspamd asynchronous calls
+# Coroutines and async calls
 
 This guide describes how to make asynchronous calls from Rspamd plugins and rules.
 
