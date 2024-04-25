@@ -114,8 +114,12 @@ Tree parameters that can be passed as include hash, Front Matter directory-tree 
           {%- assign dir_index_page = dir_pages | where: "name", "index.md" | first -%}
           {%- unless dir_index_page -%}
             {%- assign dir_index_page = dir_pages | where: "name", "index.html" | first -%}
-          {%- endunless %}
-    <a href="{{ site.baseurl }}{{ pg.dir }}">{{ dir_strong }}{{ dir_index_page.title }}{{ dir_strong_closing }}</a>
+          {%- endunless -%}
+          {%- if dir_index_page %}
+    <a href="{{ site.baseurl }}{{ pg.dir }}">{{ dir_strong }}{{ dir_index_page.title | default: dir }}{{ dir_strong_closing }}</a>
+          {%- else %}
+    {{ dir_strong }}{{ dir }}{{ dir_strong_closing }}
+          {%- endif -%}
         {%- else %}
     {{ dir_strong }}{{ dir }}{{ dir_strong_closing }}
         {%- endif %}
