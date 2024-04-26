@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Data usage policy
+title: Services acceptable use policy
 ---
 
 # Rspamd fuzzy feed, DNSBL and site usage policies

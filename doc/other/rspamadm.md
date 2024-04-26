@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamadm
+title: Rspamadm command
 ---
 
 # About rspamadm
