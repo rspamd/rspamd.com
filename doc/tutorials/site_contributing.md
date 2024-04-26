@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Contributing to rspamd.com web-site
+title: Contributing to web-site
 ---
 # Contributing to rspamd.com web-site
 

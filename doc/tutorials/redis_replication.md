@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Bayesian statistics and fuzzy storage replication with multi-instance Redis backend
+title: Multi-instance Redis replication
 ---
 # Bayesian statistics and fuzzy storage replication with multi-instance Redis backend
 

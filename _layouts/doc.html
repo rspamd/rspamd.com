@@ -80,18 +80,7 @@
 				</ul>
 			</li>
 
-			<li class="r-docs-subnav list-group-item">
-				<a href="#">Tutorials and Guides</a>
-				<ul>
-					<li><a href="{{ site.baseurl }}/doc/tutorials/quickstart.html">Quick start</a></li>
-					<li><a href="{{ site.baseurl }}/doc/tutorials/integration.html">MTA integration</a></li>
-					<li><a href="{{ site.baseurl }}/doc/tutorials/migration.html">Upgrading</a></li>
-					<li><a href="{{ site.baseurl }}/doc/tutorials/fuzzy_storage.html">Own fuzzy storage</a></li>
-					<li><a href="{{ site.baseurl }}/doc/tutorials/redis_replication.html">Replication in Redis</a></li>
-					<li><a href="{{ site.baseurl }}/doc/tutorials/scanning_outbound.html">How to scan outbound emails</a></li>
-					<li><a href="{{ site.baseurl }}/doc/tutorials/stunnel_setup.html">Setup stunnel to protect Redis</a></li>
-				</ul>
-			</li>
+			{% include directory-tree.html dir="/doc/tutorials" %}
 
 			<li class="r-docs-subnav list-group-item">
 				<a href="{{ site.baseurl }}/doc/faq.html">FAQ</a>
@@ -155,8 +144,6 @@
 				<a href="#">Other topics</a>
 				<ul>
 					<li><a href="{{ site.baseurl }}/doc/gtube_patterns.html">GTUBE-like test patterns</a></li>
-					<li><a href="{{ site.baseurl }}/doc/tutorials/site_contributing.html">Contributing to web-site</a></li>
-					<li><a href="{{ site.baseurl }}/doc/tutorials/feedback_from_users_with_IMAPSieve.html">Getting feedback from users with IMAPSieve</a></li>
 					<li><a href="{{ site.baseurl }}/doc/rspamadm.html">Rspamadm command</a></li>
 					<li><a href="{{ site.baseurl }}/doc/usage_policy.html">Rspamd fuzzy feed and DNSBL usage policies</a></li>
 				</ul>

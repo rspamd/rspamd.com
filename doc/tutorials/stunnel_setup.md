@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Setting up encrypted tunnel using stunnel
+title: Setup stunnel to protect Redis
 ---
 # Setting up encrypted tunnel using stunnel
 

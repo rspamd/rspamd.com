@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Quickstart
+title: Quick start
 ---
 
 # Rspamd quick start

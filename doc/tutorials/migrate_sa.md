@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Migrating from SA
+title: Migrating from SpamAssassin
 ---
 # Migrating from SpamAssassin to Rspamd
 
