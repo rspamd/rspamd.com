@@ -570,7 +570,7 @@ While Rspamd is free to use for any purpose, it is important to note that some o
 
 [MSBL EBL](https://msbl.org/ebl.html){:target="&#95;blank"} - Organizations that have over 100 users should contact the reseller to arrange for commercial access
 
-[Rspamd URIBL](https://www.rspamd.com/doc/usage_policy.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
+[Rspamd URIBL]({{ site.baseurl }}/doc/other/usage_policy.html){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 250k queries per day
 
 [SORBS](https://www.sorbs.net/general/using.shtml#largesites){:target="&#95;blank"} - Limit of 100k users or more than 5 messages per second sustained
 
@@ -660,7 +660,7 @@ For example, it is possible to get help for a specific configuration option by t
 
     rspamadm confighelp -k fuzzy
 
-See [here]({{ site.url }}{{ site.baseurl }}/doc/rspamadm.html) for more information about rspamadm utilities.
+See [here]({{ site.baseurl }}/doc/other/rspamadm.html) for more information about rspamadm utilities.
 
 ### Using mail system utilities
 

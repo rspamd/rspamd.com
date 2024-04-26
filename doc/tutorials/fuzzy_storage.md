@@ -27,7 +27,7 @@ This page is intended for mail system administrators who want to create and main
 
 - [Fuzzy Check module]({{ site.baseurl }}/doc/modules/fuzzy_check.html)
 - [Fuzzy Storage Workers]({{ site.baseurl }}/doc/workers/fuzzy_storage.html)
-- [Rspamd.com infrastructure policies]({{ site.baseurl }}/doc/usage_policy.html)
+- [Rspamd.com infrastructure policies]({{ site.baseurl }}/doc/other/usage_policy.html)
 
 ----
 

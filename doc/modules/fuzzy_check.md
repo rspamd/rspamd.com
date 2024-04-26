@@ -265,6 +265,6 @@ rspamd selects a server in a round-robin manner.
 ## Usage of the feeds provided by `rspamd.com`
 
 By default, `rspamd.com` feeds are enabled. However, if you decide to use these feeds, 
-it's important to ensure that you comply with the [**free usage policy**](https://rspamd.com/doc/usage_policy.html). 
+it's important to ensure that you comply with the [**free usage policy**]({{ site.baseurl }}/doc/other/usage_policy.html). 
 Failure to do so may result in being blocked from using the service. In such cases, the special `FUZZY_BLOCKED` symbol 
 will be assigned to the messages in question. It's worth noting that this symbol has no weight and will not affect any mail processing operations.
