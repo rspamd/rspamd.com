@@ -135,4 +135,4 @@ rspamd with Lua.
 ## References
 
 * Home site: <https://rspamd.com>
-* Development: <https://github.com/vstakhov/rspamd>
+* Development: <https://github.com/rspamd/rspamd>
