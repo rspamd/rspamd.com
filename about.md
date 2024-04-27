@@ -5,7 +5,7 @@ title: About Rspamd
 
 ## Introduction
 
-[Rspamd]({{ site.baseurl }}) is an advanced spam filtering system supporting a variety of filtering mechanisms
+[Rspamd]({{ site.baseurl }}/) is an advanced spam filtering system supporting a variety of filtering mechanisms
 including regular expressions, statistical analysis and custom services
 such as URL black lists. Each message is analysed by rspamd and given a `spam score`.
 
