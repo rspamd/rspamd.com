@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamd features
+title: Features
 ---
 
 # Rspamd features

@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Rspamd performance
+title: Performance
 ---
 
 ## Mail filtering nowadays

@@ -69,17 +69,7 @@
 <div class="r-docs-container">
 	<div class="r-docs-nav px-4">
 		<ul class="list-group list-group-flush">
-			<li class="r-docs-subnav list-group-item">
-				<a href="{{ site.baseurl }}/doc/about/index.html">About Rspamd</a>
-				<ul>
-					<li><a href="{{ site.baseurl }}/downloads.html">Downloads</a></li>
-					<li><a href="{{ site.baseurl }}/features.html">Features</a></li>
-					<li><a href="{{ site.baseurl }}/performance.html">Performance</a></li>
-					<li><a href="{{ site.baseurl }}/comparison.html">Comparison</a></li>
-					<li><a href="{{ site.baseurl }}/media.html">Videos about Rspamd</a></li>
-				</ul>
-			</li>
-
+			{% include directory-tree.html dir="/doc/about" %}
 			{% include directory-tree.html dir="/doc/tutorials" %}
 
 			<li class="r-docs-subnav list-group-item">

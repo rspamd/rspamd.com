@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Compare Rspamd with other spam filters
+title: Comparison
 ---
 
 <div class="compare-table table-responsive">
