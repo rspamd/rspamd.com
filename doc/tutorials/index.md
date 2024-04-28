@@ -1,6 +1,7 @@
 ---
 layout: doc
 title: Tutorials and Guides
+description: Detailed guides on a variety of topics.
 ---
 # Tutorials and Guides
 

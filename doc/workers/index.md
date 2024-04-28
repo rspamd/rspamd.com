@@ -1,6 +1,7 @@
 ---
 layout: doc
 title: Workers documentation
+description: Rspamd worker processes.
 ---
 # Rspamd workers
 
