@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Workers documentation
-description: Rspamd worker processes.
+description: Details about worker processes, their configuration and management in Rspamd.
 ---
 # Rspamd workers
 

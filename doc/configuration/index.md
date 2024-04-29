@@ -1,6 +1,7 @@
 ---
 layout: doc
 title: Rspamd configuration
+description: Documentation on configuration settings and options.
 ---
 # Rspamd configuration
 {:.no_toc}

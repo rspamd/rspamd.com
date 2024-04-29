@@ -1,6 +1,7 @@
 ---
 layout: doc
 title: Modules documentation
+description: Details of the functionality, configuration options and usage instructions for each module.
 ---
 # Rspamd modules
 

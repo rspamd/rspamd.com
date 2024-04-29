@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: About Rspamd
-description: Learn more about Rspamd in general.
+description: Discover more about Rspamd's overall features and capabilities.
 ---
 # About Rspamd
 

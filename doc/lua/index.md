@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Lua API documentation
-description: Rspamd API for Lua rules and plugins.
+description: Rspamd Lua API for creating rules and plugins.
 ---
 
 # Lua API documentation {#top}
