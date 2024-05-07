@@ -80,6 +80,8 @@ For most of setups where there is only one ham-spam statistic is tracked `classi
 
 If you need describe multiply different classifiers you need use `statistics.conf`, common usecase when first classifier is `per_user` and second is not.
 
+### Per-user statistics
+
 To enable per-user statistics, you can add the `per_user = true` property to the configuration of the classifier. However, it is *important* to ensure that Rspamd is called at the final delivery stage (e.g., LDA mode) to avoid issues with multi-recipient messages. When dealing with multi-recipient messages, Rspamd will use the first recipient for user-based statistics. 
 
 It's worth noting that Rspamd prioritizes SMTP recipients over MIME ones and gives preference to the special LDA header called `Delivered-To`, which can be appended using the `-d` option for `rspamc`. This allows for more accurate per-user statistics in your configuration.
@@ -93,6 +95,7 @@ The classifier in Rspamd learns headers that are specifically defined in the `cl
 Supported parameters for the Redis backend are:
 
 - `tokenizer`: leave it as shown for now. Currently, only OSB is supported
+- `new_schema`: must be set to `true`
 - `backend`: set it to Redis
 - `servers`: IP or hostname with a port for the Redis server. Use an IP for the loopback interface, if you have defined localhost in /etc/hosts for IPv4 and IPv6, or your Redis server will not be found!
 - `write_servers` (optional): If needed, define dedicated servers for learning
@@ -104,6 +107,10 @@ Supported parameters for the Redis backend are:
 - `autolearn` (optional): for more details see Autolearning section
 - `per_user` (optional): enable perusers statistics. See above
 - `statfile`: Define keys for spam and ham mails
+- `cache_prefix` (optional): prefix used to create keys where to store hashes of already learned ids, defaults to `"learned_ids"`
+- `cache_max_elt` (optional): amount of elements to store in one `learned_ids` key
+- `cache_max_keys` (optional): amount of `learned_ids` keys to store
+- `cache_elt_len` (optional): lenth of hash to store in one element of `learned_ids`
 
 ## Autolearning
 
