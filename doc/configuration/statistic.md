@@ -27,7 +27,9 @@ Statistical tokens are stored in statfiles, which are then mapped to specific ba
 
 ## Statistics Configuration
 
-Starting from Rspamd 2.0, we recommend using `redis` as the backend and `osb` as the tokenizer, which are set as the default settings. The default configuration settings can be found in the `$CONFDIR/statistic.conf` file.
+Starting from Rspamd 2.0, we recommend using `redis` as the backend and `osb` as the tokenizer, which are set as the default settings.
+
+The default configuration settings can be found in the `$CONFDIR/statistic.conf` file.
 
 ~~~hcl
 classifier "bayes" {
@@ -70,7 +72,16 @@ classifier "bayes" {
 .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/statistic.conf"
 ~~~
 
-To enable per-user statistics, you can add the `users_enabled = true` property to the configuration of the classifier. However, it is important to ensure that Rspamd is called at the final delivery stage (e.g., LDA mode) to avoid issues with multi-recipient messages. When dealing with multi-recipient messages, Rspamd will use the first recipient for user-based statistics. 
+You are also recommended to use [`bayes_expiry` module](https://rspamd.com/doc/modules/bayes_expiry.html) to maintain your statistics database.
+
+Please note that `classifier-bayes.conf` is child config of `statistics.conf` which created for simplicity, you should not use them both at once.
+
+For most of setups where there is only one ham-spam statistic is tracked `classifier-bayes.conf` is suffient.
+
+If you need describe multiply different classifiers you need use `statistics.conf`, common usecase when first classifier is `per_user` and second is not.
+
+To enable per-user statistics, you can add the `per_user = true` property to the configuration of the classifier. However, it is *important* to ensure that Rspamd is called at the final delivery stage (e.g., LDA mode) to avoid issues with multi-recipient messages. When dealing with multi-recipient messages, Rspamd will use the first recipient for user-based statistics. 
+
 It's worth noting that Rspamd prioritizes SMTP recipients over MIME ones and gives preference to the special LDA header called `Delivered-To`, which can be appended using the `-d` option for `rspamc`. This allows for more accurate per-user statistics in your configuration.
 
 ### Classifier and headers
@@ -88,13 +99,11 @@ Supported parameters for the Redis backend are:
 - `password` (optional): Password for the Redis server
 - `db` (optional): Database to use (though it is recommended to use dedicated Redis instances and not databases in Redis)
 - `min_tokens`: minimum number of words required for statistics processing
-- `min_learns` (optional): minimum learn to count for **both** spam and ham classes to perform  classification
-- `autolearn` (optional): see below for details
+- `min_learns` (optional): minimum learn to count for **both** spam and ham classes to perform classification
+- `learn_condition`: Lua function that verifies that learning is needed. Default function **must** be set if you not wrote your own, omniting `learn_condition` from `statistic.conf` will lead to loosing protection from overlearning
+- `autolearn` (optional): for more details see Autolearning section
 - `per_user` (optional): enable perusers statistics. See above
-- `statfile`: Define keys for spam and ham mails.
-- `learn_condition` (optional): Lua function for autolearning as described below.
- 
-You are also recommended to use [`bayes_expiry` module](https://rspamd.com/doc/modules/bayes_expiry.html) to maintain your statistics database.
+- `statfile`: Define keys for spam and ham mails
 
 ## Autolearning
 
