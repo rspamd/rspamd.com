@@ -72,13 +72,13 @@ classifier "bayes" {
 .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/statistic.conf"
 ~~~
 
-You are also recommended to use [`bayes_expiry` module](https://rspamd.com/doc/modules/bayes_expiry.html) to maintain your statistics database.
+You are also recommended to use [`bayes_expiry` module]({{ site.baseurl }}/doc/modules/bayes_expiry.html) to maintain your statistics database.
 
-Please note that `classifier-bayes.conf` is child config of `statistics.conf` which created for simplicity, you should not use them both at once.
+Please note that `classifier-bayes.conf` is include config of `statistic.conf` which created for user's simplicity.
 
-For most of setups where there is only one ham-spam statistic is tracked `classifier-bayes.conf` is suffient.
+For most of setups where there is only one classifier is used - `classifier-bayes.conf` is suffient and `statistic.conf` should be leaved unmodified.
 
-If you need describe multiply different classifiers you need use `statistics.conf`, common usecase when first classifier is `per_user` and second is not.
+If you need describe multiply different classifiers - then you need create `local.d/statistic.conf`, that should describe classifier sections with all details from default config, as there will be no fallback. Common usecase for such case is when first classifier is `per_user` and second is not.
 
 ### Per-user statistics
 
