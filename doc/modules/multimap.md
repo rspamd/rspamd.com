@@ -391,6 +391,23 @@ the map:
 
 If symbols used in a map are not defined in the `symbols` attribute, they will be ignored and replaced with the default map symbol. In case the value of a key-value pair is missing, Rspamd will insert the default symbol with a dynamic weight of `1.0`. This weight is then multiplied by the metric score.
 
+If the symbol names are unknown/dynamic, you can use the option `dynamic_symbols = true` to add all possible symbols from that map:
+
+~~~
+DYN_MULTIMAP {
+  type = "hostname";
+  map = "/maps/dynamic_symbols.map";
+  dynamic_symbols = true;
+}
+~~~
+
+And the map content:
+
+~~~
+foo DYN_TEST1:10:opt1,opt2
+bar DYN_TEST2:20:opt3,opt4
+~~~
+
 ### Get all matches
 
 If you want to match all possible regexps/globs in that list, not a single one, then you need to define `multi` flag for that map:
