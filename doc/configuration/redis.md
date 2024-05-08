@@ -129,6 +129,3 @@ sentinel_masters_pattern = "^mymaster.*$"; # Defines masters pattern to match in
 ~~~
 
 Rspamd will utilize sentinels to determine which servers should be designated as write_servers and which should be designated as read_servers. Although Redis sentinel does not fully support multi-master configurations, this feature can still be valuable for switching masters when accessing non-volatile data such as statistics, fuzzy storage, or neural network data. However, it is important to note that you must still configure an initial set of servers to be used in case no sentinel is accessible.
-
-## Other clustering options
-If you require more advanced clustering options beyond what Redis Sentinel offers, we recommend considering the KeyDB project. KeyDB serves as a drop-in replacement for Redis, providing support for multi-master replication mode while remaining fully compatible with Redis (and Rspamd). You can learn more about KeyDB in the [KeyDB documentation](https://docs.keydb.dev/).
