@@ -156,19 +156,19 @@ ssl_key = </etc/letsencrypt/live/<your.domain>/privkey.pem
 ## Caching setup
 
 Rspamd uses [Redis](https://redis.io){:target="&#95;blank"} as a storage for non-volatile data:
-- a backend for tokens storage and cache of learned messages by [statistical module](configuration/statistic.html) (BAYES classifier)
+- a backend for tokens storage and cache of learned messages by [statistical module](/doc/configuration/statistic.html) (BAYES classifier)
 - a fuzzy storage backend (optional)
 
 and as a cache for volatile data:
 
-- key-value cache storage by [many Rspamd modules](configuration/redis.html#introduction)
+- key-value cache storage by [many Rspamd modules](/doc/configuration/redis.html#introduction)
 - greylisting (delaying of suspicious emails)
 - rate-limiting
 - whitelisting of reply messages (storing reply message IDs to avoid certain checks for replies to our own sent messages)
 
 Installation of Redis is quite straightforward: install it using the preferred way for your OS (e.g. from packages), start redis-server with the default settings (it should listen on the local interface using port 6379) and you are done.
 
-We highly recommend using separate Redis **instance** for each module that stores non-volatile data, specifically for the statistical module (BAYES classifier) and fuzzy storage. This multi-instance Redis configuration simplifies administration tasks such as backup and restore, and allows for setting memory limits and eviction policies, as well as establishing data replication between Rspamd installations. For more information on configuring multiple Redis instances, refer to the [Redis replication](tutorials/redis_replication.html) tutorial.
+We highly recommend using separate Redis **instance** for each module that stores non-volatile data, specifically for the statistical module (BAYES classifier) and fuzzy storage. This multi-instance Redis configuration simplifies administration tasks such as backup and restore, and allows for setting memory limits and eviction policies, as well as establishing data replication between Rspamd installations. For more information on configuring multiple Redis instances, refer to the [Redis replication](/doc/tutorials/redis_replication.html) tutorial.
 
 It may also be a good idea to limit the memory used by Redis to a reasonable value, such as:
 
@@ -226,7 +226,7 @@ This tool will guide you interactively throughout the configuration process usin
 
 ### Manual configuration
 
-Firstly, refer to the principles of basic configuration [here](configuration/index.html) for further reading.
+Firstly, refer to the principles of basic configuration [here](/doc/configuration/index.html) for further reading.
 
 Additionally, it is advisable to utilize the specialized include files as referenced in the default configuration. Typically, each configuration file located in the directory `/etc/rspamd/` will incorporate two such includes:
 
