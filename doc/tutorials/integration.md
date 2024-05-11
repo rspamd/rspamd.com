@@ -51,7 +51,7 @@ milter_default_action = accept
 
 Starting with version 4.86, Exim can integrate with Rspamd in a similar fashion as SpamAssassin. The diagram below illustrates the interaction between Exim and Rspamd:
 
-![exim scheme](../img/rspamd_exim.png "Rspamd and Exim interaction")
+![exim scheme]({{ site.baseurl }}/img/rspamd_exim.png "Rspamd and Exim interaction")
 
 For versions 4.70 through 4.84, integration can be enabled by applying a patch. In the Exim source directory, run the command: `patch -p1 < ../rspamd/contrib/exim/patch-exim-src_spam.c.diff`.
 
@@ -153,7 +153,7 @@ For further information, refer to the [EmailSuccess documentation](https://doc.e
 
 In LDA (Local Delivery Agent) mode, the MTA (Mail Transfer Agent) invokes the Rspamd client, `rspamc`, a message using Rspamd and appends the scan results to the source message. The overall process is illustrated in the following image:
 
-![lda scheme](../img/rspamd_lda.png "rspamd as LDA")
+![lda scheme]({{ site.baseurl }}/img/rspamd_lda.png "rspamd as LDA")
 
 To enable LDA mode, `rspamc` has the following options available:
 

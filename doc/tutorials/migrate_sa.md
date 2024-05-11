@@ -32,7 +32,7 @@ There are a couple of things you need to know before transition:
 2. Rspamd uses `Lua` for plugins and rules, so basic knowledge of this language is more than useful for playing with Rspamd; however, Lua is very simple and can be learned [very quickly](http://lua-users.org/wiki/LuaTutorial)
 3. Rspamd uses the `HTTP` protocol to communicate with the MTA or milter, so SA native milters might not communicate with Rspamd. There is some limited support of the SpamAssassin protocol, though some commands are not supported, in particular those which require copying of data between scanner and milter. More importantly, `Length`-less messages are not supported by Rspamd as they completely break HTTP semantics and will never be supported. To achieve the same functionality, a dedicated scanner could use, e.g. HTTP `chunked` encoding.
 4. Rspamd is **NOT** intended to work with blocking libraries or services, hence, something like `mysql` or `postgresql` will likely not be supported
-5. Rspamd is developing quickly so you should be aware that there might be some incompatible changes between major versions - they are usually listed in the [migration](../migration.html) section of the site.
+5. Rspamd is developing quickly so you should be aware that there might be some incompatible changes between major versions - they are usually listed in the [migration](migration.html) section of the site.
 6. Unlike SA where there are only `spam` and `ham` results, Rspamd supports five levels of messages called `actions`:
 	+ `no action` - ham message
 	+ `greylist` - turn on adaptive greylisting (which is also used on higher levels)

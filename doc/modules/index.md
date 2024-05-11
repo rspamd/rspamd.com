@@ -105,8 +105,8 @@ The following modules are explicitly disabled in the default configuration, set 
 
 The following modules are explicitly disabled and are experimental, so you need to set `enabled = true` in `local.d/${MODULE_NAME}.conf` **AND** to set the global option `enable_experimental = true` in `local.d/options.inc`:
 
-- [url_reputation](url_reputation.html) - assigns reputation to domains in URLs (requires Redis). Removed in Rspamd 2.0.
-- [url_tags](url_tags.html) - persists URL tags in Redis (requires Redis). Removed in Rspamd 2.0.
+- url_reputation - assigns reputation to domains in URLs (requires Redis). Removed in Rspamd 2.0.
+- url_tags - persists URL tags in Redis (requires Redis). Removed in Rspamd 2.0.
 
 Experimental modules are not recommended for production usage!
 

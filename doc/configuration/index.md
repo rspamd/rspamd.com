@@ -138,9 +138,9 @@ Rspamd introduces a range of valuable variables designed for use in configuratio
 ## Rspamd basic configuration
 
 ### Overview
-Configuration files that are installed or updated with Rspamd are not meant to be modified directly by the user. Instead, these files should be overridden in site-specific configuration files. You can find more information on this process in the [quickstart](../quickstart.html#configuring-rspamd) page.
+Configuration files that are installed or updated with Rspamd are not meant to be modified directly by the user. Instead, these files should be overridden in site-specific configuration files. You can find more information on this process in the [quickstart]({{ site.baseurl }}/doc/tutorials/quickstart.html#configuring-rspamd) page.
 
-However, it's important to note that packaging typically avoids overwriting configuration files during upgrades if they have been modified by the user. For a smooth transition when upgrading to a new version of Rspamd, be sure to carefully review the [migration notes](../migration.html) for any incompatible configuration changes.
+However, it's important to note that packaging typically avoids overwriting configuration files during upgrades if they have been modified by the user. For a smooth transition when upgrading to a new version of Rspamd, be sure to carefully review the [migration notes]({{ site.baseurl }}/doc/tutorials/migration.html) for any incompatible configuration changes.
 
 The Rspamd configuration process begins with the file `$CONFDIR/rspamd.conf`. This file contains several settings and includes references to other files, which in turn might include additional files. The complete configuration is a compilation of all processed files, following the order in which they are encountered.
 

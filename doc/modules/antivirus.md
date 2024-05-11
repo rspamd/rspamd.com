@@ -23,7 +23,7 @@ The Antivirus module, available from Rspamd version 1.4, seamlessly integrates w
 
 The configuration for an antivirus setup is accomplished by defining rules. If the antivirus reports one or more viruses, the configured symbol (e.g. CLAM_VIRUS) will be set, with the viruses as the description. If set, the reset action will be triggered.
 
-In case of errors during the connection or if the antivirus reports failures, the fail symbol (e.g. CLAM_VIRUS_FAIL) will be set, with the error message as the description. The [force_actions]({{ site.baseurl }}/doc/configuration/force_actions.html) plugin can be used to perform a `soft reject` if the antivirus has failed to scan the email, such as during a database reloading.
+In case of errors during the connection or if the antivirus reports failures, the fail symbol (e.g. CLAM_VIRUS_FAIL) will be set, with the error message as the description. The [force_actions]({{ site.baseurl }}/doc/modules/force_actions.html) plugin can be used to perform a `soft reject` if the antivirus has failed to scan the email, such as during a database reloading.
 
 In addition to the `SYMBOLNAME` and `SYMBOLNAME_FAIL` symbols, there are currently two special symbols indicating that the scanner has reported encrypted parts or parts with Office macros: `SYMBOLNAME_ENCRYPTED` and `SYMBOLNAME_MACRO`
 

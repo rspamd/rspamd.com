@@ -51,7 +51,7 @@ Starting from this version, building Rspamd requires a **C++20** compatible comp
 
 ## Migration to Rspamd 3.0
 
-The functionality for DMARC reporting is no longer included in the DMARC module. To send DMARC reports, you must now run the `rspamadm dmarc_report` command on a regular basis, such as through a cron job. Additionally, the configuration for reporting has undergone incompatible changes, so please refer to the [module documentation](modules/dmarc.html) for further information.
+The functionality for DMARC reporting is no longer included in the DMARC module. To send DMARC reports, you must now run the `rspamadm dmarc_report` command on a regular basis, such as through a cron job. Additionally, the configuration for reporting has undergone incompatible changes, so please refer to the [module documentation]({{ site.baseurl }}/doc/modules/dmarc.html) for further information.
 
 
 ## Migration to Rspamd 2.6

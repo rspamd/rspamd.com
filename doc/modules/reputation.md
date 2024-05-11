@@ -14,7 +14,7 @@ Conversely, if a domain has a high reputation, the DKIM_ALLOW score will have a 
 Additionally, this module encompasses the functionality of the following modules:
 
 * [ip_score](ip_score.html) - by means of `ip` component
-* [url_reputation](url_reputation.html) - by means of `url` component
+* url_reputation - by means of `url` component (removed in Rspamd 2.0)
 
 ## Configuration and principles of work
 

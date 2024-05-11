@@ -121,4 +121,4 @@ From the client host use the `redis-cli` utility to connect to the remote instan
 # redis-cli -p 6478
 ```
 
-Now that the connection is established, you are ready to proceed with configuring replication between the Redis instances. You can follow the instructions provided in the [Redis replication configuration guide](./redis_replication.html#slave-instances-configuration).
+Now that the connection is established, you are ready to proceed with configuring replication between the Redis instances. You can follow the instructions provided in the [Redis replication configuration guide](redis_replication.html#rspamd-configuration-on-the-replica).

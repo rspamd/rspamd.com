@@ -8,9 +8,9 @@ title: Comparison
     <thead>
       <tr>
         <td class="col-3"></td>
-        <td class="col-3"><img src="img/rspamd_logo_small_black_simple.jpg" class="img-fluid"></td>
-        <td class="col-3"><img src="img/spamassassin_logo.jpg" class="img-fluid"></td>
-        <td class="col-3"><img src="img/dspam_logo.jpg" class="img-fluid"></td>
+        <td class="col-3"><img src="{{ site.baseurl }}/img/rspamd_logo_small_black_simple.jpg" class="img-fluid"></td>
+        <td class="col-3"><img src="{{ site.baseurl }}/img/spamassassin_logo.jpg" class="img-fluid"></td>
+        <td class="col-3"><img src="{{ site.baseurl }}/img/dspam_logo.jpg" class="img-fluid"></td>
       </tr>
     </thead>
     <tbody>
@@ -258,9 +258,9 @@ title: Comparison
     <thead>
       <tr>
         <td></td>
-        <td><img src="img/rspamd_logo_small_black_simple.jpg" class="img-fluid"></td>
-        <td><img src="img/spamassassin_logo.jpg" class="img-fluid"></td>
-        <td><img src="img/dspam_logo.jpg" class="img-fluid"></td>
+        <td><img src="{{ site.baseurl }}/img/rspamd_logo_small_black_simple.jpg" class="img-fluid"></td>
+        <td><img src="{{ site.baseurl }}/img/spamassassin_logo.jpg" class="img-fluid"></td>
+        <td><img src="{{ site.baseurl }}/img/dspam_logo.jpg" class="img-fluid"></td>
       </tr>
     </thead>
   </table>
