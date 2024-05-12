@@ -22,7 +22,7 @@ jobs:
           path: |
             _site-root/
             _site/
-          key: generated-site-dir
+          key: run_id-${{ github.run_id }}
       - uses: actions/jekyll-build-pages@v1
       - run: |
           mkdir -p _site-root
@@ -37,7 +37,7 @@ jobs:
           path: |
             _site-root/
             _site/
-          key: generated-site-dir
+          key: run_id-${{ github.run_id }}
       - uses: ruzickap/action-my-broken-link-checker@v2
         with:
           url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
@@ -57,7 +57,7 @@ jobs:
           path: |
             _site-root/
             _site/
-          key: generated-site-dir
+          key: run_id-${{ github.run_id }}
       - uses: ruzickap/action-my-broken-link-checker@v2
         with:
           url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
