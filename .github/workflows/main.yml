@@ -45,7 +45,6 @@ jobs:
           cmd_params: >
             --buffer-size=8192 --color=always --skip-tls-verification
             --include="^https://${{ github.repository_owner }}[.]github[.]io/${{ github.event.repository.name }}/"
-            --exclude="^https://github[.]com/rspamd/rspamd[.]com/edit/master/"
             --exclude="^https://${{ github.repository_owner }}[.]github[.]io/${{ github.event.repository.name }}/(doc/lua/((lua|rspamd)_.+|ucl)[.]html(#.+)?|.*#top)$"
 
   external-links-check:
