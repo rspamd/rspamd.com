@@ -1,4 +1,4 @@
-name: Rspamd - rapid spam filtering system.
+title: Rspamd - rapid spam filtering system.
 highlighter: rouge
 plugins:
   - jekyll-paginate
