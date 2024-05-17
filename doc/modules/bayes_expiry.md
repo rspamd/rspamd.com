@@ -9,7 +9,7 @@ The `Bayes expiry` module provides intelligent expiration of statistical tokens 
 
 ## Module configuration
 
-The configuration settings for the `bayes expiry` module should be incorporated into the appropriate `classifier` section, such as the `local.d/classifier-bayes.conf `file. Additionally, as the `Bayes expiry` module necessitates the use of the new statistics schema, it is imperative to enable it within the classifier configuration:
+The main configuration settings for the `bayes expiry` module should be incorporated into the appropriate `classifier` section, such as the `local.d/classifier-bayes.conf `file. Additionally, as the `Bayes expiry` module necessitates the use of the new statistics schema, it is imperative to enable it within the classifier configuration:
 
 ```hcl
 new_schema = true;    # Enabled by default for classifier "bayes" in the stock statistic.conf since 2.0
@@ -27,6 +27,21 @@ Configuration example:
 new_schema = true;    # Enabled by default for classifier "bayes" in the stock statistic.conf since 2.0
 expire = 8640000;
 #lazy = true;    # Before 2.0
+```
+
+In addition to main configuration of `bayes expiry` module that need to be set in `classifier` configuration, there is global settings exists, you can set them in `local.d/bayes_expiry.conf` or `override.d/bayes_expiry.conf` file.
+The following settings are valid:
+- **interval**: time interval in seconds between each run of bayes expiry module on controller, defaults to `60`.
+- **count**: amount of keys to check over one run of bayes expiry module. Module using scan with cursor and on next scan will continue from when it was stopped. This parameter can be increased from default `1000` to a greater value in case your Redis filled with too many persisten keys, which usually means that learning is quicker then expiry proccessing.
+- **epsilon_common**: eliminate common if spam to ham rate is equal to this epsilon, defaults to `0.01`.
+- **common_ttl**: TTL which will be set for discriminated common elements, defaults to `10 * 86400`, which is 10 days.
+- **significant_factor**: describes factor of significancy of ham|spam to total, which tokens should be persisted over bayes expiry run, defaults to `3.0 / 4.0`.
+- **cluster_nodes**: reserved for future use, for now - unused. Can be set in clustered environment, if `neighbours` not configured on controller to set amount of hosts.
+
+Configuration example:
+```hcl
+interval = 90;
+count = 15000;
 ```
 
 ## Principles of operation
