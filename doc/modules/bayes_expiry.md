@@ -35,8 +35,8 @@ The following settings are valid:
 - **count**: amount of keys to check over one run of bayes expiry module. Module using scan with cursor and on next scan will continue from when it was stopped. This parameter can be increased from default `1000` to a greater value in case your Redis filled with too many persisten keys, which usually means that learning is quicker then expiry proccessing.
 - **epsilon_common**: eliminate common if spam to ham rate is equal to this epsilon, defaults to `0.01`.
 - **common_ttl**: TTL which will be set for discriminated common elements, defaults to `10 * 86400`, which is 10 days.
-- **significant_factor**: describes factor of significancy of ham|spam to total, which tokens should be persisted over bayes expiry run, defaults to `3.0 / 4.0`.
-- **cluster_nodes**: reserved for future use, for now - unused. Can be set in clustered environment, if `neighbours` not configured on controller to set amount of hosts.
+- **significant_factor**: describes factor of significancy of ham|spam to total, defaults to `3.0 / 4.0` which is 75%. Tokens with significancy greater then this value will be persisted, lower - will be marked as `insignificant` and will get TTL set.
+- **cluster_nodes**: dynamically increments `interval` by multiplying its value by the number of servers in the cluster. If set to `0` (default) and [neighbours]({{ site.baseurl }}/doc/configuration/options.html#neighbours-list) is configured - the value of `cluster_nodes` will be calculated automatically based on the number of `neighbours+1`.
 
 Configuration example:
 ```hcl
