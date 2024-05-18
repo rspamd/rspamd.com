@@ -9,7 +9,7 @@ The `Bayes expiry` module provides intelligent expiration of statistical tokens 
 
 ## Module configuration
 
-The configuration settings for the `bayes expiry` module should be incorporated into the appropriate `classifier` section, such as the `local.d/classifier-bayes.conf `file. Additionally, as the `Bayes expiry` module necessitates the use of the new statistics schema, it is imperative to enable it within the classifier configuration:
+For the `bayes expiry` module, classifier-related configuration settings should be incorporated into the corresponding `classifier` section, such as the `local.d/classifier-bayes.conf` file. Additionally, as the `Bayes expiry` module necessitates the use of the new statistics schema, it is imperative to enable it within the classifier configuration:
 
 ```hcl
 new_schema = true;    # Enabled by default for classifier "bayes" in the stock statistic.conf since 2.0
@@ -27,6 +27,21 @@ Configuration example:
 new_schema = true;    # Enabled by default for classifier "bayes" in the stock statistic.conf since 2.0
 expire = 8640000;
 #lazy = true;    # Before 2.0
+```
+
+To modify the global settings of the `bayes expiry` module, you can configure them in either the `local.d/bayes_expiry.conf` or `override.d/bayes_expiry.conf` file.
+
+The following settings are valid:
+- **interval**: time interval in seconds between each run of the expiry step on the controller. Default is `60`.
+- **count**: the number of keys to check during each expiry step. The module utilizes a cursor-based iterator to ensure that the next step continues from where the previous one stopped. Default is `1000`. Consider increasing it to a higher value if your Redis instance is overwhelmed with too many persistent keys, suggesting faster learning compared to the module's processing.
+- **epsilon_common**: a comparison tolerance used to determine if a token is considered `common`. Tokens with a difference between spam and ham relative frequencies not greater than this value are classified as `common`. Default is `0.01`.
+- **common_ttl**: the initial TTL for `common` tokens. Default is `10 * 86400`, equivalent to 10 days.
+- **significant_factor**: the threshold for token significance. Tokens with a relative frequency greater than this value are considered `significant`; otherwise, they are `insignificant`. Defaults is `3.0 / 4.0`, which corresponds to 75%.
+
+Configuration example:
+```hcl
+interval = 90;
+count = 15000;
 ```
 
 ## Principles of operation
