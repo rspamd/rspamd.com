@@ -103,9 +103,9 @@ Example of using a thee master-replicas shards setup:
 
 Important notes:
 1. Changing shards count requires dropping all data from bayes redises, so please take decisions wisely.
-3. You can't use more than one replica per master in a sharded setup; this will result in misaligned read-write hash slots assignment.
-2. Each replica should have same position in `read_servers` as her master in `write_servers`.
-5. In the controller, you will see incorrect `Bayesian statistics` for the count of learns and users.
+2. You can't use more than one replica per master in a sharded setup; this will result in misaligned read-write hash slots assignment.
+3. Each replica should have same position in `read_servers` as her master in `write_servers`.
+4. In the controller, you will see incorrect `Bayesian statistics` for the count of learns and users.
 
 ### Classifier and headers
 
