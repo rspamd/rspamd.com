@@ -86,6 +86,26 @@ To enable per-user statistics, you can add the `per_user = true` property to the
 
 It's worth noting that Rspamd prioritizes SMTP recipients over MIME ones and gives preference to the special LDA header called `Delivered-To`, which can be appended using the `-d` option for `rspamc`. This allows for more accurate per-user statistics in your configuration.
 
+#### Sharding
+
+Starting from version 3.9, per-user statistics can be sharded over different Redis servers with utilization of [hash algoritm]({{ site.baseurl }}/doc/configuration/upstream.html#hash-algorithm).
+
+Example of using 2 stand-alone masters without read replicas:
+~~~hcl
+  servers = "hash:bayes-peruser-0-master,bayes-peruser-1-master";
+~~~
+
+Example of using 2 master-replicas setup:
+~~~hcl
+    backend = "redis";
+    write_servers = "hash:bayes-peruser-0-master,bayes-peruser-1-master";
+    read_servers = "hash:bayes-peruser-0-replica,bayes-peruser-1-replica";
+~~~
+
+Important note:
+1. you can't use more then 1 replica per master in sharded setup, this will result in not aligned read-write hash slots assigment.
+2. in controller you will see not correct `Bayesian statistics` for count of learns and users.
+
 ### Classifier and headers
 
 The classifier in Rspamd learns headers that are specifically defined in the `classify_headers` section of the `options.inc `file. Therefore, there is no need to remove any additional headers (e.g., X-Spam) before the learning process, as these headers will not be utilized for classification purposes. Rspamd also takes into account the `Subject` header, which is tokenized according to the aforementioned rules. Additionally, Rspamd considers various meta-tokens, such as message size or the number of attachments, which are extracted from the messages for further analysis.
