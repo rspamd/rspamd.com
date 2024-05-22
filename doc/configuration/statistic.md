@@ -88,22 +88,22 @@ It's worth noting that Rspamd prioritizes SMTP recipients over MIME ones and giv
 
 #### Sharding
 
-Starting from version 3.9, per-user statistics can be sharded over different Redis servers with utilization of [hash algoritm]({{ site.baseurl }}/doc/configuration/upstream.html#hash-algorithm).
+Starting from version 3.9, per-user statistics can be sharded over different Redis servers with the utilization of the [hash algorithm]({{ site.baseurl }}/doc/configuration/upstream.html#hash-algorithm).
 
-Example of using 2 stand-alone masters without read replicas:
+Example of using two stand-alone masters without read replicas:
 ~~~hcl
   servers = "hash:bayes-peruser-0-master,bayes-peruser-1-master";
 ~~~
 
-Example of using 2 master-replicas setup:
+Example of using a two master-replicas setup:
 ~~~hcl
   write_servers = "hash:bayes-peruser-0-master,bayes-peruser-1-master";
   read_servers = "hash:bayes-peruser-0-replica,bayes-peruser-1-replica";
 ~~~
 
-Important note:
-1. you can't use more then 1 replica per master in sharded setup, this will result in not aligned read-write hash slots assigment.
-2. in controller you will see not correct `Bayesian statistics` for count of learns and users.
+Important notes:
+1. You can't use more than one replica per master in a sharded setup; this will result in misaligned read-write hash slots assignment.
+2. In the controller, you will see incorrect `Bayesian statistics` for the count of learns and users.
 
 ### Classifier and headers
 
