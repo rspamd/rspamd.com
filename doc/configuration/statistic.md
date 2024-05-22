@@ -97,9 +97,8 @@ Example of using 2 stand-alone masters without read replicas:
 
 Example of using 2 master-replicas setup:
 ~~~hcl
-    backend = "redis";
-    write_servers = "hash:bayes-peruser-0-master,bayes-peruser-1-master";
-    read_servers = "hash:bayes-peruser-0-replica,bayes-peruser-1-replica";
+  write_servers = "hash:bayes-peruser-0-master,bayes-peruser-1-master";
+  read_servers = "hash:bayes-peruser-0-replica,bayes-peruser-1-replica";
 ~~~
 
 Important note:
