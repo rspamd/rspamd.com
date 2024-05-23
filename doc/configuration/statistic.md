@@ -88,24 +88,24 @@ It's worth noting that Rspamd prioritizes SMTP recipients over MIME ones and giv
 
 #### Sharding
 
-Starting from version 3.9, per-user statistics can be sharded over different Redis servers with the utilization of the [hash algorithm]({{ site.baseurl }}/doc/configuration/upstream.html#hash-algorithm).
+Starting from version 3.9, per-user statistics can be sharded across different Redis servers using the [hash algorithm]({{ site.baseurl }}/doc/configuration/upstream.html#hash-algorithm).
 
-Example of using two stand-alone masters shards without read replicas:
+Example of using two stand-alone master shards without read replicas:
 ~~~hcl
-  servers = "hash:bayes-peruser-0-master,bayes-peruser-1-master";
+servers = "hash:bayes-peruser-0-master,bayes-peruser-1-master";
 ~~~
 
-Example of using a thee master-replicas shards setup:
+Example of using a setup with three master-replica shards:
 ~~~hcl
-  write_servers = "hash:bayes-peruser-0-master,bayes-peruser-1-master,bayes-peruser-2-master";
-  read_servers = "hash:bayes-peruser-0-replica,bayes-peruser-1-replica,bayes-peruser-2-replica";
+write_servers = "hash:bayes-peruser-0-master,bayes-peruser-1-master,bayes-peruser-2-master";
+read_servers = "hash:bayes-peruser-0-replica,bayes-peruser-1-replica,bayes-peruser-2-replica";
 ~~~
 
 Important notes:
-1. Changing shards count requires dropping all bayes statistics, so please take decisions wisely.
-2. Each replica should have same position in `read_servers` as her master in `write_servers`; otherwise this will result in misaligned read-write hash slots assignment.
-3. You can't use more than one replica per master in a sharded setup; this will result in misaligned read-write hash slots assignment.
-4. You can't use Redis Sentinel for sharded setup.
+1. Changing the shard count requires dropping all Bayes statistics, so please make decisions wisely.
+2. Each replica should have the same position in `read_servers` as its master in `write_servers`; otherwise, this will result in misaligned read-write hash slot assignments.
+3. You can't use more than one replica per master in a sharded setup; this will result in misaligned read-write hash slot assignments.
+4. Redis Sentinel cannot be used for a sharded setup.
 5. In the controller, you will see incorrect `Bayesian statistics` for the count of learns and users.
 
 ### Classifier and headers
