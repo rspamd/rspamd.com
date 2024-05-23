@@ -86,6 +86,28 @@ To enable per-user statistics, you can add the `per_user = true` property to the
 
 It's worth noting that Rspamd prioritizes SMTP recipients over MIME ones and gives preference to the special LDA header called `Delivered-To`, which can be appended using the `-d` option for `rspamc`. This allows for more accurate per-user statistics in your configuration.
 
+#### Sharding
+
+Starting from version 3.9, per-user statistics can be sharded across different Redis servers using the [hash algorithm]({{ site.baseurl }}/doc/configuration/upstream.html#hash-algorithm).
+
+Example of using two stand-alone master shards without read replicas:
+~~~hcl
+servers = "hash:bayes-peruser-0-master,bayes-peruser-1-master";
+~~~
+
+Example of using a setup with three master-replica shards:
+~~~hcl
+write_servers = "hash:bayes-peruser-0-master,bayes-peruser-1-master,bayes-peruser-2-master";
+read_servers = "hash:bayes-peruser-0-replica,bayes-peruser-1-replica,bayes-peruser-2-replica";
+~~~
+
+Important notes:
+1. Changing the shard count requires dropping all Bayes statistics, so please make decisions wisely.
+2. Each replica should have the same position in `read_servers` as its master in `write_servers`; otherwise, this will result in misaligned read-write hash slot assignments.
+3. You can't use more than one replica per master in a sharded setup; this will result in misaligned read-write hash slot assignments.
+4. Redis Sentinel cannot be used for a sharded setup.
+5. In the controller, you will see incorrect `Bayesian statistics` for the count of learns and users.
+
 ### Classifier and headers
 
 The classifier in Rspamd learns headers that are specifically defined in the `classify_headers` section of the `options.inc `file. Therefore, there is no need to remove any additional headers (e.g., X-Spam) before the learning process, as these headers will not be utilized for classification purposes. Rspamd also takes into account the `Subject` header, which is tokenized according to the aforementioned rules. Additionally, Rspamd considers various meta-tokens, such as message size or the number of attachments, which are extracted from the messages for further analysis.
