@@ -89,21 +89,20 @@ The classifier in Rspamd learns headers that are specifically defined in the `cl
 Supported parameters for the Redis backend are:
 
 - `name`: unique name of the classifier, must be set when multiply classifiers is defined, otherwise optional
-- `tokenizer`: leave it as shown for now. Currently, only OSB is supported
+- `tokenizer`: currently only OSB is supported, must be set as shown in default configuration
 - `new_schema`: must be set to `true`
-- `backend`: set it to Redis
+- `backend`: must be set to `"redis"`
+- `learn_condition`: Lua function that verifies that learning is needed. Default function **must** be set if you not wrote your own, omniting `learn_condition` from `statistic.conf` will lead to loosing protection from overlearning
 - `servers`: IP or hostname with a port for the Redis server. Use an IP for the loopback interface, if you have defined localhost in /etc/hosts for IPv4 and IPv6, or your Redis server will not be found!
-- `write_servers` (optional): if Redis used in master-replica setup, set master servers
-- `read_servers` (optional): if Redis used in master-replica setup, set replica servers
-- `user` (optional): user for the Redis server
+- `write_servers` (optional): for write only Redis servers (usually masters)
+- `read_servers` (optional): for read only Redis servers (usually replicas)
 - `password` (optional): password for the Redis server
-- `db` (optional): Database to use (though it is recommended to use dedicated Redis instances and not databases in Redis)
+- `db` (optional): database to use (though it is recommended to use dedicated Redis instances and not databases in Redis)
 - `min_tokens`: minimum number of words required for statistics processing
 - `min_learns` (optional): minimum learn to count for **both** spam and ham classes to perform classification
-- `learn_condition`: Lua function that verifies that learning is needed. Default function **must** be set if you not wrote your own, omniting `learn_condition` from `statistic.conf` will lead to loosing protection from overlearning
 - `autolearn` (optional): for more details see Autolearning section
 - `per_user` (optional): for more details see Per-user statistics section
-- `statfile`: Define keys for spam and ham mails
+- `statfile`: defines keys for spam and ham mails
 - `cache_prefix` (optional): prefix used to create keys where to store hashes of already learned ids, defaults to `"learned_ids"`
 - `cache_max_elt` (optional): amount of elements to store in one `learned_ids` key
 - `cache_max_keys` (optional): amount of `learned_ids` keys to store
@@ -127,7 +126,7 @@ To enable per-user statistics, you can add the `per_user = true` property to the
 
 Rspamd prioritizes SMTP recipients over MIME ones and gives preference to the special LDA header called `Delivered-To`, which can be appended using the `-d` option for `rspamc`. This allows for more accurate per-user statistics in your configuration.
 
-To change per-user to per-domain statistics (or any other one) LUA fucntuion can be used. Function should return user as string, or `nil` as fallback. Example:
+You can change per-user to per-domain statistics (or any other) by utilizing LUA fucntuion. Function should return user as string, or `nil` as fallback. Example:
 ~~~lua
 per_user = <<EOD
 return function(task)
