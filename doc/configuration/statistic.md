@@ -78,7 +78,7 @@ Please note that `classifier-bayes.conf` is include config of `statistic.conf` w
 
 For most of setups where there is only one classifier is used - `classifier-bayes.conf` is suffient and `statistic.conf` should be leaved unmodified.
 
-If you need describe multiply different classifiers - then you need create `local.d/statistic.conf`, that should describe classifier sections with all details from default config, as there will be no fallback. Common usecase for such case is when first classifier is `per_user` and second is not.
+If you need describe multiply different classifiers - then you need create `local.d/statistic.conf`, that should describe classifier sections, each classifier **must** have own `name` and have all options from default config, as there will be no fallback. Common usecase for such case is when first classifier is `per_user` and second is not.
 
 ### Per-user statistics
 
