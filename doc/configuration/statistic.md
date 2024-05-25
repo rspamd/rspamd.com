@@ -80,11 +80,68 @@ For most of setups where there is only one classifier is used - `classifier-baye
 
 If you need describe multiply different classifiers - then you need create `local.d/statistic.conf`, that should describe classifier sections, each classifier **must** have own `name` and have all options from default config, as there will be no fallback. Common usecase for such case is when first classifier is `per_user` and second is not.
 
+### Classifier and headers
+
+The classifier in Rspamd learns headers that are specifically defined in the `classify_headers` section of the `options.inc `file. Therefore, there is no need to remove any additional headers (e.g., X-Spam) before the learning process, as these headers will not be utilized for classification purposes. Rspamd also takes into account the `Subject` header, which is tokenized according to the aforementioned rules. Additionally, Rspamd considers various meta-tokens, such as message size or the number of attachments, which are extracted from the messages for further analysis.
+
+## Redis statistics
+
+Supported parameters for the Redis backend are:
+
+- `name`: unique name of the classifier, must be set when multiply classifiers is defined, otherwise optional
+- `tokenizer`: leave it as shown for now. Currently, only OSB is supported
+- `new_schema`: must be set to `true`
+- `backend`: set it to Redis
+- `servers`: IP or hostname with a port for the Redis server. Use an IP for the loopback interface, if you have defined localhost in /etc/hosts for IPv4 and IPv6, or your Redis server will not be found!
+- `write_servers` (optional): if Redis used in master-replica setup, set master servers
+- `read_servers` (optional): if Redis used in master-replica setup, set replica servers
+- `user` (optional): user for the Redis server
+- `password` (optional): password for the Redis server
+- `db` (optional): Database to use (though it is recommended to use dedicated Redis instances and not databases in Redis)
+- `min_tokens`: minimum number of words required for statistics processing
+- `min_learns` (optional): minimum learn to count for **both** spam and ham classes to perform classification
+- `learn_condition`: Lua function that verifies that learning is needed. Default function **must** be set if you not wrote your own, omniting `learn_condition` from `statistic.conf` will lead to loosing protection from overlearning
+- `autolearn` (optional): for more details see Autolearning section
+- `per_user` (optional): for more details see Per-user statistics section
+- `statfile`: Define keys for spam and ham mails
+- `cache_prefix` (optional): prefix used to create keys where to store hashes of already learned ids, defaults to `"learned_ids"`
+- `cache_max_elt` (optional): amount of elements to store in one `learned_ids` key
+- `cache_max_keys` (optional): amount of `learned_ids` keys to store
+- `cache_elt_len` (optional): lenth of hash to store in one element of `learned_ids`
+
+## Autolearning
+
+Starting from version 1.1, Rspamd introduces autolearning functionality for statfiles. Autolearning occurs after all rules, including statistics, have been processed. However, it only applies if the same symbol has not already been added. For example, if `BAYES_SPAM` is already present in the checking results, the message will not be learned as spam.
+
+There are three options available for specifying autolearning:
+
+* `autolearn = true`: autolearning is performing as spam if a message has `reject` action and as ham if a message has **negative** score
+* `autolearn = [-5, 5]`: autolearn as ham if the score is less than `-5` and as spam if the score is more than `5`
+* `autolearn = "return function(task) ... end"`: use the following Lua function to detect if autolearn is needed (function should return 'ham' if learn as ham is needed and string 'spam' if learn as spam is needed, if no learning is needed then a function can return anything including `nil`)
+
+Redis backend is highly recommended for autolearning purposes due to its ability to handle high concurrency levels when multiple writers are synchronized properly. Using Redis as the backend ensures efficient and reliable autolearning functionality.
+
 ### Per-user statistics
 
 To enable per-user statistics, you can add the `per_user = true` property to the configuration of the classifier. However, it is *important* to ensure that Rspamd is called at the final delivery stage (e.g., LDA mode) to avoid issues with multi-recipient messages. When dealing with multi-recipient messages, Rspamd will use the first recipient for user-based statistics. 
 
-It's worth noting that Rspamd prioritizes SMTP recipients over MIME ones and gives preference to the special LDA header called `Delivered-To`, which can be appended using the `-d` option for `rspamc`. This allows for more accurate per-user statistics in your configuration.
+Rspamd prioritizes SMTP recipients over MIME ones and gives preference to the special LDA header called `Delivered-To`, which can be appended using the `-d` option for `rspamc`. This allows for more accurate per-user statistics in your configuration.
+
+To change per-user to per-domain statistics (or any other one) LUA fucntuion can be used. Function should return user as string, or `nil` as fallback. Example:
+~~~lua
+per_user = <<EOD
+return function(task)
+  local rcpt = task:get_recipients('any')
+  if rcpt then
+    first_rcpt = rcpt[1]
+    if first_rcpt['domain'] then
+      return first_rcpt['domain']
+    end
+  end
+  return nil
+end
+EOD
+~~~
 
 #### Sharding
 
@@ -107,41 +164,3 @@ Important notes:
 3. You can't use more than one replica per master in a sharded setup; this will result in misaligned read-write hash slot assignments.
 4. Redis Sentinel cannot be used for a sharded setup.
 5. In the controller, you will see incorrect `Bayesian statistics` for the count of learns and users.
-
-### Classifier and headers
-
-The classifier in Rspamd learns headers that are specifically defined in the `classify_headers` section of the `options.inc `file. Therefore, there is no need to remove any additional headers (e.g., X-Spam) before the learning process, as these headers will not be utilized for classification purposes. Rspamd also takes into account the `Subject` header, which is tokenized according to the aforementioned rules. Additionally, Rspamd considers various meta-tokens, such as message size or the number of attachments, which are extracted from the messages for further analysis.
-
-## Redis statistics
-
-Supported parameters for the Redis backend are:
-
-- `tokenizer`: leave it as shown for now. Currently, only OSB is supported
-- `new_schema`: must be set to `true`
-- `backend`: set it to Redis
-- `servers`: IP or hostname with a port for the Redis server. Use an IP for the loopback interface, if you have defined localhost in /etc/hosts for IPv4 and IPv6, or your Redis server will not be found!
-- `write_servers` (optional): If needed, define dedicated servers for learning
-- `password` (optional): Password for the Redis server
-- `db` (optional): Database to use (though it is recommended to use dedicated Redis instances and not databases in Redis)
-- `min_tokens`: minimum number of words required for statistics processing
-- `min_learns` (optional): minimum learn to count for **both** spam and ham classes to perform classification
-- `learn_condition`: Lua function that verifies that learning is needed. Default function **must** be set if you not wrote your own, omniting `learn_condition` from `statistic.conf` will lead to loosing protection from overlearning
-- `autolearn` (optional): for more details see Autolearning section
-- `per_user` (optional): enable perusers statistics. See above
-- `statfile`: Define keys for spam and ham mails
-- `cache_prefix` (optional): prefix used to create keys where to store hashes of already learned ids, defaults to `"learned_ids"`
-- `cache_max_elt` (optional): amount of elements to store in one `learned_ids` key
-- `cache_max_keys` (optional): amount of `learned_ids` keys to store
-- `cache_elt_len` (optional): lenth of hash to store in one element of `learned_ids`
-
-## Autolearning
-
-Starting from version 1.1, Rspamd introduces autolearning functionality for statfiles. Autolearning occurs after all rules, including statistics, have been processed. However, it only applies if the same symbol has not already been added. For example, if `BAYES_SPAM` is already present in the checking results, the message will not be learned as spam.
-
-There are three options available for specifying autolearning:
-
-* `autolearn = true`: autolearning is performing as spam if a message has `reject` action and as ham if a message has **negative** score
-* `autolearn = [-5, 5]`: autolearn as ham if the score is less than `-5` and as spam if the score is more than `5`
-* `autolearn = "return function(task) ... end"`: use the following Lua function to detect if autolearn is needed (function should return 'ham' if learn as ham is needed and string 'spam' if learn as spam is needed, if no learning is needed then a function can return anything including `nil`)
-
-Redis backend is highly recommended for autolearning purposes due to its ability to handle high concurrency levels when multiple writers are synchronized properly. Using Redis as the backend ensures efficient and reliable autolearning functionality.
