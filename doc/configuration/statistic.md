@@ -126,13 +126,13 @@ To enable per-user statistics, you can add the `per_user = true` property to the
 
 Rspamd prioritizes SMTP recipients over MIME ones and gives preference to the special LDA header called `Delivered-To`, which can be appended using the `-d` option for `rspamc`. This allows for more accurate per-user statistics in your configuration.
 
-You can change per-user to per-domain statistics (or any other) by utilizing LUA fucntuion. Function should return user as string, or `nil` as fallback. Example:
+You can change per-user statistics to per-domain (or any other) by utilizing a Lua function. The function should return the user as a string or `nil` as a fallback. For example:
 ~~~lua
 per_user = <<EOD
 return function(task)
   local rcpt = task:get_recipients('any')
   if rcpt then
-    first_rcpt = rcpt[1]
+    local first_rcpt = rcpt[1]
     if first_rcpt['domain'] then
       return first_rcpt['domain']
     end
