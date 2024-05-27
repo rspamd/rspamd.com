@@ -563,5 +563,5 @@ To combine multiple selectors in one query you can set `selector_flatten` to `fa
 
 ~~~hcl
 selector_flatten = false;
-selector = "from('mime').digest('hex','sha256').append('.');rcpts('smtp').first.digest('hex','sha256')";
+selector = "from('mime').lower.digest('hex','sha256').append('.');rcpts('smtp').first.lower.digest('hex','sha256')";
 ~~~
