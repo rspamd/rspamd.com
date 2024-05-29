@@ -113,7 +113,7 @@ Fuzzy storage accepts the following extra options:
 - `backend` - set it to `redis` if you want to use a redis server
 - `sync` - time to perform database sync in seconds, default value: 60
 - `expire` - time value for hashes expiration in seconds, default value: 2 days
-- `keypair` - encryption keypair (can be repeated for different keys), can be obtained via *rspamadm keypair -u* command
+- `keypair` - encryption keypair (can be repeated as list for different keys), can be obtained via *rspamadm keypair -u* command
 - `keypair_cache_size` - Size of keypairs cache, default value: 512
 - `encrypted_only` - allow encrypted requests only (and forbid all unknown keys or plaintext requests)
 - `master_timeout` - master protocol IO timeout
@@ -133,6 +133,20 @@ worker "fuzzy" {
    hashfile = "${DBDIR}/fuzzy.db"
    expire = 90d;
    allow_update = ["127.0.0.1", "::1"];
+   keypair = [
+   {
+     pubkey = ...
+     privkey = ...
+   },
+   {
+     pubkey = ...
+     privkey = ...
+   },
+   {
+     pubkey = ...
+     privkey = ...
+   }
+   ]
 }
 ~~~
 
