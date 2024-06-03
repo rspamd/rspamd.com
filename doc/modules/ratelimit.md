@@ -31,7 +31,7 @@ the value of this option is 'postmaster, mailer-daemon'. Supported entries are:
     * full address part of the address (1.7.0+).
 - `whitelisted_ip` - a map of ip addresses or networks whitelisted
 - `whitelisted_user` - a map of usernames which are excluded from user ratelimits
-- `expiry` - maximum lifetime for any limit bucket (2 days by default)
+- `expire` - maximum lifetime for any limit bucket (2 days by default)
 - `ham_factor_rate` - multiplier for rate when a ham message arrives (default: 1.01) 
 - `spam_factor_rate` - multiplier for rate when a spam message arrives (default: 0.99)
 - `ham_factor_burst` - multiplier for burst when a ham message arrives (default: 1.02)
