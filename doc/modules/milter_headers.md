@@ -142,6 +142,8 @@ Configuration dealing with removing headers commonly sets a numeric parameter wh
 `1` means remove the first header with a given name, and so on
 `-1` means remove the last header with a given name, and so on
 
+From version 3.9.0, this can be set to `null` to indicate that foreign headers should not be removed.
+
 ## Functions
 
 Available routines and their settings are as below, default values are as indicated:
