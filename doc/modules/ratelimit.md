@@ -143,10 +143,8 @@ Users can define their own keywords to create ratelimits by following steps as b
 First, add the `custom_keywords` setting to the configuration file, pointing to a Lua script that will be created:
 
 ~~~hcl
-ratelimit {
    custom_keywords = "/etc/rspamd/custom_ratelimit.lua";
    # other settings ...
-}
 ~~~
 
 Next, create a Lua script that returns a table containing the custom function(s). For instance, the following table ("custom_keywords") contains a function ("customrl") that applies ratelimits to users only when the user is found in a map:
