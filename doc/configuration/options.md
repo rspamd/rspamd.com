@@ -202,13 +202,13 @@ neighbours {
 }
 ~~~
 
-## Upstream options
+## Upstreams options
 
-Upstreams logic and settings described at dedicated [document]({{ site.baseurl }}/doc/configuration/upstream.html).
-Options for upstream fall under a dedicated subsection called `upstream` and control their behaviors in Rspamd. Here is a list of available tunables:
+Upstreams logic and settings are described in the dedicated [document]({{ site.baseurl }}/doc/configuration/upstream.html).
+Options for upstreams fall under a dedicated subsection called `upstream` and control their behaviors in Rspamd. Here is a list of available tunables:
 
-* `error_time` (defaults to `10`): time frame to check errors in seconds
-* `max_errors` (defaults to `4`): maximum count of errors during `error_time` to consider upstream is down
-* `revive_time` (defaults to `60`): count of seconds before attempting to recover upstream after it was faced `max_errors` and marked as unhealhy
-* `lazy_resolve_time` (defaults to `3600`, which is 1 hour): time in seconds to resolve upstreams addresses in lazy mode
-* `resolve_min_interval` (defaults to `60`): minumum interval in seconds to perform resolving upstream DNS resolution
+* `error_time` (defaults to `10`): timeframe to check errors in seconds
+* `max_errors` (defaults to `4`): maximum count of errors during `error_time` to consider the upstream as down
+* `revive_time` (defaults to `60`): count of seconds before attempting to recover upstream after it has faced `max_errors` and has been marked as unhealthy
+* `lazy_resolve_time` (defaults to `3600`, which is 1 hour): time in seconds to resolve upstream addresses in lazy mode
+* `resolve_min_interval` (defaults to `60`): minimum interval in seconds to perform resolving upstream DNS resolution
