@@ -23,6 +23,9 @@ dns {
     sockets = 16;
     retransmits = 5;
 }
+upstream {
+    resolve_min_interval = 60;
+}
 tempdir = "/tmp";
 url_tld = "${PLUGINSDIR}/effective_tld_names.dat";
 classify_headers = [
@@ -199,6 +202,13 @@ neighbours {
 }
 ~~~
 
-## Upstream options
+## Upstreams options
 
-See [this document]({{ site.baseurl }}/doc/configuration/upstream.html) for details.
+Upstreams logic and settings are described in the dedicated [document]({{ site.baseurl }}/doc/configuration/upstream.html).
+Options for upstreams fall under a dedicated subsection called `upstream` and control their behaviors in Rspamd. Here is a list of available tunables:
+
+* `error_time` (defaults to `10`): timeframe to check errors in seconds
+* `max_errors` (defaults to `4`): maximum count of errors during `error_time` to consider the upstream as down
+* `revive_time` (defaults to `60`): count of seconds before attempting to recover upstream after it has faced `max_errors` and has been marked as unhealthy
+* `lazy_resolve_time` (defaults to `3600`, which is 1 hour): time in seconds to resolve upstream addresses in lazy mode
+* `resolve_min_interval` (defaults to `60`): minimum interval in seconds to perform resolving upstream DNS resolution
