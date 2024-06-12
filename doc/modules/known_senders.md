@@ -85,11 +85,11 @@ sender_prefix = 'rsrk';
 
 ### Verified Incoming Mail Global Symbol
 
-- **Description**: The `symbol_check_mail_global` parameter specifies the symbol that will be inserted if sender in the incoming mail is verified by `replies` module. Icoming mail is a `in-reply-to` mail.
+- **Description**: The `symbol_check_mail_global` parameter specifies the symbol that will be inserted if sender in the incoming mail is verified by `replies` module.
  
 ### Verified Incoming Mail Local Symbol
 
-- **Description**: The `symbol_check_mail_global` parameter specifies the symbol that will be inserted if recipients in the incoming `in-reply-to` mail is verified by replies module.
+- **Description**: The `symbol_check_mail_global` parameter specifies the symbol that will be inserted if recipients in the incoming mail is verified by `replies` module.
 
 ### Sender Prefix
 
