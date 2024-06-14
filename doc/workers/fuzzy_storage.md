@@ -24,7 +24,7 @@ struct fuzzy_cmd  { /* attribute(packed) */
 
 All numbers are in host byte order, so if you want to check fuzzy hashes from a
 host with a different byte order, you need some additional conversions (not currently
-supported by rspamd). In the future, rspamd might use little-endian byte order for all
+supported by Rspamd). In the future, Rspamd might use little-endian byte order for all
 operations.
 
 Fuzzy storage accepts the following commands:
@@ -43,15 +43,15 @@ This field can handle negative numbers as well.
 The `tag` is used to distinguish requests by a client. Fuzzy storage just sets this
 field in the reply equal to the value in the request.
 
-The `digest` field contains the content of the hash. Currently, rspamd uses the `blake2b` hash
+The `digest` field contains the content of the hash. Currently, Rspamd uses the `blake2b` hash
 in its binary form, providing `2^512` possible hashes with negligible collision
-probability. At the same time, rspamd saves the legacy format of fuzzy hashes by
-means of this field. Old rspamd can work with legacy hashes only.
+probability. At the same time, Rspamd saves the legacy format of fuzzy hashes by
+means of this field. Old Rspamd can work with legacy hashes only.
 
 The `shingles_count` defines how many `shingles` are attached to this command.
-Currently, rspamd uses 32 shingles, so this value should be set to 32 for commands
+Currently, Rspamd uses 32 shingles, so this value should be set to 32 for commands
 with shingles. Shingles should be included in the same packet and follow the command as
-an array of int64_t values. Please note that rspamd rejects commands that have the wrong
+an array of int64_t values. Please note that Rspamd rejects commands that have the wrong
 shingle count or if their size is not equal to the desired one:
 
 ```
@@ -77,7 +77,7 @@ struct fuzzy_cmd  { /* attribute(packed) */
 Rspamd's fuzzy storage uses `sqlite3` for storing hashes. All update operations are
 performed in a transaction, which is committed to the main database approximately once
 per minute. The `VACUUM` command is executed on startup, and hash expiration is performed
-when the rspamd fuzzy storage worker terminates.
+when the Rspamd fuzzy storage worker terminates.
 
 Here is the internal database structure:
 
@@ -93,16 +93,16 @@ CREATE TABLE shingles(value INTEGER NOT NULL,
 	digest_id INTEGER REFERENCES digests(id) ON DELETE CASCADE ON UPDATE CASCADE);
 ```
 
-Since rspamd uses normal sqlite3 you can use all tools for working with the hashes
+Since Rspamd uses normal sqlite3 you can use all tools for working with the hashes
 database to perform, for example backup or analysis.
 
 ## Operation notes
 
-To check a hash, rspamd fuzzy storage initially queries for a direct match using
+To check a hash, Rspamd fuzzy storage initially queries for a direct match using
 the `digest` field as a key. If that match succeeds, the value is returned immediately.
-Otherwise, if a command contains shingles, then rspamd checks for a fuzzy match by attempting
+Otherwise, if a command contains shingles, then Rspamd checks for a fuzzy match by attempting
 to find the value for each shingle. If more than 50% of the shingles match the same digest,
-rspamd returns that digest's value along with the probability of the match, which generally
+Rspamd returns that digest's value along with the probability of the match, which generally
 equals `match_count / shingles_count`.
 
 ## Configuration
@@ -152,7 +152,7 @@ worker "fuzzy" {
 
 ## Compatibility notes
 
-Rspamd fuzzy storage version `0.8` is compatible with rspamd clients of all versions.
+Rspamd fuzzy storage version `0.8` is compatible with Rspamd clients of all versions.
 However, all updates from legacy versions (less than `0.8`) won't update the fuzzy shingles
 database. The Rspamd [fuzzy check module](../modules/fuzzy_check.html) can work **only**
-with the recent rspamd fuzzy storage and won't retrieve anything from the legacy storages.
+with the recent Rspamd fuzzy storage and won't retrieve anything from the legacy storages.
