@@ -15,12 +15,14 @@ The `known_senders` plugin is designed to help you track and categorize email se
    - [Maximum Time to Live](#maximum-time-to-live)
    - [Use Bloom Filters](#use-bloom-filters)
    - [Unknown Sender Symbol](#unknown-sender-symbol)
-
+   - [Verified Incoming Mail Global Symbol](#verified-incoming-mail-global-symbol)
+   - [Verified Incoming Mail Local Symbol](#verified-incoming-mail-local-symbol)
+   - [Sender Prefix](#sender-prefix)
 ---
 
 ## Plugin Overview
 
-The `known_senders` plugin is used to maintain a list of known sender domains and classify incoming emails based on these domains. It can be especially useful for distinguishing known senders from potentially malicious or unknown ones. This plugin is available from the version 3.7.0.
+The `known_senders` plugin is used to maintain a list of known sender domains and classify incoming emails based on these domains. It can be especially useful for distinguishing known senders from potentially malicious or unknown ones. Also it can check if incoming `in-reply-to` mail sender and recipients are verified. This plugin is available from the version 3.7.0.
 
 ## Configuration
 
@@ -43,6 +45,15 @@ use_bloom = false;
 
 # Insert symbol for new senders from the specific domains
 symbol_unknown = 'UNKNOWN_SENDER';
+
+# Insert symbol for verified sender in global replies set
+symbol_check_mail_global = 'INC_MAIL_KNOWN_GLOBALLY';
+
+# Insert symbol for verified recipients in local replies set
+symbol_check_mail_local = 'INC_MAIL_KNOWN_LOCALLY';
+
+# Prefix for replies sets
+sender_prefix = 'rsrk';
 ```
 
 ### Domains
@@ -71,3 +82,16 @@ symbol_unknown = 'UNKNOWN_SENDER';
 ### Unknown Sender Symbol
 
 - **Description**: The `symbol_unknown` parameter specifies the symbol that will be inserted for new senders from the domains listed in the `domains` configuration. This symbol can be used to further classify emails from unknown senders.
+
+### Verified Incoming Mail Global Symbol
+
+- **Description**: The `symbol_check_mail_global` parameter specifies the symbol that will be inserted if sender in the incoming mail is verified by `replies` module.
+ 
+### Verified Incoming Mail Local Symbol
+
+- **Description**: The `symbol_check_mail_local` parameter specifies the symbol that will be inserted if recipients in the incoming mail is verified by `replies` module.
+
+### Sender Prefix
+
+- **Description**: The `sender_prefix` parameter is used to define keys in the redis that denote replies sets.
+- **Note**: If you changed `sender_prefix` in `local.d/replies.conf` you also need to change it in the `local.d/known_senders.conf`.  
