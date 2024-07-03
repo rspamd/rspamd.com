@@ -53,7 +53,7 @@ A [Docker compose example](https://github.com/rspamd/rspamd-docker/tree/main/exa
 
 ## RHEL-alike distributions
 <div markdown="1">
-Packages are available for RHEL-compatible distributions such as Oracle Linux, AlmaLinux, Rocky Linux and CentOS. Currently versions 7 through 9 are supported.
+Packages are available for RHEL-compatible distributions such as Oracle Linux, AlmaLinux, Rocky Linux and CentOS. Currently versions 8 through 9 are supported.
 
 Please note that these packages **require** [EPEL](https://fedoraproject.org/wiki/EPEL) to be installed on your system as many dependencies are missing from the base repositories. You can learn how to install EPEL from their site: <https://fedoraproject.org/wiki/EPEL>.
 Please bear in mind, that you might also need debug symbols package for Rspamd to be able to fill bug reports about possible crashes. Debug symbols are placed in `rspamd-debug` package and could be safely installed even in the production environment.
@@ -63,7 +63,7 @@ To install rspamd repo, please download the corresponding repository file and th
     source /etc/os-release
     export EL_VERSION=`echo -n $PLATFORM_ID | sed "s/.*el//"`
     curl https://rspamd.com/rpm-stable/centos-${EL_VERSION}/rspamd.repo > /etc/yum.repos.d/rspamd.repo
-    yum install rspamd
+    dnf install rspamd
 
 
 For <a class="text-decoration-none text-reset" href="#experimentalSys1">experimental<sup>2</sup></a> branch packages, download `rpm-experimental` repofile as following:
@@ -71,7 +71,7 @@ For <a class="text-decoration-none text-reset" href="#experimentalSys1">experime
     source /etc/os-release
     export EL_VERSION=`echo -n $PLATFORM_ID | sed "s/.*el//"`
     curl https://rspamd.com/rpm/centos-${EL_VERSION}/rspamd-experimental.repo > /etc/yum.repos.d/rspamd.repo
-    yum install rspamd
+    dnf install rspamd
 
 
 For <a class="text-decoration-none text-reset" href="#asanSys1">asan<sup>2</sup></a> packages, install `rspamd-asan`.
