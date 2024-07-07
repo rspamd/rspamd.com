@@ -18,7 +18,7 @@ For detailed information about this plugin, refer to the [blog post](https://rsp
 
 ## Configuration Options
 
-```ini
+```hcl
 gpt {
   # Supported type: openai
   type = "openai";
