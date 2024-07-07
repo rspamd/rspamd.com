@@ -19,7 +19,7 @@ title: Rspamd spam filtering system
 				<p style="margin-bottom: 0px; margin-top: 5px">We have studied the efficiency of the new GPT plugin to access LLM (large language models) intelligence.</p>
 			</div>
 			<div class="col-12 col-sm-2 d-flex justify-content-end align-items-end">
-				<a class="btn btn-primary mb-2" href="https://rspamd.com/misc/2024/07/03/gpt.html">Learn more&nbsp;<i class="fa-solid fa-chevron-right"></i></a>
+				<a class="btn btn-primary mb-2" href="{{ site.baseurl }}/misc/2024/07/03/gpt.html">Learn more&nbsp;<i class="fa-solid fa-chevron-right"></i></a>
 			</div>
 		</div>
 		<div class="row news-row rounded-3 mx-auto my-4 p-3">
@@ -29,7 +29,7 @@ title: Rspamd spam filtering system
 				<p style="margin-bottom: 0px; margin-top: 5px">New stable release is now available.</p>
 			</div>
 			<div class="col-12 col-sm-2 d-flex justify-content-end align-items-end">
-				<a class="btn btn-primary mb-2" href="https://rspamd.com/announce/2024/02/26/rspamd-3.8.4.html">Learn more&nbsp;<i class="fa-solid fa-chevron-right"></i></a>
+				<a class="btn btn-primary mb-2" href="{{ site.baseurl }}/announce/2024/02/26/rspamd-3.8.4.html">Learn more&nbsp;<i class="fa-solid fa-chevron-right"></i></a>
 			</div>
 		</div>
 	</div>
