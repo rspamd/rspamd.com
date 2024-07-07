@@ -1,3 +1,7 @@
+---
+layout: doc
+title: GPT Plugin
+---
 # Rspamd GPT Plugin
 
 The Rspamd GPT Plugin, introduced in Rspamd 3.9, integrates OpenAI's GPT API to enhance spam filtering capabilities using advanced natural language processing techniques. Here are the basic ideas behind this plugin:
