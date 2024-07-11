@@ -76,7 +76,7 @@ This means that you can opt to use either a selector or one of the predefine rat
     to = {
       bucket = {
         burst = 100;
-        rate = 0.01666666666666666666; # leak 1 message per minute
+        rate = 0.01666666666666666666; # 1 message per minute
       }
     }
     # or define it with selector
@@ -84,7 +84,7 @@ This means that you can opt to use either a selector or one of the predefine rat
       selector = 'rcpts:addr.take_n(5)';
       bucket = {
         burst = 100;
-        rate = "1 / 1m"; # leak 1 message per minute
+        rate = "1 / 1m"; # 1 message per minute
       }
     }
   }
@@ -93,45 +93,45 @@ This means that you can opt to use either a selector or one of the predefine rat
 The following settings are valid inside `bucket` configuration:
 
 - `burst`: numeric value specifying the capacity of the bucket
-- `rate`: rate at which messages are leaked from the bucket, expressed as numeric value (messages per minute) or string (number per period)
-Since 2.0:
-- `skip_recipients`: if set to `true` number of recipients is not used as a multiplier
-Since 3.1:
+- `rate`: rate at which tokens are added to the bucket, expressed as numeric value (equivalent to messages per minute) or string (number per period)
+Since version 2.0:
+- `skip_recipients`: if set to `true`, the number of recipients is not used as a multiplier
+Since version 3.1:
 - `message`: Message to use for soft-reject
 - `symbol`: like the top-level `symbol` option but per-bucket; indicated symbol is inserted instead of applying `soft reject`
 - `skip_soft_reject`: if set to `true`, `soft reject` is not applied
 
-## Principles of work
+## Principles of operation
 
-In Rspamd, the fundamental concept of ratelimiting is known as the leaked bucket principle. This approach can be illustrated as a bucket with a limited capacity and a small hole at the bottom. As messages are received, they accumulate in the bucket and are gradually released through the hole, without any delay but instead are counted. Once the bucket's capacity has been reached, a temporary rejection is triggered, unless the remaining space is adequate for additional messages to be accepted. Since the messages are continuously leaking, the bucket's capacity is eventually restored, enabling the processing of new messages after a certain amount of time.
+Rspamd utilizes the **token bucket** algorithm for rate-limiting, a mechanism that can be visualized as a finite-capacity bucket. This bucket is periodically replenished with tokens at set intervals. Each message processed by Rspamd expends one token. If the bucket is empty, the message is delayed (soft rejected). This design permits a burst of messages as long as tokens remain in the bucket. Once the bucket reaches its limit (full), no further tokens are added until some of existing ones are consumed. Once the tokens are depleted, subsequent messages are delayed until tokens are replenished over time. This strategy ensures that the flow of messages does not exceed a predefined rate.
 
-The `leaked bucket` principle operates using the following actions:
+The **token bucket** algorithm operates as follows:
 
-1. During the check phase, a leak occurs from the specified rate bucket. If the number of messages exceeds the limit, then the message is temporarily delayed (resulting in a soft reject action).
-2. After a message has been delivered or rejected, Rspamd updates the burst information for each ratelimit bucket, indicating that a message has passed the rate buckets. Additionally, dynamic multipliers are updated during this phase.
+1. **Checking phase**: During this phase, tokens are incrementally added to the specified bucket at a constant rate. If the bucket is full, incoming tokens are discarded. When a message arrives, Rspamd checks if the message can acquire a token from the designated rate bucket, and if there are sufficient tokens, the message is processed immediately; otherwise, the it is temporarily deferred (leading to a soft reject action).
+2. **Bucket state update**: After a message has been processed, whether delivered or rejected, Rspamd updates the bucket's state, removing a token per processed message. This phase also includes the adjustment of dynamic multipliers adapt to varying traffic patterns.
 
 To better illustrate the concept of dynamic multipliers, refer to the sample graph below. It demonstrates how the burst multiplier varies depending on the number of received ham messages (x > 0) and spam messages (x < 0):
 
 <img class="img-fluid" width="75%" src="{{ site.baseurl }}/img/ratelimit.png">
 
-Regarding bounce messages, there are special buckets that lack a `from` component and have more restricted limits. Rspamd identifies the following senders as bounce senders:
+Specialized buckets are used for managing bounce messages, which lack a `from` component and have stricter limits. Rspamd recognizes the following as bounce senders:
 
-- 'postmaster',
+- 'postmaster'
 - 'mailer-daemon'
 - '' (empty sender)
 - 'null'
 - 'fetchmail-daemon'
 - 'mdaemon'
 
-Each recipient has its own set of three buckets, making it advantageous to limit the number of recipients that are being checked.
+Each recipient is associated with own set of three buckets, making it advantageous to limit the number of recipients that are being checked.
 
 Each bucket is defined by four parameters:
-- `capacity` - determines the maximum number of messages that can be accepted before the limit is reached
-- `leak` - specifies the rate at which messages are leaked from a bucket, measured in messages per second
-- `dynamic_rate` - indicates the current dynamic rate multiplier
-- `dynamic_burst` - specifies the current dynamic burst multiplier
+- `capacity` - the total number of tokens a bucket can hold, corresponding to the maximum number of messages that can be processed before reaching the limit.
+- `rate` - the frequency of token insertion into the bucket, measured in tokens (messages) per unit of time, reflecting the steady message rate.
+- `dynamic_rate` - the current dynamic rate multiplier, which adjusts the token addition rate based on traffic patterns.
+- `dynamic_burst` - the current dynamic burst multiplier, which affects the maximum burst size under certain conditions.
 
-For instance, a bucket with a capacity of `100` and a leak rate of `1` can accommodate up to 100 messages before accepting no more than one message per second.
+For example, a bucket with a **capacity** of `100` and a **rate** of `1` can handle up an initial burst up to 100 messages, and subsequently maintains a steady throughput of one message per second once the bucket is empty.
 
 It is important to note that the ratelimit module does not define any rates that could effectively disable the module by default.
 
@@ -185,13 +185,13 @@ The "custom_keywords" table should define one or more functions that receive the
 
 ### Legacy ratelimit record
 
-The format used before Rspamd 1.8 for defining a ratelimit was:
+In versions of Rspamd prior to 1.8, ratelimits were defined as follows:
 
-```
-type = [burst,leak];
+```hcl
+type = [burst,rate];
 ```
 
-Where `type` refers to the type of ratelimit and could be one of the following:
+Where `type` refers to the type of ratelimit, which could be:
 
 - `bounce_to`: limit bounces per recipient
 - `bounce_to_ip`: limit bounces per recipient per ip
@@ -200,13 +200,17 @@ Where `type` refers to the type of ratelimit and could be one of the following:
 - `to_ip_from`: limit per triplet: recipient, sender's envelope from and sender's IP
 - `user`: limit per authenticated user (useful for outbound limits)
 
-The `burst` attribute represents the capacity of a bucket, while `leak` indicates the rate at which messages are processed in messages per second. Both values are expressed as floating point numbers.
+The `burst` attribute represents the bucket's capacity, while `rate` indicates the frequency of token replenishment, measured in messages per second. Both values are expressed as floating-point numbers.
 
-Beginning with version `1.5`, it's possible to define limits using a simplified form. For example, `bounce_to = "2 / 5m"` specifies a bucket with a capacity of 2 messages and a leak rate of 2 messages per 5-minute period.
+From version `1.5`, it became possible to define limits using a simplified form. For example:
 
-The line above defines a bucket with a size of 2 and a leak rate of 2 message in 5 minutes (so 2 messages will be allowed per 5 minute period).
+```hcl
+bounce_to = "2 / 5m";
+```
 
-You can use suffixes to specify both time and message quantities.
+This line defines a bucket capable of a 2-message burst and a steady rate of 2 messages within each 5-minute interval.
+
+Suffixes may be used to specify both time and message quantities.
 
 Valid suffixes for periods are:
 - `s`: seconds
