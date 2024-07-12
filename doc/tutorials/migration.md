@@ -33,6 +33,21 @@ Discover a reliable step-by-step process for upgrading your Rspamd cluster while
 
 10. Repeat the entire process starting from `step 1` for future updates. This approach ensures a smooth and controlled upgrade process that minimizes potential downtime and issues in your production environment.
 
+## Migration to Rspamd 3.9.0
+
+* `ratelimit` module now works in the non dynamic mode by default. It does not affect any existing buckets, as dynamic rates and dynamic bursts will simply be unused in this mode. If you want old behaviour, please either set `dynamic_rate_limit` option to `true` (globally for all ratelimit rules) or set `ham_factor_rate`/`spam_factor_rate` and/or `ham_factor_burst`/`spam_factor_burst` multipliers for individual rules where desired.
+
+* Bayes statistics now works with a reduced window size (2 words) that has proven to be faster and more space efficient in our tests. The existing statistics can be used without any modifications nor relearning. To restore the old behaviour, one can set the following in the `local.d/classifier-bayes.conf`:
+
+~~~
+tokenizer {
+  name = "osb";
+  window = 5;
+}
+~~~
+
+However, it is recommended to use the default settings.
+
 ## Migration to Rspamd 3.7.4
 
 The `exclude_private_ips` setting in RBL module no longer exists in this release (and was broken in previous releases), it can be removed from configuration. This setting is equivalent to `exclude_local`.
