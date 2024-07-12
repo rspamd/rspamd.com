@@ -88,14 +88,14 @@ The classifier in Rspamd learns headers that are specifically defined in the `cl
 
 Supported parameters for the Redis backend are:
 
-- `name`: unique name of the classifier, must be set when multiply classifiers is defined, otherwise optional
+- `name`: unique name of the classifier, must be set when multiple classifiers are defined, otherwise optional
 - `tokenizer`: currently only OSB is supported, must be set as shown in default configuration
 - `new_schema`: must be set to `true`
 - `backend`: must be set to `"redis"`
-- `learn_condition`: Lua function that verifies that learning is needed. Default function **must** be set if you not wrote your own, omniting `learn_condition` from `statistic.conf` will lead to loosing protection from overlearning
+- `learn_condition`: Lua function that verifies that learning is needed. Default function **must** be set if you have not written your own, omitting `learn_condition` from `statistic.conf` will lead to losing protection from overlearning
 - `servers`: IP or hostname with a port for the Redis server. Use an IP for the loopback interface, if you have defined localhost in /etc/hosts for IPv4 and IPv6, or your Redis server will not be found!
-- `write_servers` (optional): for write only Redis servers (usually masters)
-- `read_servers` (optional): for read only Redis servers (usually replicas)
+- `write_servers` (optional): for write-only Redis servers (usually masters)
+- `read_servers` (optional): for read-only Redis servers (usually replicas)
 - `password` (optional): password for the Redis server
 - `db` (optional): database to use, **must be a non-negative integer** (though it is recommended to use dedicated Redis instances and not databases in Redis)
 - `min_tokens`: minimum number of words required for statistics processing
@@ -106,7 +106,7 @@ Supported parameters for the Redis backend are:
 - `cache_prefix` (optional): prefix used to create keys where to store hashes of already learned ids, defaults to `"learned_ids"`
 - `cache_max_elt` (optional): amount of elements to store in one `learned_ids` key
 - `cache_max_keys` (optional): amount of `learned_ids` keys to store
-- `cache_elt_len` (optional): lenth of hash to store in one element of `learned_ids`
+- `cache_elt_len` (optional): length of hash to store in one element of `learned_ids`
 
 ## Autolearning
 
