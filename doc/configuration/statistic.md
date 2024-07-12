@@ -97,7 +97,7 @@ Supported parameters for the Redis backend are:
 - `write_servers` (optional): for write only Redis servers (usually masters)
 - `read_servers` (optional): for read only Redis servers (usually replicas)
 - `password` (optional): password for the Redis server
-- `db` (optional): database to use (though it is recommended to use dedicated Redis instances and not databases in Redis)
+- `db` (optional): database to use, **must be a non-negative integer** (though it is recommended to use dedicated Redis instances and not databases in Redis)
 - `min_tokens`: minimum number of words required for statistics processing
 - `min_learns` (optional): minimum learn to count for **both** spam and ham classes to perform classification
 - `autolearn` (optional): for more details see Autolearning section
