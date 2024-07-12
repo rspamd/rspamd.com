@@ -35,9 +35,9 @@ Discover a reliable step-by-step process for upgrading your Rspamd cluster while
 
 ## Migration to Rspamd 3.9.0
 
-* `ratelimit` module now works in the non dynamic mode by default. It does not affect any existing buckets, as dynamic rates and dynamic bursts will simply be unused in this mode. If you want old behaviour, please either set `dynamic_rate_limit` option to `true` (globally for all ratelimit rules) or set `ham_factor_rate`/`spam_factor_rate` and/or `ham_factor_burst`/`spam_factor_burst` multipliers for individual rules where desired.
+* The `ratelimit` module now operates in non-dynamic mode by default. This change does not affect any existing buckets, as dynamic rates and dynamic bursts will simply be unused in this mode. To retain the old behaviour, please either set the `dynamic_rate_limit` option to `true` (globally for all ratelimit rules) or configure the `ham_factor_rate`/`spam_factor_rate` and/or `ham_factor_burst`/`spam_factor_burst` multipliers for individual rules as needed.
 
-* Bayes statistics now works with a reduced window size (2 words) that has proven to be faster and more space efficient in our tests. The existing statistics can be used without any modifications nor relearning. To restore the old behaviour, one can set the following in the `local.d/classifier-bayes.conf`:
+* Bayes statistics now use a reduced window size (2 words), which has proven to be faster and more space-efficient in our tests. Existing statistics can be used without any modifications or relearning. To restore the old behaviour, one can set the following to `local.d/classifier-bayes.conf`:
 
 ~~~
 tokenizer {
