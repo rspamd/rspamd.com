@@ -47,7 +47,7 @@ When migrating to Rspamd 3.3, exercise caution if you are utilizing custom passt
 
 Users of the `neural` plugin may experience a significant Redis storage leak in version 3.2. This issue is resolved in version 3.3 with [the following commit](https://github.com/rspamd/rspamd/commit/f9cfbba2c84e01f18e65618587e6854681843ff1), however, this fix will not remove any existing stale keys. These keys also do not have an expiration set. One solution to clean up the database is to remove all keys starting with the `rn_` prefix. There are various options available to accomplish this, such as exploring the [following conversation](https://stackoverflow.com/questions/4006324/how-to-atomically-delete-keys-matching-a-pattern-using-redis) on Stackoverflow.
 
-Starting from this version, building Rspamd requires a **C++20** compatible compiler and toolchain. For Ubuntu Bionic users, this means adding the LLVM repository for the compatible C++20 standard library runtime. The necessary steps are outlined on the [downloads page](https://rspamd.com/downloads.html).
+Starting from this version, building Rspamd requires a **C++20** compatible compiler and toolchain. For Ubuntu Bionic users, this means adding the LLVM repository for the compatible C++20 standard library runtime. The necessary steps are outlined on the [downloads page]({{ site.baseurl }}/downloads.html).
 
 ## Migration to Rspamd 3.0
 

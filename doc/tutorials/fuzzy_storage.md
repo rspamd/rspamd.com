@@ -134,7 +134,7 @@ By default, the fuzzy_storage process is not active, with the `count=-1` directi
 
 The `expire` and `sync` values are related to database cleanup and performance, as described below.
 
-Fuzzy storage works with hashes and not with email messages. A [worker/scanner process](/doc/workers/normal.html) or a [controller process](/doc/workers/controller.html) convert emails to hashes before connecting to this process for fuzzy processing. In this sample, we see the fuzzy storage process that operates on the sqlite database is listening on socket 11335 for UDP requests from the other processes to query or update the storage. 
+Fuzzy storage works with hashes and not with email messages. A [worker/scanner process]({{ site.baseurl }}/doc/workers/normal.html) or a [controller process]({{ site.baseurl }}/doc/workers/controller.html) convert emails to hashes before connecting to this process for fuzzy processing. In this sample, we see the fuzzy storage process that operates on the sqlite database is listening on socket 11335 for UDP requests from the other processes to query or update the storage. 
 
 <center><img class="img-fluid" src="{{ site.baseurl }}/img/rspamd-fuzzy-2.png" width="75%"></center>
 

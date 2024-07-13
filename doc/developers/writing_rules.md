@@ -58,7 +58,7 @@ Rspamd typically defines two types of rules:
 
 Lua rules are useful for performing complex tasks, such as checking DNS, querying Redis or HTTP, and examining task-specific details. Regexp rules are optimized by Rspamd (especially when Hyperscan is enabled) and can be used to match custom patterns in headers, URLs, text parts, and even the entire message body.
 
-There is another option called [selectors](https://rspamd.com/doc/configuration/selectors.html) that allows you to combine data extraction and transformation routines, so you don't have to write custom Lua code. The selectors framework is also useful for reusing custom extraction/transformation routines in different plugins and even in regular expression constructions.
+There is another option called [selectors]({{ site.baseurl }}/doc/configuration/selectors.html) that allows you to combine data extraction and transformation routines, so you don't have to write custom Lua code. The selectors framework is also useful for reusing custom extraction/transformation routines in different plugins and even in regular expression constructions.
 
 ### Rule weights
 

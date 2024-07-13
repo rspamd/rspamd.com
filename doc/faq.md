@@ -34,13 +34,13 @@ You should consider experimental packages in the following cases:
 
 * You experience a significant issue with a stable package that is (likely) fixed in experimental packages.
 * You are running a small system, so you can manage the bleeding-edge version of Rspamd and can manually downgrade the package if needed (e.g., if a fresh package conflicts with your configuration).
-* You can test a new version using [mirroring in Rspamd proxy](https://rspamd.com/doc/workers/rspamd_proxy.html).
+* You can test a new version using [mirroring in Rspamd proxy]({{ site.baseurl }}/doc/workers/rspamd_proxy.html).
 
 In fact, the last option is recommended for all users, even if you prefer to use stable packages exclusively. This approach assists in reducing stress and mitigating risks by allowing you to test new versions with your specific configuration and production traffic without impacting your live environment. The only downside is that it requires some computational and mental resources to establish a mirror for experiments, as you need to replicate your entire environment, including local configurations and Redis instances (probably with a reduced `maxmemory` limit, of course).
 
 ### How Rspamd packages are built
 
-Rspamd packages are available for a variety of [platforms](https://rspamd.com/downloads.html). These packages are constructed based on the following principles:
+Rspamd packages are available for a variety of [platforms]({{ site.baseurl }}/downloads.html). These packages are constructed based on the following principles:
 
 1. Where possible, enable `link time optimizations` to enhance overall performance.
 2. Bundle [LuaJIT](https://luajit.org) using 2.1 beta versions from the vendor. In certain experiments, this approach has demonstrated a performance boost of up to 30% compared to the stable LuaJIT.
@@ -189,7 +189,7 @@ sudo rm /cores/core.*
 
 #### ASAN builds
 
-You should also consider using the [ASAN packages](https://rspamd.com/downloads.html) if they are available for your system (or rebuild Rspamd from the sources with ASAN support, but this is significantly more complicated). In some cases, it is the only way to debug and fix your issue. Additionally, you may need an ASAN log in case of a crash. Since these logs are dumped to `stderr` by default, you might need to set a special environment variable on startup:
+You should also consider using the [ASAN packages]({{ site.baseurl }}/downloads.html) if they are available for your system (or rebuild Rspamd from the sources with ASAN support, but this is significantly more complicated). In some cases, it is the only way to debug and fix your issue. Additionally, you may need an ASAN log in case of a crash. Since these logs are dumped to `stderr` by default, you might need to set a special environment variable on startup:
 
 ```
 export ASAN_OPTIONS="log_path=/tmp/rspamd-asan"
@@ -1288,7 +1288,7 @@ Some users complain about log lines like the following ones:
 <xxx>; monitored; rspamd_monitored_dns_cb: DNS reply returned 'no error' for multi.uribl.com while 'no records with this name' was expected
 ```
 
-This error typically indicates that you are restricted on `uribl.com`, suggesting that you might be relying on a public DNS resolver, such as Google DNS. If you are not using a public resolver but experience substantial mail traffic, it's possible that you have exceeded the `free band` for URIBL. In such a scenario, you may want to explore the [commercial subscription](http://www.surbl.org/df) option. Nevertheless, it is advisable to utilise dedicated resolvers rather than public ones, as detailed in the [DNS setup documentation](https://rspamd.com/doc/configuration/options.html#dns-options).
+This error typically indicates that you are restricted on `uribl.com`, suggesting that you might be relying on a public DNS resolver, such as Google DNS. If you are not using a public resolver but experience substantial mail traffic, it's possible that you have exceeded the `free band` for URIBL. In such a scenario, you may want to explore the [commercial subscription](http://www.surbl.org/df) option. Nevertheless, it is advisable to utilise dedicated resolvers rather than public ones, as detailed in the [DNS setup documentation]({{ site.baseurl }}/doc/configuration/options.html#dns-options).
 
 The second potential cause of this error is a malfunction in RBL/URLBL, wherein it produces positive results for queries that should not be flagged, such as `facebook.com` or `127.0.0.1`. This indicates a significant issue with the DNS list.
 

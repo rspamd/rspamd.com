@@ -93,7 +93,7 @@ MiB Swap:   4092.0 total,   3925.5 free,    166.5 used. 100018.6 avail Mem
 </div>
 </pre>
 
-Rspamd is also being fed via [proxy worker](https://rspamd.com/doc/workers/rspamd_proxy.html) that runs on another host and performs initial data collection and emitting messages via the Internet providing transport encryption using HTTPCrypt. However, its CPU usage is quite negligible - it uses only a single CPU core by around 40% in average.
+Rspamd is also being fed via [proxy worker]({{ site.baseurl }}/doc/workers/rspamd_proxy.html) that runs on another host and performs initial data collection and emitting messages via the Internet providing transport encryption using HTTPCrypt. However, its CPU usage is quite negligible - it uses only a single CPU core by around 40% in average.
 
 ## Results analytics
 
@@ -146,7 +146,7 @@ If we look at the performance counters by attaching to some of the worker proces
 </div>
 </pre>
 
-The top consumers are Lua allocator and garbage collector. Since we are using [Rspamd experimental package](https://rspamd.com/downloads.html) on Debian Buster, then it is built with bundled [LuaJIT 2.1 beta3](https://luajit.org) and Jemalloc allocator, however, it seems that there is some issue with this allocator in Debian Buster, so I had to load it manually via the following command:
+The top consumers are Lua allocator and garbage collector. Since we are using [Rspamd experimental package]({{ site.baseurl }}/downloads.html) on Debian Buster, then it is built with bundled [LuaJIT 2.1 beta3](https://luajit.org) and Jemalloc allocator, however, it seems that there is some issue with this allocator in Debian Buster, so I had to load it manually via the following command:
 
 <pre>
 <div class="term">

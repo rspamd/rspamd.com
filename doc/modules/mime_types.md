@@ -85,7 +85,7 @@ archive_extensions = {
 
 ## User settings usage
 
-From version 1.9.1, it is possible to tune this module via [Users settings](https://rspamd.com/doc/configuration/settings.html). To use that, one can apply the following settings:
+From version 1.9.1, it is possible to tune this module via [Users settings]({{ site.baseurl }}/doc/configuration/settings.html). To use that, one can apply the following settings:
 
 ~~~hcl
 test {

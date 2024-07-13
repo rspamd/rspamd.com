@@ -5,7 +5,7 @@ title: Services acceptable use policy
 
 # Rspamd fuzzy feed, DNSBL and site usage policies
 
-If you use Rspamd [fuzzy feeds](https://rspamd.com/doc/modules/fuzzy_check.html) and/or Rspamd URLs/Emails black lists, it is important to understand the current limits and whether you are eligible for free usage.
+If you use Rspamd [fuzzy feeds]({{ site.baseurl }}/doc/modules/fuzzy_check.html) and/or Rspamd URLs/Emails black lists, it is important to understand the current limits and whether you are eligible for free usage.
 
 This information applies to fuzzy storage feeds, DNS lists (specifically URLs and Emails blacklists), and the usage of rspamd.com for map distribution. It may be expanded in the future to include other intelligence resources provided by rspamd.com.
 
@@ -33,7 +33,7 @@ Hence, we are kindly asking to [contact us](mailto:support@rspamd.com) before em
 
 ## Premium service
 
-If you do not meet these criteria, you can either stop using this service or contact us for a [premium service](https://rspamd.com/commercial.html) that covers our costs for providing free access. Please use the following email address for inquiries: <mailto:support@rspamd.com>
+If you do not meet these criteria, you can either stop using this service or contact us for a [premium service]({{ site.baseurl }}/commercial.html) that covers our costs for providing free access. Please use the following email address for inquiries: <mailto:support@rspamd.com>
 
 In addition, the premium service also offers more hashes and longer retention policies, as well as lower latency between a spamtrap hit and the fuzzy hash being placed in storage.
 

@@ -15,7 +15,7 @@ This worker provides various functionalities for building multi-layered systems 
 * Comparing results of mirrored requests
 * Performing message scans autonomously (self-scan mode)
 
-The `hosts` option for the `upstream` and `mirror` can specify IP addresses or Unix domain sockets, as described in the [upstreams documentation](https://rspamd.com/doc/configuration/upstream.html). If the port number is omitted, port 11333 is assumed.
+The `hosts` option for the `upstream` and `mirror` can specify IP addresses or Unix domain sockets, as described in the [upstreams documentation]({{ site.baseurl }}/doc/configuration/upstream.html). If the port number is omitted, port 11333 is assumed.
 
 For a full list of options, please refer to `rspamadm confighelp workers.rspamd_proxy`.
 
@@ -25,11 +25,11 @@ The proxy worker's most widely useful feature is its ability to communicate usin
 
 This means that users who require Milter protocol support in their installations can use it straight out of the box.
 
-For users who do not need Milter support, it's generally more efficient to use normal workers directly and [disable](https://rspamd.com/doc/workers/#common-worker-options) the proxy worker to save resources.
+For users who do not need Milter support, it's generally more efficient to use normal workers directly and [disable]({{ site.baseurl }}/doc/workers/#common-worker-options) the proxy worker to save resources.
 
 ## Milter support
 
-Starting from Rspamd 1.6, the rspamd proxy worker supports the `milter` protocol, which is compatible with popular MTAs like Postfix and Sendmail. This new feature also marks the obsolescence of the [Rmilter](https://rspamd.com/rmilter/) project in recognition of the improved integration method.
+Starting from Rspamd 1.6, the rspamd proxy worker supports the `milter` protocol, which is compatible with popular MTAs like Postfix and Sendmail. This new feature also marks the obsolescence of the [Rmilter]({{ site.baseurl }}/rmilter/) project in recognition of the improved integration method.
 
 To enable Milter mode, use the `milter` boolean worker option. When enabled, the proxy communicates exclusively in the Milter protocol. If disabled, the proxy can be used with Rspamd's native [HTTP protocol]({{ site.baseurl }}/doc/developers/protocol.html) and the legacy protocol used by Exim.
 

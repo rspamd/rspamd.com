@@ -290,7 +290,7 @@ LIMIT 10
 └──────────────────────────────────────┴─────────────────┴────────┘
 ~~~
 
-Using extra columns (see [Configuration](https://rspamd.com/doc/modules/clickhouse.html#extra-columns))
+Using extra columns (see [Configuration]({{ site.baseurl }}/doc/modules/clickhouse.html#extra-columns))
 
 ~~~sql
 SELECT
