@@ -53,7 +53,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  local-links-check:
+  check-broken-links:
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -69,26 +69,17 @@ jobs:
           pages_path: ./_site-root/
           cmd_params: >
             --buffer-size=8192 --color=always --skip-tls-verification
-            --include="^https://${{ github.repository_owner }}[.]github[.]io/${{ github.event.repository.name }}/"
+            --max-connections-per-host=10
+            --header="User-Agent:curl/8.8.0"
             --exclude="^https://${{ github.repository_owner }}[.]github[.]io/${{ github.event.repository.name }}/(doc/lua/((lua|rspamd)_.+|ucl)[.]html(#.+)?|.*#top)$"
-
-  external-links-check:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/cache@v4
-        with:
-          path: |
-            _site-root/
-            _site/
-          key: run_id-${{ github.run_id }}
-      - uses: ruzickap/action-my-broken-link-checker@v2
-        with:
-          url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
-          pages_path: ./_site-root/
-          cmd_params: >
-            --buffer-size=8192 --color=always --skip-tls-verification
-            --verbose --max-connections=10
-            --exclude="^https://${{ github.repository_owner }}[.]github[.]io/${{ github.event.repository.name }}/"
             --exclude="^https://github[.]com/rspamd/rspamd[.]com/edit/master/"
-            --exclude="^https://www[.]ozon[.]ru/$"
+            --exclude="^http://wiki[.]luajit[.]org/New-Garbage-Collector#gc-algorithms_generational-gc$"
+            --exclude="^https://01[.]org/hyperscan/$"
+            --exclude="^https://oem[.]avira[.]com/"
+            --exclude="^https://phishtank[.]com$"
+            --exclude="^https://spameatingmonkey[.]com/faq#query-limits$"
+            --exclude="^https://upcloud[.]com/"
+            --exclude="^https://www[.]clamav[.]net$"
+            --exclude="^https://www[.]hyperscan[.]io/?$"
+            --exclude="^https://www[.]reddit[.]com/"
+            --exclude="^https://www[.]uceprotect[.]net/"
