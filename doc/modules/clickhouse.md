@@ -156,7 +156,7 @@ retention {
 }
 ~~~
 
-To remove data for particular users, you might consider using of the [Clickhouse mutations](https://clickhouse.yandex/docs/en/query_language/alter/#alter-mutations)
+To remove data for particular users, you might consider using of the [Clickhouse mutations](https://clickhouse.com/docs/en/sql-reference/statements/alter#alter-mutations)
 
 ### Subject privacy
 

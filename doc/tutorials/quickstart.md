@@ -576,7 +576,7 @@ While Rspamd is free to use for any purpose, it is important to note that some o
 
 [SpamEatingMonkey](https://spameatingmonkey.com/faq#query-limits){:target="&#95;blank"} - Limit of 100k queries per day or more than 5 queries per second for more than a few minutes
 
-[Spamhaus](https://www.spamhaus.org/organization/dnsblusage/){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 300k queries or 100k SMTP connections per day
+[Spamhaus](https://www.spamhaus.org/blocklists/dnsbl-fair-use-policy/){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 300k queries or 100k SMTP connections per day
 
 [SURBL](https://www.surbl.org/usage-policy){:target="&#95;blank"} - Commercial use forbidden (see link for definition); Limit of 1k users or 250k queries per day
 

@@ -9,7 +9,7 @@ Elasticsearch module pushes a variety of message-related metadata to an instance
 
 <img src="https://i.imgur.com/etYWT8R.png" class="img-fluid" />
 
-This plugin is based on the [plugin](https://github.com/Menta2L/rspamd-elastic) created by [Veselin Iordanov](https://github.com/Menta2L) and adopted for the Elasticsearch 6.x
+This plugin is based on the [plugin](https://github.com/Menta2k/rspamd-elastic) created by [Veselin Iordanov](https://github.com/Menta2k) and adopted for the Elasticsearch 6.x
 
 ## Requirements
 - [Elasticsearch 6.x](https://www.elastic.co/) - Indexing database
