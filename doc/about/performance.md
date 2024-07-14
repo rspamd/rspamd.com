@@ -7,7 +7,7 @@ title: Performance
 
 Rspamd has been started to handle mail flows that has grown over the last decade by more than ten times. From its inception, Rspamd has been tailored to address the demands of high-traffic mail systems, with a primary focus on optimizing performance and scanning speed. This advanced spam filtering system is written in plain C language and employs numerous techniques to operate efficiently, particularly on contemporary hardware. On the other hand, it is possible to run Rspamd even on an embedded device with a very constrained environment.
 
-You can also check the recent [performance analyse article](https://rspamd.com/misc/2019/05/16/rspamd-performance.html) to have a better impression about how fast Rspamd could be.
+You can also check the recent [performance analyse article]({{ site.baseurl }}/misc/2019/05/16/rspamd-performance.html) to have a better impression about how fast Rspamd could be.
 
 Rspamd can be regarded as a significantly faster alternative to the [SpamAssassin](https://spamassassin.apache.org) mail filter, with the capability to process **ten times** the number of messages while using the **same** rules (via the [SpamAssassin plugin]({{ site.baseurl }}/doc/modules/spamassassin.html)). The following graph illustrates how the transition from <abbr title="SpamAssassin">SA</abbr> to Rspamd has reduced CPU loads on scanning machines:
 

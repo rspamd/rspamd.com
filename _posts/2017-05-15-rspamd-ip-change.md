@@ -6,7 +6,7 @@ categories: announce
 
 ## Synopsis
 
-We have migrated hardware that served <https://rspamd.com> site and related services including [fuzzy storage](https://rspamd.com/doc/modules/fuzzy_check.html).
+We have migrated hardware that served <https://rspamd.com> site and related services including [fuzzy storage]({{ site.baseurl }}/doc/modules/fuzzy_check.html).
 
 ## Problem description
 

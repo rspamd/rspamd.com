@@ -768,7 +768,7 @@ spamassassin {
 
 ## Virustotal details
 
-To receive results, Rspamd utilizes the [`file/report`](https://developers.virustotal.com/reference#file-report) endpoint of Virustotal. However, due to the strict policies of Virustotal, it is crucial that you have set your own key in the plugin configuration:
+To receive results, Rspamd utilizes the [`file/report`](https://virustotal.readme.io/v2.0/reference/file-report) endpoint of Virustotal. However, due to the strict policies of Virustotal, it is crucial that you have set your own key in the plugin configuration:
 
 ~~~hcl
 # local.d/antivirus.conf

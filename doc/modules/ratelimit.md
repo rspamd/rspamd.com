@@ -32,6 +32,7 @@ the value of this option is 'postmaster, mailer-daemon'. Supported entries are:
 - `whitelisted_ip` - a map of ip addresses or networks whitelisted
 - `whitelisted_user` - a map of usernames which are excluded from user ratelimits
 - `expire` - maximum lifetime for any limit bucket (2 days by default)
+- `dynamic_rate_limit` (3.9.0+) - enable dynamic ratelimit multipliers (default: false)
 - `ham_factor_rate` - multiplier for rate when a ham message arrives (default: 1.01) 
 - `spam_factor_rate` - multiplier for rate when a spam message arrives (default: 0.99)
 - `ham_factor_burst` - multiplier for burst when a ham message arrives (default: 1.02)
@@ -108,7 +109,9 @@ Rspamd utilizes the **token bucket** algorithm for rate-limiting, a mechanism th
 The **token bucket** algorithm operates as follows:
 
 1. **Checking phase**: During this phase, tokens are incrementally added to the specified bucket at a constant rate. If the bucket is full, incoming tokens are discarded. When a message arrives, Rspamd checks if the message can acquire a token from the designated rate bucket, and if there are sufficient tokens, the message is processed immediately; otherwise, the it is temporarily deferred (leading to a soft reject action).
-2. **Bucket state update**: After a message has been processed, whether delivered or rejected, Rspamd updates the bucket's state, removing a token per processed message. This phase also includes the adjustment of dynamic multipliers adapt to varying traffic patterns.
+2. **Bucket state update**: After a message has been processed, whether delivered or rejected, Rspamd updates the bucket's state, removing a token per processed message. This phase also includes the adjustment of dynamic multipliers to adapt to varying traffic patterns.
+
+Before version 3.9.0, the dynamic rate-limit feature was enabled by default. Starting from version 3.9.0, this feature is disabled by default and requires explicit activation in the configuration. Alternatively, you can configure the `ham_factor_rate`/`spam_factor_rate` and/or `ham_factor_burst`/`spam_factor_burst` multipliers for individual buckets as needed.
 
 To better illustrate the concept of dynamic multipliers, refer to the sample graph below. It demonstrates how the burst multiplier varies depending on the number of received ham messages (x > 0) and spam messages (x < 0):
 
@@ -234,3 +237,5 @@ rates = {
   my_other_bucket = { symbol = "OTHER_NAME"; selector = ...; rate = ...;}  # inserts OTHER_NAME symbol
 }
 ~~~
+
+**From version 3.9.0**, the `dynamic_rate_limit` option was introduced, which enables dynamic ratelimit multipliers. This option is disabled by default.

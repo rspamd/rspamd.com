@@ -92,7 +92,7 @@ fuzzy_check {
 
 A fuzzy `rule` is defined as a set of `rule` definitions. Each `rule` is required to have a `servers` list for checking or teaching (training), along with a set of flags and optional parameters. 
 
-The `servers` parameter defines [upstream](https://rspamd.com/doc/configuration/upstream.html) object that can be configured to rotate or shard as needed. Sharding is performed based on the hash value itself.
+The `servers` parameter defines [upstream]({{ site.baseurl }}/doc/configuration/upstream.html) object that can be configured to rotate or shard as needed. Sharding is performed based on the hash value itself.
 
 The available parameters include:
 

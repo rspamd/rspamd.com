@@ -9,7 +9,7 @@ title: Rspamd features
 
 For a quick overview, you can watch the following [video](https://chemnitzer.linux-tage.de/2019/en/programm/beitrag/212) from the [Linux Chemnitz Days 2019](https://chemnitzer.linux-tage.de).
 
-To gain a deeper understanding of Rspamd's impressive speed, you may want to explore the recent [performance analysis article](https://rspamd.com/misc/2019/05/16/rspamd-performance.html). This article provides valuable insights into Rspamd's rapid processing capabilities.
+To gain a deeper understanding of Rspamd's impressive speed, you may want to explore the recent [performance analysis article]({{ site.baseurl }}/misc/2019/05/16/rspamd-performance.html). This article provides valuable insights into Rspamd's rapid processing capabilities.
 
 <div><h2><img src="img/features.jpg" class="" height="50" width="50" style="position: relative; bottom: 10px;"> Unique features</h2></div>
 

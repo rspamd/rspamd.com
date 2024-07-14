@@ -156,7 +156,7 @@ retention {
 }
 ~~~
 
-To remove data for particular users, you might consider using of the [Clickhouse mutations](https://clickhouse.yandex/docs/en/query_language/alter/#alter-mutations)
+To remove data for particular users, you might consider using of the [Clickhouse mutations](https://clickhouse.com/docs/en/sql-reference/statements/alter#mutations)
 
 ### Subject privacy
 
@@ -290,7 +290,7 @@ LIMIT 10
 └──────────────────────────────────────┴─────────────────┴────────┘
 ~~~
 
-Using extra columns (see [Configuration](https://rspamd.com/doc/modules/clickhouse.html#extra-columns))
+Using extra columns (see [Configuration]({{ site.baseurl }}/doc/modules/clickhouse.html#extra-columns))
 
 ~~~sql
 SELECT

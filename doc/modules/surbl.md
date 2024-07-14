@@ -193,7 +193,7 @@ In general this procedure could be represented as following:
 * Check `A` or `AAAA` records for `example.com`
 * For each ip address resolve it using reverse octets composition: so if IP address of `example.com` is `1.2.3.4`, then checks would be for `4.3.2.1.uribl.tld`
 
-For example, [SBL list](https://www.spamhaus.org/sbl/) of `spamhaus` project provides such functions using `ZEN` multi list. This is included in rspamd default configuration:
+For example, [SBL list](https://www.spamhaus.org/blocklists/spamhaus-blocklist/) of `spamhaus` project provides such functions using `ZEN` multi list. This is included in rspamd default configuration:
 
 ~~~hcl
     rule {

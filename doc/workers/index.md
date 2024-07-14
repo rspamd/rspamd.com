@@ -34,7 +34,7 @@ using plain HTTP might potentially leak sensitive information.
 [Fuzzy worker](fuzzy_storage.html) is different: it is intended to serve external requests, however, it
 listens on an UDP port and does not save any state information.
 
-## Common workers options
+## Common worker options
 
 All workers share a set of common options. Here's a typical example of a normal worker configuration that utilizes only the common worker options:
 

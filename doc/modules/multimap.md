@@ -27,7 +27,7 @@ Maps in Rspamd refer to files or HTTP links that are automatically monitored and
 
 Rspamd offers the option to save traffic for HTTP maps using cached maps, while also respecting `304 Not modified responses`, Cache-Control headers, and ETags. Additionally, the maps data is shared between workers, and only the first controller worker is allowed to fetch remote maps.
 
-By default, the configuration of this module actively utilises compound maps, which define a map as an array of sources with a local fallback location. While this redundancy may be unnecessary for user-defined maps, further details are available in the following [FAQ section](https://rspamd.com/doc/faq.html#what-are-maps).
+By default, the configuration of this module actively utilises compound maps, which define a map as an array of sources with a local fallback location. While this redundancy may be unnecessary for user-defined maps, further details are available in the following [FAQ section]({{ site.baseurl }}/doc/faq.html#what-are-maps).
 
 ## Configuration
 
