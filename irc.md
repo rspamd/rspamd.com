@@ -18,7 +18,7 @@ To access IRC, you can use a set of clients for your favourite platform, for ins
 
 * [XChat](http://www.xchat.org) - cross-platform GUI client
 * [Irssi](https://www.irssi.org) - console client
-* [AndroIRC](https://play.google.com/store/apps/details?id=com.androirc) - Android IRC client
+* AndroIRC - Android IRC client
 
 Alternatively, you could use some web interface to access IRC:
 
