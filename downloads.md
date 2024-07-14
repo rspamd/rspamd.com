@@ -184,7 +184,7 @@ FreeBSD users can install Rspamd from [ports](https://www.freshports.org/mail/rs
 
 Users of NetBSD (and other systems with pkgsrc) can use [pkgsrc](https://pkgsrc.se/mail/rspamd).
 
-OpenBSD users can use [ports](https://openports.se/mail/rspamd).
+OpenBSD users can use [ports](https://openports.pl/path/mail/rspamd).
 
 macOS users can install from [MacPorts](https://ports.macports.org/port/rspamd):
 ```

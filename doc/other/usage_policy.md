@@ -27,7 +27,7 @@ If you qualify (1) and (2) but still got blocked then please contact us by using
 
 Rspamd map checks typically run quietly in the background. When servers are selected, they will usually stay in the configuration indefinitely. If the client traffic causes problems for the server, it can be difficult to address if not carefully planned for in advance.
 
-For example, there was an [incident](https://www.reddit.com/r/synology/comments/f5jczp/mailplus_server_and_rspamdcom/) that caused troubles for both Rspamd project and the vendor's users.
+For example, there was an [incident](https://www.reddit.com/r/synology/comments/f5jczp/mailplus_server_and_rspamdcom/?rdt=48389) that caused troubles for both Rspamd project and the vendor's users.
 
 Hence, we are kindly asking to [contact us](mailto:support@rspamd.com) before embedding Rspamd in any sort of commercial or open source project. In this way, we could decide about the strategy to avoid issues with the embedded solution in future.
 
