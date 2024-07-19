@@ -12,14 +12,27 @@ The Rspamd GPT Plugin, introduced in Rspamd 3.9, integrates OpenAI's GPT API to 
 * Some specific symbols (`BAYES_SPAM`, `FUZZY_DENIED`, `REPLY`, etc.) are excluded from the GPT scan
 * Obvious spam and ham are also excluded from the GPT evaluation
 
-The former two points reduce the GPT workload for something that is already known, where GPT cannot add any value in the evaluation. We also use GPT as one of the classifiers, meaning that we do not rely solely on GPT evaluation.
+The last two points reduce the GPT workload for something that is already known, where GPT cannot add any value in the evaluation. We also use GPT as one of the classifiers, meaning that we do not rely solely on GPT evaluation.
 
 For detailed information about this plugin, refer to the [blog post]({{ site.baseurl }}/misc/2024/07/03/gpt.html).
 
 ## Configuration Options
 
+**By default, the GPT Plugin is disabled.** To enable the plugin, add the following command in your Rspamd configuration:
+
 ```hcl
 gpt {
+  enabled = true; # Ensure this line is present to enable the GPT Plugin
+}
+```
+
+The full list of the plugin configuration options:
+
+```hcl
+gpt {
+  # Enable the plugin
+  enabled = true;
+
   # Supported type: openai
   type = "openai";
   
@@ -60,6 +73,8 @@ gpt {
 
 ### Description of Configuration Options
 
+- **enabled**: A boolean value that specifies whether the GPT Plugin is enabled. Set to `true` to activate the plugin.
+
 - **type**: Specifies the GPT model type. Currently, only "openai" is supported.
   
 - **api_key**: Your API key for accessing OpenAI services. Replace "xxx" with your actual API key.
@@ -90,6 +105,7 @@ Here is an example configuration with the fields filled in:
 
 ```hcl
 gpt {
+  enabled = true; # Enable the plugin
   type = "openai";
   api_key = "your_api_key_here";
   model = "gpt-3.5-turbo";
