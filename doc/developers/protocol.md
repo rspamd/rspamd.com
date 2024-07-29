@@ -282,9 +282,9 @@ These accept `POST`. Headers which must be set are:
 
 These also accept `POST`. Headers which may be set are:
 
-- `Classifier`: classifier name to be learned, if unset - all available classifiers will be learned
+- `Classifier`: classifier name to be learned. If not specified, all available classifiers will be learned.
 
-The below endpoints all use `GET`:
+The following endpoints all use `GET`:
 
 * `/errors` - Returns error messages from ring buffer
 * `/stat` - Returns statistics
