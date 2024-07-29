@@ -33,6 +33,7 @@ The default configuration settings can be found in the `$CONFDIR/statistic.conf`
 
 ~~~hcl
 classifier "bayes" {
+  # name = "custom";  # 'name' parameter must be set if multiple classifiers are defined
   tokenizer {
     name = "osb";
   }
