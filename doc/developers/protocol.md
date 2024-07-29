@@ -274,13 +274,13 @@ The following endpoints are valid merely on the controller. All of these may req
 These accept `POST`. Headers which must be set are:
 
 - `Flag`: flag identifying fuzzy storage
-- `Weight`:  weight to add to hashes
+- `Weight`: weight to add to hashes
 
 * `/learnspam` - Trains bayes classifier on spam message
 * `/learnham` - Trains bayes classifier on ham message
 * `/checkv2` - Checks message and return action (same as normal worker)
 
-These also accept `POST`. . Headers which may be set are:
+These also accept `POST`. Headers which may be set are:
 
 - `Classifier`: classifier name to be learned, if unset - all available classifiers will be learned
 
