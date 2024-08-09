@@ -158,7 +158,4 @@ There are couple of pre-defined selector types, specifically:
 * URLs reputation - `url` selector
 * Generic reputation based on [selectors framework](../configuration/selectors.html) - `generic` selector
 
-All selector types but `generic` requires no explicit configuration. `Generic` selector requires a `selector` attribute to be set. For the advanced configuration of the selectors, you can check the source code of the module.
-Here's an improved version in British-English:
-
 All selector types except for `generic` do not require explicit configuration. The `generic` selector, on the other hand, necessitates the setting of a selector attribute. For more advanced `selector` configurations, you may refer to the module's source code.
