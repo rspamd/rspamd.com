@@ -80,7 +80,7 @@ phishing {
 
 ## Phishtank support
 
-Rspamd has included support for [phishtank](https://phishtank.com) ssince version 1.3. Starting from version 1.8, phishtank is enabled by default in the stock configuration, and queries the phishtank.rspamd.com via DNS. If you wish to disable the phishtank feed, you can modify the `local.d/phishing.conf` file by adding the following lines:
+Rspamd has included support for [phishtank](https://phishtank.com) since version 1.3. Starting from version 1.8, phishtank is enabled by default in the stock configuration, and queries the phishtank.rspamd.com via DNS. If you wish to disable the phishtank feed, you can modify the `local.d/phishing.conf` file by adding the following lines:
 
 ~~~hcl
 # local.d/phishing.conf
