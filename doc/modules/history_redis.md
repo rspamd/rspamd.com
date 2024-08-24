@@ -31,7 +31,7 @@ The configuration of this module is pretty straightforward (use `local.d/history
 
 ~~~hcl
 servers = 127.0.0.1:6379; # Redis server to store history
-key_prefix = "rs_history"; # Default key name
+expire = 432000; # Expire in seconds for inactive keys, default to 5 days
 nrows = 200; # Default rows limit
 compress = true; # Use zstd compression when storing data in Redis
 subject_privacy = false; # subject privacy is off
