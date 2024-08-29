@@ -10,9 +10,7 @@
 html {
   font-size: 10px;
 }
----
-# Front matter added to ensure Jekyll processes file.
----
+
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
   padding-left: 15px;
@@ -505,7 +503,7 @@ div#toc {
 /* pricing-model */
 .pricing-model{
   background-color: #B6B7D514;
-  padding: 24px 0;
+  padding: 24px 0 120px;
 }
 .pricing-model h2{
   margin-top: 75px;

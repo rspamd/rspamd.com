@@ -113,7 +113,7 @@ title: Rspamd commercial support
         <div class="row">
             <div class="col-md-6">
                 <h2>Pricing model</h2>
-                <p>The pricing for our support services is highly adaptable, taking into account a variety of factors. These factors include the nature of your business, with special discounts available for educational clients, as well as the volume of messages you anticipate processing. Our pricing structure offers several tiers to cater to diverse needs, and we encourage you to reach out to us via email at <a href="mailto:support@rspamd.com">support@rspamd.com</a> for a personalized quote. When you contact us, please provide an estimate of the message volume you plan to handle, such as the number of messages per day. This information will help us provide you with an accurate pricing proposal.</p>
+                <p>The pricing for our support services is highly adaptable, taking into account a variety of factors. These factors include the nature of your business, with special discounts available for educational clients, as well as the volume of messages you anticipate processing. Our pricing structure offers several tiers to cater to diverse needs, and we encourage you to reach out to us via email at <a href="mailto:hello@rspamd.com">hello@rspamd.com</a> for a personalized quote. When you contact us, please provide an estimate of the message volume you plan to handle, such as the number of messages per day. This information will help us provide you with an accurate pricing proposal.</p>
             </div>
             <div class="col-md-6">
                 <img src="img/pricing.png" alt="" class="img-fluid"/>
@@ -128,7 +128,7 @@ title: Rspamd commercial support
             <div class="col-md-12">
                 <h2>Questions</h2>
                 <p>Feel free to reach out to us via email if you need any additional information about our<br> commercial support.</p>
-                <a href="mailto:support@rspamd.com"><img src="img/envelope.svg"/> <span>support@rspamd.com</span></a>
+                <a href="mailto:hello@rspamd.com"><img src="img/envelope.svg"/> <span>hello@rspamd.com</span></a>
             </div>
         </div>
     </div>
