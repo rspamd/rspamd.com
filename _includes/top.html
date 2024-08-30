@@ -27,7 +27,11 @@
     <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.60.0/dist/instantsearch.production.min.js" integrity="sha256-9242vN47QUX50UG5Gf5XDO1YREWCEJRyXHofh5fsl24=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.1.0/themes/satellite-min.css" integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA=" crossorigin="anonymous">
     <!-- Algolia search end -->
+    {% if page.layout == "commercial" %}
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/commercial.css">
+    {% else %}
     <link rel="stylesheet" href="{{ site.baseurl }}/css/main.css">
+    {% endif %}
     <!-- syntax highlighting CSS -->
     <link rel="stylesheet" href="{{ site.baseurl }}/css/syntax.css">
     <link rel="icon" href="{{ site.baseurl }}/favicon.png?v=2" type="image/png"/>
