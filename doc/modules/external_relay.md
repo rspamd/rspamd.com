@@ -32,6 +32,7 @@ The available strategies are as follows:
  * `authenticated` : use the first unauthenticated hop in a message
  * `count` : identify Received header by set position
  * `hostname_map` : use the first sender with an unrecognised hostname
+ * `ip_map` : use the first sender with an unrecognised IP address
  * `local` : use the first non-local hop in a message
 
 ## Rule syntax
@@ -75,3 +76,7 @@ The following strategy-specific settings are defined:
 ### hostname_map
 
  * `hostname_map` (required): A [map]({{ site.baseurl }}/doc/faq.html#what-are-maps) of hostnames which we expect to see from the sender and in `Received` headers.
+
+### ip_map
+
+ * `ip_map` (required): A [map]({{ site.baseurl }}/doc/faq.html#what-are-maps) of IPs which we expect to see from the sender and in `Received` headers.
