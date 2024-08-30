@@ -152,7 +152,7 @@ In this case, `8.8.8.8` public resolver will be used as a backup when local reso
 
 The WebUI supports displaying and aggregating statistics from a cluster of Rspamd servers, as well as changing the configuration of all cluster members simultaneously.
 
-On the Rspamd server at which you want to point your web-browser add a neighbours list to the `local.d/options.inc`:
+On the Rspamd server where you want to point your web browser, add a `neighbours` list to the `local.d/options.inc`:
 
 ~~~hcl
 neighbours {
@@ -162,21 +162,21 @@ neighbours {
 }
 ~~~
 
-There is no communication between the cluster members. Rspamd simply sends the neighbours list to the web browser, and all subsequent communication happens directly between the browser and the neighbours on the list via HTTP requests.
+There is no direct communication between cluster members. Rspamd sends the neighbours list to the web browser, and all subsequent communication occurs directly between the browser and the listed neighbours via HTTP requests.
 
-For some reason (ask @cebka on IRC about that) you should have such a list in the configuration of every other neighbour. Actually, it does not matter what is configured in the `neighbours` section on other servers of the cluster. There should be at least one host entry.
+Rspamd adds the `Access-Control-Allow-Origin: *` header if at least one server is configured in the `neighbours` section. Therefore, including at least one valid entry is necessary. The specifics of the `neighbours` configuration on other servers are not important, as long as there is at least one valid entry.
 
-A dummy entry like this is enough:
+A minimal configuration with a dummy entry can look like this:
 
 ~~~hcl
 neighbours {
-    server1 {host = ""; }
+    server1 { host = ""; }
 }
 ~~~
 
-However, if you plan to access the WebUI on this particular host, it is advisable to configure something more appropriate and relevant for that entry.
+However, if you plan to access the WebUI on this host, it is advisable to configure a more appropriate and relevant entry.
 
-If you have [a reverse proxy with TLS]({{ site.baseurl }}/doc/tutorials/quickstart.html#setting-up-the-webui) in front of Rspamd, you need to explicitly specify the protocol and port in the `host` directive:
+If you have [a reverse proxy with TLS]({{ site.baseurl }}/doc/tutorials/quickstart.html#setting-up-the-webui) in front of Rspamd, explicitly specify the protocol and port in the `host` directive:
 
 ~~~hcl
 neighbours {
@@ -185,9 +185,9 @@ neighbours {
 }
 ~~~
 
-Otherwise it defaults to `http` and `11334` respectively.
+By default, the protocol is `http` and the port is `11334`.
 
-Also you can use the same host name but set different paths:
+Additionally, you can use the same hostname but specify different paths for different servers:
 
 ~~~hcl
 neighbours {
@@ -209,6 +209,6 @@ Options for upstreams fall under a dedicated subsection called `upstream` and co
 
 * `error_time` (defaults to `10`): timeframe to check errors in seconds
 * `max_errors` (defaults to `4`): maximum count of errors during `error_time` to consider the upstream as down
-* `revive_time` (defaults to `60`): count of seconds before attempting to recover upstream after it has faced `max_errors` and has been marked as unhealthy
+* `revive_time` (defaults to `60`): time in seconds before attempting to recover an upstream after it has faced `max_errors` and has been marked as unhealthy
 * `lazy_resolve_time` (defaults to `3600`, which is 1 hour): time in seconds to resolve upstream addresses in lazy mode
 * `resolve_min_interval` (defaults to `60`): minimum interval in seconds to perform resolving upstream DNS resolution
