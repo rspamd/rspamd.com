@@ -4,7 +4,6 @@
 }
 .full-container{
   width:100%;
-  font-family:Ubuntu,sans-serif;
   font-size: 16px;
   line-height: 26px;
   color: #23263B;
@@ -15,7 +14,7 @@
 .full-container h4,
 .full-container h5,
 .full-container h6{
-  font-family:Ubuntu,sans-serif;
+  font-family: Ubuntu, Tahoma, Arial, sans-serif;
 }
 .full-container h1{
   font-size: 48px;
@@ -31,7 +30,6 @@
   background-color: #dd4814;
   border-color: #dd4814;
   padding: 15px 32px;
-  font-family: Ubuntu, sans-serif;
 }
 .full-container .btn-primary:hover,
 .full-container  .btn-primary:focus{
@@ -43,7 +41,6 @@
   padding: 100px 0 120px;
 }
 .full-container h2{
-  font-family: Ubuntu, sans-serif;
   font-size: 42px;
   font-weight: 700;
   line-height: 58.8px;
@@ -137,7 +134,6 @@
   color: rgb(255 255 255 / 64%);
   margin-bottom: 24px;
 }
-/* stylelint-disable-next-line no-descending-specificity */
 .full-container .questions p + a {
   text-decoration: none;
 }
