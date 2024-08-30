@@ -10,6 +10,12 @@
 html {
   font-size: 10px;
 }
+
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+  padding-left: 15px;
+  padding-right: 15px;
+}
 body {
   font-size: 14px;
   line-height: 1.4286;
@@ -49,9 +55,6 @@ h4, .h4 { font-size: 18px; }
   padding-left: 40px;
 }
 .page-link { text-decoration: none; }
-#accordion .accordion-button {
-  font-size: 16px;
-}
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: Tahoma, Arial, sans-serif;
@@ -133,6 +136,13 @@ a.btn:not(.collapsed) svg.fa-square-caret-down,
 }
 .r-nav-container .navbar-toggler .icon-bar + .icon-bar {
   margin-top: 4px;
+}
+#wrapper {/* for removing wite space after footer */
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 82px;
+  padding-top: 50px;
+  box-sizing: border-box;
 }
 
 .breadcrumb{
@@ -369,3 +379,191 @@ div#toc {
 
 .site-map h2 { font-size: 24px; }
 .site-map > div > ul { padding-left: 1.5rem; }
+/* commercial page */
+.commercial-banner {
+  background: #EFF7FF;
+  padding-top: 60px;
+}
+.full-container{
+  width:100%;
+  font-family:Ubuntu,sans-serif;
+  font-size: 16px;
+  line-height: 26px;
+  color: #23263B;
+}
+.full-container h1,
+.full-container h2,
+.full-container h3,
+.full-container h4,
+.full-container h5,
+.full-container h6{
+  font-family:Ubuntu,sans-serif;
+}
+.full-container h1{
+  font-size: 48px;
+  font-weight: 700;
+  white-space: nowrap;
+  margin-top: 60px;
+}
+.commercial-banner p{
+  margin: 24px 0 40px;
+}
+.full-container .btn-primary {
+  color: #ffffff;
+  background-color: #dd4814;
+  border-color: #dd4814;
+  padding: 15px 32px;
+  font-family: Ubuntu, sans-serif;
+}
+.full-container .btn-primary:hover,
+.full-container  .btn-primary:focus{
+  background-color: #cd3f0d;
+  border-color: #cd3f0d;
+}
+/* commercial-features */
+.commercial-features{
+  padding: 100px 0 120px;
+}
+.full-container h2{
+  font-family: Ubuntu, sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 58.8px;
+  margin-bottom: 24px;
+}
+.full-container p{
+  color: rgb(35 38 59 / 64%);
+}
+.support-features{
+  max-width: 1090px;
+  margin: 16px auto 0;
+}
+.full-container .extra-feature{
+  font-weight: 500;
+  text-align: center;
+  margin: 40px 0;
+  color: #23263B;
+  font-size: 18px;
+  line-height: 28px;
+}
+.accordion-item {
+  margin-bottom: 0;
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid #EEEEEE;
+  box-shadow: none;
+}
+#accordion .accordion-button {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+  color: #23263B;
+  background-color: transparent;
+  border: 0;
+  padding: 20px 0 20px 48px;
+  position: relative;
+  box-shadow: none;
+}
+.accordion-body{
+  border-top: 0;
+  padding: 0 0 20px 48px;
+}
+.accordion-body :last-child{
+  margin-bottom: 0;
+}
+#accordion .accordion-button::after{
+  content: "";
+  width: 16.5px;
+  height: 2px;
+  display: block;
+  background-color: #E95420;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s ease-in;
+}
+#accordion .accordion-button::before{
+  content: "";
+  width: 2px;
+  height: 16.5px;
+  display: block;
+  background-color: #E95420;
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+#accordion .accordion-button:not(.collapsed)::before{
+  opacity: 0;
+}
+.full-container .accordion-body{
+  color: rgb(35 38 59 / 64%);
+}
+/* pricing-model */
+.pricing-model{
+  background-color: #B6B7D514;
+  padding: 24px 0 120px;
+}
+.pricing-model h2{
+  margin-top: 75px;
+}
+/* questions */
+.questions{
+  background:#23263B;
+  padding: 60px 0 80px;
+  color: #fff;
+  text-align: center;
+}
+.full-container .questions p{
+  color: rgb(255 255 255 / 64%);
+  margin-bottom: 24px;
+}
+/* stylelint-disable-next-line no-descending-specificity */
+.full-container .questions p + a {
+  text-decoration: none;
+}
+.full-container .questions p + a span{
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media(max-width:1024px){
+  .commercial-banner {
+    padding-bottom: 0;
+  }
+  .full-container h1 {
+    margin-top: 0;
+  }
+  .pricing-model h2 {
+    margin-top: 0;
+  }
+}
+@media(max-width:767px){
+  .support-features .row {
+    flex-direction: column;
+  }
+  .full-container h1 {
+    font-size: 32px;
+    white-space: pre-wrap;
+    margin-top: 0;
+  }
+  .full-container h2 {
+    font-size: 28px;
+    line-height: 38px;
+    margin-bottom: 20px;
+  }
+  .commercial-features {
+    padding: 40px 0 50px;
+  }
+  .commercial-features .panel-group {
+    margin-top: 20px;
+  }
+  .pricing-model h2 {
+    margin-top: 15px;
+  }
+  .questions {
+    padding: 30px 0 50px;
+  }
+}
