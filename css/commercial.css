@@ -10,12 +10,6 @@
 html {
   font-size: 10px;
 }
-
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-  padding-left: 15px;
-  padding-right: 15px;
-}
 body {
   font-size: 14px;
   line-height: 1.4286;
@@ -136,13 +130,6 @@ a.btn:not(.collapsed) svg.fa-square-caret-down,
 }
 .r-nav-container .navbar-toggler .icon-bar + .icon-bar {
   margin-top: 4px;
-}
-#wrapper {/* for removing wite space after footer */
-  min-height: 100vh;
-  position: relative;
-  padding-bottom: 82px;
-  padding-top: 50px;
-  box-sizing: border-box;
 }
 
 .breadcrumb{
