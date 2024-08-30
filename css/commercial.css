@@ -90,7 +90,6 @@
   content: "";
   width: 16.5px;
   height: 2px;
-  display: block;
   background-color: #E95420;
   position: absolute;
   left: 0;
@@ -102,7 +101,6 @@
   content: "";
   width: 2px;
   height: 16.5px;
-  display: block;
   background-color: #E95420;
   position: absolute;
   left: 7px;
