@@ -137,7 +137,7 @@ a.btn:not(.collapsed) svg.fa-square-caret-down,
 .r-nav-container .navbar-toggler .icon-bar + .icon-bar {
   margin-top: 4px;
 }
-#wrapper {/*for removing wite space after footer*/
+#wrapper {/* for removing wite space after footer */
   min-height: 100vh;
   position: relative;
   padding-bottom: 82px;
@@ -386,7 +386,7 @@ div#toc {
 }
 .full-container{
   width:100%;
-  font-family:"Ubuntu",sans-serif;
+  font-family:Ubuntu,sans-serif;
   font-size: 16px;
   line-height: 26px;
   color: #23263B;
@@ -397,7 +397,7 @@ div#toc {
 .full-container h4,
 .full-container h5,
 .full-container h6{
-  font-family:"Ubuntu",sans-serif;
+  font-family:Ubuntu,sans-serif;
 }
 .full-container h1{
   font-size: 48px;
@@ -413,7 +413,7 @@ div#toc {
   background-color: #dd4814;
   border-color: #dd4814;
   padding: 15px 32px;
-  font-family: "Ubuntu", sans-serif;
+  font-family: Ubuntu, sans-serif;
 }
 .full-container .btn-primary:hover,
 .full-container  .btn-primary:focus{
@@ -425,7 +425,7 @@ div#toc {
   padding: 100px 0 120px;
 }
 .full-container h2{
-  font-family: "Ubuntu", sans-serif;
+  font-family: Ubuntu, sans-serif;
   font-size: 42px;
   font-weight: 700;
   line-height: 58.8px;
@@ -519,6 +519,7 @@ div#toc {
   color: rgb(255 255 255 / 64%);
   margin-bottom: 24px;
 }
+/* stylelint-disable-next-line no-descending-specificity */
 .full-container .questions p + a {
   text-decoration: none;
 }
