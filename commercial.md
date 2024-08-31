@@ -45,7 +45,7 @@ title: Rspamd commercial support
                 <img  src="img/features.png" class="img-fluid"/>
             </div>
             <div class="col-md-6">
-                <div class="accordion" id="accordion">
+                <div class="accordion accordion-flush" id="accordion">
                     <div class="accordion-item">
                         <h4 class="accordion-header">
                             <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">

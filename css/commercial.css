@@ -61,12 +61,8 @@
   font-size: 18px;
   line-height: 28px;
 }
-.accordion-item {
-  margin-bottom: 0;
-  border-radius: 0;
-  border: 0;
+#accordion .accordion-item {
   border-bottom: 1px solid #EEEEEE;
-  box-shadow: none;
 }
 #accordion .accordion-button {
   font-size: 18px;
@@ -74,13 +70,10 @@
   line-height: 27px;
   color: #23263B;
   background-color: transparent;
-  border: 0;
   padding: 20px 0 20px 48px;
-  position: relative;
   box-shadow: none;
 }
 .accordion-body{
-  border-top: 0;
   padding: 0 0 20px 48px;
 }
 .accordion-body :last-child{
