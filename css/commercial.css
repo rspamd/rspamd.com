@@ -83,13 +83,13 @@
   transform: translateY(-50%);
 }
 #accordion .accordion-button::after {
-  width: 16.5px;
+  width: 16px;
   height: 2px;
   left: 0;
 }
 #accordion .accordion-button::before {
   width: 2px;
-  height: 16.5px;
+  height: 16px;
   left: 7px;
 }
 #accordion .accordion-button:not(.collapsed)::before {
