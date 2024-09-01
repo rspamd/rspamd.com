@@ -9,7 +9,7 @@ title: Rspamd commercial support
             <div class="col-lg-6">
                 <h1>Rspamd commercial support</h1>
                 <p>You can access enhanced support through Rspamd Ltd.'s commercial support option. It's ideal for users seeking added spam protection features and a higher level of support. Importantly, opting for commercial support directly contributes to the active development and maintenance of the open-source project.</p>
-                <a class="btn btn-primary" href="mailto:hello@rspamd.com">Contact us <img src="img/down-arrow.png" alt=""></a>
+                <a class="btn btn-primary" href="mailto:hello@rspamd.com">Contact us<i class="fa-solid fa-chevron-right ms-2"></i></a>
             </div>
             <div class="col-lg-6">
                 <img src="img/ill.png" alt="" class="img-fluid"/>

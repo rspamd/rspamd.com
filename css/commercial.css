@@ -32,7 +32,7 @@
   padding: 15px 32px;
 }
 .full-container .btn-primary:hover,
-.full-container  .btn-primary:focus{
+.full-container .btn-primary:focus {
   background-color: #cd3f0d;
   border-color: #cd3f0d;
 }
