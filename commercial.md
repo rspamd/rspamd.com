@@ -4,7 +4,7 @@ title: Rspamd commercial support
 ---
 <!-- commercial-banner -->
 <div class="commercial-banner">
-    <div class="r-container">
+    <div class="container-xxl px-4">
         <div class="row">
             <div class="col-lg-6">
                 <h1>Rspamd commercial support</h1>
@@ -19,7 +19,7 @@ title: Rspamd commercial support
 </div>
 <!-- commercial-features -->
 <div class="commercial-features">
-    <div class="r-container">
+    <div class="container-xxl px-4">
         <div class="row">
             <div class="col-md-12">
                 <h2 class="text-center">Commercial support features</h2>
@@ -109,7 +109,7 @@ title: Rspamd commercial support
 <!-- pricing-model -->
 
 <div class="pricing-model">
-    <div class="r-container">
+    <div class="container-xxl px-4">
         <div class="row">
             <div class="col-md-6">
                 <h2>Pricing model</h2>
@@ -123,7 +123,7 @@ title: Rspamd commercial support
 </div>
 
 <div class="questions">
-    <div class="r-container">
+    <div class="container-xxl px-4">
         <div class="row">
             <div class="col-md-12">
                 <h2>Questions</h2>
