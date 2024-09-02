@@ -38,7 +38,7 @@ title: Rspamd commercial support
                     </p>
                 </div>
             </div> 
-            <p class="extra-feature">By choosing the commercial support option, you will have the following extra features:</p> 
+            <p class="extra-feature text-center">By choosing the commercial support option, you will have the following extra features:</p> 
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -122,13 +122,15 @@ title: Rspamd commercial support
     </div>
 </div>
 
-<div class="questions">
+<div class="questions text-white text-center">
     <div class="container-xxl px-4">
         <div class="row">
             <div class="col-md-12">
                 <h2>Questions</h2>
                 <p>Feel free to reach out to us via email if you need any additional information about our<br> commercial support.</p>
-                <a href="mailto:hello@rspamd.com"><img src="img/envelope.svg"/> <span>hello@rspamd.com</span></a>
+                <a class="text-decoration-none" href="mailto:hello@rspamd.com">
+                    <img src="img/envelope.svg"/> <span class="text-white border-bottom pb-0">hello@rspamd.com</span>
+                </a>
             </div>
         </div>
     </div>
