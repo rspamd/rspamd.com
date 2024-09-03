@@ -86,3 +86,4 @@ jobs:
             --exclude="^https://www[.]hyperscan[.]io/?$"
             --exclude="^https://www[.]reddit[.]com/"
             --exclude="^https://www[.]uceprotect[.]net/"
+            --exclude="^https://trec[.]nist[.]gov/"
