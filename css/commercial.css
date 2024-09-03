@@ -12,16 +12,16 @@
 .full-container h3,
 .full-container h4,
 .full-container h5,
-.full-container h6{
+.full-container h6 {
   font-family: Ubuntu, Tahoma, Arial, sans-serif;
 }
-.full-container h1{
+.full-container h1 {
   font-size: 48px;
   font-weight: 700;
   white-space: nowrap;
   margin-top: 60px;
 }
-.commercial-banner p{
+.commercial-banner p {
   margin: 24px 0 40px;
 }
 .full-container .btn-primary {
@@ -36,19 +36,19 @@
   border-color: #cd3f0d;
 }
 /* commercial-features */
-.commercial-features{
+.commercial-features {
   padding: 100px 0 120px;
 }
-.full-container h2{
+.full-container h2 {
   font-size: 42px;
   font-weight: 700;
   line-height: 58.8px;
   margin-bottom: 24px;
 }
-.full-container p{
+.full-container p {
   color: rgb(35 38 59 / 64%);
 }
-.support-features{
+.support-features {
   max-width: 1090px;
   margin: 16px auto 0;
 }
@@ -101,30 +101,30 @@
   margin-bottom: 0;
 }
 /* pricing-model */
-.pricing-model{
+.pricing-model {
   background-color: #B6B7D514;
   padding: 24px 0 120px;
 }
-.pricing-model h2{
+.pricing-model h2 {
   margin-top: 75px;
 }
 /* questions */
 .questions {
-  background:#23263B;
+  background: #23263B;
   padding: 60px 0 80px;
 }
-.full-container .questions p{
+.full-container .questions p {
   color: rgb(255 255 255 / 64%);
   margin-bottom: 24px;
 }
 
-@media(max-width:1024px){
+@media(max-width:1024px) {
   .full-container h1,
   .pricing-model h2 {
     margin-top: 0;
   }
 }
-@media(max-width:767px){
+@media(max-width:767px) {
   .support-features .row {
     flex-direction: column;
   }
