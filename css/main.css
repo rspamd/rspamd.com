@@ -41,18 +41,10 @@ h1, h2, h3 {
   margin-bottom:10px;
   line-height:1.1;
 }
-h1, .h1 { font-size: 36px; }
-h2, .h2 { font-size: 32px; }
-h3, .h3 { font-size: 24px; }
-h4, .h4 { font-size: 18px; }
 .r-docs-content ol {
   padding-left: 40px;
 }
 .page-link { text-decoration: none; }
-
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-family: Tahoma, Arial, sans-serif;
-}
 
 /* Use only web safe fonts when font-smoothing is not enabled */
 /* stylelint-disable selector-class-pattern */
@@ -364,5 +356,4 @@ div#toc {
     font-size: 1em;
 }
 
-.site-map h2 { font-size: 24px; }
 .site-map > div > ul { padding-left: 1.5rem; }

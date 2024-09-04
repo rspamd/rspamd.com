@@ -7,14 +7,6 @@
   line-height: 26px;
   color: #23263B;
 }
-.full-container h1,
-.full-container h2,
-.full-container h3,
-.full-container h4,
-.full-container h5,
-.full-container h6 {
-  font-family: Ubuntu, Tahoma, Arial, sans-serif;
-}
 .full-container h1 {
   font-size: 48px;
   font-weight: 700;
