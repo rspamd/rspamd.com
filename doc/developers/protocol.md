@@ -229,26 +229,6 @@ Where `<header_name>` represents header's name, and the value is the order of th
 }
 ```
 
-## Rspamd JSON control block
-
-Starting from Rspamd version 0.9, it's also possible to transmit additional data by prepending a JSON control block to a message. Therefore, you have the flexibility to utilize either headers or a JSON block to convey information from the MTA to Rspamd.
-
-To employ a JSON control block, you must include an additional header named `Message-Length` when forwarding the message to Rspamd. This header should specify the size of the message, but it should **exclude** the JSON control block. Consequently, the size of the control block is calculated as `Content-Length - Message-Length`. Rspamd assumes that the message immediately follows the control block without any additional CRLF (Carriage Return Line Feed) characters. This approach is equally compatible with streaming transfers. However, even when you don't explicitly specify `Content-Length`, you are still required to specify `Message-Length`.
-
-Here's an illustrative example of a JSON control block:
-
-~~~json
-{
-  "from": "smtp@example.com",
-  "pass_all": "true",
-  "ip": "95.211.146.161",
-  "helo": "localhost.localdomain",
-  "hostname": "localhost"
-}
-~~~
-
-Furthermore, it's worth noting that [UCL](https://github.com/vstakhov/libucl) JSON extensions and syntax conventions are fully supported within the control block.
-
 ## Curl example
 
 To check a message without rspamc:
