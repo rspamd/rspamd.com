@@ -95,6 +95,7 @@ Rspamd supports the following Redis options (common for all modules):
 * `timeout`: timeout in seconds to get reply from Redis (e.g. `0.5s` or `1min`)
 * `db`: number of database to use (by default, Rspamd will use the default Redis database with number `0`)
 * `password`: password to connect to Redis (no password by default)
+* `username`: username to use when authenticating to Redis
 * `prefix`: use the specified prefix for keys in Redis (if supported by module)
 * `expand_keys` (1.7.0+): if set to `true` 'expand' key names used in queries (discussed further below)
 
