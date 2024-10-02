@@ -92,6 +92,7 @@ Rspamd supports the following .deb based distributives:
 - **Debian bullseye**
 - **Ubuntu focal** (since 2.5)
 - **Ubuntu jammy** (since 3.3)
+- **Ubuntu noble** (since 3.9)
 
 To install the rspamd <a class="text-decoration-none text-reset" href="#stableSys2">stable<sup>1</sup></a> apt repository, please use the following commands:
 
