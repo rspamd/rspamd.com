@@ -4,6 +4,10 @@ title: Contributing to website
 ---
 # Contributing to rspamd.com website
 
+For general instructions on building and contributing to the Rspamd website, please refer to the [wiki page](https://github.com/rspamd/rspamd.com/wiki/Building-the-site).
+
+The following document provides specific guidelines on handling local links and testing changes before submitting pull requests.
+
 ## Local links
 
 During the build process, Markdown sources are converted into HTML pages, and their file extensions are changed from `*.md` to `*.html`. When creating local links, ensure to replace the `.md` file extension with `.html`.
