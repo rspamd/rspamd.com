@@ -487,14 +487,14 @@ description = "External services";
 symbols = {
   ...
   "PYZOR" {
-    # The maximum score for a spam mail
+    # The base score for a spam mail
     weight = 2.0;
     description = "Detected as spam by pyzor";
   }
 }
 ~~~
 
-Note that the score set here will be scaled by the Pyzor Lua script depending on the weight of spam and ham scores.
+Note that the score set here will be scaled up or down by the Pyzor Lua script depending on the weight of spam and ham scores.
 
 Restart rspamd `systemctl restart rspamd`
 
