@@ -4,7 +4,7 @@ title: DKIM module
 ---
 # DKIM module
 
-This module verifies the authenticity of emails through the analysis of [DKIM](https://www.dkim.org/) signatures.
+This module verifies the authenticity of emails through the analysis of [DKIM](http://dkim.org/) signatures.
 The presence of a valid DKIM signature indicates that the message has been trusted and signed by a recognized source.
 For example, if a message comes from `gmail.com` then a valid DKIM signature means that this message was definitely signed by `gmail.com` (unless gmail.com private key has been compromised, which is not a likewise case).
 
