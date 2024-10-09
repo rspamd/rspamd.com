@@ -54,7 +54,7 @@ Normally, you should just use `/checkv2` here. However, if you want to communica
 
 ### HTTP headers
 
-To minimize redundant processing, Rspamd enables an MTA to transmit pre-processed message data using either HTTP headers or a JSON control block (which will be elaborated on later in this document). Rspamd accommodates the following non-standard HTTP headers:
+To minimize redundant processing, Rspamd enables an MTA to transmit pre-processed message data using HTTP headers. Rspamd accommodates the following non-standard HTTP headers:
 
 | Header          | Description                       |
 | :-------------- | :-------------------------------- |
@@ -70,7 +70,6 @@ To minimize redundant processing, Rspamd enables an MTA to transmit pre-processe
 | `Pass`       | If this header has `all` value, all filters would be checked for this message. |
 | `Subject`    | Defines subject of message (is used for non-mime messages). |
 | `User`       | Defines username for authenticated SMTP client. |
-| `Message-Length` | Defines the length of message excluding the control block. |
 | `Settings-ID` | Defines [settings id](../configuration/settings.html) to apply. |
 | `Settings` | Defines list of rules ([settings](../configuration/settings.html) `apply` part) as raw json block to apply. |
 | `User-Agent` | Defines user agent (special processing if it is `rspamc`). |
