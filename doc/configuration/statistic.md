@@ -105,7 +105,13 @@ Supported parameters for the Redis backend are:
 - `password`: Password for the Redis server.
 - `db`: Database to use, **must be a non-negative integer** (though it is recommended to use dedicated Redis instances and not databases in Redis).
 - `min_learns`: Minimum learn to count for **both** spam and ham classes to perform classification.
-- `autolearn`: For more details, see the Autolearning section.
+- **`autolearn {}`**: This section defines the behavior of automatic learning for spam and ham messages based on specific thresholds and balance settings. It includes the following options:
+  - `spam_threshold` (No default value): Specifies the score threshold above which a message is considered spam and is eligible for automatic spam learning. If a message’s score exceeds this threshold, it will be learned as spam. If not set, autolearning for spam will depend on the verdict of the message.
+  - `ham_threshold` (No default value): Specifies the score threshold below which a message is considered ham and is eligible for automatic ham learning. If a message’s score is below this threshold, it will be learned as ham. If not set, autolearning for ham will depend on the verdict of the message.
+  - `check_balance` (Default: `true`): Enables checking of the balance between spam and ham learns. If the balance is too skewed, learning will be skipped based on the ratio defined by `min_balance`.
+  - `min_balance` (Default: `0.9`): Ensures balance between spam and ham learns. If the ratio of spam learns to ham learns (or vice versa) exceeds `1 / min_balance`, learning for the more frequent type is skipped until the other type catches up. For example, with the default value of `0.9`, learning is skipped if one type exceeds the other by a ratio of approximately `1.11` (1/0.9). This helps prevent bias in the learning process.
+
+  For further details, see the [Autolearning section](#autolearning).
 - `per_user`: For more details, see the Per-user statistics section.
 - `cache_prefix`: Prefix used to create keys where to store hashes of already learned IDs, defaults to `"learned_ids"`.
 - `cache_max_elt`: Amount of elements to store in one `learned_ids` key.
