@@ -6,7 +6,9 @@ title: User settings
 
 ## Introduction
 
-Rspamd offers the flexibility to apply various settings for scanned messages. Each setting can define a specific set of custom metric weights, symbol scores, actions scores, and the ability to enable or disable certain checks. These settings can be loaded as dynamic maps, allowing them to be updated automatically whenever the corresponding file or URL has changed since the last update.
+Rspamd offers the flexibility to apply various settings for scanned messages. Proxy-worker can be configured to use specific `settings_id` optionally if needed. Each setting can define a specific set of custom metric weights, symbol scores, actions scores, and the ability to enable or disable certain checks. These settings can be loaded as dynamic maps, allowing them to be updated automatically whenever the corresponding file or URL has changed since the last update.
+
+
 
 To load settings as a dynamic map, you can set the 'settings' to a map string as follows:
 
