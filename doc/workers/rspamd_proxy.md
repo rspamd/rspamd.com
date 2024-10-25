@@ -128,6 +128,7 @@ mirror "test" {
   compression = yes; # Use zstd compression
 }
 ~~~
+
 ### User settings
 
 Proxy worker can utilize `settings_id` configured in upsteam. Upsteam need to have [user settings]({{ site.baseurl }}/doc/configuration/settings.html) module configured with name used in proxy-worker.
