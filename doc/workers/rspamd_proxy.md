@@ -131,7 +131,7 @@ mirror "test" {
 
 ### User settings
 
-Proxy worker can utilize `settings_id` configured in upsteam. Upsteam need to have [user settings]({{ site.baseurl }}/doc/configuration/settings.html) module configured with name used in proxy-worker.
+The proxy worker can apply a specific setting using the `settings_id` configured in an upstream through the [user settings module]({{ site.baseurl }}/doc/configuration/settings.html). Ensure that the user settings module includes a setting with the same name as defined in `settings_id`.
 
 ### Compare scripts
 
