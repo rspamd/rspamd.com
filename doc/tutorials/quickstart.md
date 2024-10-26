@@ -19,7 +19,7 @@ This guide outlines the primary procedures for obtaining and initiating work wit
 
 * [An alternative introduction to rspamd configuration](https://www.0xf8.org/2018/05/an-alternative-introduction-to-rspamd-configuration-introduction/){:target="&#95;blank"} - this guide delves into the intricacies of Rspamd configuration files and their significance from a sysadmin perspective, focusing on the crucial inquiries of "What can be configured?" and "How do I go about configuring it?".
 * [Own mail server based on Dovecot, Postfix, MySQL, Rspamd and Debian 9 Stretch](https://thomas-leister.de/en/mailserver-debian-stretch/){:target="&#95;blank"} - this manual serves as a comprehensive tutorial for setting up your own mail server. It is important to note that the suggestion of adding `level = error` to /etc/rspamd/local.d/logging.inc is not correct. In most cases, it is advisable to utilize the default `info` level or opt for `silent` if you only wish to log crucial information.
-* [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](http://web.archive.org/web/20240914211825/https://www.c0ffee.net/blog/mail-server-guide){:target="&#95;blank"} - similar to the previous guide but uses a different technologies stack. It is important to note that the recommendation regarding the `url_tag` module should be disregarded.
+* [A guide to self-hosting your email on FreeBSD using Postfix, Dovecot, Rspamd, and LDAP.](https://web.archive.org/web/20240914211825/www.c0ffee.net/blog/mail-server-guide){:target="&#95;blank"} - similar to the previous guide but uses a different technologies stack. It is important to note that the recommendation regarding the `url_tag` module should be disregarded.
 
 ## Preparation steps
 
