@@ -87,3 +87,4 @@ jobs:
             --exclude="^https://www[.]reddit[.]com/"
             --exclude="^https://www[.]uceprotect[.]net/"
             --exclude="^https://trec[.]nist[.]gov/"
+            --exclude="^https://opensource[.]org/license/"
