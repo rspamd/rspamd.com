@@ -7,9 +7,6 @@
 }
 
 /* Override bootstrap 4 and 5 changes */
-html {
-  font-size: 10px;
-}
 body {
   font-size: 14px;
   line-height: 1.4286;
@@ -22,7 +19,7 @@ body {
 a, .btn:hover, .btn:focus {
   text-decoration: none;
 }
-.dropdown-item {
+.dropdown-doc {
   color:#dd4814;
   white-space: unset;
   padding: 0;
