@@ -18,7 +18,7 @@ Additionally module manages index template & policy and ingest pipeline for geoi
 Starting from version Rspamd 3.11.0 module is disabled by default and should be explicitly `enabled` via `local.d/elastic.conf` or `override.d/elastic.conf`.
 
 *Important:* by default module configures `index_policy` to delete logs older then 30 days.
-If you updating from 3.10.x or older version and want have different index policy - please configure it before enabling this module.
+If you are updating from version 3.10.x or older and want to use a different index policy - please configure it before enabling this module.
 
 Modules by default automatically detects distro and if version of server is supported, this behaviour can be disabled by setting `autodetect_enabled` to `false`, then it will take version of distribution from configuration.
 
