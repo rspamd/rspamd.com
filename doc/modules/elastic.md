@@ -24,7 +24,7 @@ By default, the module automatically detects the distribution and whether the se
 
 Automatic index template managment as well as index policy and geoip pipeline can be turned off by setting `managed` to `false` in corresponding config section.
 
-If you want to use own existing index policy, but have managed index template - you can set index policy `managed` to `false` and change the `name` of policy to you're custom one.
+If you want to use your own existing index policy but keep a managed index template - you can set index policy `managed` to `false` and change the `name` of the policy to your custom one.
 
 If you don't want to use index policy at all you need disable it by setting `enabled` to `false` in corresponding config section, same applies for geoip.
 
