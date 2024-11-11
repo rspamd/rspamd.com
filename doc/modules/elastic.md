@@ -20,7 +20,7 @@ Starting from version Rspamd 3.11.0 module is disabled by default and should be 
 *Important:* by default module configures `index_policy` to delete logs older then 30 days.
 If you are updating from version 3.10.x or older and want to use a different index policy - please configure it before enabling this module.
 
-Modules by default automatically detects distro and if version of server is supported, this behaviour can be disabled by setting `autodetect_enabled` to `false`, then it will take version of distribution from configuration.
+By default, the module automatically detects the distribution and whether the server version is supported, this behaviour can be disabled by setting `autodetect_enabled` to `false`, then it will take version of distribution from configuration.
 
 Automatic index template managment as well as index policy and geoip pipeline can be turned off by setting `managed` to `false` in corresponding config section.
 
