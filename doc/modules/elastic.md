@@ -48,7 +48,7 @@ version = {
 };
 limits = {
   max_rows = 500; # max logs in one bulk req to elastic and first reason to flush buffer to elastic
-  max_interval = 60; # seconds, if first log in buffer older then interval - flush buffer
+  max_interval = 60; # seconds; if the first log in the buffer is older than this interval, flush the buffer
   max_fail = 10;
 };
 index_template = {
