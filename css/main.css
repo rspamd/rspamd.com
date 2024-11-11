@@ -7,6 +7,9 @@
 }
 
 /* Override bootstrap 4 and 5 changes */
+html {
+  font-size: 10px;
+}
 body {
   font-size: 14px;
   line-height: 1.4286;
@@ -19,8 +22,8 @@ body {
 a, .btn:hover, .btn:focus {
   text-decoration: none;
 }
-.dropdown-doc {
-  color:#dd4814;
+.dropdown-doc .dropdown-item {
+  color: rgba(var(--bs-link-color-rgb),var(--bs-link-opacity,1));
   white-space: unset;
   padding: 0;
 }
@@ -207,8 +210,26 @@ h6:hover .header-link {
   }
 }
 
-.dropdown-menu { background-color: #E8E8E8; }
-.dropdown-menu > li {
+.site-map > div > ul { padding-left: 1.5rem; }
+
+.dropdown-menu {
+  background-color: #E8E8E8;
+
+  /* To be removed after default base font size is restored */
+  font-size: 16px;
+}
+
+/* To be removed after default base font size is restored */
+.dropdown-menu,
+h6.dropdown-header {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+h6.dropdown-header { font-size: 14px; }
+.dropdown-menu[data-bs-popper] { margin-top: 2px; }
+.dropdown-menu > * { padding: 4px 16px; }
+
+.dropdown-doc .dropdown-menu > li {
   display: table-cell;
   font-weight: bold;
   font-size: 18px;
@@ -216,14 +237,14 @@ h6:hover .header-link {
   line-height: 150%;
 }
 @media screen and (max-width: 767px) {
-  .dropdown-menu > li { display: block; }
+  .dropdown-doc .dropdown-menu > li { display: block; }
 }
-.dropdown-menu ul {
+.dropdown-doc .dropdown-menu ul {
   list-style: none;
   padding-left: 0;
   font-size: 14px;
 }
-.dropdown-menu.show {
+.dropdown-doc .dropdown-menu.show {
   display: table;
   table-layout: fixed;
 }
@@ -352,5 +373,3 @@ div#toc {
 .btn-social-icon.btn-xs :first-child {
     font-size: 1em;
 }
-
-.site-map > div > ul { padding-left: 1.5rem; }
