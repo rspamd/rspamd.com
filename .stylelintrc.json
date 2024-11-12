@@ -9,7 +9,8 @@
     "ignoreFiles": [
         "**/*.min.css",
         "**/*.js",
-        "css/bootstrap-social.css"
+        "css/bootstrap-social.css",
+        "css/bootstrap-social-telegram.css"
     ],
     "rules": {
         "alpha-value-notation": null,
