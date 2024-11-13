@@ -55,6 +55,7 @@ Here is a summary of the logging parameters, each of which can be redefined or d
 | `debug_modules` | A list of modules that are enabled for debugging.
 | `log_usec` | Log microseconds (e.g. `11:43:16.68071`). Default: `false`.
 | `log_severity` (2.8+) | Log severity explicitly (e.g. `[info]` or `[error]`). Default: `false`.
+| `log_json` (3.8+) | If `true` logs are emitted in JSON format (implies `log_severity=true` and `systemd=false`). Default: `false`.
 
 
 ### Defined debug modules
