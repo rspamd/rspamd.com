@@ -106,6 +106,6 @@ munging {
   reply_goes_to_list = false; # set reply-to to the list address
   mitigate_allow_only = true; # perform munging based on DMARC_POLICY_ALLOW only
   munge_from = true; # replace From header with something like <orig name> via <rcpt user>
-  munge_map_condition = nil; # maps expression to enable munging
+  #munge_map_condition = "R_SPF_ALLOW & !FOO"; # maps expression to enable munging
 }
 ~~~
