@@ -89,13 +89,17 @@ The following settings can be defined on any rule:
  - `formatter`: defines formatter for the rule
  - `backend`: defines backend (pusher) for the rule
  - `defer`: if true, `soft reject` action is forced on failed processing
+ - `timeout`: defines module timeout (default: '5s')
 
 ### Settings: `http` backend
 
  - `url` (required): defines URL to post content to
- - `meta_header_prefix`: prefix for meta headers (default 'X-Rspamd-')
- - `meta_headers`: if set true general metainformation is added to HTTP request headers (default false)
+ - `meta_header_prefix`: prefix for meta headers (default: 'X-Rspamd-')
+ - `meta_headers`: if set true general metainformation is added to HTTP request headers (default: false)
  - `mime_type`: defines mime type of content sent in HTTP POST
+ - `user` & `password`: if both parameters set - Basic auth will be used
+ - `gzip` (bool): defines if payload need to be send with gzip compression (default: false)
+ - `keepalived` (bool): defines if connection should use keepalived (default: false)
 
 ### Settings: `redis_pubsub` backend
 
