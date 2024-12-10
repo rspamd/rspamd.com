@@ -93,13 +93,13 @@ The following settings can be defined on any rule:
 
 ### Settings: `http` backend
 
- - `url` (required): defines URL to post content to
- - `meta_header_prefix`: prefix for meta headers (default: 'X-Rspamd-')
- - `meta_headers`: if set true general metainformation is added to HTTP request headers (default: false)
- - `mime_type`: defines mime type of content sent in HTTP POST
- - `user` & `password`: if both parameters set - Basic auth will be used
- - `gzip` (bool): defines if payload need to be send with gzip compression (default: false)
- - `keepalived` (bool): defines if connection should use keepalived (default: false)
+ - `url` (required): defines the URL to post content to
+ - `meta_header_prefix`: prefix for meta headers (default: `'X-Rspamd-'`)
+ - `meta_headers` (bool): if set to `true`, general metadata is added to HTTP request headers (default: `false`)
+ - `mime_type`: defines the MIME type of the content sent in the HTTP POST
+ - `user` & `password`: if both parameters are set, Basic authentication will be used
+ - `gzip` (bool): specifies whether the payload needs to be sent with gzip compression (default: `false`)
+ - `keepalived` (bool): specifies whether the connection should use keepalived (default: `false`)
 
 ### Settings: `redis_pubsub` backend
 
