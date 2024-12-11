@@ -11,6 +11,65 @@ The Multimap module has been specifically designed to handle rules that are base
 
 {% include toc.html %}
 
+## Quick Start Guide
+Here are common use cases for the Multimap module with basic examples:
+
+1. Block specific email senders:
+~~~hcl
+BLOCKED_SENDERS {
+  # Note that it is SMTP from
+  type = "from";
+  # For MIME (or displayed) from, one can use `extract_from = "mime";`
+  extract_from = "smtp";
+  map = "/etc/rspamd/maps/blocked_senders.map";
+  score = 10.0;
+  description = "Blocked sender addresses";
+}
+~~~
+
+2. Whitelist trusted IPs:
+
+~~~hcl
+TRUSTED_IPS {
+  type = "ip";
+  map = "/etc/rspamd/maps/trusted_ips.map";
+  prefilter = true;
+  action = "accept";
+  description = "Trusted IP addresses";
+}
+~~~
+
+3. Block dangerous file extensions:
+
+~~~hcl
+BLOCKED_EXTENSIONS {
+  type = "filename";
+  filter = "extension";
+  map = "/etc/rspamd/maps/blocked_extensions.map";
+  score = 8.0;
+  description = "Blocked file extensions";
+}
+~~~
+
+## How Multimap Processing Works
+
+1. Data Extraction → 2. Filtering → 3. Map Lookup → 4. Action/Scoring
+
+Example flow for a "from" type map:
+- Extract: "John Smith <john@example.com>"
+- Filter (email:domain): "example.com"
+- Lookup: Check if "example.com" exists in map
+- Result: Apply score or action if found
+
+Common combinations:
+| Use Case | Type | Filter | Example Map Entry |
+|----------|------|--------|------------------|
+| Block domains | from | email:domain | example.com |
+| Block users | from | email:user | spammer |
+| Block file types | filename | extension | .exe |
+| Block URLs | url | tld | badsite.com |
+
+
 ## Principles of work
 
 This module defines rules that allows to extract multiple types of data (defined by `type`). The data extracted is transformed in the desired way (defined by `filter`) and is checked against the list of strings that is usually referred as `map`:
@@ -28,6 +87,28 @@ Maps in Rspamd refer to files or HTTP links that are automatically monitored and
 Rspamd offers the option to save traffic for HTTP maps using cached maps, while also respecting `304 Not modified responses`, Cache-Control headers, and ETags. Additionally, the maps data is shared between workers, and only the first controller worker is allowed to fetch remote maps.
 
 By default, the configuration of this module actively utilises compound maps, which define a map as an array of sources with a local fallback location. While this redundancy may be unnecessary for user-defined maps, further details are available in the following [FAQ section]({{ site.baseurl }}/doc/faq.html#what-are-maps).
+
+## Troubleshooting
+
+Common issues and solutions:
+
+1. Map not matching as expected
+   - Check map format matches type (IP maps need CIDR notation)
+   - Verify filter is appropriate (use `email:domain` vs `email:addr`)
+   - Enable debug logging: `local.d/logging.inc`:
+~~~hcl
+  debug_modules = ["multimap"];
+~~~
+
+2. Scores not working as expected
+   - Check if using prefilter (prefilters don't use scores)
+   - For content maps, consider multiple part matching
+   - Verify symbol isn't overridden in metrics
+
+3. Regular expressions not matching
+   - Verify `regexp = true` is set
+   - Check regex syntax is Hyperscan-compatible
+   - Test regex separately
 
 ## Configuration
 
@@ -50,7 +131,26 @@ MAP_SYMBOL2 {
 
 To define your own rules, it is advisable to do so in the `/etc/rspamd/local.d/multimap.conf`. 
 
-### Map attributes
+## Best Configuration Practices
+
+1. Map Organization
+   - Use meaningful filenames (e.g., blocked_senders.map vs list1.map)
+   - Keep related maps in dedicated directories
+   - Use comments in maps to document entries
+
+2. Performance Considerations
+   - Use prefilters for early accept/reject decisions
+   - Prefer simple matches over complex regexes
+   - Use CDB maps for large datasets
+   - Consider Redis for frequently updated maps
+
+3. Security Recommendations
+   - Regularly audit map contents
+   - Use HTTPS for remote maps
+   - Implement redundancy for critical maps
+   - Monitor map update frequency
+
+### Map Attributes
 
 Mandatory attributes are:
 
@@ -157,6 +257,22 @@ IP maps can also contain IPs or IP/network in CIDR notation
 ## Map types
 
 Type attribute means what is matched with this map. The following types are supported:
+
+### Email-related Types
+- `from`: Filter senders (spam sources, newsletters)
+- `rcpt`: Protect internal addresses, catch typos
+- `header`: Custom header processing (X-Spam, List-Id)
+
+### Content-related Types
+- `content`: Pattern matching in message bodies
+- `filename`: Attachment filtering
+- `url`: Filtering of the URLs in the messages
+
+### Connection-related Types
+- `ip`: IP/network filtering
+- `asn`: Geographic/provider filtering
+- `hostname`: HELO/SMTP validation
+
 
 | Type            | Description                       |
 | :-------------- | :-------------------------------- |
