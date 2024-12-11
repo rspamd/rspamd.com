@@ -101,25 +101,25 @@ map = [
 
 It is important to note that redis or cdb maps cannot be combined with generic maps.
 
-### Maps flaws
+### Map Type Prefixes
 
-Maps content can be augmented by using flaws, for instance, `map = regexp;/path/to/file.re`. This feature has been available since version 2.0.
+Map content can be explicitly typed by prefixing the map path with a format specifier. For example:
 
-~~~lua
-  local known_types = {
-    {'regexp;', 'regexp'},
-    {'re;', 'regexp'},
-    {'regexp_multi;', 'regexp_multi'},
-    {'re_multi;', 'regexp_multi'},
-    {'glob;', 'glob'},
-    {'glob_multi;', 'glob_multi'},
-    {'radix;', 'radix'},
-    {'ipnet;', 'radix'},
-    {'set;', 'set'},
-    {'hash;', 'hash'},
-    {'plain;', 'hash'}
-  }
+~~~hcl
+map = "regexp;/path/to/file.re"    # Treat content as regular expressions
+map = "regexp_multi;/path/to/map"  # Treat as regexps, match all possible entries
 ~~~
+
+Available format specifiers:
+* `regexp;` or `re;` - Content contains regular expressions
+* `regexp_multi;` or `re_multi;` - Content contains regular expressions, match all possible entries
+* `glob;` - Content contains glob patterns
+* `glob_multi;` - Content contains glob patterns, match all possible entries
+* `radix`; or `ipnet;` - Content contains IP/CIDR entries
+* `set`; - Content treated as set members
+* `hash;` or `plain;` - Content treated as hash table entries
+
+Note: Format specifiers are different from the `regexp = true;` and `multi = true;` options in map configuration. While they achieve similar results, format specifiers take precedence over configuration options.
 
 ### Maps content
 
@@ -230,6 +230,15 @@ For content maps, the following filters are supported:
 | `text` | decoded and converted text parts (without HTML tags but with newlines)
 | `rawtext` | decoded but not converted text parts (with HTML tags and newlines)
 | `oneline` | decoded and stripped text content (without HTML tags and newlines)
+
+### Content Filter Scoring Behavior
+* `body` - applies regex over the whole raw message body with single scoring
+* `text` - processes both text and HTML parts in multipart/alternative messages, which can result in double scoring
+* `oneline` - similar to `text`, processes each text part separately
+
+**Note**: Before Rspamd 3.11, for `text` and `oneline` filters, the final score may be higher than defined if the message contains multiple text parts (e.g., both plain text and HTML). The `one_shot = true;` option can be used to limit scoring to a single match, though this behaves per text part.
+
+**Note**: from Rspamd 3.11, this has been changed: only **distinct** parts are selected for matching. For example, if `text/plain` and `text/html` parts have the same text content, that content is matched only once.
 
 ### Filename filters
 
@@ -359,7 +368,7 @@ SPAMHAUS_PBL_BLACKLIST {
 
 ## Multiple symbol maps
 
-Starting from version 1.3.1, it is now possible to define multiple symbols and scores using the multimap module. To achieve this, all possible symbols should be defined using the `symbols` option in the multimap:
+Starting from version 1.3.1, it is now possible to define multiple symbols, scores and symbols options using the multimap module. To achieve this, all possible symbols should be defined using the `symbols` option in the multimap:
 
 ~~~hcl
 # local.d/multimap.conf
@@ -369,6 +378,7 @@ CONTENT_BLACKLISTED {
   map = "${LOCAL_CONFDIR}/content.map";
   symbols = ["CONTENT_BLACKLISTED1", "CONTENT_BLACKLISTED2"];
   regexp = true;
+  score = 1.0;
 }
 ~~~
 
@@ -381,15 +391,17 @@ In this example, you can use 3 symbols:
 the map:
 
 ~~~
-# Symbol + score
+# Symbol + score (final score is rule.score * element score = 1 * 10 = 10)
 /re1/ CONTENT_BLACKLISTED1:10
-# Symbol with default score
+# Symbol with default score (final score is rule.score = 1.0)
 /re2/ CONTENT_BLACKLISTED2
-# Just a default symbol: CONTENT_BLACKLISTED
+# Just a default symbol with a default score.
 /re3/
+# Options specified after the score (opt1, opt2 etc) will be displayed in square brackets in the log output and can be used to provide additional context about the match. For example:
+/phishing.com/ CONTENT_BLACKLISTED2:10:financial,urgent
 ~~~
 
-If symbols used in a map are not defined in the `symbols` attribute, they will be ignored and replaced with the default map symbol. In case the value of a key-value pair is missing, Rspamd will insert the default symbol with a dynamic weight of `1.0`. This weight is then multiplied by the metric score.
+If symbols used in a map are not defined in the `symbols` attribute, they will be ignored and replaced with the default map symbol. In case the value of a key-value pair is missing, Rspamd will insert the default symbol with a dynamic weight of `1.0`. This weight is then multiplied by the metric score (which is set by `score` parameter or implicitly set to zero if this parameter is missing). **Note** if multimap rule has no score, then all dynamic weights will be multiplied by a default implicit score zero, meaning that all symbols can have only **zero** weight.
 
 If the symbol names are unknown/dynamic, you can use the option `dynamic_symbols = true` to add all possible symbols from that map:
 
@@ -407,6 +419,8 @@ And the map content:
 foo DYN_TEST1:10:opt1,opt2
 bar DYN_TEST2:20:opt3,opt4
 ~~~
+
+From Rspamd 3.11, the scoring rules for dynamic symbols are the same as for static. Before 3.11 there was a bug that the rule score was not taken into account.
 
 ### Get all matches
 
