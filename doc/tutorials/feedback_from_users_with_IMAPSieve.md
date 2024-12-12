@@ -4,7 +4,7 @@ title: Getting feedback from users with IMAPSieve
 ---
 # Getting feedback from users with IMAPSieve
 
-The solution is very similar to [Replacing antispam plugin with IMAPSieve](https://doc.dovecot.org/configuration_manual/howto/antispam_with_sieve/),
+The solution is very similar to [Replacing antispam plugin with IMAPSieve](https://doc.dovecot.org/configuration_manual/howto/antispam_with_sieve/#for-rspamd),
 but instead of automatic learning it is supposed to store a copy of the message moved by user for further manual reviewing.
 
 In the example below when any user moves a message into or from `Junk` folder, a copy  of the message is placed into `report_ham` or `report_spam` folder of `spam@example.com` mailbox respectively. When a message located in `Junk` folder replied to or forwarded, a copy of the message is placed into `report_spam_reply` folder.
@@ -97,5 +97,5 @@ Now copies of e-mail messages should be placed in the `report_ham` and `report_s
 
 ## References
 
-- [Replacing antispam plugin with IMAPSieve](https://wiki.dovecot.org/HowTo/AntispamWithSieve)
-- [Pigeonhole/Sieve](https://wiki.dovecot.org/Pigeonhole/Sieve)
+- [Replacing antispam plugin with IMAPSieve](https://doc.dovecot.org/configuration_manual/howto/antispam_with_sieve/#for-rspamd)
+- [Sieve](https://doc.dovecot.org/configuration_manual/sieve/)
