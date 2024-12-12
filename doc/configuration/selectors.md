@@ -201,7 +201,7 @@ The data definition part specifies what needs to be extracted. Here is the list 
 | `received` | 1.8+ | Get list of received headers. If no arguments specified, returns list of tables. Otherwise, selects a specific element, e.g. `by_hostname`
 | `request_header` | 1.8+ | Get specific HTTP request header. The first argument must be header name.
 | `symbol` | 2.6+ | Get symbol with the name that is expected as first argument. Returns the symbol table (like task:get_symbol())
-| `time` | 1.8+ | Get task timestamp. The first argument is type:{::nomarkdown}<ul><li><code>connect</code>: connection timestamp (default)</li><li><code>message</code>: timestamp as defined by <code>Date</code> header</li></ul>{:/}The second argument is optional time format, see [os.date](https://pgl.yoyo.org/luai/i/os.date) description
+| `time` | 1.8+ | Get task timestamp. The first argument is type:{::nomarkdown}<ul><li><code>connect</code>: connection timestamp (default)</li><li><code>message</code>: timestamp as defined by <code>Date</code> header</li></ul>{:/}The second argument is optional time format, see [os.date](https://web.archive.org/web/20231130145520/https://pgl.yoyo.org/luai/i/os.date) description
 | `to` | 1.8+ | Get principal recipient
 | `uid` | 2.6+ | Get ID of the task being processed
 | `urls` | 1.8+ | Get list of all urls. If no arguments specified, returns list of url objects. Otherwise, calls a specific method, e.g. `get_tld`
@@ -230,7 +230,7 @@ The data definition part specifies what needs to be extracted. Here is the list 
 | `prepend` | 2.0+ | Prepends a string or a strings list
 | `regexp` | 1.8+ | Regexp matching
 | `sort` | 2.0+ | Sort strings lexicographically
-| `substring` | 1.8+ | Extracts substring. Arguments are equal to lua [string.sub](https://pgl.yoyo.org/luai/i/string.sub)
+| `substring` | 1.8+ | Extracts substring. Arguments are equal to lua [string.sub](https://web.archive.org/web/20231130143649/https://pgl.yoyo.org/luai/i/string.sub)
 | `take_n` | 1.8+ | Returns the n first elements
 | `to_ascii` | 2.6+ | Returns the string with all non-ascii bytes replaced with the character given as second argument or `?`
 | `uniq` | 2.0+ | Returns a list of unique elements (using a hash table - no order preserved!)
