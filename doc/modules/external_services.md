@@ -785,3 +785,62 @@ virustotal {
 ~~~
 
 Due to the strict policies of Virustotal, Rspamd does not return the full result. Instead, it only provides the number of engines that matched and the MD5 hash, which can be used to view the full report on the Virustotal website.
+
+## Cloudmark specific details
+
+The cloudmark external service requires Cloudmark Authority Server, refer to the cloudmark website for information.
+
+~~~hcl
+# local.d/external_services.conf
+
+cloudmark {
+  type = "cloudmark";
+  servers = "127.0.0.1:2780";
+  use_https = false;
+  action = "process"
+  timeout = 5.0;
+  # add X-CMAE-Score header to the email
+  add_score_header = true;
+  # add additional cloudmark headers to the email 
+  add_headers = true;
+  # log clean messages as well
+  log_clean = false;
+  # the threshold at which you consider message spam
+  score_threshold = 90;
+  # maximum message size to scan, 0 to disable and send every message
+  max_message = 0;
+  # symbol to use when scan detects spam
+  symbol_spam = 'CLOUDMARK_SPAM';
+  # a table with match { [score_threshold] = symbol, ... }
+  # this allows you to score different thresholds
+  scores_symbols = {
+    100: "CLOUDMARK100",
+    95: "CLOUDMARK95",
+    0: "CLOUDMARK0"
+  }
+}
+~~~
+
+You can configure symbol scores in the external_services_group.yml
+
+~~~hcl
+# local.d/external_services_group.conf
+symbols =  {
+  CLOUDMARK_SPAM {
+    weight = 5.0;
+    description = "Spam detected by Cloudmark";
+  }
+  CLOUDMARK100 {
+    weight = 2.0;
+    description = "Spam detected by Cloudmark";
+  }
+  CLOUDMARK95 {
+    weight = 1.0;
+    description = "Spam detected by Cloudmark";
+  }
+  CLOUDMARK0 {
+    weight = 0.0;
+    description = "Cloudmark HAM";
+  }
+}
+~~~
