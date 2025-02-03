@@ -32,7 +32,7 @@ Symbols that the module adds are listed below:
 
 ## Reporting
 
-Starting from Rspamd 3.0, the recommended way to send DMARC reports is to use the `rspamadm dmarc_report` command with cron or systemd timers. Depending on the amount of traffic, this should be scheduled either daily or hourly. A working MTA running on a specific host is required to send the reports. Ideally, the local MTA should allow email to be sent without authentication or SSL.
+Starting from Rspamd 3.0, the recommended way to send DMARC `aggregate` reports is to use the `rspamadm dmarc_report` command with cron or systemd timers. Depending on the amount of traffic, this should be scheduled either daily or hourly. A working MTA running on a specific host is required to send the reports. Ideally, the local MTA should allow email to be sent without authentication or SSL.
 
 If you're upgrading from a previous version, make sure that you remove the `reporting = true;` setting from `rspamadm configdump dmarc`. This setting has been intentionally converted to the new options schema to prevent misconfiguration. The line `reporting = true;` **must** be removed from the `local.d/dmarc.conf` if it is there.
 
@@ -90,6 +90,8 @@ Here is the list of options explained:
 In versions of Rspamd prior to 3.3, you could exclude certain domains from reporting by configuring the `no_reporting_domains` setting, which is a map of domains or eSLDs to be excluded. Starting from Rspamd 3.3, this option is also available in the `reporting` section. However, the legacy option `settings.no_reporting_domains` is still supported (although it's not recommended).
 
 Starting from Rspamd 3.8, there is a new option `exclude_recipients` available in the reporting section. Here you can list recipient email addresses for which no reporting data should be collected (because the recipients generate bounces all the time).
+
+Rspamd does not support sending `forensic` DMARC reports.
 
 ## DMARC Munging
 
