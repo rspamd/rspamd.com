@@ -1,5 +1,5 @@
 ---
-layout: home
+layout: default
 title: Rspamd project ideas for GSOC 2025
 ---
 
