@@ -36,6 +36,8 @@ All code must be licensed under **Apache 2.0**.
 
 **Difficulty**: Medium/Hard  
 
+**Timeline**: 22 weeks
+
 **Skills**: Machine Learning (Bayesian methods), Lua, Python (for GPT integration)
 
 **Mentors**: Vsevolod Stakhov, Andrew Lewis
@@ -49,11 +51,14 @@ All code must be licensed under **Apache 2.0**.
 
 ### Full Telegram Support (Bot for Spam Filtering)
 **Description**: Implement integration of with **Telegram bot** for spam filtering, including rule-based automation (e.g., user reports, admin moderation).  
+
 **Difficulty**: Medium  
+
+**Timeline**: 12 weeks
 
 **Skills**: Rust (Telegram Bot API), Lua, Rule Engine Design  
 
-**Mentors**: Anrew Lewis, Anton Yuzhaninov
+**Mentors**: Andrew Lewis, Anton Yuzhaninov
 
 **Benefits**: Learn real-time bot development, protocol integration, and spam rule optimization.  
 **Evaluation**:  
@@ -67,9 +72,11 @@ All code must be licensed under **Apache 2.0**.
 
 **Difficulty**: Medium  
 
+**Timeline**: 12 weeks
+
 **Skills**: Rust, JavaScript/TypeScript (React/Vue), SQL  
 
-**Mentors**: Anrew Lewis, Vsevolod Stakhov
+**Mentors**: Andrew Lewis, Vsevolod Stakhov
 
 **Benefits**: Master full-stack development, Rust database integration, and secure UI design.  
 **Evaluation**:  
@@ -84,6 +91,8 @@ All code must be licensed under **Apache 2.0**.
 **Difficulty**: Hard  
 
 **Skills**: C, Cryptography (PGP/GnuPG), Lua  
+
+**Timeline**: 22 weeks
 
 **Mentors**: Vsevolod Stakhov
 
