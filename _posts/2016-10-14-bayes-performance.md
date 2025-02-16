@@ -14,7 +14,7 @@ For `Dspam`, I have tested both `chain` and `osb` tokenization modes. I have tri
 
 ## Testing methodology
 
-First of all, I have collected some corpus of messages with about 1k of spam messages and 1k of ham messages. All messages were carefully selected and manually checked. Then, I have written a small [script](https://github.com/vstakhov/rspamd/blob/master/utils/classifier_test.pl) that performs the following steps:
+First of all, I have collected some corpus of messages with about 1k of spam messages and 1k of ham messages. All messages were carefully selected and manually checked. Then, I have written a small [script](https://github.com/rspamd/rspamd/blob/master/utils/classifier_test.pl) that performs the following steps:
 
 1. Split corpus **randomly** into two equal parts with about **500** messages of Ham and Spam correspondingly.
 2. Learn bayes classifier using the desired spam filtering engine (`-d` for Dspam, `-b` for Bogofilter).

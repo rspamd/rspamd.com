@@ -329,7 +329,7 @@ Please note that bug reports lacking message samples will not be considered unle
 
 Ultimately, we strongly prefer patches/pull requests over plain bug reports.
 
-For reporting bugs or making suggestions about the documentation or the website, please refer to [this Github repository](https://github.com/vstakhov/rspamd.com).
+For reporting bugs or making suggestions about the documentation or the website, please refer to [this Github repository](https://github.com/rspamd/rspamd.com).
 
 ### What is the difference between `rspamc` and `rspamadm`
 
@@ -1078,7 +1078,7 @@ redis-cli [-p 6379] --scan --pattern 'rn_SHORT_*' | xargs redis-cli unlink
 
 ### How to run Rspamd using Unix sockets
 
-From [https://github.com/vstakhov/rspamd/issues/1905](https://github.com/vstakhov/rspamd/issues/1905)
+From [https://github.com/rspamd/rspamd/issues/1905](https://github.com/rspamd/rspamd/issues/1905)
 
 
 **Redis**
