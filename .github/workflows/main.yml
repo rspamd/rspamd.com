@@ -88,3 +88,5 @@ jobs:
             --exclude="^https://www[.]uceprotect[.]net/"
             --exclude="^https://trec[.]nist[.]gov/"
             --exclude="^https://opensource[.]org/license/"
+            --exclude="^https://www[.]ozon[.]ru/?$"
+            --exclude="^https://www[.]communigate[.]com/?$"
