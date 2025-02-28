@@ -14,7 +14,7 @@ This page lists project ideas for contributors to Rspamd, particularly for progr
 Prospective contributors should:
 - Have a **GitHub account** and familiarity with Git workflows.
 - Review the [Rspamd repository](https://github.com/rspamd/rspamd).
-- Join our Telegram channel (`rspamd`) for discussions.
+- Join our Telegram channel [rspamd](https://t.me/rspamd_gsoc_2025) for discussions.
 - Demonstrate proficiency in **C** (or C++), **Lua** or **Rust** (depending on the project).
 
 All code must be licensed under **Apache 2.0**.
