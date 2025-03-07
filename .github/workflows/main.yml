@@ -76,6 +76,7 @@ jobs:
             --header="User-Agent:curl/8.8.0"
             --exclude="^https://${{ github.repository_owner }}[.]github[.]io/${{ github.event.repository.name }}/(doc/lua/((lua|rspamd)_.+|ucl)[.]html(#.+)?|.*#top)$"
             --exclude="^https://github[.]com/rspamd/rspamd[.]com/edit/master/"
+            --exclude="^https://github[.]com/.+/issues/.+#issuecomment-.*$"
             --exclude="^http://wiki[.]luajit[.]org/New-Garbage-Collector#gc-algorithms_generational-gc$"
             --exclude="^https://01[.]org/hyperscan/$"
             --exclude="^https://oem[.]avira[.]com/"
