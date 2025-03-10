@@ -83,7 +83,7 @@ Here's what these components do:
 * `-s` - pattern to match tests (may be skipped if all tests are needed)
 * `~/rspamd/test/functional/cases` - directory where test cases are placed
 
-It's worth noting that functional tests are also executed by [Rspamd CI](https://ci.rspamd.com/rspamd/rspamd), which includes testing for pull requests submitted on the GitHub repository.
+It's worth noting that functional tests are also executed by [Github Actions](https://github.com/rspamd/rspamd/actions), which includes testing for pull requests submitted on the GitHub repository.
 
 ### Functional tests structure
 
