@@ -214,3 +214,51 @@ EOD;
 ~~~
 
 Redis servers are configured as per usual - see [here]({{ site.baseurl }}/doc/configuration/redis.html) for details.
+
+Below is an example documentation section for the external_map feature in settings.lua. It combines details from the current code and the existing settings documentation, and it incorporates references from several sources such as [rspamd.com](https://www.rspamd.com/doc/developers/writing_rules.html) and the [Lua 5.4 Reference Manual](https://www.lua.org/manual/5.4/manual.html).
+
+---
+
+## External Map for Dynamic Settings
+
+Rspamd’s settings system can retrieve dynamic configuration from external sources—what is known as the external map feature. Instead of—or in addition to—using locally defined actions (via the "apply" block) within a settings rule, you can define an **external_map** block. When a rule matches, this block instructs Rspamd to query an external data source (for example, an HTTP endpoint, file, or Redis map) for settings that will then be applied to the task.
+
+### How It Works
+
+When a settings rule includes an external_map definition, the following steps occur:
+
+1. **Definition of the External Map and Selector**  
+   The external_map block must contain two key components:
+   - **map:** A map definition that describes where and how to fetch the external settings. Internally, the code calls `lua_maps.map_add_from_ucl()` to create a map fetcher for the specified external resource.
+   - **selector:** An expression or function that returns a key based on the task attributes. This selector is compiled into a closure (via `lua_selectors.create_selector_closure_fn()`) and is used to query the external map. If the selector returns a non-nil value, that key is used to perform the lookup.
+
+2. **Invocation and Response Handling**  
+   Once a task matches the other conditions (such as `from`, `rcpt`, or `ip`), the external_map block is triggered. The selector function is called with the task as an argument to produce the lookup key. Then Rspamd asynchronously queries the external map using that key.  
+   - The asynchronous callback (created with `gen_settings_external_cb(name)`) attempts to parse the response using a UCL parser.  
+   - If the response is valid and properly formatted, dynamic settings are applied to the task via `apply_settings()`.
+
+3. **Fallback and Logging**  
+   If the selector fails to produce a key or if the external map returns an error (or returns no settings), a message is logged (e.g., “cannot query selector to make external map request”) and the external_map branch is bypassed. In this case, any other query parameters or local settings might be applied instead.
+
+### Example Configuration
+
+Below is an example of how you might define a settings rule using the external_map feature in your configuration (such as in `local.d/settings.conf`):
+
+~~~hcl
+some_settings {
+  id = "dynamic_settings";
+  priority = medium;
+  from = "@example.com"; # Can be removed if that query is unconditional
+  # Other matching conditions can be specified as needed
+
+  external_map = {
+    # Define where to retrieve external settings:
+    map = "http://settings.example.com/dynamic?key=%s";
+    # Define a selector function that computes the map key based on task attributes,
+    # for instance returning the sender’s email address:
+    selector = "function(task) local from = task:get_from(1); if from then return from['addr'] end end";
+  }
+}
+~~~
+
+In this example, when a task originates from a sender at example.com—and after all other conditions are met—the selector extracts the sender’s address (using `task:get_from(1)`), formats it into the URL, and queries the external settings server. If the response is valid JSON/UCL data, it will be parsed and applied to adjust symbol scores, actions, header modifications, or any other settings as specified in the external response.
