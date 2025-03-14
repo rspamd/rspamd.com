@@ -69,7 +69,7 @@ phishing {
 	# Enable openphish support (default disabled)
 	openphish_enabled = true;
 	# URL of feed, default is public url:
-	openphish_map = "https://www.openphish.com/feed.txt";
+	openphish_map = "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt";
 	# For premium feed, change that to your personal URL, e.g.
 	# openphish_map = "https://openphish.com/samples/premium_feed.json";
 
