@@ -163,7 +163,7 @@ title: Comparison
       </tr>
       <tr>
         <td>Pyzor</td>
-        <td><span class="fa-solid fa-lg fa-xmark icon-red"></span></td>
+        <td><span class="fa-solid fa-lg fa-xmark icon-green"></span></td>
         <td><span class="fa-solid fa-lg fa-check icon-green"></span></td>
         <td><span class="fa-solid fa-lg fa-xmark icon-red"></span></td>
       </tr>
