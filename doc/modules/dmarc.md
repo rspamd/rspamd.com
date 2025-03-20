@@ -60,10 +60,10 @@ Below are the configuration parameters for DMARC reporting, along with correspon
     keys_expire = 2d; # Expire date for Redis keys
     #only_domains = '/path/to/map'; # Only store reports from domains or eSLDs listed in this map
     # Available from 3.3
-    #exclude_domains = '/path/to/map'; # Exclude reports from domains or eSLDs listed in this map
+    #exclude_domains = '/path/to/map'; # Don't generate reports for messages from sending domains in this map
     #exclude_domains = ["example.com", "another.com"]; # Alternative, use array to exclude reports from domains or eSLDs
     # Available from 3.8
-    #exclude_recipients = '/path/to/map'; # Exclude reports for recipients listed in this map
+    #exclude_recipients = '/path/to/map'; # Don't generate reports for messages to recipients in this map
     #exclude_recipients = ["a@example.com", "b@another.com"]; # Alternative, use array to exclude reports for recipients
   }
 ~~~
@@ -83,9 +83,9 @@ Here is the list of options explained:
 * `msgid_from` (Optional): The message ID format used in SMTP messages.
 * `max_entries` (Optional): The maximum number of entries allowed per domain in the DMARC report.
 * `keys_expire` (Optional): The expiration time for Redis keys storing report data.
-* `only_domains` (Optional): A path to a map file containing a list of domains or eSLDs for which reports should be stored. Reports from other domains will be ignored.
-* `exclude_domains` (Optional): A path to a map file containing a list of domains or eSLDs to be excluded from the reports. Alternatively, an array of domains can be used for the same purpose.
-* `exclude_recipients` (Optional): A path to a map file containing a list of recipients to not send reports to. Alternatively, an array of recipients can be used for the same purpose.
+* `only_domains` (Optional): A path to a map file containing a list of sending domains or eSLDs for which reports should be stored- other domains will be ignored.
+* `exclude_domains` (Optional): A path to a map file containing a list of sender domains or eSLDs for which reports shouldn't be generated; this is useful for senders that publish broken reporting addresses. Alternatively, an array of domains can be used for the same purpose.
+* `exclude_recipients` (Optional): A path to a map file containing a list of local recipients for which DMARC reports shouldn't be generated (only the principal recipient is checked - the intended use-case is preventing reporting ping-pong). Alternatively, an array of recipients can be used for the same purpose.
 
 In versions of Rspamd prior to 3.3, you could exclude certain domains from reporting by configuring the `no_reporting_domains` setting, which is a map of domains or eSLDs to be excluded. Starting from Rspamd 3.3, this option is also available in the `reporting` section. However, the legacy option `settings.no_reporting_domains` is still supported (although it's not recommended).
 
