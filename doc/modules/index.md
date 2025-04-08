@@ -68,6 +68,7 @@ The following Lua modules are enabled in the default configuration (but may requ
 - [arc](arc.html) - checks and signs ARC signatures
 - [asn](asn.html) - looks up ASN-related information
 - [clickhouse](clickhouse.html) - pushes scan-related information to clickhouse DBMS (requires configuration)
+- [contextal](contextal.html) - provides integration with [contextal platform](https://platform.contextal.com)
 - [bayes_expiry](bayes_expiry.html) - provides expiration of statistical tokens (requires Redis and configuration)
 - [dcc](dcc.html) - performs [DCC](https://www.dcc-servers.net/dcc/) lookups to determine message bulkiness (requires configuration)
 - [dkim_signing](dkim_signing.html) - adds DKIM signatures to messages (requires configuration)
