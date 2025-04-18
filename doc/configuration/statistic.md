@@ -112,6 +112,8 @@ Supported parameters for the Redis backend are:
   - `min_balance` (Default: `0.9`): Ensures balance between spam and ham learns. If the ratio of spam learns to ham learns (or vice versa) exceeds `1 / min_balance`, learning for the more frequent type is skipped until the other type catches up. For example, with the default value of `0.9`, learning is skipped if one type exceeds the other by a ratio of approximately `1.11` (1/0.9). This helps prevent bias in the learning process.
 
   For further details, see the [Autolearning section](#autolearning).
+- `store_tokens` (Default: `false`): This option controls whether to store the actual text tokens of the learned messages in the Redis backend. When set to `true`, the tokens are stored in the database, allowing for future reference or debugging purposes. This may be useful for inspecting what data was learned but can also increase storage usage.
+- `signatures` (Default: `false`): This option enables the storage of learning signatures for messages. When set to `true`, Rspamd will store signatures associated with learned messages, which can be used to avoid relearning the same message multiple times.
 - `per_user`: For more details, see the Per-user statistics section.
 - `cache_prefix`: Prefix used to create keys where to store hashes of already learned IDs, defaults to `"learned_ids"`.
 - `cache_max_elt`: Amount of elements to store in one `learned_ids` key.
