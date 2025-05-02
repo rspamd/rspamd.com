@@ -477,6 +477,25 @@ pyzor {
 }
 ~~~
 
+And add a default score:
+
+~~~hcl
+# local.d/external_services_group.conf
+
+description = "External services";
+
+symbols = {
+  ...
+  "PYZOR" {
+    # The base score for a spam mail
+    weight = 2.0;
+    description = "Detected as spam by pyzor";
+  }
+}
+~~~
+
+Note that the score set here will be scaled up or down by the Pyzor Lua script depending on the weight of spam and ham scores.
+
 Restart rspamd `systemctl restart rspamd`
 
 Add the systemd socket and service:
@@ -549,6 +568,21 @@ razor {
   # default razor settings
   servers = "127.0.0.1:11342"
 }
+~~~
+
+And set a default score for mails which are detected as spam by Razor:
+
+~~~hcl
+# local.d/external_services_group.conf
+
+description = "External services";
+
+symbols = {
+  ...
+  "RAZOR" {
+    weight = 4.0;
+    description = "Detected as spam by Vipul's Razor";
+  }
 ~~~
 
 Restart rspamd `systemctl restart rspamd`
