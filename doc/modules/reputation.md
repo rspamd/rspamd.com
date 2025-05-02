@@ -35,8 +35,8 @@ rules {
     backend "redis" {
       servers = "localhost";
     }
-
     symbol = "IP_REPUTATION";
+    exclusion_map = "/etc/rspamd/exclude_ips.map"; # Exclude specific IPs from reputation
   }
   spf_reputation =  {
     selector "spf" {
@@ -44,7 +44,6 @@ rules {
     backend "redis" {
       servers = "localhost";
     }
-
     symbol = "SPF_REPUTATION";
   }
   dkim_reputation =  {
@@ -53,7 +52,6 @@ rules {
     backend "redis" {
       servers = "localhost";
     }
-
     symbol = "DKIM_REPUTATION"; # Also adjusts scores for DKIM_ALLOW, DKIM_REJECT
   }
   generic_reputation =  {
@@ -63,7 +61,6 @@ rules {
     backend "redis" {
       servers = "localhost";
     }
-
     symbol = "GENERIC_REPUTATION";
   }
 }
@@ -81,18 +78,15 @@ group "reputation" {
         "IP_REPUTATION_SPAM" {
             weight = 4.0;
         }
-
         "DKIM_REPUTATION" {
             weight = 1.0;
         }
-
         "SPF_REPUTATION_HAM" {
             weight = 1.0;
         }
         "SPF_REPUTATION_SPAM" {
             weight = 2.0;
         }
-
         "GENERIC_REPUTATION" {
             weight = 1.0;
         }
@@ -159,3 +153,23 @@ There are couple of pre-defined selector types, specifically:
 * Generic reputation based on [selectors framework](../configuration/selectors.html) - `generic` selector
 
 All selector types except for `generic` do not require explicit configuration. The `generic` selector, on the other hand, necessitates the setting of a selector attribute. For more advanced `selector` configurations, you may refer to the module's source code.
+
+## Exclusion lists
+
+The reputation plugin supports exclusion lists to skip scoring and updating for specific tokens (e.g., trusted IPs, domains, or SPF hashes). This is configured using the `exclusion_map` option, which points to a map file listing tokens to exclude. For `ip` and `sender` selectors, the map is treated as a `radix` map (supporting IP addresses and networks). For `dkim`, `url`, `spf`, and `generic` selectors, it is a `set` map (supporting strings like domains or hashes).
+
+**Example map files**:
+
+**`/etc/rspamd/exclude_ips.map`**:
+```
+192.168.1.0/24
+10.0.0.1
+```
+
+**`/etc/rspamd/exclude_domains.map`**:
+```
+example.com
+trusted.org
+```
+
+When a token is found in the `exclusion_map`, the plugin skips reputation scoring and updates for that token, logging the exclusion for debugging.
