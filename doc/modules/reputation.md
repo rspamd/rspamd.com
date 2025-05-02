@@ -156,7 +156,7 @@ All selector types except for `generic` do not require explicit configuration. T
 
 ## Exclusion lists
 
-The reputation plugin supports exclusion lists to skip scoring and updating for specific tokens (e.g., trusted IPs, domains, or SPF hashes). This is configured using the `exclusion_map` option, which points to a map file listing tokens to exclude. For `ip` and `sender` selectors, the map is treated as a `radix` map (supporting IP addresses and networks). For `dkim`, `url`, `spf`, and `generic` selectors, it is a `set` map (supporting strings like domains or hashes).
+The reputation plugin supports exclusion lists to skip scoring and updating for specific tokens (e.g., trusted IPs, domains, or SPF hashes). This is configured using the `exclusion_map` option, which points to a map file listing tokens to exclude. For `ip` and `sender` selectors, the map is treated as a `radix` map (supporting IP addresses and networks). For `dkim`, `url`, `spf`, and `generic` selectors, it is a `set` map (supporting strings like domains or hashes). This feature is available from Rspamd 3.11.2.
 
 **Example map files**:
 
