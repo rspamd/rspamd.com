@@ -74,7 +74,7 @@ For <a class="text-decoration-none text-reset" href="#experimentalSys1">experime
     dnf install rspamd
 
 
-For <a class="text-decoration-none text-reset" href="#asanSys1">asan<sup>2</sup></a> packages, install `rspamd-asan`.
+For <a class="text-decoration-none text-reset" href="#asanSys1">asan<sup>3</sup></a> packages, install `rspamd-asan`.
 </div>
 <hr>
 <p class="myFootnote" id="stableSys1">1. Use STABLE branch of packages: those packages are the official rspamd releases which are recommended for production usage.</p>
